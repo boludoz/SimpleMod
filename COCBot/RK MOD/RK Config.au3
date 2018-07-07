@@ -492,6 +492,7 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			GUICtrlSetData($g_hTxtForecastHopingSwitchMin, $g_iTxtForecastHopingSwitchMin)
 			chkForecastHopingSwitchMin()
 			_GUICtrlComboBox_SetCurSel($g_hCmbSwLang, $g_iCmbSwLang)
+			cmbSwLang()
 			
 			; ================================================== Skip Request CC - Added by RK MOD ============================= ;
 			
