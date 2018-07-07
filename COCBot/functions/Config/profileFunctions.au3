@@ -31,12 +31,12 @@ Func setupProfileComboBox()
 
 	; Clear the combo box current data in case profiles were deleted
 	GUICtrlSetData($g_hCmbProfile, "", "")
-	GUICtrlSetData($g_hCmbForecastHopingSwitchMin, "", "")
-	GUICtrlSetData($g_hCmbForecastHopingSwitchMax, "", "")
+	GUICtrlSetData($cmbForecastHopingSwitchMin, "", "")
+	GUICtrlSetData($cmbForecastHopingSwitchMax, "", "")
 	; Set the new data of available profiles
 	GUICtrlSetData($g_hCmbProfile, $profileString, "<No Profiles>")
-    GUICtrlSetData($g_hCmbForecastHopingSwitchMax, $profileString, "<No Profiles>")
-	GUICtrlSetData($g_hCmbForecastHopingSwitchMin, $profileString, "<No Profiles>")
+    GUICtrlSetData($cmbForecastHopingSwitchMax, $profileString, "<No Profiles>")
+	GUICtrlSetData($cmbForecastHopingSwitchMin, $profileString, "<No Profiles>")
 	For $i = 0 To 7
 		GUICtrlSetData($g_ahCmbProfile[$i], "")
 		GUICtrlSetData($g_ahCmbProfile[$i], "|" & $profileString)
