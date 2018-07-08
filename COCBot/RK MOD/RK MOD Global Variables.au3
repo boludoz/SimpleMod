@@ -162,3 +162,8 @@ Global $message = ""
 ;=============================================== Russian Request - by RK MOD ======================================== ;
 
 Global $g_iChkRusLang2 = 0
+
+;=============================================== Max logout time - by RK MOD ======================================== ;
+
+Global $g_bTrainLogoutMaxTime = False, $g_iTrainLogoutMaxTime = 4
+

@@ -148,9 +148,14 @@ Func ReadConfig_RKMod()
 	IniReadS($ChatbotPbSendNew, $g_sProfileConfigPath, "Chatbot", "chkPbSendNewChats", $ChatbotPbSendNew, "Int")	
 	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "Int")
 	
-	; ================================================== Russian Request- by RK MOD ================================= ;
+	; ================================================== Russian Request - by RK MOD ================================= ;
 	
 	IniReadS($g_iChkRusLang2, $g_sProfileConfigPath, "Lang", "ChkRusLang2", $g_iChkAutoCamp, "Int")
+	
+	; ================================================== Max logout time by RK MOD ================================= ;
+	
+	IniReadS($g_bTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime, "Bool")
+	IniReadS($g_iTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime, "int")
 	
 EndFunc   ;==>ReadConfig_RKMod
 
@@ -301,6 +306,11 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	
 	_Ini_Add("Lang", "chkRusLang2", $g_iChkRusLang2 ? 1 : 0)
 	
+	; ================================================== Max logout time - by RK MOD ================================= ;
+	
+	_Ini_Add("TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime)
+	_Ini_Add("TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime)
+	
 EndFunc   ;==>SaveConfig_RKMod
 
 Func ApplyConfig_RKMod($TypeReadSave)
@@ -447,6 +457,11 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			; ================================================== Russian Request - by RK MOD ================================= ;
 			
 			$g_iChkRusLang2 = GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED ? 1 : 0
+			
+			; ================================================== Max logout time - by RK MOD ================================= ;
+			
+			$g_bTrainLogoutMaxTime = (GUICtrlRead($g_hChkTrainLogoutMaxTime) = $GUI_CHECKED)
+			$g_iTrainLogoutMaxTime = GUICtrlRead($g_hTxtTrainLogoutMaxTime)
 			
 		Case "Read"
 
@@ -617,7 +632,13 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			
 			GUICtrlSetState($g_hChkRusLang2, $g_iChkRusLang2 = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
    		    chkRusLangRequest()
-
+            
+			; ================================================== Max logout time - by RK MOD ======================================== ;
+			
+			GUICtrlSetState($g_hChkTrainLogoutMaxTime, $g_bTrainLogoutMaxTime = True ? $GUI_CHECKED : $GUI_UNCHECKED)
+			chkTrainLogoutMaxTime()
+			GUICtrlSetData($g_hTxtTrainLogoutMaxTime, $g_iTrainLogoutMaxTime)
+			
 	EndSwitch
 
 EndFunc   ;==>ApplyConfig_RKMod
