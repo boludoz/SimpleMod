@@ -532,7 +532,7 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			GUICtrlSetState($g_hChkSkipRequestCC, $g_bSkipRequestCC ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtSkipRequestCCTroop, $g_iSkipRequestCCTroop)
 			GUICtrlSetData($g_hTxtSkipRequestCCSpell, $g_iSkipRequestCCSpell)
-             
+            chkSkipRequestCC()
 			; ================================================== Move the Request CC Troops - Added by RK MOD ================== ;
 			
 			GUICtrlSetState($g_hChkReqCCFirst, $g_bReqCCFirst = True ? $GUI_CHECKED : $GUI_UNCHECKED)
