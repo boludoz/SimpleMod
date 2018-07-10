@@ -157,6 +157,12 @@ Func ReadConfig_RKMod()
 	IniReadS($g_bTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime, "Bool")
 	IniReadS($g_iTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime, "int")
 	
+	; ==================================================; Request troops for defense by RK MOD ================================= ;
+	
+	$g_bRequestTroopsEnableDefense = (IniRead($g_sProfileConfigPath, "RequestDefense", "RequestDefenseEnable", "0") = "1")
+	$g_sRequestTroopsTextDefense = IniRead($g_sProfileConfigPath, "RequestDefense", "txtRequestDefense", "")
+	$g_iRequestDefenseEarly = Int(IniRead($g_sProfileConfigPath, "RequestDefense", "RequestDefenseEarly", "0"))
+
 EndFunc   ;==>ReadConfig_RKMod
 
 Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
@@ -311,6 +317,13 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	_Ini_Add("TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime)
 	_Ini_Add("TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime)
 	
+	; ================================================== Request troops for defense - by RK MOD ================================= ;
+	
+	_Ini_Add("RequestDefense", "RequestDefenseEnable", $g_bRequestTroopsEnableDefense ? 1 : 0)
+	_Ini_Add("RequestDefense", "txtRequestDefense", $g_sRequestTroopsTextDefense)
+	_Ini_Add("RequestDefense", "RequestDefenseEarly", $g_iRequestDefenseEarly)
+
+	
 EndFunc   ;==>SaveConfig_RKMod
 
 Func ApplyConfig_RKMod($TypeReadSave)
@@ -463,6 +476,12 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$g_bTrainLogoutMaxTime = (GUICtrlRead($g_hChkTrainLogoutMaxTime) = $GUI_CHECKED)
 			$g_iTrainLogoutMaxTime = GUICtrlRead($g_hTxtTrainLogoutMaxTime)
 			
+			; ================================================== Request troops for defense - by RK MOD ================================= ;
+			
+			$g_bRequestTroopsEnableDefense = (GUICtrlRead($g_hChkRequestTroopsEnableDefense) = $GUI_CHECKED)
+			$g_sRequestTroopsTextDefense = GUICtrlRead($g_hTxtRequestCCDefense)
+			$g_iRequestDefenseEarly = GUICtrlRead($g_hTxtRequestDefenseEarly)
+			
 		Case "Read"
 
 	
@@ -517,7 +536,7 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			; ================================================== Move the Request CC Troops - Added by RK MOD ================== ;
 			
 			GUICtrlSetState($g_hChkReqCCFirst, $g_bReqCCFirst = True ? $GUI_CHECKED : $GUI_UNCHECKED)
-			
+			chkReqCCFirst()
 			; ================================================ AutoCamp - Added by RK MOD (#ID135-) ======================================== 
             
 			GUICtrlSetState($g_hChkAutoCamp, $g_iChkAutoCamp = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
@@ -639,6 +658,12 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			chkTrainLogoutMaxTime()
 			GUICtrlSetData($g_hTxtTrainLogoutMaxTime, $g_iTrainLogoutMaxTime)
 			
+			; ================================================== Request troops for defense - by RK MOD ======================================== ;
+			
+			GUICtrlSetState($g_hChkRequestTroopsEnableDefense, $g_bRequestTroopsEnableDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
+			chkRequestDefense()
+			GUICtrlSetData($g_hTxtRequestCCDefense, $g_sRequestTroopsTextDefense)
+			GUICtrlSetData($g_hTxtRequestDefenseEarly, $g_iRequestDefenseEarly)
 	EndSwitch
 
 EndFunc   ;==>ApplyConfig_RKMod

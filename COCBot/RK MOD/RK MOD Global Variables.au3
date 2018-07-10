@@ -167,3 +167,6 @@ Global $g_iChkRusLang2 = 0
 
 Global $g_bTrainLogoutMaxTime = False, $g_iTrainLogoutMaxTime = 4
 
+;=============================================== Request troops for defense - by RK MOD ============================== ;
+
+Global $g_bRequestTroopsEnableDefense, $g_sRequestTroopsTextDefense, $g_iRequestDefenseEarly 

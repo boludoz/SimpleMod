@@ -28,25 +28,30 @@
 	; $g_bChkCollect = (GUICtrlRead($g_hChkCollect) = $GUI_CHECKED)
 ; EndFunc   ;==>ChkCollect
 
+; Request troops for defense Add RK MOD
+Func chkRequestDefense()
+	If GUICtrlRead($g_hChkRequestTroopsEnableDefense) = $GUI_CHECKED Then
+		For $i = $g_hTxtRequestCCDefense To $g_hTxtRequestDefenseEarly
+			GUICtrlSetState($i, $GUI_ENABLE)
+		Next
+	Else
+		For $i = $g_hTxtRequestCCDefense To $g_hTxtRequestDefenseEarly
+			GUICtrlSetState($i, $GUI_DISABLE)
+		Next
+	EndIf
+EndFunc   ;==>chkRequestDefense
+
 Func chkRequestCCHours()
 	Local $bWasRedraw = SetRedrawBotWindow(False, Default, Default, Default, "chkRequestCCHours")
 
 	If GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hTxtRequestCC, $GUI_SHOW + $GUI_ENABLE)
-		GUICtrlSetState($g_hChkRusLang2, $GUI_SHOW + $GUI_ENABLE) ; Russian Request- by RK MOD
-		For $i = $g_hChkSkipRequestCC To $g_hLblRequestCCHoursPM  ; Skip request CC - Add RK MOD
-			GUICtrlSetState($i, $GUI_ENABLE)
-		Next
 		For $i = $g_hChkReqCCFirst To $g_hLblRequestCCHoursPM 
  			GUICtrlSetState($i, $GUI_ENABLE)
  		Next
 		chkSkipRequestCC() ; Skip request CC - Add RK MOD
 	Else
 		GUICtrlSetState($g_hTxtRequestCC, $GUI_SHOW + $GUI_DISABLE)
-		GUICtrlSetState($g_hChkRusLang2, $GUI_SHOW + $GUI_DISABLE) ; Russian Request- by RK MOD
-		For $i = $g_hChkSkipRequestCC To $g_hLblRequestCCHoursPM ; Skip request CC - Add RK MOD
-			GUICtrlSetState($i, $GUI_DISABLE)
-		Next
 		For $i = $g_hChkReqCCFirst To $g_hLblRequestCCHoursPM
  			GUICtrlSetState($i, $GUI_DISABLE)
  		Next
