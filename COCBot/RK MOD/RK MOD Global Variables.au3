@@ -49,11 +49,15 @@ Global $timeOffset = 0
 Global $TimerForecast = 0
 Global $lootIndexScaleMarkers
 Global $currentForecast
-Global $g_iChkForecastBoost = 0, $g_iTxtForecastBoost = 6
-Global $g_iChkForecastPause = 0, $g_iTxtForecastPause = 2
-Global $g_iChkForecastHopingSwitchMax = 0, $g_iCmbForecastHopingSwitchMax = 0 , $g_iTxtForecastHopingSwitchMax = 2, $g_iChkForecastHopingSwitchMin = 0, $g_iCmbForecastHopingSwitchMin = 0, $g_iTxtForecastHopingSwitchMin = 2
-Global $g_iCmbSwLang = 0
-
+Global $chkForecastBoost = 0, $txtForecastBoost = 0
+Global $iChkForecastBoost = 0, $iTxtForecastBoost = 6
+Global $chkForecastPause = 0, $txtForecastPause = 0
+Global $iChkForecastPause = 0, $iTxtForecastPause = 2
+Global $cmbForecastHopingSwitchMax = 0, $cmbForecastHopingSwitchMin = 0
+Global $chkForecastHopingSwitchMax = 0, $lblForecastHopingSwitchMax = 0, $txtForecastHopingSwitchMax = 2, $chkForecastHopingSwitchMin = 0, $lblForecastHopingSwitchMin = 0, $txtForecastHopingSwitchMin = 0
+Global $ichkForecastHopingSwitchMax = 0, $icmbForecastHopingSwitchMax = 0 , $itxtForecastHopingSwitchMax = 2, $ichkForecastHopingSwitchMin = 0, $icmbForecastHopingSwitchMin = 0, $itxtForecastHopingSwitchMin = 2
+Global $icmbSwLang = 0
+Global $cmbSwLang = 0
 
 ; ================================================ Skip Request CC - Added by RK MOD =================================================== ;
 
@@ -158,3 +162,8 @@ Global $message = ""
 ;=============================================== Russian Request - by RK MOD ======================================== ;
 
 Global $g_iChkRusLang2 = 0
+
+;=============================================== Max logout time - by RK MOD ======================================== ;
+
+Global $g_bTrainLogoutMaxTime = False, $g_iTrainLogoutMaxTime = 4
+

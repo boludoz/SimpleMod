@@ -31,17 +31,17 @@ Func ReadConfig_RKMod()
      
 	;================================================== Forecast - by RK MOD ================================= ;
 	
-	IniReadS($g_iChkForecastBoost, $g_sProfileConfigPath, "RK Forecast", "chkForecastBoost", 0, "Int")
-	IniReadS($g_iTxtForecastBoost, $g_sProfileConfigPath, "RK Forecast", "txtForecastBoost", 6, "Int")
-	IniReadS($g_iChkForecastPause, $g_sProfileConfigPath, "RK Forecast", "chkForecastPause", 0, "Int")
-	IniReadS($g_iTxtForecastPause, $g_sProfileConfigPath, "RK Forecast", "txtForecastPause", 2, "Int")
-	IniReadS($g_iChkForecastHopingSwitchMax, $g_sProfileConfigPath, "RK Forecast", "chkForecastHopingSwitchMax", 0, "Int")
-	IniReadS($g_iCmbForecastHopingSwitchMax, $g_sProfileConfigPath, "RK Forecast", "cmbForecastHopingSwitchMax", 0, "Int")
-	IniReadS($g_iTxtForecastHopingSwitchMax, $g_sProfileConfigPath, "RK Forecast", "txtForecastHopingSwitchMax", 2, "Int")
-	IniReadS($g_iChkForecastHopingSwitchMin, $g_sProfileConfigPath, "RK Forecast", "chkForecastHopingSwitchMin", 0, "Int")
-	IniReadS($g_iCmbForecastHopingSwitchMin, $g_sProfileConfigPath, "RK Forecast", "cmbForecastHopingSwitchMin", 0, "Int")
-	IniReadS($g_iTxtForecastHopingSwitchMin, $g_sProfileConfigPath, "RK Forecast", "txtForecastHopingSwitchMin", 2, "Int")
-	IniReadS($g_iCmbSwLang, $g_sProfileConfigPath, "RK Forecast", "cmbSwLang", 1, "int")
+	IniReadS($iChkForecastBoost, $g_sProfileConfigPath, "RK Forecast", "chkForecastBoost", 0, "Int")
+	IniReadS($iChkForecastPause, $g_sProfileConfigPath, "RK Forecast", "chkForecastPause", 0, "Int")
+	IniReadS($iTxtForecastBoost, $g_sProfileConfigPath, "RK Forecast", "txtForecastBoost", 6, "Int")
+	IniReadS($iTxtForecastPause, $g_sProfileConfigPath, "RK Forecast", "txtForecastPause", 2, "Int")
+	IniReadS($ichkForecastHopingSwitchMax, $g_sProfileConfigPath, "RK Forecast", "chkForecastHopingSwitchMax", 0, "Int")
+	IniReadS($icmbForecastHopingSwitchMax, $g_sProfileConfigPath, "RK Forecast", "cmbForecastHopingSwitchMax", 0, "Int")
+	IniReadS($itxtForecastHopingSwitchMax, $g_sProfileConfigPath, "RK Forecast", "txtForecastHopingSwitchMax", 2, "Int")
+	IniReadS($ichkForecastHopingSwitchMin, $g_sProfileConfigPath, "RK Forecast", "chkForecastHopingSwitchMin", 0, "Int")
+	IniReadS($icmbForecastHopingSwitchMin, $g_sProfileConfigPath, "RK Forecast", "cmbForecastHopingSwitchMin", 0, "Int")
+	IniReadS($itxtForecastHopingSwitchMin, $g_sProfileConfigPath, "RK Forecast", "txtForecastHopingSwitchMin", 2, "Int")
+	IniReadS($icmbSwLang, $g_sProfileConfigPath, "RK Forecast", "cmbSwLang", 1, "int")
 	
 	;==================================================== Skip Request CC - Added by RK MOD ============================ ;
 	
@@ -148,9 +148,14 @@ Func ReadConfig_RKMod()
 	IniReadS($ChatbotPbSendNew, $g_sProfileConfigPath, "Chatbot", "chkPbSendNewChats", $ChatbotPbSendNew, "Int")	
 	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "Int")
 	
-	; ================================================== Russian Request- by RK MOD ================================= ;
+	; ================================================== Russian Request - by RK MOD ================================= ;
 	
 	IniReadS($g_iChkRusLang2, $g_sProfileConfigPath, "Lang", "ChkRusLang2", $g_iChkAutoCamp, "Int")
+	
+	; ================================================== Max logout time by RK MOD ================================= ;
+	
+	IniReadS($g_bTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime, "Bool")
+	IniReadS($g_iTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime, "int")
 	
 EndFunc   ;==>ReadConfig_RKMod
 
@@ -176,17 +181,17 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
     
 	 ; ================================================== Forecast - by RK MOD  ============================== ;
 	
-	_Ini_Add("RK Forecast", "txtForecastBoost", GUICtrlRead($g_iTxtForecastBoost))
-	_Ini_Add("RK Forecast", "txtForecastPause", GUICtrlRead($g_iTxtForecastPause))
-	_Ini_Add("RK Forecast", "cmbForecastHopingSwitchMax", _GUICtrlComboBox_GetCurSel($g_iCmbForecastHopingSwitchMax))
-	_Ini_Add("RK Forecast", "txtForecastHopingSwitchMax", GUICtrlRead($g_iTxtForecastHopingSwitchMax))
-	_Ini_Add("RK Forecast", "cmbForecastHopingSwitchMin", _GUICtrlComboBox_GetCurSel($g_iCmbForecastHopingSwitchMin))
-	_Ini_Add("RK Forecast", "txtForecastHopingSwitchMin", GUICtrlRead($g_iTxtForecastHopingSwitchMin))
-	_Ini_Add("RK Forecast", "chkForecastBoost", $g_iChkForecastBoost ? 1 : 0)
-	_Ini_Add("RK Forecast", "chkForecastPause", $g_iChkForecastPause ? 1 : 0)
-	_Ini_Add("RK Forecast", "chkForecastHopingSwitchMax", $g_iChkForecastHopingSwitchMax ? 1 : 0)
-	_Ini_Add("RK Forecast", "chkForecastHopingSwitchMin", $g_iChkForecastHopingSwitchMin ? 1 : 0)
-	_Ini_Add("RK Forecast", "cmbSwLang", _GUICtrlComboBox_GetCurSel($g_iCmbSwLang))
+	_Ini_Add("RK Forecast", "txtForecastBoost", GUICtrlRead($txtForecastBoost))
+	_Ini_Add("RK Forecast", "txtForecastPause", GUICtrlRead($txtForecastPause))
+	_Ini_Add("RK Forecast", "cmbForecastHopingSwitchMax", _GUICtrlComboBox_GetCurSel($cmbForecastHopingSwitchMax))
+	_Ini_Add("RK Forecast", "txtForecastHopingSwitchMax", GUICtrlRead($txtForecastHopingSwitchMax))
+	_Ini_Add("RK Forecast", "cmbForecastHopingSwitchMin", _GUICtrlComboBox_GetCurSel($cmbForecastHopingSwitchMin))
+	_Ini_Add("RK Forecast", "txtForecastHopingSwitchMin", GUICtrlRead($txtForecastHopingSwitchMin))
+	_Ini_Add("RK Forecast", "chkForecastBoost", $iChkForecastBoost ? 1 : 0)
+	_Ini_Add("RK Forecast", "chkForecastPause", $iChkForecastPause ? 1 : 0)
+	_Ini_Add("RK Forecast", "chkForecastHopingSwitchMax", $ichkForecastHopingSwitchMax ? 1 : 0)
+	_Ini_Add("RK Forecast", "chkForecastHopingSwitchMin", $ichkForecastHopingSwitchMin ? 1 : 0)
+	_Ini_Add("RK Forecast", "cmbSwLang", _GUICtrlComboBox_GetCurSel($cmbSwLang))
 	
 	 ; ================================================== Skip Request CC - Added by RK MOD  ============================ ;
 	 
@@ -301,6 +306,11 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	
 	_Ini_Add("Lang", "chkRusLang2", $g_iChkRusLang2 ? 1 : 0)
 	
+	; ================================================== Max logout time - by RK MOD ================================= ;
+	
+	_Ini_Add("TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime)
+	_Ini_Add("TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime)
+	
 EndFunc   ;==>SaveConfig_RKMod
 
 Func ApplyConfig_RKMod($TypeReadSave)
@@ -326,18 +336,18 @@ Func ApplyConfig_RKMod($TypeReadSave)
             
 			; ================================================== Forecast - by RK MOD =========================== ;
 			
-			$g_iChkForecastBoost = GUICtrlRead($g_hChkForecastBoost) = $GUI_CHECKED ? 1 : 0
-			$g_iTxtForecastBoost = GUICtrlRead($g_hTxtForecastBoost)
-			$g_iChkForecastPause = GUICtrlRead($g_hChkForecastPause) = $GUI_CHECKED ? 1 : 0
-			$g_iTxtForecastPause = GUICtrlRead($g_hTxtForecastPause)
-			$g_iChkForecastHopingSwitchMax = (GUICtrlRead($g_hChkForecastHopingSwitchMax) = $GUI_CHECKED)
-			$g_iCmbForecastHopingSwitchMax = _GUICtrlComboBox_GetCurSel($g_hCmbForecastHopingSwitchMax)
-			$g_iTxtForecastHopingSwitchMax = GUICtrlRead($g_hTxtForecastHopingSwitchMax)
-			$g_iChkForecastHopingSwitchMin = (GUICtrlRead($g_hChkForecastHopingSwitchMin) = $GUI_CHECKED)
-			$g_iCmbForecastHopingSwitchMin = _GUICtrlComboBox_GetCurSel($g_hCmbForecastHopingSwitchMin)
-			$g_iTxtForecastHopingSwitchMin = GUICtrlRead($g_hTxtForecastHopingSwitchMin)
-			$g_iCmbSwLang = _GUICtrlComboBox_GetCurSel($g_hCmbSwLang)
-			$g_iTxtForecastPause = GUICtrlRead($g_hTxtForecastPause)
+			$iChkForecastBoost = GUICtrlRead($chkForecastBoost) = $GUI_CHECKED ? 1 : 0
+			$iTxtForecastBoost = GUICtrlRead($txtForecastBoost)
+			$iChkForecastPause = GUICtrlRead($chkForecastPause) = $GUI_CHECKED ? 1 : 0
+			$iTxtForecastPause = GUICtrlRead($txtForecastPause)
+			$ichkForecastHopingSwitchMax = (GUICtrlRead($chkForecastHopingSwitchMax) = $GUI_CHECKED)
+			$icmbForecastHopingSwitchMax = _GUICtrlComboBox_GetCurSel($cmbForecastHopingSwitchMax)
+			$itxtForecastHopingSwitchMax = GUICtrlRead($txtForecastHopingSwitchMax)
+			$ichkForecastHopingSwitchMin = (GUICtrlRead($chkForecastHopingSwitchMin) = $GUI_CHECKED)
+			$icmbForecastHopingSwitchMin = _GUICtrlComboBox_GetCurSel($cmbForecastHopingSwitchMin)
+			$itxtForecastHopingSwitchMin = GUICtrlRead($txtForecastHopingSwitchMin)
+			$icmbSwLang = _GUICtrlComboBox_GetCurSel($cmbSwLang)
+			$iTxtForecastPause = GUICtrlRead($txtForecastPause)
 			
 			; ================================================== ; Skip Request CC  - Added by RK MOD ======================= ;
 			
@@ -448,6 +458,11 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			
 			$g_iChkRusLang2 = GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED ? 1 : 0
 			
+			; ================================================== Max logout time - by RK MOD ================================= ;
+			
+			$g_bTrainLogoutMaxTime = (GUICtrlRead($g_hChkTrainLogoutMaxTime) = $GUI_CHECKED)
+			$g_iTrainLogoutMaxTime = GUICtrlRead($g_hTxtTrainLogoutMaxTime)
+			
 		Case "Read"
 
 	
@@ -477,21 +492,21 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			
 			; ================================================== Forecast - by RK MOD ================================ ;
 			
-			GUICtrlSetState($g_hChkForecastBoost, ($g_iChkForecastBoost = 1) ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetData($g_hTxtForecastBoost, $g_iTxtForecastBoost)
+			GUICtrlSetState($chkForecastBoost, ($iChkForecastBoost = 1) ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($txtForecastBoost, $iTxtForecastBoost)
 			chkForecastBoost()
-			GUICtrlSetState($g_hChkForecastPause, ($g_iChkForecastPause = 1) ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetData($g_hTxtForecastPause, $g_iTxtForecastPause)
+			GUICtrlSetState($chkForecastPause, ($iChkForecastPause = 1) ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($txtForecastPause, $iTxtForecastPause)
 			chkForecastPause()
-			GUICtrlSetState($g_hChkForecastHopingSwitchMax, ($g_iChkForecastHopingSwitchMax = 1) ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbForecastHopingSwitchMax, $g_iCmbForecastHopingSwitchMax)
-			GUICtrlSetData($g_hTxtForecastHopingSwitchMax, $g_iTxtForecastHopingSwitchMax)
+			GUICtrlSetState($chkForecastHopingSwitchMax, ($ichkForecastHopingSwitchMax = 1) ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($cmbForecastHopingSwitchMax, $icmbForecastHopingSwitchMax)
+			GUICtrlSetData($txtForecastHopingSwitchMax, $itxtForecastHopingSwitchMax)
 			chkForecastHopingSwitchMax()
-			GUICtrlSetState($g_hChkForecastHopingSwitchMin, ($g_iChkForecastHopingSwitchMin = 1) ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbForecastHopingSwitchMin, $g_iCmbForecastHopingSwitchMin)
-			GUICtrlSetData($g_hTxtForecastHopingSwitchMin, $g_iTxtForecastHopingSwitchMin)
+			GUICtrlSetState($chkForecastHopingSwitchMin, ($ichkForecastHopingSwitchMin = 1) ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($cmbForecastHopingSwitchMin, $icmbForecastHopingSwitchMin)
+			GUICtrlSetData($txtForecastHopingSwitchMin, $itxtForecastHopingSwitchMin)
 			chkForecastHopingSwitchMin()
-			_GUICtrlComboBox_SetCurSel($g_hCmbSwLang, $g_iCmbSwLang)
+			_GUICtrlComboBox_SetCurSel($cmbSwLang, $icmbSwLang)
 			
 			; ================================================== Skip Request CC - Added by RK MOD ============================= ;
 			
@@ -617,7 +632,13 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			
 			GUICtrlSetState($g_hChkRusLang2, $g_iChkRusLang2 = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
    		    chkRusLangRequest()
-
+            
+			; ================================================== Max logout time - by RK MOD ======================================== ;
+			
+			GUICtrlSetState($g_hChkTrainLogoutMaxTime, $g_bTrainLogoutMaxTime = True ? $GUI_CHECKED : $GUI_UNCHECKED)
+			chkTrainLogoutMaxTime()
+			GUICtrlSetData($g_hTxtTrainLogoutMaxTime, $g_iTrainLogoutMaxTime)
+			
 	EndSwitch
 
 EndFunc   ;==>ApplyConfig_RKMod

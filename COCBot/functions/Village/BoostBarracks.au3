@@ -31,8 +31,8 @@ Func BoostTrainBuilding($sName, $iCmbBoost, $iCmbBoostCtrl)
 		Return $boosted
 	EndIf
     
-	If GUICtrlRead($g_hChkForecastBoost) = $GUI_CHECKED Then
-	If $currentForecast > Number($g_iTxtForecastBoost, 3) Then
+	If GUICtrlRead($chkForecastBoost) = $GUI_CHECKED Then
+	If $currentForecast > Number($iTxtForecastBoost, 3) Then
 		Local $hour = StringSplit(_NowTime(4), ":", $STR_NOCOUNT)
 		If $g_abBoostBarracksHours[$hour[0]] = False Then
 			SetLog("No planned boosting for this hour.", $COLOR_RED)

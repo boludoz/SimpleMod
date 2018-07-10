@@ -738,9 +738,9 @@ Func runBot() ;Bot that runs everything in order
 			AddIdleTime()
 			If $g_bRunState = False Then Return
 			If $g_bRestart = True Then ContinueLoop
-			If $g_iChkForecastBoost = 1 Then
+			If $iChkForecastBoost = 1 Then
 				$currentForecast = readCurrentForecast()
-				If $currentForecast >= Number($g_iTxtForecastBoost, 3) Then
+				If $currentForecast >= Number($iTxtForecastBoost, 3) Then
 					If _GUICtrlComboBox_GetCurSel($g_hCmbBoostBarracks) > 0 Then
 						 SetLog("Boost Time !", $COLOR_GREEN)
 					Else
@@ -750,7 +750,7 @@ Func runBot() ;Bot that runs everything in order
 			    SetLog("Forecast index is below the required value, no boost !", $COLOR_RED)
 				EndIf
  			EndIf
-			If $g_iChkForecastPause = 1 Then
+			If $iChkForecastPause = 1 Then
 				$currentForecast = readCurrentForecast()
 			EndIf
 			If IsSearchAttackEnabled() Then ; if attack is disabled skip reporting, requesting, donating, training, and boosting
