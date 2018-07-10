@@ -31,6 +31,9 @@ Global $g_hLblEarly
 ; Russian Request - by RK MOD
 Global $g_hChkRusLang2 = 0
 
+; Request troops for defense Add RK MOD
+Global $g_hChkRequestTroopsEnableDefense, $g_hTxtRequestCCDefense, $g_hTxtRequestDefenseEarly
+
 ; Donate
 Global $g_hChkExtraAlphabets = 0, $g_hChkExtraChinese = 0, $g_hChkExtraKorean = 0, $g_hChkExtraPersian = 0
 Global $g_ahChkDonateTroop[$eTroopCount + $g_iCustomDonateConfigs] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -115,26 +118,37 @@ Func CreateRequestSubTab()
 		_GUICtrlCreateIcon($g_sLibIconPath, $eIcnCCRequest, $x - 5, $y, 64, 64, $BS_ICON)
 		$g_hChkRequestTroopsEnable = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkRequestTroopsEnable", "Request Troops / Spells"), $x + 40 + 30, $y - 6)
 			GUICtrlSetOnEvent(-1, "chkRequestCCHours")
-		$g_hTxtRequestCC = GUICtrlCreateInput(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "TxtRequestCC", "Anything please"), $x + 40 + 30, $y + 15, 214, 20, BitOR($SS_CENTER, $ES_AUTOHSCROLL))
+		$g_hTxtRequestCC = GUICtrlCreateInput(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "TxtRequestCC", "Anything please"), $x + 40 + 30, $y + 15, 155, 20, BitOR($SS_CENTER, $ES_AUTOHSCROLL))
 			GUICtrlSetState(-1, $GUI_DISABLE)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "TxtRequestCC_Info_01", "This text is used on your request for troops in the Clan chat."))
-     
-	 ; move the Request CC Troops function to the beginning of the run loop	- Add RK MOD
-	 $y += 17
- 		$g_hChkReqCCFirst = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkReqCCFirst", "Early"), $x + 290, $y - 6 , -1, -1)
-			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkReqCCFirst_Info_01", "Request troops at the beginning of the run loop"))
-     		GUICtrlSetState(-1, $GUI_DISABLE)
-			GUICtrlSetOnEvent(-1, "chkReqCCFirst")
-	; Russian Request- by RK MOD
-	$y += 23   
-		$g_hChkRusLang2 = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkRusLang2_01", "Russian request"), $x + 290, $y - 4, -1, -1)
+	 
+	 ; Russian Request- by RK MOD
+	$y += 20  
+		$g_hChkRusLang2 = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkRusLang2_01", "Russian request"), $x + 240, $y - 27, -1, -1)
 		_GUICtrlSetTip(-1,  GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkRusLang2_02", "On. Russian request for troops. Note: The input language in the Android emulator must be RUSSIAN."))
 		GUICtrlSetState(-1, $GUI_UNCHECKED)
 		GUICtrlSetOnEvent(-1, "chkRusLang2")
-
+		
+	 ; Request troops for defense Add RK MOD
+		$g_hChkRequestTroopsEnableDefense = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkRequestTroopsEnableDefense", "Request Defense troops"), $x + 240, $y - 6)
+			GUICtrlSetOnEvent(-1, "chkRequestDefense")
+		$g_hTxtRequestCCDefense = GUICtrlCreateInput(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "TxtRequestCCDefense", "Defense troop please"), $x + 240, $y + 15, 155, 20, BitOR($SS_CENTER, $ES_AUTOHSCROLL))
+		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "LblRequestCCDefense", "When shield time") & " <", $x + 256, $y + 40, -1, 15)
+		GUICtrlCreateLabel("min", $x + 378, $y + 40, 20, 15)
+		$g_hTxtRequestDefenseEarly = GUICtrlCreateInput("0", $x + 350, $y + 40, 25, 16, $SS_CENTER)
+			GUICtrlSetLimit(-1, 3)
+			GUICtrlSetBkColor(-1, $COLOR_MONEYGREEN)
+     
+	 ; move the Request CC Troops function to the beginning of the run loop	- Add RK MOD
+	 $y += 17
+ 		$g_hChkReqCCFirst = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkReqCCFirst", "Request early"), $x + 70, $y + 20 , -1, -1)
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkReqCCFirst_Info_01", "Request troops at the beginning of the run loop"))
+     		GUICtrlSetState(-1, $GUI_DISABLE)
+			GUICtrlSetOnEvent(-1, "chkReqCCFirst")
+	
 		; Skip Request CC - Add RK MOD
 	$y += 25
-		$g_hChkSkipRequestCC = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkSkipRequestCC", "Skip request when:"), $x + 70, $y + 13)
+		$g_hChkSkipRequestCC = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkSkipRequestCC", "Skip request when:"), $x + 70, $y + 25)
  			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkSkipRequestCC01", "Stop sending request when CC Troop and/or Spell is full." & @CRLF & "or when CC Troop and/or Spell reaches certain amount received." & @CRLF & "Enable this option to ignore CC Siege Machine"))
 			GUICtrlSetOnEvent(-1, "chkSkipRequestCC")
@@ -152,11 +166,9 @@ Func CreateRequestSubTab()
         _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "TxtSkipRequestCCSpell", "Stop sending request when received this number of CC Spells" & @CRLF & "Set to ""2+"" means when CC Spell is full" & @CRLF & "Set to ""0"" means to always ignore CC Spell"))
 			GUICtrlSetOnEvent(-1, "chkSkipRequestCC")
 		
-
-
 		
 	$x += 29 + 30
-	$y += 60
+	$y += 150
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "Only_during_hours", "Only during these hours of each day"), $x + 30, $y, 300, 20, $BS_MULTILINE)
 
 	$x += 30
