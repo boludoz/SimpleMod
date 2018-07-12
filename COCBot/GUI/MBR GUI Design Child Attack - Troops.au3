@@ -40,7 +40,7 @@ Global $g_hChkBoostBarracksHours[24] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 ;Max logout time RK MOD
 Global $g_hChkTrainLogoutMaxTime = 0, $g_hTxtTrainLogoutMaxTime = 4, $g_hLblTrainLogoutMaxTime
 
-; Boost for Magic Spell9 by RK MOD
+; Boost for Magic Spell by RK MOD
 Global $g_hChkBoostBMagic  = 0, $g_hCmbBoostBrMagic = 0
 
 ; Train Order sub-tab
@@ -760,7 +760,7 @@ Func CreateBoostSubTab()
 			_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetOnEvent(-1, "chkUpgradeWarden")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-    
+    ; Boost for Magic Spell by RK MOD
 	$y += 50
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_05", "Boost for Magic Spell"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 50)
 	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnBoostMagic, $x - 10, $y - 2, 24, 24)
