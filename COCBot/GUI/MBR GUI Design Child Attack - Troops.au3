@@ -40,6 +40,9 @@ Global $g_hChkBoostBarracksHours[24] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 ;Max logout time RK MOD
 Global $g_hChkTrainLogoutMaxTime = 0, $g_hTxtTrainLogoutMaxTime = 4, $g_hLblTrainLogoutMaxTime
 
+; Boost for Magic Spell9 by RK MOD
+Global $g_hChkBoostBMagic  = 0, $g_hCmbBoostBrMagic = 0
+
 ; Train Order sub-tab
 Func LoadTranslatedTrainTroopsOrderList()
 
@@ -709,11 +712,11 @@ Func CreateBoostSubTab()
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "LblBarracksBoost", "Barracks") & " " & $sTextBoostLeft, $x + 20 + 29, $y + 4 + 7, -1, -1)
 			$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "LblBarracksBoost_Info_01", "Use this to boost your Barracks with GEMS! Use with caution!")
 			_GUICtrlSetTip(-1, $sTxtTip)
-		$g_hCmbBoostBarracks = GUICtrlCreateCombo("", $x + 140 + 45, $y + 7, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_hCmbBoostBarracks = GUICtrlCreateCombo("", $x + 140 + 30, $y + 7, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|No limit", "0")
 			_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
+    
 	$y += 65
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_02", "Boost Spell Factories"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 50)
 		_GUICtrlCreateIcon($g_sLibIconPath, $eIcnSpellFactoryBoost, $x - 10, $y - 2, 24, 24)
@@ -757,13 +760,25 @@ Func CreateBoostSubTab()
 			_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetOnEvent(-1, "chkUpgradeWarden")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
+    
 	$y += 50
+	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_05", "Boost for Magic Spell"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 50)
+	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnBoostMagic, $x - 10, $y - 2, 24, 24)
+	$g_hChkBoostBMagic = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkBoostBMagic_Info_01", "Use Magic Spell"), $x + 25, $y + 1, -1, -1)
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkBoostBMagic_Info_02", "Enable this function to boost for Magic Spell."))
+			GUICtrlSetState(-1, $GUI_UNCHECKED)
+             GUICtrlSetOnEvent(-1, "chkBoostBMagic") 			
+		$g_hCmbBoostBrMagic = GUICtrlCreateCombo("", $x + 150, $y + 1, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			GUICtrlSetData(-1, "0|1|2|3|4|5", "0")
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+	
+	$y += 55
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_04", "Boost Schedule"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 70)
-
+    $y += - 5
 		$g_hLblBoosthour = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "Hour", -1) & ":", $x, $y, -1, 15)
 			$sTxtTip = GetTranslatedFileIni("MBR Global GUI Design", "Only_during_hours", -1)
 			_GUICtrlSetTip(-1, $sTxtTip)
+			
 		$g_hLblBoosthours[0] = GUICtrlCreateLabel(" 0", $x + 30, $y)
 		$g_hLblBoosthours[1] = GUICtrlCreateLabel(" 1", $x + 45, $y)
 		$g_hLblBoosthours[2] = GUICtrlCreateLabel(" 2", $x + 60, $y)

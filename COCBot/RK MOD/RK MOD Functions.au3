@@ -48,4 +48,7 @@
 #include "RK Chatbot\ChatFunc.au3"
 #include "RK Chatbot\Multy Lang.au3"
 
+; Boost for Magic Spell
+#include "RK Boost for Magic Spell.au3"
+
 #include "RK Config.au3"
