@@ -1113,6 +1113,21 @@ Func SaveConfig_600_35_2()
 			IniWrite($sSwitchAccFile, "SwitchAccount", "ProfileName." & $i, $g_asProfileName[$i - 1])
 			IniWrite($sSwitchAccFile, "SwitchAccount", "DonateOnly." & $i, $g_abDonateOnly[$i - 1] ? 1 : 0)
 		Next
+		;FarmSchedule
+		For $i = 1 To 8
+			IniWrite($sSwitchAccFile, "FarmStrategy", "ChkSetFarm" & $i, $g_abChkSetFarm[$i - 1] ? 1 : 0)
+
+			IniWrite($sSwitchAccFile, "FarmStrategy", "CmbAction1" & $i, $g_aiCmbAction1[$i - 1])
+			IniWrite($sSwitchAccFile, "FarmStrategy", "CmbCriteria1" & $i, $g_aiCmbCriteria1[$i - 1])
+			IniWrite($sSwitchAccFile, "FarmStrategy", "TxtResource1" & $i, $g_aiTxtResource1[$i - 1])
+			IniWrite($sSwitchAccFile, "FarmStrategy", "CmbTime1" & $i, $g_aiCmbTime1[$i - 1])
+
+			IniWrite($sSwitchAccFile, "FarmStrategy", "CmbAction2" & $i, $g_aiCmbAction2[$i - 1])
+			IniWrite($sSwitchAccFile, "FarmStrategy", "CmbCriteria2" & $i, $g_aiCmbCriteria2[$i - 1])
+			IniWrite($sSwitchAccFile, "FarmStrategy", "TxtResource2" & $i, $g_aiTxtResource2[$i - 1])
+			IniWrite($sSwitchAccFile, "FarmStrategy", "CmbTime2" & $i, $g_aiCmbTime2[$i - 1])
+		Next
+
 	EndIf
 
 EndFunc   ;==>SaveConfig_600_35_2

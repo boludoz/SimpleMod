@@ -1211,6 +1211,7 @@ Func BotGuiModeToggle()
 			tabSEARCH()
 			tabAttack()
 			tabVillage()
+			tabSwitchOptions()
 
 			InitializeMainGUI(True)
 
@@ -1953,27 +1954,38 @@ Func tabBot()
 	Select
 		Case $tabidx = 0 ; Options tab
 			GUISetState(@SW_HIDE, $g_hGUI_STATS)
-			GUISetState(@SW_HIDE, $g_hGUI_LOG_SA)
+			GUISetState(@SW_HIDE, $g_hGUI_SWITCH_OPTIONS)
 			ControlShow("", "", $g_hCmbGUILanguage)
 		Case $tabidx = 1 ; Android tab
 			GUISetState(@SW_HIDE, $g_hGUI_STATS)
-			GUISetState(@SW_HIDE, $g_hGUI_LOG_SA)
+			GUISetState(@SW_HIDE, $g_hGUI_SWITCH_OPTIONS)
 			ControlHide("", "", $g_hCmbGUILanguage)
 		Case $tabidx = 2 ; Debug tab
 			GUISetState(@SW_HIDE, $g_hGUI_STATS)
-			GUISetState(@SW_HIDE, $g_hGUI_LOG_SA)
+			GUISetState(@SW_HIDE, $g_hGUI_SWITCH_OPTIONS)
 			ControlHide("", "", $g_hCmbGUILanguage)
 		Case $tabidx = 3 ; Profiles tab
 			GUISetState(@SW_HIDE, $g_hGUI_STATS)
-			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_LOG_SA)
+			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_SWITCH_OPTIONS)
 			ControlHide("", "", $g_hCmbGUILanguage)
+			tabSwitchOptions()
 		Case $tabidx = 4 ; Stats tab
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_STATS)
-			GUISetState(@SW_HIDE, $g_hGUI_LOG_SA)
+			GUISetState(@SW_HIDE, $g_hGUI_SWITCH_OPTIONS)
 			If Not $g_bRunState Then UpdateMultiStats()
 			ControlHide("", "", $g_hCmbGUILanguage)
 	EndSelect
 EndFunc   ;==>tabBot
+
+Func tabSwitchOptions()
+	Local $tabidx = GUICtrlRead($g_hGUI_SWITCH_OPTIONS_TAB)
+	Select
+		Case $tabidx = 0
+			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_LOG_SA)
+		Case Else
+			GUISetState(@SW_HIDE, $g_hGUI_LOG_SA)
+	EndSelect
+EndFunc   ;==>tabSwitchOptions
 
 Func tabDeadbase()
 	Local $tabidx = GUICtrlRead($g_hGUI_DEADBASE_TAB)

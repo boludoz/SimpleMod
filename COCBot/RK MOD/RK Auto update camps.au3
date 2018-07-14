@@ -1,5 +1,5 @@
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: OCRbypass / RK Auto Update camps v.0.4 (#ID135-)
+; Name ..........: OCRbypass / RK Auto Update camps v.0.5 (#ID135-)
 ; Description ...: ByPass camps. capacity auto update
 ; Author ........: Boludoz (25/6/2018) Rulesss (1/7/2018)
 ; Modified ......: Boludoz (1/7/2018)
@@ -12,7 +12,7 @@
 
 Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of troops in army Window
 ; BYPASS HACK
-
+    Local $aTempResult[3] = [0, 0, 0]
 	Local $aResult[3] = [0, 0, 0]
 	$aResult[0] = getOcrAndCapture("coc-NewCapacity", $x_start, $y_start, 67, 14, True)
 	Local $dbg = 0

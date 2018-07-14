@@ -170,3 +170,7 @@ Global $g_bTrainLogoutMaxTime = False, $g_iTrainLogoutMaxTime = 4
 ;=============================================== Request troops for defense - by RK MOD ============================== ;
 
 Global $g_bRequestTroopsEnableDefense, $g_sRequestTroopsTextDefense, $g_iRequestDefenseEarly 
+
+; ================================================== Boost for Magic Spell by RK MOD ================================= ;
+
+Global $g_iChkBoostBMagic = 0, $g_iCmbBoostBrMagic = 0 
