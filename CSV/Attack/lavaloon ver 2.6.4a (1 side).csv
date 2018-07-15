@@ -32,8 +32,10 @@ MAKE  |Q          |FRONT-Right|10         |-26        |INT-EXT    |0          |0
 MAKE  |R          |FRONT-LEFT |10         |-26        |INT-EXT    |0          |0          |           |
 
       |VECTOR_____|INDEX______|QTY_X_VECT_|TROOPNAME__|DELAY_DROP_|DELAYCHANGE|SLEEPAFTER_|SLEEPBEFORE|
+SWIPE |RIGHT      |100        |300        |50         |           |           |           |           |	          	  
 DROP  |A-B        |4          |1          |Lava       |20-30      |0          |100-300    |           |
 DROP  |A          |1          |1          |Lava       |20-30      |0          |200-300    |           |
+SWIPE |LEFT       |100        |300        |50         |           |           |           |           |           
 DROP  |D          |3-8        |25%        |Ball       |20-30      |10-20      |0          |           |
 DROP  |A          |1-6        |25%        |Ball       |20-30      |10-20      |100-200    |           |
 DROP  |C          |3-8        |25%        |Ball       |20-30      |10-20      |0          |           |
@@ -43,7 +45,6 @@ DROP  |I          |5          |1          |HaSpell    |0          |0          |0
 DROP  |J          |4          |1          |HaSpell    |0          |0          |0          |           |
 DROP  |A          |1          |1          |Castle     |0          |0          |100-300    |           |
 DROP  |A          |1          |1          |warden     |0          |0          |50-100     |           |
-SWIPE |RIGHT      |100        |300        |50         |           |           |           |           |
 WAIT  |3000-3300  |           |           |           |           |           |           |           |
 DROP  |H          |1          |1          |FSpell     |0          |0          |50-100     |           |
 DROP  |M          |1          |1          |RSpell     |0          |0          |0          |700-900    |
@@ -63,6 +64,7 @@ DROP  |Q          |2          |1          |HaSpell    |0          |0          |1
 DROP  |R          |3          |1          |HaSpell    |0          |0          |100        |           |
 DROP  |G          |1          |1          |FSpell     |0          |0          |100        |           |
 DROP  |R          |1          |1          |RSpell     |0          |0          |100        |2000-3000  |
+SWIPE |LEFT       |100        |300        |50         |           |           |           |           |           
 WAIT  |5500-6000  |           |           |           |           |           |           |           |
 DROP  |A          |1          |1          |king       |0          |0          |200-300    |           |  
 DROP  |A          |1          |100%       |wall       |0          |0          |50-100     |           |
