@@ -40,3 +40,32 @@ Func BoostBrMagic()
 	EndSwitch
 
 EndFunc   ;==>BoostBrMagic
+
+
+Func chkBoostCMagic()
+	If GUICtrlRead($g_hChkBoostCMagic) = $GUI_CHECKED Then
+		$g_iChkBoostCMagic = 1
+	Else
+		$g_iChkBoostCMagic = 0
+	EndIf
+EndFunc   ;==>chkBoostCMagic
+
+
+Func BoostClMagic()
+
+	Switch _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic)
+		Case 0
+			$g_iCmbBoostClMagic = 0
+		Case 1
+			$g_iCmbBoostClMagic = 1
+		Case 2
+			$g_iCmbBoostClMagic = 2
+		Case 3
+			$g_iCmbBoostClMagic = 3
+		Case 4
+			$g_iCmbBoostClMagic = 4
+		Case 5
+			$g_iCmbBoostClMagic = 5
+	EndSwitch
+
+EndFunc   ;==>BoostClMagic
