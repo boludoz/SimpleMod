@@ -142,9 +142,9 @@ Func BoostAllWithMagicSpell()
 					Click(136 + $g_iQuickMISX, 226 + $g_iQuickMISY)
 					SetDebugLog("3. Click Training Potion at: " & 136 + $g_iQuickMISX & ", " & 226 + $g_iQuickMISY)
 					If _Sleep($DELAYBOOSTHEROES2) Then Return
-					If _ColorCheck(_GetPixelColor(200, 565, True), Hex(0x8CD136, 6), 30) Then
-						Click(200, 565)
-						SetDebugLog("4. Click Use Training Potion 200, 565")
+					If _ColorCheck(_GetPixelColor(400, 440, True), Hex(0x8CD136, 6), 30) Then
+						Click(400, 440)
+						SetDebugLog("4. Click Use Training Potion 400, 440")
 						If _Sleep($DELAYBOOSTHEROES2) Then Return
 						$bBoosted = True
 					Else
