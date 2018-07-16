@@ -19,6 +19,7 @@ Local $aButtonClanWindowClose[9]  	    = [321, 355, 342, 410, 330, 400, 0xC55115
 Local $aButtonClanChatTab[9]    	  	    = [175,  14, 275,  30, 280,  30, 0x706C50, 20, "=-= Switch to Clan Channel"] ; Chat page, ClanChat Tab
 Local $aButtonClanDonateScrollUp[9] 	    = [290, 100, 300, 112, 295, 100, 0xFFFFFF, 10, "=-= Donate Scroll Up"] ; Donate / Chat Page, Scroll up Button
 Local $aButtonClanDonateScrollDown[9] 	= [290, 650, 300, 662, 295, 655, 0xFFFFFF, 10, "=-= Donate Scroll Down"] ; Donate / Chat Page, Scroll Down Button
+Local $g_bChkExtraAlphabets = True, $g_bChkExtraChinese = True, $g_bChkExtraKorean = True; Russian, Chinese, Korean fix
 
 	ClickP($aAway, 1, 0, "#0167") ;Click Away
 	Setlog("Checking Clan Chat", $COLOR_INFO)
