@@ -116,6 +116,8 @@
 ![Ii]mgxml/ArmySpells/*.png
 ![Ii]mgxml/Clouds/*.png
 ![Ii]mgxml/Chat/*.png
+![Ii]mgxml/Boost/*/*/*.png
+![Ii]mgxml/Boost/*/*.png
 ![Ii]mgxml/Boost/*.png
 
 ![C]OCBot/Forecast/*/*.exe
