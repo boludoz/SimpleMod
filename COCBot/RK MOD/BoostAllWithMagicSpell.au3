@@ -1,10 +1,10 @@
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: BoostAllWithMagicSpell
+; Name ..........: BoostAllWithMagicSpell, BoostWhitC
 ; Description ...:
 ; Syntax ........:
 ; Parameters ....:
 ; Return values .: None
-; Author ........: Demen
+; Author ........: Demen, bld
 ; Modified ......:
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2018
 ;                  MyBot is distributed under the terms of the GNU GPL
@@ -142,11 +142,17 @@ Func BoostAllWithMagicSpell()
 					Click(136 + $g_iQuickMISX, 226 + $g_iQuickMISY)
 					SetDebugLog("3. Click Training Potion at: " & 136 + $g_iQuickMISX & ", " & 226 + $g_iQuickMISY)
 					If _Sleep($DELAYBOOSTHEROES2) Then Return
-					If _ColorCheck(_GetPixelColor(400, 440, True), Hex(0x8CD136, 6), 30) Then
-						Click(400, 440)
-						SetDebugLog("4. Click Use Training Potion 400, 440")
-						If _Sleep($DELAYBOOSTHEROES2) Then Return
-						$bBoosted = True
+                    If _ColorCheck(_GetPixelColor(200, 565, True), Hex(0x8CD136, 6), 30) Then
+                        Click(200, 565)
+                        SetDebugLog("4. Click Use Training Potion 200, 565")
+                        If _Sleep($DELAYBOOSTHEROES2) Then Return
+                        If _ColorCheck(_GetPixelColor(400, 440, True), Hex(0x7D8BFF, 6), 30) Then ; click violet OK button
+                            Click(400, 440)
+                            SetDebugLog("5. Click confirm Use training potion 400, 440")
+                            $bBoosted = True ; done!
+                        Else
+                            SetLog("Cannot find 'Training Potion' confirmed button")
+                        EndIf					
 					Else
 						SetLog("Cannot find 'Use' button to boost")
 					EndIf
@@ -182,7 +188,7 @@ Func BoostAllWithMagicSpell()
 
 EndFunc   ;==>BoostAllWithMagicSpell
 ; ========================================================================================================================================
-Func BoostWhitCPosion($g_iXCollect = -1, $g_iYCollect = -1)
+Func BoostWhitC($g_iXCollect = -1, $g_iYCollect = -1)
 
 	Local $bBoosted = False
 	Local $directory = @ScriptDir & "\imgxml\boost\BoostC"
@@ -273,11 +279,17 @@ Func BoostWhitCPosion($g_iXCollect = -1, $g_iYCollect = -1)
 					Click(136 + $g_iQuickMISX, 226 + $g_iQuickMISY)
 					SetDebugLog("3. Click Training Potion at: " & 136 + $g_iQuickMISX & ", " & 226 + $g_iQuickMISY)
 					If _Sleep($DELAYBOOSTHEROES2) Then Return
-					If _ColorCheck(_GetPixelColor(400, 440, True), Hex(0x8CD136, 6), 30) Then
-						Click(400, 440)
-						SetDebugLog("4. Click Use Training Potion 400, 440")
-						If _Sleep($DELAYBOOSTHEROES2) Then Return
-						$bBoosted = True
+                    If _ColorCheck(_GetPixelColor(200, 565, True), Hex(0x8CD136, 6), 30) Then
+                        Click(200, 565)
+                        SetDebugLog("4. Click Use Training Potion 200, 565")
+                        If _Sleep($DELAYBOOSTHEROES2) Then Return
+                        If _ColorCheck(_GetPixelColor(400, 440, True), Hex(0x7D8BFF, 6), 30) Then ; click violet OK button
+                            Click(400, 440)
+                            SetDebugLog("5. Click confirm Use training potion 400, 440")
+                            $bBoosted = True ; done!
+                        Else
+                            SetLog("Cannot find 'Training Potion' confirmed button")
+                        EndIf					
 					Else
 						SetLog("Cannot find 'Use' button to boost")
 					EndIf
@@ -311,7 +323,7 @@ Func BoostWhitCPosion($g_iXCollect = -1, $g_iYCollect = -1)
 	If _Sleep($DELAYBOOSTBARRACKS3) Then Return
 	Return $bBoosted
 
-EndFunc   ;==>BoostB
+EndFunc   ;==>BoostWhitC
 
 
 ;_----------------------------
@@ -336,7 +348,7 @@ EndFunc   ;==>BoostB
 ; $g_sImgLibr 
 ;_----------------------------
 
-;Func BoostWhitCPosion($g_iXCollect = -1, $g_iYCollect = -1)
+;Func BoostWhitC($g_iXCollect = -1, $g_iYCollect = -1)
 ;If $g_iXCollect = -1 or $g_iYCollect = -1 then return
 ;Click($g_iXCollect - 5, $g_iYCollect + 10)
 ;_Sleep(500)

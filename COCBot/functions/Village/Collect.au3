@@ -92,7 +92,10 @@ Func Collect($bCheckTreasury = True)
 
 	If $g_bChkTreasuryCollect And $bCheckTreasury Then TreasuryCollect()
 	EndGainCost("Collect")
-	
-	BoostWhitCPosion($g_iXCollect, $g_iYCollect)
+
+	; RK MOD by BLD
+	;Check B boost
+	BoostWhitC($g_iXCollect, $g_iYCollect)
+	; -----------------------
 EndFunc   ;==>Collect
 
