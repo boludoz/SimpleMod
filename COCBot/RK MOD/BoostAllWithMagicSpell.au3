@@ -181,3 +181,169 @@ Func BoostAllWithMagicSpell()
 	Return $bBoosted
 
 EndFunc   ;==>BoostAllWithMagicSpell
+; ========================================================================================================================================
+Func BoostWhitCPosion($g_iXCollect = -1, $g_iYCollect = -1)
+
+	Local $bBoosted = False
+	Local $directory = @ScriptDir & "\imgxml\boost\BoostC"
+	Local $bBoostedImg = @ScriptDir & "\imgxml\boost\BoostC\BoostCCheck"
+	Local $BoostCCollect = @ScriptDir & "\imgxml\boost\BoostC\BoostCCollect"
+	
+	; Verifying existent Variables to run this routine
+	If Not $g_iChkBoostCMagic Then Return
+	If AllowBoosting("All using magic spell", $g_iCmbBoostClMagic) = False Then Return
+
+	SetLog("Boost collectors with magic spell...")
+
+		If $g_iXCollect = -1 or $g_iYCollect = -1 then return
+		Click($g_iXCollect - 6, $g_iYCollect + 14)
+		_Sleep(500)
+		Local $aResult = BuildingInfo(242, 520 + $g_iBottomOffsetY)
+		If $aResult[0] > 1 Then
+			If StringInStr($aResult[1], "Mine", $STR_NOCASESENSEBASIC) > 0 Then
+				Local $bCanBoost = True
+				SetDebugLog("Mine True")
+			Else
+				SetDebugLog("Mine False")
+			EndIf
+		Else
+			SetDebugLog("Error reading building info of Mine")
+		EndIf
+
+		_Sleep(500)
+		If QuickMis("BC1", $bBoostedImg, 136, 609, 726, 711) Then
+				$bBoosted = True	
+			SetDebugLog("$bBoosted" & " " & $bBoosted)
+
+		EndIf
+		
+		; boosting with Mine
+		Local $bCanBoost = False
+		If Not $bBoosted Then
+			_Sleep(500)
+			If QuickMis("BC1", $BoostCCollect, 136, 609, 726, 711) Then
+				ClickDrag(136 + $g_iQuickMISX, 609 + $g_iQuickMISY, 134 + $g_iQuickMISX, 605 + $g_iQuickMISY, 10)
+				_Sleep(250)
+					If _ColorCheck(_GetPixelColor(420, 385, True), Hex(0xE8E8E0, 6), 30) Then
+						Click(405, 415)
+						SetDebugLog("Click Use Training Potion 405, 415")
+						$bBoosted = True
+						If _Sleep($DELAYBOOSTHEROES2) Then Return
+					Else
+						SetLog("Cannot find 'Use' button to boost")
+					EndIf
+					SetDebugLog("boosting from mine")
+			Else
+					$bBoosted = False	
+				SetDebugLog("Fail boosting from mine")
+			EndIf
+		EndIf
+
+		ClickP($aAway, 1, 0, "#0000") ;Click Away
+		If $bBoosted Then Return
+
+	; boosting with Clan Castle Location
+	$bCanBoost = False
+	If Not $bBoosted And $g_aiClanCastlePos[0] <> "" And $g_aiClanCastlePos[0] <> -1 Then
+		SetDebugLog("Try boosting from Clan castle, " & $g_aiClanCastlePos[0] & ", " & $g_aiClanCastlePos[1])
+		; click CC
+		BuildingClickP($g_aiClanCastlePos)
+		SetDebugLog("1. Click Clan Castle: " & $g_aiClanCastlePos[0] & ", " & $g_aiClanCastlePos[1])
+		If _Sleep($DELAYBOOSTHEROES2) Then Return
+		ForceCaptureRegion()
+		Local $aResult = BuildingInfo(242, 520 + $g_iBottomOffsetY)
+		If $aResult[0] > 1 Then
+			If StringInStr($aResult[1], "Castle", $STR_NOCASESENSEBASIC) > 0 Then
+				SetDebugLog("Boost all using Clan Castle located at " & $g_aiClanCastlePos[0] & ", " & $g_aiClanCastlePos[1])
+				$bCanBoost = True
+			Else
+				SetDebugLog("This location (" & $g_aiClanCastlePos[0] & ", " & $g_aiClanCastlePos[1] & ") is " & $aResult[1] & ", not the Clan Castle as expected")
+			EndIf
+		Else
+			SetDebugLog("Error reading building info of clan castle")
+		EndIf
+
+		; boost
+		If $bCanBoost Then
+			If QuickMIS("BC1", $directory, 475, 650, 630, 675) Then
+				Click(475 + $g_iQuickMISX, 650 + $g_iQuickMISY)
+				SetDebugLog("2. Click Magic Items: " & 475 + $g_iQuickMISX & ", " & 650 + $g_iQuickMISY)
+				If _Sleep($DELAYBOOSTHEROES2) Then Return
+                If QuickMIS("BC1", $directory, 163, 226, 694, 480) Then
+					Click(136 + $g_iQuickMISX, 226 + $g_iQuickMISY)
+					SetDebugLog("3. Click Training Potion at: " & 136 + $g_iQuickMISX & ", " & 226 + $g_iQuickMISY)
+					If _Sleep($DELAYBOOSTHEROES2) Then Return
+					If _ColorCheck(_GetPixelColor(400, 440, True), Hex(0x8CD136, 6), 30) Then
+						Click(400, 440)
+						SetDebugLog("4. Click Use Training Potion 400, 440")
+						If _Sleep($DELAYBOOSTHEROES2) Then Return
+						$bBoosted = True
+					Else
+						SetLog("Cannot find 'Use' button to boost")
+					EndIf
+				Else
+					SetLog("Cannot find Training Potion available")
+				EndIf
+			Else
+				SetLog("Cannot find 'Magic Items' Button")
+			EndIf
+		EndIf
+		If Not $bBoosted Then ClickP($aAway, 1, 0, "#0000")
+
+	ElseIf Not $bBoosted Then
+		SetLog("Clan Castle is not located")
+		ClickP($aAway, 1, 0, "#0000")
+		Return
+	EndIf
+
+	If $bBoosted Then
+		If $g_iCmbBoostClMagic >= 1 And $g_iCmbBoostClMagic <= 5 Then
+			$g_iCmbBoostClMagic -= 1
+			SetLog("BoostAll completed with Magic Spell. Remaining iterations: " & $g_iCmbBoostClMagic, $COLOR_SUCCESS)
+			_GUICtrlComboBox_SetCurSel($g_hCmbBoostClMagic, $g_iCmbBoostClMagic)
+		ElseIf $g_iCmbBoostClMagic = 6 Then
+			SetLog("BoostAll completed with Magic Spell. Remaining iterations: Unlimited", $COLOR_SUCCESS)
+		EndIf
+	Else
+		SetLog("Cannot 'BoostAll' with Magic Spell")
+	EndIf
+
+	If _Sleep($DELAYBOOSTBARRACKS3) Then Return
+	Return $bBoosted
+
+EndFunc   ;==>BoostB
+
+
+;_----------------------------
+;           setlog("COMPDBG")
+
+;BuildingClickP($g_aiClanCastlePos)
+;_Sleep(500)
+;        If QuickMIS("BC1", $g_sImgLibr, 136, 609, 726, 711) Then
+;        Click(136 + $g_iQuickMISX, 609 + $g_iQuickMISY)
+;Endif
+;_Sleep(500)
+;        If QuickMIS("BC1", $g_sImgBboost, 163, 226, 694, 480) Then
+;        Click(136 + $g_iQuickMISX, 226 + $g_iQuickMISY)
+;endif
+;_Sleep(500)
+;        If QuickMIS("BC1", $g_sImgCboost, 163, 226, 694, 480) Then
+;        Click(136 + $g_iQuickMISX, 226 + $g_iQuickMISY)
+;endif
+
+; $g_sImgBboost
+; $g_sImgCboost        
+; $g_sImgLibr 
+;_----------------------------
+
+;Func BoostWhitCPosion($g_iXCollect = -1, $g_iYCollect = -1)
+;If $g_iXCollect = -1 or $g_iYCollect = -1 then return
+;Click($g_iXCollect - 5, $g_iYCollect + 10)
+;_Sleep(500)
+;Global $g_sImgCollectors = @ScriptDir & "\imgxml\Boost\BoostC"
+;If QuickMis("BC1", $g_sImgCollectors, 136, 609, 726, 711) Then
+;$g_bCanBoostC = False
+;Else 
+;$g_bCanBoostC = True
+;EndIf
+;EndFunc

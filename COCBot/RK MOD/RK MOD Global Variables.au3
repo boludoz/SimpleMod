@@ -174,3 +174,4 @@ Global $g_bRequestTroopsEnableDefense, $g_sRequestTroopsTextDefense, $g_iRequest
 ; ================================================== Boost for Magic Spell by RK MOD ================================= ;
 
 Global $g_iChkBoostBMagic = 0, $g_iCmbBoostBrMagic = 0, $g_iChkBoostCMagic = 0, $g_iCmbBoostClMagic = 0  
+Global $g_iXCollect = 0, $g_iYCollect = 0, $g_bCanBoostC = False
