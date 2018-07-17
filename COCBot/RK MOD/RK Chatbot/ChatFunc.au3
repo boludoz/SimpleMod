@@ -2,17 +2,17 @@
 ; Name ..........: Chatbot Text read (#-23)
 ; Description ...: This file is all related to READ CHAT
 ; Syntax ........:
-; Parameters ....: ReadChat($stxtKeywordForRequest = " ")
-; Return values .: False, True
-; Author ........: Samikie (fragment of code.), boludoz (5/7/2018), rulesss and kychera (chatbot)
+; Parameters ....: ReadChat()
+; Return values .: Last msg
+; Author ........: Samikie (fragment of code.), rulesss and kychera (chatbot), boludoz (5/7/2018|17/7/2018)
 ; Modified ......: RK TEAM, boludoz (5/7/2018)
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2018
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
-; Example .......: ReadChat("123")
+; Example .......: ReadChat()
 ; ===============================================================================================================================
-Func ReadChat($stxtKeywordForRequest = " ")
+Func ReadChat()
 Local $g_iChatDebug = 0
 Local $aButtonClanWindowOpen[9]   	    = [  8, 355,  28, 410,  16, 400, 0xC55115, 20, "=-= Open Chat Window"] ; main page, clan chat Button
 Local $aButtonClanWindowClose[9]  	    = [321, 355, 342, 410, 330, 400, 0xC55115, 20, "=-= Close Chat Window"] ; main page, clan chat Button
@@ -21,18 +21,8 @@ Local $aButtonClanDonateScrollUp[9] 	    = [290, 100, 300, 112, 295, 100, 0xFFFF
 Local $aButtonClanDonateScrollDown[9] 	= [290, 650, 300, 662, 295, 655, 0xFFFFFF, 10, "=-= Donate Scroll Down"] ; Donate / Chat Page, Scroll Down Button
 Local $g_bChkExtraAlphabets = True, $g_bChkExtraChinese = True, $g_bChkExtraKorean = True; Russian, Chinese, Korean fix
 
-	ClickP($aAway, 1, 0, "#0167") ;Click Away
 	Setlog("Checking Clan Chat", $COLOR_INFO)
 
-	;ForceCaptureRegion()
-	;If _CheckColorPixel($aButtonClanWindowOpen[4], $aButtonClanWindowOpen[5], $aButtonClanWindowOpen[6], $aButtonClanWindowOpen[7], $g_bCapturePixel, "aButtonClanWindowOpen") Then
-		Click($aButtonClanWindowOpen[0], $aButtonClanWindowOpen[1], 1, 0, "#0168")
-	;	If _Wait4Pixel($aButtonClanWindowClose[4], $aButtonClanWindowClose[5], $aButtonClanWindowClose[6], $aButtonClanWindowClose[7], 1500) = False Then
-	;		SetLog("Clan Chat Did Not Open - Abandon Friendly Challenge")
-	;		AndroidPageError("FriendlyChallenge")
-	;		Return False
-	;	EndIf
-	;EndIf
 
 	Local $iLoopCount = 0
 	Local $iCount = 0
@@ -45,7 +35,6 @@ Local $g_bChkExtraAlphabets = True, $g_bChkExtraChinese = True, $g_bChkExtraKore
 		EndIf
 		;If Global tab is selected.
 		If _ColorCheck(_GetPixelColor(189, 24, False), Hex(0x383828, 6), 20) Then ; Darker gray
-			ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
 		EndIf
 		;counter for time approx 3 sec max allowed for tab to open
 		$iLoopCount += 1
@@ -54,7 +43,6 @@ Local $g_bChkExtraAlphabets = True, $g_bChkExtraChinese = True, $g_bChkExtraKore
 			AndroidPageError("Chat read")
 			Local $aButtonChatClose[4] = [330, 352 + $g_iMidOffsetY, 0xFFFFFF, 20]
 			   If _ColorCheck(_GetPixelColor($aButtonChatClose[0], $aButtonChatClose[1], True), Hex($aButtonChatClose[2], 6), $aButtonChatClose[3]) Then
-				  Click($aButtonChatClose[0], $aButtonChatClose[1], 1)
 				  waitMainScreen()
 			   EndIf
 			Return False
@@ -186,26 +174,16 @@ Local $g_bChkExtraAlphabets = True, $g_bChkExtraChinese = True, $g_bChkExtraKore
 
 					If $ClanString = "" Or $ClanString = " " Then
 						If $g_iChatDebug = 1 Then SetLog("Unable to read Chat!", $COLOR_ERROR)
-					Else
+						ExitLoop
+						Else
 						SetLog("Chat: " & $ClanString)
-						Local $asFCKeyword = StringSplit($stxtKeywordForRequest, @CRLF, $STR_ENTIRESPLIT)
-						For $j = 1 To UBound($asFCKeyword) - 1
-							;SetLog("$asFCKeyword[" & $j & "]: " & $asFCKeyword[$j])
-							If StringInStr($ClanString, $asFCKeyword[$j], 2) Then
-								Setlog("Keyword found: " & $asFCKeyword[$j], $COLOR_SUCCESS)
-								Return True
-								Local $ret = StringRegExp($ClanString, '\d+', 1)
-								If IsArray($ret) Then
-								EndIf
-								ExitLoop 2
-							EndIf
-						Next
-					EndIf
+						ExitLoop	
+						EndIf
 				Next
 			EndIf
 		Else
 			If $g_iChatDebug = 1 Then SetLog("divide not found.", $COLOR_DEBUG)
 		EndIf
 		If $g_hHBitmap2 <> 0 Then GdiDeleteHBitmap($g_hHBitmap2)
-		Return False
+		Return $ClanString
 		EndFunc
