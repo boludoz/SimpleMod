@@ -134,7 +134,6 @@ Global $ichkTrophySwitchMax, $itxtMaxTrophyAmount, $icmbTrophyMaxProfile, $ichkT
 
 ; ========================= Slot11 - Added by RK MOD (ID193-) =============================================================================================;
 
-Global $g_abChkExtendedAttackBar[2] = [True, True]
 Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; flag if AttackBar is dragged or not
 
 ; ================================================ NEW ChatBot - by RK MOD ======================================== ;
