@@ -35,6 +35,7 @@ Local $g_bChkExtraAlphabets = True, $g_bChkExtraChinese = True, $g_bChkExtraKore
 		EndIf
 		;If Global tab is selected.
 		If _ColorCheck(_GetPixelColor(189, 24, False), Hex(0x383828, 6), 20) Then ; Darker gray
+			ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
 		EndIf
 		;counter for time approx 3 sec max allowed for tab to open
 		$iLoopCount += 1
@@ -43,6 +44,7 @@ Local $g_bChkExtraAlphabets = True, $g_bChkExtraChinese = True, $g_bChkExtraKore
 			AndroidPageError("Chat read")
 			Local $aButtonChatClose[4] = [330, 352 + $g_iMidOffsetY, 0xFFFFFF, 20]
 			   If _ColorCheck(_GetPixelColor($aButtonChatClose[0], $aButtonChatClose[1], True), Hex($aButtonChatClose[2], 6), $aButtonChatClose[3]) Then
+				  Click($aButtonChatClose[0], $aButtonChatClose[1], 1)
 				  waitMainScreen()
 			   EndIf
 			Return False
