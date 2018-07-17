@@ -219,10 +219,10 @@ Func ChatbotChatInput($message)
 	  SetLog("Chat send in russia", $COLOR_BLUE)
 	 AutoItWinSetTitle('MyAutoItTitle')
     _WinAPI_SetKeyboardLayout(WinGetHandle(AutoItWinGetTitle()), 0x0419)
-		Sleep(500)
+		_Sleep(500)
 		ControlFocus($g_hAndroidWindow, "", "")
 		SendKeepActive($g_hAndroidWindow)
-		Sleep(500)
+		_Sleep(500)
 	;Opt("SendKeyDelay", 1000)
 	AutoItSetOption("SendKeyDelay", 50)
 	  _SendExEx($message)
@@ -569,13 +569,11 @@ Func ChatbotMessage() ; run the chatbot
 			; Prevents the sending of repeated messages.
 			If $ChatbotClanUseResponses And Not $SentMessage Then
 				For $a = 0 To UBound($ClanResponses) - 1
-					If StringInStr($ChatMsg, $ClanResponses[$a][0]) Then
-						Local $Response = $ClanResponses[$a][1]
-						If $Response = $sLastChat Then
+					Local $Response = $ClanResponses[$a][1]
+					If StringCompare($Response, $sLastChat) Then
 						$SentMessage = True
 						Setlog("Repeated answer, jump.")
 						ExitLoop
-						EndIf
 					EndIf
 				Next
 			EndIf
