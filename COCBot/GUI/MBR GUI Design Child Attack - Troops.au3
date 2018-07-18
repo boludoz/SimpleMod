@@ -41,7 +41,7 @@ Global $g_hChkBoostBarracksHours[24] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Global $g_hChkTrainLogoutMaxTime = 0, $g_hTxtTrainLogoutMaxTime = 4, $g_hLblTrainLogoutMaxTime
 
 ; Boost for Magic Spell by RK MOD
-Global $g_hChkBoostBMagic  = 0, $g_hCmbBoostBrMagic = 0
+Global $g_hChkBoostBMagic  = 0, $g_hCmbBoostBrMagic = 0, $g_hChkBoostCMagic = 0, $g_hCmbBoostClMagic = 0
 
 ; Train Order sub-tab
 Func LoadTranslatedTrainTroopsOrderList()
@@ -764,12 +764,20 @@ Func CreateBoostSubTab()
 	$y += 50
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_05", "Boost for Magic Spell"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 50)
 	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnBoostMagic, $x - 10, $y - 2, 24, 24)
-	$g_hChkBoostBMagic = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkBoostBMagic_Info_01", "Use Magic Spell"), $x + 25, $y + 1, -1, -1)
+	$g_hChkBoostBMagic = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkBoostBMagic_Info_01", "Boost troops"), $x + 25, $y + 1, -1, -1)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkBoostBMagic_Info_02", "Enable this function to boost for Magic Spell."))
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
              GUICtrlSetOnEvent(-1, "chkBoostBMagic") 			
-		$g_hCmbBoostBrMagic = GUICtrlCreateCombo("", $x + 150, $y + 1, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_hCmbBoostBrMagic = GUICtrlCreateCombo("", $x + 120, $y + 1, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, "0|1|2|3|4|5", "0")
+	$y += - 1
+    _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBoostClMagic, $x + 190, $y + 1, 24, 24)	
+	$g_hChkBoostCMagic = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkBoostCMagic_Info_01", "Boost collectors"), $x + 225, $y + 1, -1, -1)
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkBoostCMagic_Info_02", "Enable this function to boost for Magic Spell."))
+			GUICtrlSetState(-1, $GUI_UNCHECKED)
+             GUICtrlSetOnEvent(-1, "chkBoostCMagic") 			
+		$g_hCmbBoostClMagic = GUICtrlCreateCombo("", $x + 340, $y + 1, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			GUICtrlSetData(-1, "0|1|2|3|4|5", "0")		
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 	
 	$y += 55

@@ -41,6 +41,11 @@ Func Collect($bCheckTreasury = True)
 				If $g_bDebugSetlog Then SetDebugLog($sFileName & " found, random pick(" & $aCollectXY[$t][0] & "," & $aCollectXY[$t][1] & ")", $COLOR_GREEN)
 				If IsMainPage() Then Click($aCollectXY[$t][0], $aCollectXY[$t][1], 1, 0, "#0430")
 				If _Sleep($DELAYCOLLECT2) Then Return
+				; RK MOD by BLD
+				;Check B boost
+				$g_iXCollect = $aCollectXY[$t][0]
+				$g_iYCollect = $aCollectXY[$t][1]
+				; -----------------------
 			EndIf
 		Next
 	EndIf
@@ -87,4 +92,10 @@ Func Collect($bCheckTreasury = True)
 
 	If $g_bChkTreasuryCollect And $bCheckTreasury Then TreasuryCollect()
 	EndGainCost("Collect")
+
+	; RK MOD by BLD
+	;Check B boost
+	BoostWhitC($g_iXCollect, $g_iYCollect)
+	; -----------------------
 EndFunc   ;==>Collect
+

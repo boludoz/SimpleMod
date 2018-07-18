@@ -50,5 +50,6 @@
 
 ; Boost for Magic Spell
 #include "RK Boost for Magic Spell.au3"
+#include "BoostAllWithMagicSpell.au3"
 
 #include "RK Config.au3"

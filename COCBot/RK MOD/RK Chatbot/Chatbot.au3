@@ -219,16 +219,16 @@ Func ChatbotChatInput($message)
 	  SetLog("Chat send in russia", $COLOR_BLUE)
 	 AutoItWinSetTitle('MyAutoItTitle')
     _WinAPI_SetKeyboardLayout(WinGetHandle(AutoItWinGetTitle()), 0x0419)
-		Sleep(500)
+		_Sleep(500)
 		ControlFocus($g_hAndroidWindow, "", "")
 		SendKeepActive($g_hAndroidWindow)
-		Sleep(500)
+		_Sleep(500)
 	;Opt("SendKeyDelay", 1000)
 	AutoItSetOption("SendKeyDelay", 50)
 	  _SendExEx($message)
 	   SendKeepActive("")
     Else
-	  Sleep(500)
+	 _Sleep(500)
  	 SendText($message)
 	EndIf
 	Return True
@@ -511,9 +511,9 @@ Func ChatbotMessage() ; run the chatbot
 ;==================kychera modified===============================================
 		If $ChatbotSwitchLang = 1 Then
 			ChangeLanguageToEN()
-			   Sleep(3000)
+			  _Sleep(3000)
 			waitMainScreen()
-			   Sleep(3000)
+			  _Sleep(3000)
 		EndIf
 ;=================================================================================
 	EndIf
@@ -524,7 +524,7 @@ Func ChatbotMessage() ; run the chatbot
 		If Not ChatbotSelectClanChat() Then Return
 
 		Local $SentClanChat = False
-          Sleep(2000)
+         _Sleep(2000)
 		If $ChatbotReadQueued Then
 			ChatbotNotifySendChat()
 			$ChatbotReadQueued = False
@@ -561,9 +561,24 @@ Func ChatbotMessage() ; run the chatbot
 
 		If 1 Then
 			; get text of the latest message
+			Local $sLastChat = ReadChat()
+			Local $ChatMsg = StringStripWS($sLastChat, 7)
+			SetLog("Found chat message: " & $ChatMsg, $COLOR_GREEN)
 			Local $SentMessage = False
-
-				If ReadChat("") Or ReadChat(" ") Then
+			
+			; Prevents the sending of repeated messages.
+			If $ChatbotClanUseResponses And Not $SentMessage Then
+				For $a = 0 To UBound($ClanResponses) - 1
+					Local $Response = $ClanResponses[$a][1]
+					If StringCompare($Response, $sLastChat) Then
+						$SentMessage = True
+						Setlog("Repeated answer, jump.")
+						ExitLoop
+					EndIf
+				Next
+			EndIf
+		
+			If $ChatMsg = "" Or $ChatMsg = " " Then
 				If $ChatbotClanAlwaysMsg Then
 					If Not ChatbotChatClanInput() Then Return
 					If Not ChatbotChatInput($ClanMessages[Random(0, UBound($ClanMessages) - 1, 1)]) Then Return
@@ -574,7 +589,7 @@ Func ChatbotMessage() ; run the chatbot
 
 			If $ChatbotClanUseResponses And Not $SentMessage Then
 				For $a = 0 To UBound($ClanResponses) - 1
-				If ReadChat($ClanResponses[$a][0]) Then
+					If StringInStr($ChatMsg, $ClanResponses[$a][0]) Then
 						Local $Response = $ClanResponses[$a][1]
 						SetLog("Sending response: " & $Response, $COLOR_GREEN)
 						If Not ChatbotChatClanInput() Then Return

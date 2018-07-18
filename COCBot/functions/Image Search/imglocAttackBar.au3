@@ -206,14 +206,12 @@ Func AttackBarCheck($Remaining = False)
 	EndIf
 
 	; Drag & checking Slot11 - RK MOD (ID193-)
-	If $g_iMatchMode <= $LB Then
-		If $g_abChkExtendedAttackBar[$g_iMatchMode] And $CheckSlot12 And IsArray($aResult) Then
-			SetDebuglog("$strinToReturn 1st page = " & $strinToReturn)
-			Local $sLastTroop1stPage = $aResult[UBound($aResult) - 1][0]
-			DragAttackBar()
-			$strinToReturn &= ExtendedAttackBarCheck($sLastTroop1stPage, $Remaining)
-			If Not $Remaining Then DragAttackBar($g_iTotalAttackSlot, True) ; return drag
-		EndIf
+	If $g_iMatchMode <= $LB And $CheckSlot12 And IsArray($aResult) Then
+		SetDebuglog("$strinToReturn 1st page = " & $strinToReturn)
+		Local $sLastTroop1stPage = $aResult[UBound($aResult) - 1][0]
+		DragAttackBar()
+		$strinToReturn &= ExtendedAttackBarCheck($sLastTroop1stPage, $Remaining)
+		If Not $Remaining Then DragAttackBar($g_iTotalAttackSlot, True) ; return drag
 	EndIf
 	; Drag & checking Slot11 - RK MOD (ID193-)
 
@@ -330,8 +328,8 @@ Func ExtendedAttackBarCheck($sLastTroop1stPage, $Remaining)
 			Next
 
 			Local $iSlotExtended = 0
-			Static $iFirstExtendedSlot = 0	; Location of 1st extended troop after drag
-			If Not $Remaining Then $iFirstExtendedSlot = 0 ; Reset value for 1st time detecting troop bar
+			Static $iFirstExtendedSlot = -1	; Location of 1st extended troop after drag
+			If Not $Remaining Then $iFirstExtendedSlot = -1 ; Reset value for 1st time detecting troop bar
 
 			Local $bStart2ndPage = False
 			For $i = 0 To UBound($aResult) - 1
@@ -350,7 +348,7 @@ Func ExtendedAttackBarCheck($sLastTroop1stPage, $Remaining)
 
 					$Slottemp = SlotAttack(Number($aResult[$i][1]), False, False)
 					$Slottemp[0] += 18
-					If $iFirstExtendedSlot = 0 Then $iFirstExtendedSlot = $Slottemp[1]	; flag only once
+					If $iFirstExtendedSlot = -1 Then $iFirstExtendedSlot = $Slottemp[1]	; flag only once
 					$iSlotExtended = $Slottemp[1] - $iFirstExtendedSlot + 1
 
 					If $CheckSlotwHero2 And StringInStr($aResult[$i][0], "Spell") = 0 Then $Slottemp[0] -= 14
@@ -361,8 +359,11 @@ Func ExtendedAttackBarCheck($sLastTroop1stPage, $Remaining)
 						If $aResult[$i][0] = "Castle" Or $aResult[$i][0] = "King" Or $aResult[$i][0] = "Queen" Or $aResult[$i][0] = "Warden" Then
 							$aResult[$i][3] = 1
 						Else
-							$aResult[$i][3] = Number(getTroopCountBig(Number($Slottemp[0]), 636)) ; For Bigg Numbers , when the troops is selected
-							If $aResult[$i][3] = "" Or $aResult[$i][3] = 0 Then $aResult[$i][3] = Number(getTroopCountSmall(Number($Slottemp[0]), 641)) ; For small Numbers
+							$aResult[$i][3] = Number(getTroopCountSmall(Number($Slottemp[0]), 640)) ; For small Numbers
+							If $aResult[$i][3] = "" Or $aResult[$i][3] = 0 Then
+								$aResult[$i][3] = Number(getTroopCountBig(Number($Slottemp[0]), 635)) ; For Bigg Numbers , when the troops is selected
+								If $aResult[$i][3] = 0 And $i = UBound($aResult) - 1 And StringInStr($aResult[$i][0], "Spell") <> 0 Then $aResult[$i][3] = 1 ; sorry we have to force you (case last CC Spell with 1 quantity)
+							EndIf
 						EndIf
 						$aResult[$i][4] = ($Slottemp[1] + 11) - $iFirstExtendedSlot
 					Else
