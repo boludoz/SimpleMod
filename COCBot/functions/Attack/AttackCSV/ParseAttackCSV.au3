@@ -485,12 +485,14 @@ Func ParseAttackCSV($debug = False)
 						EndIf
 						Select
 							Case $value1 = "RIGHT"
+								$SWIPE = "RIGHT"
 								SetLog("SWIPE RIGHT")
 								Local $iStartX = Random(770,780,1)
 								ClickDrag($iStartX,Random(680,690,1),$iStartX - $iDragPixelDistance,Random(680,690,1),$value4)
 								If _Sleep($value3) Then Return
-								PrepareAttack($g_iMatchMode, True, True)
+								PrepareAttack($g_iMatchMode, True)
 							Case $value1 = "LEFT"
+								$SWIPE = "LEFT"
 								SetLog("SWIPE LEFT")
 								Local $iStartX = Random(35,45,1)
 								ClickDrag($iStartX,Random(680,690,1),$iStartX + $iDragPixelDistance,Random(680,690,1),$value4)
