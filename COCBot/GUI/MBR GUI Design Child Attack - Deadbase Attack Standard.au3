@@ -21,6 +21,10 @@ Global $g_hCmbStandardDropOrderDB = 0, $g_hCmbStandardDropSidesDB = 0, $g_hCmbSt
 Global $g_hLblSmartDeployDB = 0, $g_hPicAttackNearDarkElixirDrillDB = 0
 Global $g_hBtnCustomDropOrderDB = 0
 
+; Multi finger
+Global $g_hLblDBMultiFinger = 0, $g_hTxtUnitFactor = 0, $g_hTxtWaveFactor = 0
+Global $g_hCmbDBMultiFinger = 0, $g_hChkUnitFactor = 0, $g_hChkWaveFactor = 0
+
 Func CreateAttackSearchDeadBaseStandard()
 
 	$g_hGUI_DEADBASE_ATTACK_STANDARD = _GUICreate("", $_GUI_MAIN_WIDTH - 195, $g_iSizeHGrpTab4, 150, 25, BitOR($WS_CHILD, $WS_TABSTOP), -1, $g_hGUI_DEADBASE)
@@ -47,14 +51,16 @@ Func CreateAttackSearchDeadBaseStandard()
 								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Info_02", "Attack on two sides, penetrates through base") & @CRLF & _
 								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Info_03", "Attack on three sides, gets outer and some inside of base") & @CRLF & _
 								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Info_07", "Attack on Classic 4Fingers") & @CRLF & _
+								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Info_08", "Attack on Multi Finger") & @CRLF & _
 								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Info_04", "Select the No. of sides to attack on."))
 				GUICtrlSetData(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Item_01", "one side") & "|" & _
 								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Item_02", "two sides") & "|" & _
 								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Item_03", "three sides") & "|" & _
 								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Item_04", "all sides equally") & "|" & _
-								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Item_07", "Classic Four Fingers"), _
+								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Item_07", "Classic Four Fingers") & "|" & _
+								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Item_08", "Multi Finger"), _
 								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Item_04", -1))
-			    GUICtrlSetOnEvent(-1, "Bridge") ; Uncheck SmartAttack Red Area when enable FourFinger to avoid conflict
+			    GUICtrlSetOnEvent(-1, "Bridge") ; Uncheck SmartAttack Red Area when enable FourFinger to avoid conflict by RK MOD
 
 		$y += 25
 			GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "Lbl-CmbStandardUnitDelay", "Delay Unit") & ":", $x, $y + 5, -1, -1)
@@ -113,11 +119,63 @@ Func CreateAttackSearchDeadBaseStandard()
 			$g_hPicAttackNearDarkElixirDrillDB = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnDrill, $x + 20 , $y - 3, 24, 24)
 				_GUICtrlSetTip(-1, $sTxtTip)
 
-		$y += 40
+		$y += 50
 		$x = 98
 			$g_hBtnCustomDropOrderDB = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "BtnCustomDropOrder", "Drop Order"), $x, $y, 85, 25)
 				_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "BtnCustomDropOrder_Info_01", "Select Custom Troops Dropping Order"))
 				GUICtrlSetOnEvent(-1, "CustomDropOrder")
 		GUICtrlCreateGroup("", -99, -99, 1, 1)
+       
+	   ; ====================================================== MULTI FINGERS ADD by RK MOD======================================================
+	$x  =  23
+	$y += - 100
+	$g_hLblDBMultiFinger = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "LblDBMultiFinger_Info_01", "Style:"), $x, $y + 3, 33, -1, $SS_RIGHT)
+	$g_hCmbDBMultiFinger = GUICtrlCreateCombo("", $x + 56, $y, 122, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_01", "Select a Multi-Fingers Attack Style.") & @CRLF & @CRLF & _
+			GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_02", "* Random Mode, Chooses One Of The Attack Styles By Random.") & @CRLF & _
+		    GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_03", "* 4Fingers And 8Fingers Styles, Will Attack From All 4 Sides At Once.") & @CRLF & _
+			GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_04", "* 4Fingers And 8Fingers Styles, Are Risky And Bot Like!")
+	_GUICtrlSetTip(-1, $sTxtTip)
+	GUICtrlSetData(-1,  GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_05", "Random Mode") & "|" & _
+						GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_06", "4Fingers Standard") & "|" & _
+						GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_07", "4Fingers Spiral Left") & "|" & _
+						GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_08", "4Fingers Spiral Right") & "|" & _
+						GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_09", "8Fingers Blossom") & "|" & _
+						GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_10", "8Fingers Implosion") & "|" & _
+						GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_11", "8Fingers Spiral Left") & "|" & _
+						GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_12", "8Fingers Spiral Right"), GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "CmbDBMultiFinger_Info_06", "4Fingers Standard"))
+	GUICtrlSetOnEvent(-1, "cmbDBMultiFinger")
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+	
+	; ==================================================== UNIT WAVE FACTOR ADD by RK MOD ====================================================
+	
+	$y += 34
+$g_hChkUnitFactor = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "ChkUnitFactor_Info_13", "Modify Unit Factor"), $x + 10, $y - 7, 130, 25)
+	$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "ChkUnitFactor_Info_14",  "Unit deploy delay = Unit setting x Unit Factor (millisecond)")
+	_GUICtrlSetTip(-1, $sTxtTip)
+	GUICtrlSetOnEvent(-1, "chkUnitFactor")
+	GUICtrlSetState(-1, $GUI_UNCHECKED)
 
+$g_hTxtUnitFactor = GUICtrlCreateInput("10", $x + 140, $y - 3, 31, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+	$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "ChkUnitFactor_Info_15", "Unit deploy delay = Unit setting x Unit Factor (millisecond)")
+	_GUICtrlSetTip(-1, $sTxtTip)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	GUICtrlSetData(-1, 10)
+	GUICtrlSetOnEvent(-1, "chkUnitFactor")
+$y += 30
+$g_hChkWaveFactor = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "ChkUnitFactor_Info_16", "Modify Wave Factor"), $x + 10, $y - 9, 130, 25)
+	$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "ChkUnitFactor_Info_17", "Switch troop delay = Wave setting x Wave Factor (millisecond)")
+	_GUICtrlSetTip(-1, $sTxtTip)
+	GUICtrlSetOnEvent(-1, "chkWaveFactor")
+	GUICtrlSetState(-1, $GUI_UNCHECKED)
+
+$g_hTxtWaveFactor = GUICtrlCreateInput("100", $x + 140, $y - 5, 31, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+	$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "ChkUnitFactor_Info_18",  "Switch troop delay = Wave setting x Wave Factor (millisecond)")
+	_GUICtrlSetTip(-1, $sTxtTip)
+	GUICtrlSetState(-1, $GUI_DISABLE)
+	GUICtrlSetData(-1, 100)
+	GUICtrlSetOnEvent(-1, "chkWaveFactor")
+	   GUICtrlCreateGroup("", -99, -99, 1, 1)
+ GUICtrlCreateGroup("", -99, -99, 1, 1)
+ 
 EndFunc   ;==>CreateAttackSearchDeadBaseStandard

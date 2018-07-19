@@ -174,3 +174,19 @@ Global $g_bRequestTroopsEnableDefense, $g_sRequestTroopsTextDefense, $g_iRequest
 
 Global $g_iChkBoostBMagic = 0, $g_iCmbBoostBrMagic = 0, $g_iChkBoostCMagic = 0, $g_iCmbBoostClMagic = 0  
 Global $g_iXCollect = 0, $g_iYCollect = 0, $g_bCanBoostC = False
+
+; ================================================== Multi Finger - Added by RK MOD ======================================== ;
+
+Global Enum $directionLeft, $directionRight
+Global Enum $sideBottomRight, $sideTopLeft, $sideBottomLeft, $sideTopRight
+Global Enum $mfRandom, $mfFFStandard, $mfFFSpiralLeft, $mfFFSpiralRight, $mf8FBlossom, $mf8FImplosion, $mf8FPinWheelLeft, $mf8FPinWheelRight
+
+Global $g_iMultiFingerStyle = 1
+Global Enum $eCCSpell = $eHaSpell + 1
+
+; ================================================== Unit/Wave Factor  - Added by RK MOD ======================================== ;
+
+Global $g_iChkUnitFactor = 0
+Global $g_iTxtUnitFactor = 10
+Global $g_iChkWaveFactor = 0
+Global $g_iTxtWaveFactor = 100
