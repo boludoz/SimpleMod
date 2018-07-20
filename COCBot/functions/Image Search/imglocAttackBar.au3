@@ -26,7 +26,7 @@ Func TestImglocTroopBar()
 	$g_bRunState = False
 EndFunc   ;==>TestImglocTroopBar
 
-Func AttackBarCheck($Remaining = False)
+Func AttackBarCheck($Remaining = False, $pMatchMode = $DB)
 
 	Local $x = 0, $y = 659, $x1 = 853, $y1 = 698
 	Static Local $CheckSlot12 = False
@@ -206,14 +206,16 @@ Func AttackBarCheck($Remaining = False)
 	EndIf
 
 	; Drag & checking Slot11 - RK MOD (ID193-)
-	If $g_iMatchMode <= $LB And $CheckSlot12 And IsArray($aResult) Then
+	If $pMatchMode <= $LB And $CheckSlot12 And IsArray($aResult) Then
 		SetDebuglog("$strinToReturn 1st page = " & $strinToReturn)
-		Local $sLastTroop1stPage = $aResult[UBound($aResult) - 1][0]
+		Local $aLastTroop1stPage[2]
+		$aLastTroop1stPage[0] = $aResult[UBound($aResult) - 1][0] ; Name of troop at last slot 1st page
+		$aLastTroop1stPage[1] = UBound(_ArrayFindAll($aResult, $aLastTroop1stPage[0])) ; Number of slots this troop appears in 1st page
+		SetDebuglog("$sLastTroop1stPage = " & $aLastTroop1stPage[0] & ", appears: " & $aLastTroop1stPage[1])
 		DragAttackBar()
-		$strinToReturn &= ExtendedAttackBarCheck($sLastTroop1stPage, $Remaining)
+		$strinToReturn &= ExtendedAttackBarCheck($aLastTroop1stPage, $Remaining)
 		If Not $Remaining Then DragAttackBar($g_iTotalAttackSlot, True) ; return drag
 	EndIf
-	; Drag & checking Slot11 - RK MOD (ID193-)
 
 	$strinToReturn = StringTrimLeft($strinToReturn, 1)
 
@@ -249,7 +251,7 @@ Func SlotAttack($PosX, $CheckSlot12, $CheckSlotwHero)
 EndFunc   ;==>SlotAttack
 
 ; Slot11 - RK MOD (ID193-)
-Func ExtendedAttackBarCheck($sLastTroop1stPage, $Remaining)
+Func ExtendedAttackBarCheck($aLastTroop1stPage, $Remaining)
 
 	Local $x = 0, $y = 659, $x1 = 853, $y1 = 698
 	Static $CheckSlotwHero2 = False
@@ -301,21 +303,22 @@ Func ExtendedAttackBarCheck($sLastTroop1stPage, $Remaining)
 				Local $iMultipleCoords = UBound($aCoords)
 				If $iMultipleCoords > 1 And StringInStr($aResult[$i + $iResultAddDup][0], "Spell") <> 0 Then
 					If $g_bDebugSetlog Then SetDebugLog($aResult[$i + $iResultAddDup][0] & " detected " & $iMultipleCoords & " times!")
-
-					Local $aCoordsSplit2 = $aCoords[1]
-					If UBound($aCoordsSplit2) = 2 Then
-						; add slot
-						$iResultAddDup += 1
-						ReDim $aResult[UBound($aKeys) + $iResultAddDup][6]
-						$aResult[$i + $iResultAddDup][0] = $aResult[$i + $iResultAddDup - 1][0] ; same objectname
-						$aResult[$i + $iResultAddDup][1] = $aCoordsSplit2[0]
-						$aResult[$i + $iResultAddDup][2] = $aCoordsSplit2[1]
-						If $g_bDebugSetlog Then SetDebugLog($aResult[$i + $iResultAddDup][0] & " | $aCoordArray: " & $aResult[$i + $iResultAddDup][1] & "-" & $aResult[$i + $iResultAddDup][2])
-					Else
-						; don't invalidate anything
-						;$aCoordArray[0][0] = -1
-						;$aCoordArray[0][1] = -1
-					EndIf
+					For $j = 1 To $iMultipleCoords - 1
+						Local $aCoordsSplit2 = $aCoords[1]
+						If UBound($aCoordsSplit2) = 2 Then
+							; add slot
+							$iResultAddDup += 1
+							ReDim $aResult[UBound($aKeys) + $iResultAddDup][6]
+							$aResult[$i + $iResultAddDup][0] = $aResult[$i + $iResultAddDup - 1][0] ; same objectname
+							$aResult[$i + $iResultAddDup][1] = $aCoordsSplit2[0]
+							$aResult[$i + $iResultAddDup][2] = $aCoordsSplit2[1]
+							If $g_bDebugSetlog Then SetDebugLog($aResult[$i + $iResultAddDup][0] & " | $aCoordArray: " & $aResult[$i + $iResultAddDup][1] & "-" & $aResult[$i + $iResultAddDup][2])
+						Else
+							; don't invalidate anything
+							;$aCoordArray[0][0] = -1
+							;$aCoordArray[0][1] = -1
+						EndIf
+					Next
 				EndIf
 			Next
 
@@ -331,6 +334,7 @@ Func ExtendedAttackBarCheck($sLastTroop1stPage, $Remaining)
 			Static $iFirstExtendedSlot = -1	; Location of 1st extended troop after drag
 			If Not $Remaining Then $iFirstExtendedSlot = -1 ; Reset value for 1st time detecting troop bar
 
+			Local $iFoundLastTroop1stPage
 			Local $bStart2ndPage = False
 			For $i = 0 To UBound($aResult) - 1
 				Local $Slottemp
@@ -339,9 +343,10 @@ Func ExtendedAttackBarCheck($sLastTroop1stPage, $Remaining)
 					SetDebugLog("Detection : " & $aResult[$i][0] & "|x" & $aResult[$i][1] & "|y" & $aResult[$i][2], $COLOR_DEBUG) ;Debug
 
 					; Finding where to start the 2nd page
-					If $aResult[$i][0] = $sLastTroop1stPage Then
-						SetDebugLog("Found $sLastTroop1stPage: " & $aResult[$i][0])
-						$bStart2ndPage = True
+					If $aResult[$i][0] = $aLastTroop1stPage[0] And Not $bStart2ndPage Then
+						$iFoundLastTroop1stPage += 1
+						SetDebugLog("Found $aLastTroop1stPage[0]: " & $aResult[$i][0] & " x" & $iFoundLastTroop1stPage)
+						If $iFoundLastTroop1stPage >= $aLastTroop1stPage[1] Then $bStart2ndPage = True
 						ContinueLoop
 					EndIf
 					If Not $bStart2ndPage Then ContinueLoop

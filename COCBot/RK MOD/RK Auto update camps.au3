@@ -47,16 +47,16 @@ Func CheckAutoCamp() ; Only first Run and th5 + (Then every time he does the tro
 	If $dbg = 1 Then Setlog($g_iTotalSpellValue)
 	Local $iCmpSpell = StringCompare($g_iTotalSpellValue, "0")
         If $iCmpSpell = 0 And $g_iTownHallLevel >= 5 Then ; Spell camp
-            click(30, 584)
-            if _sleep(1000) then return
-            click(407, 132)
-            if _sleep(1000) then return
+            Click(30, 584)
+            If _Sleep(1000) Then Return
+            Click(407, 132)
+            If _Sleep(1000) Then return
 			Local $NewSpellOCR = getArmyCapacityOnTrainTroops(48, 160) ; Check spell camps
-            click(280, 132)
-            if _sleep(1000) then return
+            Click(280, 132)
+            If _Sleep(1000) Then Return
 			Local $NewCampOCR = getArmyCapacityOnTrainTroops(48, 160) ; Check army camps
-				click(825, 122)
-			if _sleep(1000) then return
+				Click(825, 122)
+			If _Sleep(1000) Then Return
 		Endif
 EndFunc   ;==>CheckAutoCamp
 

@@ -79,7 +79,7 @@ Func PrepareAttack($pMatchMode, $Remaining = False) ;Assigns troops
 	Next
 
 	Local $Plural = 0
-	Local $result = AttackBarCheck($Remaining)
+	Local $result = AttackBarCheck($Remaining, $pMatchMode)
 	If $g_bDebugSetlog Then SetDebugLog("DLL Troopsbar list: " & $result, $COLOR_DEBUG)
 	Local $aTroopDataList = StringSplit($result, "|")
     Local $aTemp[22][3]  ; was [12][3] ========= Slot11 - RK MOD (ID193-) ========

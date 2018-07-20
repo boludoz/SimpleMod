@@ -118,6 +118,10 @@ Global Const $g_sImgConfirmButton = @ScriptDir & "\imgxml\other\SwitchAccounts\C
 Global Const $g_sImgListAccounts = @ScriptDir & "\imgxml\other\SwitchAccounts\ListAccounts"
 #EndRegion
 
+#Region Grand Warden Mode
+Global $g_sImgGrandWardenHeal = @ScriptDir & "\imgxml\other\GrandWardenMode\GrandWardenHeal"
+Global $g_sImgGrandWardenMode = @ScriptDir & "\imgxml\other\GrandWardenMode\GrandWardenAir"
+#EndRegion
 
 #Region ClanGames
 Global Const $g_sImgCaravan =		@ScriptDir & "\imgxml\Resources\Clan Games Images\MainLoop\Caravan"

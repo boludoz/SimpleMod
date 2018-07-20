@@ -180,6 +180,11 @@ Func ReadConfig_RKMod()
 	IniReadS($g_iChkWaveFactor, $g_sProfileConfigPath, "SetSleep", "EnableWaveFactor", 0, "Int")
 	IniReadS($g_iTxtWaveFactor, $g_sProfileConfigPath, "SetSleep", "WaveFactor", 100 ,"Int")
 	
+	; ================================================== Check Grand Warden Mode - Added by RK MOD ==================== ;
+	
+	IniReadS($g_bCheckWardenMode, $g_sProfileConfigPath, "other", "chkCheckWardenMode", False, "Bool")
+	IniReadS($g_iCheckWardenMode, $g_sProfileConfigPath, "other", "cmbCheckWardenMode", 0, "int")
+	
 EndFunc   ;==>ReadConfig_RKMod
 
 Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
@@ -358,6 +363,11 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
     _Ini_Add("SetSleep", "UnitFactor", GUICtrlRead($g_hTxtUnitFactor))
 	_Ini_Add("SetSleep", "WaveFactor", GUICtrlRead($g_hTxtWaveFactor))
 	
+	; ================================================== Check Grand Warden Mode - Added by RK MOD ================================== ;
+	
+	_Ini_Add("other", "chkCheckWardenMode", $g_bCheckWardenMode ? 1 : 0)
+	_Ini_Add("other", "cmbCheckWardenMode", $g_iCheckWardenMode)
+	
 EndFunc   ;==>SaveConfig_RKMod
 
 Func ApplyConfig_RKMod($TypeReadSave)
@@ -531,6 +541,11 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$g_iChkWaveFactor = (GUICtrlRead($g_hChkWaveFactor) = $GUI_CHECKED)
 			$g_iTxtUnitFactor = GUICtrlRead($g_hTxtUnitFactor)
 			$g_iTxtWaveFactor = GUICtrlRead($g_hTxtWaveFactor)
+			
+			; ================================================== Check Grand Warden Mode - Added by RK MOD ================================= ;
+			
+			$g_bCheckWardenMode = (GUICtrlRead($g_hChkCheckWardenMode) = $GUI_CHECKED)
+			$g_iCheckWardenMode = _GUICtrlComboBox_GetCurSel($g_hCmbCheckWardenMode)
 			
 		Case "Read"
 
@@ -738,6 +753,12 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			GUICtrlSetState($g_hChkWaveFactor, $g_iChkWaveFactor ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtWaveFactor, $g_iTxtWaveFactor)
 			chkWaveFactor()
+			
+			; ================================================== Check Grand Warden Mode - Added by RK MOD ======================================== ;
+			
+			GUICtrlSetState($g_hChkCheckWardenMode, $g_bCheckWardenMode ? $GUI_CHECKED : $GUI_UNCHECKED)
+			chkCheckWardenMode()
+			_GUICtrlComboBox_SetCurSel($g_hCmbCheckWardenMode, $g_iCheckWardenMode)
 			
 	EndSwitch
 
