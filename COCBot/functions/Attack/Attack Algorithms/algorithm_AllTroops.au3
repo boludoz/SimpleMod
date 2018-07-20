@@ -197,27 +197,27 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 						[MatchTroopDropName(20), MatchSidesDrop(20), MatchTroopWaveNb(20), 1, MatchSlotsPerEdge(20)], _
 						[MatchTroopDropName(21), MatchSidesDrop(21), MatchTroopWaveNb(21), 1, MatchSlotsPerEdge(21)]]
 				Else
-					Local $listInfoDeploy[22][5] = [[$eGole, $nbSides, 1, 1, 2] _
+					Local $listInfoDeploy[22][5] = [[$eGiant, $nbSides, 1, 1, $g_iSlotsGiants] _
+						, [$eGole, $nbSides, 1, 1, 2] _
 						, [$eLava, $nbSides, 1, 1, 2] _
-						, [$eGiant, $nbSides, 1, 1, $g_iSlotsGiants] _
-						, [$eDrag, $nbSides, 1, 1, 0] _
-						, [$eBall, $nbSides, 1, 1, 0] _
-						, [$eBabyD, $nbSides, 1, 1, 1] _
+						, [$eBarb, $nbSides, 1, 1, 0] _
+						, [$eWall, $nbSides, 1, 1, 1] _
 						, [$eHogs, $nbSides, 1, 1, 1] _
 						, [$eValk, $nbSides, 1, 1, 0] _
 						, [$eBowl, $nbSides, 1, 1, 0] _
-						, [$eMine, $nbSides, 1, 1, 0] _
-						, [$eEDrag, $nbSides, 1, 1, 0] _
-						, [$eBarb, $nbSides, 1, 1, 0] _
-						, [$eWall, $nbSides, 1, 1, 1] _
 						, [$eArch, $nbSides, 1, 1, 0] _
-						, [$eWiza, $nbSides, 1, 1, 0] _
-						, [$eMini, $nbSides, 1, 1, 0] _
-						, [$eWitc, $nbSides, 1, 1, 1] _
 						, [$eGobl, $nbSides, 1, 1, 0] _
-						, ["CC", 1, 1, 1, 1] _
 						, [$eHeal, $nbSides, 1, 1, 1] _
+						, [$eMine, $nbSides, 1, 1, 0] _
 						, [$ePekk, $nbSides, 1, 1, 1] _
+						, [$eDrag, $nbSides, 1, 1, 0] _
+						, [$eEDrag, $nbSides, 1, 1, 0] _
+						, [$eBall, $nbSides, 1, 1, 0] _
+						, [$eBabyD, $nbSides, 1, 1, 1] _
+						, [$eWiza, $nbSides, 1, 1, 0] _
+						, [$eWitc, $nbSides, 1, 1, 1] _
+						, [$eMini, $nbSides, 1, 1, 0] _
+						, ["CC", 1, 1, 1, 1] _	
 						, ["HEROES", 1, 2, 1, 1] _
 						]
 		EndIf
@@ -247,27 +247,27 @@ Func algorithm_AllTroops() ;Attack Algorithm for all existing troops
 						[MatchTroopDropName(20), MatchSidesDrop(20), MatchTroopWaveNb(20), 1, MatchSlotsPerEdge(20)], _
 						[MatchTroopDropName(21), MatchSidesDrop(21), MatchTroopWaveNb(21), 1, MatchSlotsPerEdge(21)]]
 				Else
-					Local $listInfoDeploy[22][5] = [[$eGole, $nbSides, 1, 1, 2] _
+					Local $listInfoDeploy[22][5] = [[$eGiant, $nbSides, 1, 1, $g_iSlotsGiants] _
+						, [$eGole, $nbSides, 1, 1, 2] _
 						, [$eLava, $nbSides, 1, 1, 2] _
-						, [$eGiant, $nbSides, 1, 1, $g_iSlotsGiants] _
-						, [$eDrag, $nbSides, 1, 1, 0] _
-						, [$eBall, $nbSides, 1, 1, 0] _
-						, [$eBabyD, $nbSides, 1, 1, 1] _
-						, [$eHogs, $nbSides, 1, 1, 1] _
-						, [$eValk, $nbSides, 1, 1, 0] _
+						, [$eBarb, $nbSides, 1, 1, 0] _
+						, ["CC", 1, 1, 1, 1] _
+						, [$eWall, $nbSides, 1, 1, 2] _
+						, [$eHogs, $nbSides, 1, 1, 2] _
+						, [$eValk, $nbSides, 1, 1, 2] _
 						, [$eBowl, $nbSides, 1, 1, 0] _
+						, [$eArch, $nbSides, 1, 1, 0] _
+						, [$eGobl, $nbSides, 1, 1, 0] _
 						, [$eMine, $nbSides, 1, 1, 0] _
 						, [$eEDrag, $nbSides, 1, 1, 0] _
-						, [$eBarb, $nbSides, 1, 1, 0] _
-						, [$eWall, $nbSides, 1, 1, 1] _
-						, [$eArch, $nbSides, 1, 1, 0] _
-						, [$eWiza, $nbSides, 1, 1, 0] _
-						, [$eMini, $nbSides, 1, 1, 0] _
-						, [$eWitc, $nbSides, 1, 1, 1] _
-						, [$eGobl, $nbSides, 1, 1, 0] _
-						, ["CC", 1, 1, 1, 1] _
 						, [$eHeal, $nbSides, 1, 1, 1] _
-						, [$ePekk, $nbSides, 1, 1, 1] _
+						, [$ePekk, $nbSides, 1, 1, 2] _
+						, [$eDrag, $nbSides, 1, 1, 2] _
+						, [$eBall, $nbSides, 1, 1, 2] _
+						, [$eBabyD, $nbSides, 1, 1, 1] _
+						, [$eWiza, $nbSides, 1, 1, 2] _
+						, [$eWitc, $nbSides, 1, 1, 2] _
+						, [$eMini, $nbSides, 1, 1, 0] _
 						, ["HEROES", 1, 2, 1, 1] _
 						]
 		EndIf				
