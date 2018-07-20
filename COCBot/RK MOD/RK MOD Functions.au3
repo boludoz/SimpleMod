@@ -49,8 +49,8 @@
 #include "RK Chatbot\Multy Lang.au3"
 
 ; Boost for Magic Spell
-#include "RK Boost for Magic Spell.au3"
-#include "BoostAllWithMagicSpell.au3"
+#include "RK Boost for Magic Spell\RK Boost for Magic Spell.au3"
+#include "RK Boost for Magic Spell\RK BoostAllWithMagicSpell.au3"
 
 ; Multi Fingers Vectors - (LunaEclipse) - Added by RK MOD
 #include "RK Multi Fingers\Vectors\4FingerStandard.au3"
@@ -65,5 +65,7 @@
 #include "RK Multi Fingers\8Fingers.au3"
 #include "RK Multi Fingers\MultiFinger.au3"
 #include "RK Multi Fingers\UnitInfo.au3"
+
+#include "RK Check Warden Mode.au3"
 
 #include "RK Config.au3"

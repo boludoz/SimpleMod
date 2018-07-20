@@ -43,6 +43,9 @@ Global $g_hChkTrainLogoutMaxTime = 0, $g_hTxtTrainLogoutMaxTime = 4, $g_hLblTrai
 ; Boost for Magic Spell by RK MOD
 Global $g_hChkBoostBMagic  = 0, $g_hCmbBoostBrMagic = 0, $g_hChkBoostCMagic = 0, $g_hCmbBoostClMagic = 0
 
+; Check Grand Warden Mode - RK MOD
+Global $g_hChkCheckWardenMode = 0, $g_hCmbCheckWardenMode = 0
+
 ; Train Order sub-tab
 Func LoadTranslatedTrainTroopsOrderList()
 
@@ -1133,6 +1136,19 @@ Func CreateOptionsSubTab()
 		$g_hTxtAddRandomDelayMax = GUICtrlCreateInput($g_iTrainAddRandomDelayMax, $x + 82, $y - 2, 25, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 			GUICtrlSetLimit(-1, 999)
 		$g_hLblAddDelayIdlePhaseSec = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "sec.", "sec."), $x + 110, $y, 20, 30)
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+	
+	; Check Grand Warden Mode - RK MOD
+	$x = 55 + 151 + 5
+	$y = 135
+		GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "Group_04", "Check Grand Warden Mode"), $x - 20, $y - 20, 173, 50)
+		$g_hChkCheckWardenMode = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "CheckWardenMode", "Check Mode") & ": ", $x - 10, $y)
+			GUICtrlSetOnEvent(-1, "chkCheckWardenMode")
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "CheckWardenMode_Info_01", "Enable this Option if you want to check in which Mode the Grand Warden is and change if needed"))
+		$g_hCmbCheckWardenMode = GUICtrlCreateCombo("", $x + 80, $y, 60, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			GUICtrlSetState(-1, $GUI_DISABLE)
+			GUICtrlSetData(-1, "Ground|Air", "Ground")
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "CheckWardenMode_Info_02", "Select the Mode your Warden needs to have for attacks"))
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 EndFunc   ;==>CreateOptionsSubTab

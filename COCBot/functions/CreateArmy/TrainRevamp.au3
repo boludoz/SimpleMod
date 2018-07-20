@@ -231,6 +231,7 @@ Func CheckIfArmyIsReady()
 	If _Sleep(250) Then Return
 
 	CheckArmyCamp(False, False, False, True)
+	CheckWardenMode()
 
 	If $g_bDebugSetlogTrain Then
 		SetLog(" - $g_CurrentCampUtilization : " & $g_CurrentCampUtilization)

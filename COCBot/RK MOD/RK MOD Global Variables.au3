@@ -190,3 +190,7 @@ Global $g_iChkUnitFactor = 0
 Global $g_iTxtUnitFactor = 10
 Global $g_iChkWaveFactor = 0
 Global $g_iTxtWaveFactor = 100
+
+; ================================================== Check Grand Warden Mode - Added by RK MOD ================================== ;
+
+Global $g_bCheckWardenMode = False, $g_iCheckWardenMode = 0
