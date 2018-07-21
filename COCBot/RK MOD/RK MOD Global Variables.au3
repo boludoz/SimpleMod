@@ -194,3 +194,8 @@ Global $g_iTxtWaveFactor = 100
 ; ================================================== Check Grand Warden Mode - Added by RK MOD ================================== ;
 
 Global $g_bCheckWardenMode = False, $g_iCheckWardenMode = 0
+
+; ================================================== Upgrade Management - Added by RK MOD ================================== ;
+
+Global $g_ibUpdateNewUpgradesOnly = False
+Global Const $UP = True, $DOWN = False, $TILL_END = True
