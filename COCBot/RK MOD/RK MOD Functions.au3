@@ -68,4 +68,6 @@
 
 #include "RK Check Warden Mode.au3"
 
+#include "RK UpgradesMgmt.au3"
+
 #include "RK Config.au3"
