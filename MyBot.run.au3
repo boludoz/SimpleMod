@@ -890,7 +890,7 @@ Func _Idle() ;Sequence that runs until Full Army
 				ElseIf SkipDonateNearFullTroops(False, $aHeroResult) = False And BalanceDonRec(False) Then
 					DonateCC(True)
 				EndIf
-				If _Sleep($DELAYIDLE2) Then ExitLoop
+				If _Sleep($DELAYIDLE1) Then ExitLoop
 				If $g_bRestart = True Then ExitLoop
 				If CheckAndroidReboot() Then ContinueLoop 2
 			WEnd
@@ -1152,10 +1152,10 @@ Func _RunFunction($action)
 		    If $g_iChkAutoCamp = 1 Then CheckAutoCamp()
 		; ======================= RK MOD (#ID135-)
 			If $g_iActiveDonate And $g_bChkDonate Then
-				If $g_bFirstStart Then
-					getArmyTroopCapacity(True, False)
-					getArmySpellCapacity(False, True)
-				EndIf
+				;If $g_bFirstStart Then
+				;	getArmyTroopCapacity(True, False)
+				;	getArmySpellCapacity(False, True)
+				;EndIf
 				If SkipDonateNearFullTroops(True) = False And BalanceDonRec(True) Then DonateCC()
 			EndIf
 			If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
@@ -1170,9 +1170,9 @@ Func _RunFunction($action)
 					If $g_iActualTrainSkip >= $g_iMaxTrainSkip Then
 						$g_iActualTrainSkip = 0
 					EndIf
-					CheckOverviewFullArmy(True, False) ; use true parameter to open train overview window
-					getArmySpells()
-					getArmyHeroCount(False, True)
+					;CheckOverviewFullArmy(True, False) ; use true parameter to open train overview window
+					;getArmySpells()
+					;getArmyHeroCount(False, True)
 				EndIf
 			Else
 				If $g_bDebugSetlogTrain Then SetLog("Halt mode - training disabled", $COLOR_DEBUG)

@@ -144,6 +144,6 @@ ImgLocDebug.txt
 *.db
 
 # Release files
-LastVersion*.txt
+#LastVersion*.txt
 TestVersion*.txt
 *_stripped.au3

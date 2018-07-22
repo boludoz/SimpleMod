@@ -188,12 +188,18 @@ Func BoostAllWithMagicSpell()
 
 EndFunc   ;==>BoostAllWithMagicSpell
 ; ========================================================================================================================================
-Func BoostWhitC($g_iXCollect = -1, $g_iYCollect = -1)
+Func BoostWhitC($g_iXCollect = 0, $g_iYCollect = 0)
 
 	Local $bBoosted = False
 	Local $directory = @ScriptDir & "\imgxml\boost\BoostC"
 	Local $bBoostedImg = @ScriptDir & "\imgxml\boost\BoostC\BoostCCheck"
 	Local $BoostCCollect = @ScriptDir & "\imgxml\boost\BoostC\BoostCCollect"
+	
+	; Verify that it takes at least one day to proceed.
+	Local $iSTime[3] = [@MDAY, @HOUR, @MIN]
+	If $iSTime[0] <= $g_iLastTime[0] and $iSTime[1] <= $g_iLastTime[1] and $iSTime[2] <= $g_iLastTime[2] then return
+
+	If $g_iXCollect = 0 or $g_iYCollect = 0 then return
 	
 	; Verifying existent Variables to run this routine
 	If Not $g_iChkBoostCMagic Then Return
@@ -201,9 +207,9 @@ Func BoostWhitC($g_iXCollect = -1, $g_iYCollect = -1)
 
 	SetLog("Boost collectors with magic spell...")
 
-		If $g_iXCollect = -1 or $g_iYCollect = -1 then return
-		Click($g_iXCollect - 6, $g_iYCollect + 14)
+		Click($g_iXCollect, $g_iYCollect + 29)
 		_Sleep(500)
+		ForceCaptureRegion()
 		Local $aResult = BuildingInfo(242, 520 + $g_iBottomOffsetY)
 		If $aResult[0] > 1 Then
 			If StringInStr($aResult[1], "Mine", $STR_NOCASESENSEBASIC) > 0 Then
@@ -219,35 +225,36 @@ Func BoostWhitC($g_iXCollect = -1, $g_iYCollect = -1)
 		_Sleep(500)
 		If QuickMis("BC1", $bBoostedImg, 136, 609, 726, 711) Then
 				$bBoosted = True	
-			SetDebugLog("$bBoosted" & " " & $bBoosted)
+				$g_iLastTime[0] = @MDAY
+				$g_iLastTime[1] = @HOUR
+				$g_iLastTime[2] = @MIN
 
+			SetDebugLog("$bBoosted" & " " & $bBoosted)
 		EndIf
 		
 		; boosting with Mine
 		Local $bCanBoost = False
-		If Not $bBoosted Then
+		If $bBoosted Then return
+		
 			_Sleep(500)
 			If QuickMis("BC1", $BoostCCollect, 136, 609, 726, 711) Then
-				ClickDrag(136 + $g_iQuickMISX, 609 + $g_iQuickMISY, 134 + $g_iQuickMISX, 605 + $g_iQuickMISY, 10)
-				_Sleep(250)
-					If _ColorCheck(_GetPixelColor(420, 385, True), Hex(0xE8E8E0, 6), 30) Then
-						Click(405, 415)
-						SetDebugLog("Click Use Training Potion 405, 415")
-						$bBoosted = True
-						If _Sleep($DELAYBOOSTHEROES2) Then Return
+               Click(136 + $g_iQuickMISX, 609 + $g_iQuickMISY)
+				_Sleep(750)
+                If _ColorCheck(_GetPixelColor(400, 440, True), Hex(0x7D8BFF, 6), 30) Then ; click violet OK button
+                      Click(400, 440)
+                      SetDebugLog("Click confirm Use collectors potion 400, 440")
+						$bBoosted = True ; done!
+						$g_iLastTime[0] = @MDAY
+						$g_iLastTime[1] = @HOUR
+						$g_iLastTime[2] = @MIN
 					Else
-						SetLog("Cannot find 'Use' button to boost")
-					EndIf
-					SetDebugLog("boosting from mine")
-			Else
-					$bBoosted = False	
-				SetDebugLog("Fail boosting from mine")
-			EndIf
-		EndIf
+                    SetLog("Cannot find 'Collectors Potion' confirmed button")
+					$bBoosted = False
+                  EndIf					
+            EndIf					
 
-		ClickP($aAway, 1, 0, "#0000") ;Click Away
-		If $bBoosted Then Return
-
+			ClickP($aAway, 1, 0, "#0000") ;Click Away
+			
 	; boosting with Clan Castle Location
 	$bCanBoost = False
 	If Not $bBoosted And $g_aiClanCastlePos[0] <> "" And $g_aiClanCastlePos[0] <> -1 Then
@@ -287,6 +294,9 @@ Func BoostWhitC($g_iXCollect = -1, $g_iYCollect = -1)
                             Click(400, 440)
                             SetDebugLog("5. Click confirm Use training potion 400, 440")
                             $bBoosted = True ; done!
+							$g_iLastTime[0] = @MDAY
+							$g_iLastTime[1] = @HOUR
+							$g_iLastTime[2] = @MIN
                         Else
                             SetLog("Cannot find 'Training Potion' confirmed button")
                         EndIf					
