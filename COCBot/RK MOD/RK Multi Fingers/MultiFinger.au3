@@ -252,7 +252,7 @@ Func cmbDBMultiFinger()
 			GUICtrlSetState($i, $GUI_ENABLE + $GUI_SHOW)
 		 Next
 
-	     For $i = $g_hLblDBMultiFinger To $TxtWaveFactor
+	     For $i = $g_hLblDBMultiFinger To $g_hTxtWaveFactor
 			GUICtrlSetState($i, $GUI_HIDE)
 	     Next
 
