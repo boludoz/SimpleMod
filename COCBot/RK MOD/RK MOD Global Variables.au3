@@ -174,6 +174,7 @@ Global $g_bRequestTroopsEnableDefense, $g_sRequestTroopsTextDefense, $g_iRequest
 
 Global $g_iChkBoostBMagic = 0, $g_iCmbBoostBrMagic = 0, $g_iChkBoostCMagic = 0, $g_iCmbBoostClMagic = 0  
 Global $g_iXCollect = 0, $g_iYCollect = 0, $g_bCanBoostC = False
+Global $g_iLastTime[2] = [0, 0]
 
 ; ================================================== Multi Finger - Added by RK MOD ======================================== ;
 

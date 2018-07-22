@@ -195,8 +195,12 @@ Func BoostWhitC($g_iXCollect = 0, $g_iYCollect = 0)
 	Local $bBoostedImg = @ScriptDir & "\imgxml\boost\BoostC\BoostCCheck"
 	Local $BoostCCollect = @ScriptDir & "\imgxml\boost\BoostC\BoostCCollect"
 	
-	If $g_iXCollect = 0 or $g_iYCollect = 0 then return
+	; Verify that it takes at least one day to proceed.
+	Local $iSTime[2] = [@HOUR, @MIN]
+	If $iSTime[0] <= $g_iLastTime[0] and $iSTime[1] <= $g_iLastTime[1] then return
 
+	If $g_iXCollect = 0 or $g_iYCollect = 0 then return
+	
 	; Verifying existent Variables to run this routine
 	If Not $g_iChkBoostCMagic Then Return
 	If AllowBoosting("All using magic spell", $g_iCmbBoostClMagic) = False Then Return
@@ -221,8 +225,9 @@ Func BoostWhitC($g_iXCollect = 0, $g_iYCollect = 0)
 		_Sleep(500)
 		If QuickMis("BC1", $bBoostedImg, 136, 609, 726, 711) Then
 				$bBoosted = True	
+				$g_iLastTime[0] = @HOUR
+				$g_iLastTime[1] = @MIN
 			SetDebugLog("$bBoosted" & " " & $bBoosted)
-
 		EndIf
 		
 		; boosting with Mine
@@ -236,7 +241,9 @@ Func BoostWhitC($g_iXCollect = 0, $g_iYCollect = 0)
                 If _ColorCheck(_GetPixelColor(400, 440, True), Hex(0x7D8BFF, 6), 30) Then ; click violet OK button
                       Click(400, 440)
                       SetDebugLog("Click confirm Use collectors potion 400, 440")
-                      $bBoosted = True ; done!
+						$bBoosted = True ; done!
+						$g_iLastTime[0] = @HOUR
+						$g_iLastTime[1] = @MIN
 					Else
                     SetLog("Cannot find 'Collectors Potion' confirmed button")
 					$bBoosted = False
@@ -284,6 +291,8 @@ Func BoostWhitC($g_iXCollect = 0, $g_iYCollect = 0)
                             Click(400, 440)
                             SetDebugLog("5. Click confirm Use training potion 400, 440")
                             $bBoosted = True ; done!
+							$g_iLastTime[0] = @HOUR
+							$g_iLastTime[1] = @MIN
                         Else
                             SetLog("Cannot find 'Training Potion' confirmed button")
                         EndIf					
