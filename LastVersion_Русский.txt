@@ -1,5 +1,5 @@
 ﻿[mod]
-version = "v3.0.1"
+version = "v3.0.2"
 
-messagenew = "Основное обновление!\nhttps://github.com/MyBotRun/MyBot/wiki/ChangeLog\n\nБлагодаря новым функциях и исправлениях"
-messageold = " RK MOD 3.0.1 уже доступна!\nПожалуйста скачайте последнюю версию:\nhttps://mybot.run"
+messagenew = "Основное обновление!\nhttps://github.com/MyBotRun/MyBot/wiki/ChangeLog\n\nБлагодаря новым функциям и исправлениям"
+messageold = " RK MOD 3.0.2 уже доступна!\nПожалуйста скачайте последнюю версию:\nhttps://mybot.run"

@@ -733,8 +733,7 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			; ================================================== Russian Request - by RK MOD ======================================== ;
 			
 			GUICtrlSetState($g_hChkRusLang2, $g_iChkRusLang2 = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-   		    chkRusLangRequest()
-            
+   		    chkRusLang2()
 			; ================================================== Max logout time - by RK MOD ======================================== ;
 			
 			GUICtrlSetState($g_hChkTrainLogoutMaxTime, $g_bTrainLogoutMaxTime = True ? $GUI_CHECKED : $GUI_UNCHECKED)

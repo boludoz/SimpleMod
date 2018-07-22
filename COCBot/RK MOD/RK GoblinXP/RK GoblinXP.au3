@@ -32,26 +32,26 @@ Func SetStatsGoblinsXP()
 
 	If $DebugSX = 1 Then
 		Setlog("$CurrentAccountGoblinsXP:" & $CurrentAccountGoblinsXP, $COLOR_DEBUG)
-		Setlog("$g_iCurrentAccount:" & $g_iCurrentAccount, $COLOR_DEBUG)
+		Setlog("$g_iCurAccount:" & $g_iCurAccount, $COLOR_DEBUG)
 		Setlog("$iStartXP:" & $iStartXP, $COLOR_DEBUG)
 	EndIf
 
-	If $g_iCurrentAccount = $CurrentAccountGoblinsXP Then
+	If $g_iCurAccount = $CurrentAccountGoblinsXP Then
 		If $DebugSX = 1 Then Setlog("'Same' account Update Values!", $COLOR_DEBUG)
 		; Store the values from this account
-		$StatsAccounts[$g_iCurrentAccount][0] = $iStartXP
-		$StatsAccounts[$g_iCurrentAccount][1] = $iCurrentXP
-		$StatsAccounts[$g_iCurrentAccount][2] = $iGainedXP
-		$StatsAccounts[$g_iCurrentAccount][3] = $iGainedXPHour
+		$StatsAccounts[$g_iCurAccount][0] = $iStartXP
+		$StatsAccounts[$g_iCurAccount][1] = $iCurrentXP
+		$StatsAccounts[$g_iCurAccount][2] = $iGainedXP
+		$StatsAccounts[$g_iCurAccount][3] = $iGainedXPHour
 	Else
 		If $DebugSX = 1 Then Setlog("'Other' account Update Values!", $COLOR_DEBUG)
 		; Restore the previous values from this account
-		$iStartXP = $StatsAccounts[$g_iCurrentAccount][0]
-		$iCurrentXP = $StatsAccounts[$g_iCurrentAccount][1]
-		$iGainedXP = $StatsAccounts[$g_iCurrentAccount][2]
-		$iGainedXPHour = $StatsAccounts[$g_iCurrentAccount][3]
+		$iStartXP = $StatsAccounts[$g_iCurAccount][0]
+		$iCurrentXP = $StatsAccounts[$g_iCurAccount][1]
+		$iGainedXP = $StatsAccounts[$g_iCurAccount][2]
+		$iGainedXPHour = $StatsAccounts[$g_iCurAccount][3]
 		; Update the account number
-		$CurrentAccountGoblinsXP = $g_iCurrentAccount
+		$CurrentAccountGoblinsXP = $g_iCurAccount
 	EndIf
 	$FirstRun = False
 

@@ -35,7 +35,7 @@ Func _SendExEx($sKeys, $iFlag = 0)
 	Return Send($sKeys, $iFlag)
 EndFunc   ;==>_SendExEx
 
-Func chkRusLangRequest()
+Func chkRusLang2()
 	If GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED Then
 	$g_iChkRusLang2 = 1
 	Else
