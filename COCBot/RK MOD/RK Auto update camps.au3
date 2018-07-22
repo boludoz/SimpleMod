@@ -15,7 +15,10 @@ Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of tr
     Local $aTempResult[3] = [0, 0, 0]
 	Local $aResult[3] = [0, 0, 0]
 	$aResult[0] = getOcrAndCapture("coc-NewCapacity", $x_start, $y_start, 67, 14, True)
+
 	Local $dbg = 0
+	
+	If StringInStr($$aResult[0], "#") Then
 		Local $aTempResult = StringSplit($aResult[0], "#", $STR_NOCOUNT)
 		$aResult[1] = Number($aTempResult[0])
 		$aResult[2] = Number($aTempResult[1])
@@ -32,6 +35,9 @@ Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of tr
 		ElseIf $aResult[2] >= 15 Then
 		GUICtrlSetData($g_hTxtTotalCampForced, $aResult[2])
 		$g_iTotalCampForcedValue = $aResult[2]
+	Else
+		SetLog("DEBUG | ERROR on GetCurrentArmy", $COLOR_ERROR)
+	EndIf
 
 	If $dbg = 1 Then Setlog($aResult[0])
 	If $dbg = 1 Then Setlog($g_iTotalSpellValue)

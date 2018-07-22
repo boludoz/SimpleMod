@@ -196,8 +196,8 @@ Func BoostWhitC($g_iXCollect = 0, $g_iYCollect = 0)
 	Local $BoostCCollect = @ScriptDir & "\imgxml\boost\BoostC\BoostCCollect"
 	
 	; Verify that it takes at least one day to proceed.
-	Local $iSTime[2] = [@HOUR, @MIN]
-	If $iSTime[0] <= $g_iLastTime[0] and $iSTime[1] <= $g_iLastTime[1] then return
+	Local $iSTime[3] = [@MDAY, @HOUR, @MIN]
+	If $iSTime[0] <= $g_iLastTime[0] and $iSTime[1] <= $g_iLastTime[1] and $iSTime[2] <= $g_iLastTime[2] then return
 
 	If $g_iXCollect = 0 or $g_iYCollect = 0 then return
 	
@@ -225,8 +225,10 @@ Func BoostWhitC($g_iXCollect = 0, $g_iYCollect = 0)
 		_Sleep(500)
 		If QuickMis("BC1", $bBoostedImg, 136, 609, 726, 711) Then
 				$bBoosted = True	
-				$g_iLastTime[0] = @HOUR
-				$g_iLastTime[1] = @MIN
+				$g_iLastTime[0] = @MDAY
+				$g_iLastTime[1] = @HOUR
+				$g_iLastTime[2] = @MIN
+
 			SetDebugLog("$bBoosted" & " " & $bBoosted)
 		EndIf
 		
@@ -242,8 +244,9 @@ Func BoostWhitC($g_iXCollect = 0, $g_iYCollect = 0)
                       Click(400, 440)
                       SetDebugLog("Click confirm Use collectors potion 400, 440")
 						$bBoosted = True ; done!
-						$g_iLastTime[0] = @HOUR
-						$g_iLastTime[1] = @MIN
+						$g_iLastTime[0] = @MDAY
+						$g_iLastTime[1] = @HOUR
+						$g_iLastTime[2] = @MIN
 					Else
                     SetLog("Cannot find 'Collectors Potion' confirmed button")
 					$bBoosted = False
@@ -291,8 +294,9 @@ Func BoostWhitC($g_iXCollect = 0, $g_iYCollect = 0)
                             Click(400, 440)
                             SetDebugLog("5. Click confirm Use training potion 400, 440")
                             $bBoosted = True ; done!
-							$g_iLastTime[0] = @HOUR
-							$g_iLastTime[1] = @MIN
+							$g_iLastTime[0] = @MDAY
+							$g_iLastTime[1] = @HOUR
+							$g_iLastTime[2] = @MIN
                         Else
                             SetLog("Cannot find 'Training Potion' confirmed button")
                         EndIf					
