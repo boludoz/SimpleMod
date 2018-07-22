@@ -18,7 +18,7 @@ Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of tr
 
 	Local $dbg = 0
 	
-	If StringInStr($$aResult[0], "#") Then
+	If StringInStr($aResult[0], "#") Then
 		Local $aTempResult = StringSplit($aResult[0], "#", $STR_NOCOUNT)
 		$aResult[1] = Number($aTempResult[0])
 		$aResult[2] = Number($aTempResult[1])
