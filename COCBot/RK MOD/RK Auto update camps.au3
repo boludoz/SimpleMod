@@ -35,6 +35,7 @@ Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of tr
 		ElseIf $aResult[2] >= 15 Then
 		GUICtrlSetData($g_hTxtTotalCampForced, $aResult[2])
 		$g_iTotalCampForcedValue = $aResult[2]
+		lblTotalCountTroop1()
 	Else
 		SetLog("DEBUG | ERROR on GetCurrentArmy", $COLOR_ERROR)
 	EndIf
