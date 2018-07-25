@@ -120,7 +120,7 @@ Func lblTotalCountTroop1()
 	Else
 		GUICtrlSetState($g_hLblTotalProgress, $GUI_HIDE)
 	EndIf
-	If $g_iChkAutoCamp = 1
+	If $g_iChkAutoCamp = 1 Then
 		Local $bLocalBbg = False
 		$g_iSpaceForTroopsFill = $g_iTotalCampForcedValue - $TotalTroopsToTrain
 		GUICtrlSetData($g_ahTxtTrainArmyTroopCount[$eTroopArcher], $g_aiArmyCompTroops[$eTroopArcher] + $g_iSpaceForTroopsFill)
