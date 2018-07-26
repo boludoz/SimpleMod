@@ -315,12 +315,18 @@ Func _checkObstacles($bBuilderBase = False, $bRecursive = False) ;Checks if some
 		; if black bar at top, e.g. in Android home screen, restart CoC
 		SetDebugLog("checkObstacles: Found Black Android Screen")
 	EndIf
-
+    If $g_bOnlySCIDAccounts Then
+		SetDebugLog("check Log in with Supercell ID login by Clicks")
+		; check Log in with Supercell ID login screen by Clicks
+		CheckLoginWithSupercellIDScreen()
+	EndIf
+	
 	; check if google account list shown and select first
 	If $g_bChkAltuFaltuSCID = 0 Then	; AltuFaltu n
 		If Not CheckGoogleSelectAccount() Then
+		    SetDebugLog("check Log in with Supercell ID login by shared_prefs")
 			; check Log in with Supercell ID login screen
-			CheckLoginWithSupercellID()
+			If CheckLoginWithSupercellID() Then Return True
 		EndIf
 	EndIf	; AltuFaltu n
 

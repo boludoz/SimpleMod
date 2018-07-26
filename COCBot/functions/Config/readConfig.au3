@@ -1186,6 +1186,10 @@ Func ReadConfig_600_35_1()
 	$g_iAutoResumeTime = Int(IniRead($g_sProfileConfigPath, "other", "AutoResumeTime", 5))
 	IniReadS($g_bDisableNotifications, $g_sProfileConfigPath, "other", "ChkDisableNotifications", False, "Bool")
 	$g_bForceClanCastleDetection = (IniRead($g_sProfileConfigPath, "other", "ChkFixClanCastle", "0") = "1")
+	
+	IniReadS($g_bOnlySCIDAccounts, $g_sProfileConfigPath, "ProfileSCID", "OnlySCIDAccounts", True, "Bool")
+	$g_iWhatSCIDAccount2Use = Int(IniRead($g_sProfileConfigPath, "ProfileSCID", "WhatSCIDAccount2Use", 0))
+	
 	IniReadS($g_iChkLabCheck, $g_sProfileConfigPath, "other", "ChkLabCheck", $g_iChkLabCheck, "Int")
 EndFunc   ;==>ReadConfig_600_35_1
 
