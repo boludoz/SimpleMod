@@ -32,19 +32,9 @@ Func getArmyTroopTime($bOpenArmyWindow = False, $bCloseArmyWindow = False, $bChe
 		EndIf
 	EndIf
 
-	; Verify is the Barracks is Boosted
-	Local $bBoosted = False
-	If QuickMIS("BC1", @ScriptDir & "\imgxml\Resources\Boosted", 435, 155, 500, 190) Then ; search for treasury button
-		$bBoosted = True
-	Endif
 
 	Local $sResultTroops = getRemainTrainTimer(495, 169, $bNeedCapture) ;Get time via OCR.
 	$g_aiTimeTrain[0] = ConvertOCRTime("Troops", $sResultTroops, $bSetLog) ; update global array
-
-	If $bBoosted then
-		$g_aiTimeTrain[0] = $g_aiTimeTrain[0] / 4
-		Setlog("Boosted Barracks detected!", $COLOR_INFO)
-	EndIf
 
 	If $bCloseArmyWindow Then
 		ClickP($aAway, 1, 0, "#0000") ;Click Away
