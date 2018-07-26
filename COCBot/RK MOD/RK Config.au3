@@ -192,6 +192,10 @@ Func ReadConfig_RKMod()
 	
 	$g_ibUpdateNewUpgradesOnly = (IniRead($g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", 0) = 1)
 	
+	
+	IniReadS($g_iChkUpgrPriority, $g_sProfileConfigPath, "upgrade", "chkUpgrPriority", $g_iChkUpgrPriority, "Int")
+	IniReadS($g_iCmbUpgrPriority, $g_sProfileConfigPath, "upgrade", "CmbUpgrPriority", 0, "int")
+	
 EndFunc   ;==>ReadConfig_RKMod
 
 Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
@@ -382,6 +386,10 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	
 	_Ini_Add("upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly ? 1 : 0)
 	
+	_Ini_Add("upgrade", "chkUpgrPriority", $g_iChkUpgrPriority ? 1 : 0)
+	_Ini_Add("upgrade", "cmbUpgrPriority", _GUICtrlComboBox_GetCurSel($g_hCmbUpgrPriority))
+	
+	
 EndFunc   ;==>SaveConfig_RKMod
 
 Func ApplyConfig_RKMod($TypeReadSave)
@@ -565,6 +573,10 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			
 			$g_ibUpdateNewUpgradesOnly = (GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED)
 			
+			$g_iChkUpgrPriority = GUICtrlRead($g_hChkUpgrPriority) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbUpgrPriority = _GUICtrlComboBox_GetCurSel($g_hCmbUpgrPriority)
+			
+						
 		Case "Read"
 
 	
@@ -780,6 +792,13 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			; ==================================================  Upgrade Management - Added by RK MOD ======================================== ;
 			
 			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly ? $GUI_CHECKED : $GUI_UNCHECKED)
+			
+			
+			GUICtrlSetState($g_hChkUpgrPriority, $g_iChkUpgrPriority = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			chkUpgrPriority()
+			_GUICtrlComboBox_SetCurSel($g_hCmbUpgrPriority, $g_iCmbUpgrPriority)
+			UpgrPriority()
+			
 			
 	EndSwitch
 
