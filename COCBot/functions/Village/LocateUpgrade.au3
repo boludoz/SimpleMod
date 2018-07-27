@@ -161,9 +161,7 @@ Func CheckUpgrades() ; Valdiate and determine the cost and type of the upgrade a
 			If $g_abUpgradeRepeatEnable[$iz] = True Then GUICtrlSetState($g_hChkUpgradeRepeat[$iz], $GUI_UNCHECKED) ; Change repeat selection box to unchecked
 			ContinueLoop
 		EndIf
-        
-		If $g_ibUpdateNewUpgradesOnly  And $g_abUpgradeRepeatEnable[$iz] = 1 Then ContinueLoop ; Upgrade Management - RK MOD
-		
+
 		If UpgradeValue($iz) = False Then ; Get the upgrade cost, name, level, and time
 			If $g_abUpgradeRepeatEnable[$iz] = True And $g_avBuildingUpgrades[$iz][4] <> "" Then ContinueLoop ; If repeat is checked and bldg has name, then get value later.
 			SetLog("Locate Upgrade #" & $iz + 1 & " Value Error, try again", $COLOR_ERROR)
@@ -258,11 +256,7 @@ Func UpgradeValue($inum, $bRepeat = False) ;function to find the value and type 
 		Local $ButtonPixel[2]
 		$ButtonPixel[0] = 120 + $g_iQuickMISX
 		$ButtonPixel[1] = 630 + $g_iQuickMISY
-
-		If $g_bDebugSetlog Or $bOopsFlag Then
-			SetLog("ButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_DEBUG) ;Debug
-			SetLog("#1: " & _GetPixelColor($ButtonPixel[0], $ButtonPixel[1], True) & ", #2: " & _GetPixelColor($ButtonPixel[0] + 41, $ButtonPixel[1] + 23, True) & ", #3: " & _GetPixelColor($ButtonPixel[0] + 70, $ButtonPixel[1], True) & ", #4: " & _GetPixelColor($ButtonPixel[0] + 79, $ButtonPixel[1], True), $COLOR_DEBUG)
-		EndIf
+		If $g_bDebugSetlog Or $bOopsFlag Then SetLog("ButtonPixel = " & $ButtonPixel[0] & ", " & $ButtonPixel[1], $COLOR_DEBUG) ;Debug
 
 		Click($ButtonPixel[0] + 20, $ButtonPixel[1] + 20, 1, 0, "#0213") ; Click Upgrade Button
 		If _Sleep($DELAYUPGRADEVALUE5) Then Return

@@ -44,6 +44,8 @@ Func Initiate()
 
 		$g_bFirstStart = True
 		$g_bInitiateSwitchAcc = True
+		$g_iFirstTimeLab = 0
+		
 		$g_bDoubleTrainDone = False
 		Local $abEmptyDoubleTrainDone = [False, False, False, False, False, False, False, False]
 		$g_abDoubleTrainDone = $abEmptyDoubleTrainDone

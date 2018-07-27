@@ -592,6 +592,9 @@ Func FinalInitialization(Const $sAI)
 	DisableProcessWindowsGhosting()
 
 	UpdateMainGUI()
+	
+	; temporary solution for the most recent MEmu versions
+	CheckClickAdbNewVersions()
 
 EndFunc   ;==>FinalInitialization
 
@@ -715,6 +718,9 @@ Func runBot() ;Bot that runs everything in order
 			checkMainScreen(False)
 			If $g_bRestart = True Then ContinueLoop
 			; MOD ; move the Request CC Troops function to the beginning of the run loop
+			If $g_bFirstStart Then ProfileReport()
+			If _Sleep($DELAYRUNBOT5) Then Return
+			If $g_bFirstStart Then checkArmyCamp(True, True, False, True)
 		    $g_bcanRequestCC = True
 			If $g_bReqCCFirst Then
 				RequestCC()
@@ -735,6 +741,9 @@ Func runBot() ;Bot that runs everything in order
 				EndIf
 				If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
 			WEnd
+			
+			If ($g_iCommandStop = 0 Or $g_iCommandStop = 3) And ProfileSwitchAccountEnabled() And Not $g_abDonateOnly[$g_iCurAccount] Then checkSwitchAcc()
+			
 			AddIdleTime()
 			If $g_bRunState = False Then Return
 			If $g_bRestart = True Then ContinueLoop
@@ -885,11 +894,11 @@ Func _Idle() ;Sequence that runs until Full Army
 			Local $aHeroResult = CheckArmyCamp(True, True, True, False)
 			While $iReHere < 7
 				$iReHere += 1
-				If $iReHere = 1 And SkipDonateNearFullTroops(True, $aHeroResult) = False And BalanceDonRec(True) Then
+				If $iReHere = 1 And SkipDonateNearFullTroops(True, $aHeroResult) = False Then
 					DonateCC(True)
-				ElseIf SkipDonateNearFullTroops(False, $aHeroResult) = False And BalanceDonRec(False) Then
-					DonateCC(True)
-				EndIf
+				ElseIf SkipDonateNearFullTroops(False, $aHeroResult) = False Then
+			    DonateCC(True)
+		        EndIf
 				If _Sleep($DELAYIDLE1) Then ExitLoop
 				If $g_bRestart = True Then ExitLoop
 				If CheckAndroidReboot() Then ContinueLoop 2
@@ -939,9 +948,9 @@ Func _Idle() ;Sequence that runs until Full Army
 				If $g_bRestart = True Then ExitLoop
 				If _Sleep($DELAYIDLE1) Then ExitLoop
 				checkMainScreen(False)
-			Else
-				SetLog("Humanize bot, prevent to delete and recreate troops " & $g_iActualTrainSkip + 1 & "/" & $g_iMaxTrainSkip, $color_blue)
 				$g_iActualTrainSkip = $g_iActualTrainSkip + 1
+			Else
+				SetLog("Humanize bot, prevent to delete and recreate troops " & $g_iActualTrainSkip + 1 & "/" & $g_iMaxTrainSkip, $color_blue)				
 				If $g_iActualTrainSkip >= $g_iMaxTrainSkip Then
 					$g_iActualTrainSkip = 0
 				EndIf
@@ -957,8 +966,8 @@ Func _Idle() ;Sequence that runs until Full Army
 					If $g_bRestart = True Then ExitLoop
 					If _Sleep($DELAYIDLE1) Then ExitLoop
 					checkMainScreen(False)
-				Else
 					$g_iActualTrainSkip = $g_iActualTrainSkip + 1
+				Else
 					If $g_iActualTrainSkip >= $g_iMaxTrainSkip Then
 						$g_iActualTrainSkip = 0
 					EndIf
@@ -1007,7 +1016,7 @@ Func AttackMain() ;Main control for attack functions
 		MainSuperXPHandler()
 		Return
 	EndIf
-	getArmyTroopCapacity(True, True)
+	;getArmyTroopCapacity(True, True)
 	If checkForecastPause($currentForecast) = True Then Return
 	ClickP($aAway, 1, 0, "#0000") ;Click Away to prevent any pages on top
 	If IsSearchAttackEnabled() Then
@@ -1140,7 +1149,7 @@ Func _RunFunction($action)
 			_Sleep($DELAYRUNBOT3)
 		Case "DonateCC"
 			If $g_iActiveDonate And $g_bChkDonate Then
-				If SkipDonateNearFullTroops(True) = False And BalanceDonRec(True) Then DonateCC()
+				If SkipDonateNearFullTroops(True) = False Then DonateCC()
 				If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			EndIf
 		Case "SendChat"
@@ -1156,7 +1165,7 @@ Func _RunFunction($action)
 				;	getArmyTroopCapacity(True, False)
 				;	getArmySpellCapacity(False, True)
 				;EndIf
-				If SkipDonateNearFullTroops(True) = False And BalanceDonRec(True) Then DonateCC()
+				If SkipDonateNearFullTroops(True) = False Then DonateCC()
 			EndIf
 			If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			If $g_bTrainEnabled Then ; check for training enabled in halt mode

@@ -214,6 +214,9 @@ Func chkSwitchAcc()
 			GUICtrlSetState($g_ahChkSetFarm[$i], $GUI_ENABLE)
 			_chkSetFarmSchedule($i)
 		Next
+		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_UNCHECKED)
+		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_DISABLE)
+		OnlySCIDAccounts()
 	Else
 		releaseSwitchAccountMutex()
 		For $i = $g_hCmbTotalAccount To $g_ahChkDonate[7]
@@ -224,6 +227,8 @@ Func chkSwitchAcc()
 				GUICtrlSetState($j, $GUI_DISABLE)
 			Next
 		Next
+		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_ENABLE)
+		OnlySCIDAccounts()
 	EndIf
 EndFunc   ;==>chkSwitchAcc
 
@@ -626,7 +631,7 @@ Func btnTestDonateCC()
 	SetLog("Detecting Troops...")
 	DetectSlotTroop($eBowl)
 	SetLog("Detecting Spells...")
-	DetectSlotTroop($eSkSpell)
+	DetectSlotSpell($eSkSpell)
 	SetLog(_PadStringCenter(" Test DonateCC end ", 54, "="), $COLOR_INFO)
 	ShellExecute($g_sProfileTempDebugPath & "donateCC_")
 
@@ -706,7 +711,7 @@ EndFunc   ;==>btnTestAttackBar
 
 
 Func btnTestClickDrag()
-	Local $sUserInputCoor = InputBox("Coordinators", "x1,y1,x2,y2", "650,473,323,473")
+	Local $sUserInputCoor = InputBox("Coordinators", "x1,y1,x2,y2", "650,469,290,469")
 	Local $asCoor = StringSplit($sUserInputCoor, ",")
 
 	If @error Or $asCoor[0] <> 4 Then
@@ -723,7 +728,7 @@ Func btnTestClickDrag()
 	_Sleep(3000, True, False)
 
 	SetLog("Save the image...", $COLOR_DEBUG)
-	DebugImageSave("TestClickDrag")
+	DebugImageSave("TestClickDrag", Default, Default, Default, "_" & $asCoor[1] & "x." & $asCoor[2] & "y." & $asCoor[3] & "x." & $asCoor[4] & "y_")
 
 	SetLog("Sleep 1 seconds...", $COLOR_DEBUG)
 	_Sleep(1000, True, False)

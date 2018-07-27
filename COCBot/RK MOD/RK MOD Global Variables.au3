@@ -200,3 +200,6 @@ Global $g_bCheckWardenMode = False, $g_iCheckWardenMode = 0
 
 Global $g_ibUpdateNewUpgradesOnly = False
 Global Const $UP = True, $DOWN = False, $TILL_END = True
+
+; ================================================== Fill - Added by RK MOD ================================== ;
+Global $g_iSpaceForTroopsFill = 0
