@@ -717,10 +717,9 @@ Func runBot() ;Bot that runs everything in order
 			If _Sleep($DELAYRUNBOT5) Then Return
 			checkMainScreen(False)
 			If $g_bRestart = True Then ContinueLoop
-			; MOD ; move the Request CC Troops function to the beginning of the run loop
-			If $g_bFirstStart Then ProfileReport()
-			If _Sleep($DELAYRUNBOT5) Then Return
-			If $g_bFirstStart Then checkArmyCamp(True, True, False, True)
+			;If $g_bFirstStart Then ProfileReport()
+			;If _Sleep($DELAYRUNBOT5) Then Return
+			;If $g_bFirstStart Then checkArmyCamp(True, True, False, True)
 		    $g_bcanRequestCC = True
 			If $g_bReqCCFirst Then
 				RequestCC()
