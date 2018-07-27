@@ -1934,6 +1934,10 @@ Func ApplyConfig_600_35_1($TypeReadSave)
 			chkAutoResume()
 			GUICtrlSetState($g_hChkDisableNotifications, $g_bDisableNotifications ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkFixClanCastle, $g_bForceClanCastleDetection ? $GUI_CHECKED : $GUI_UNCHECKED)
+			
+			GUICtrlSetState($g_hChkOnlySCIDAccounts, $g_bOnlySCIDAccounts ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbWhatSCIDAccount2Use, $g_iWhatSCIDAccount2Use)
+			
 			GUICtrlSetState($g_hChkLabCheck, $g_iChkLabCheck = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
    		    chkLabCheck()
 		Case "Save"
@@ -1968,6 +1972,10 @@ Func ApplyConfig_600_35_1($TypeReadSave)
 			$g_iAutoResumeTime = GUICtrlRead($g_hTxtAutoResumeTime)
 			$g_bDisableNotifications = (GUICtrlRead($g_hChkDisableNotifications) = $GUI_CHECKED)
 			$g_bForceClanCastleDetection = (GUICtrlRead($g_hChkFixClanCastle) = $GUI_CHECKED)
+			
+			$g_bOnlySCIDAccounts = (GUICtrlRead($g_hChkOnlySCIDAccounts) = $GUI_CHECKED)
+			$g_iWhatSCIDAccount2Use = _GUICtrlComboBox_GetCurSel($g_hCmbWhatSCIDAccount2Use)
+			
 			$g_iChkLabCheck = GUICtrlRead($g_hChkLabCheck) = $GUI_CHECKED ? 1 : 0
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_35_1
@@ -2027,6 +2035,7 @@ Func ApplyConfig_600_35_2($TypeReadSave)
 			Next
 			_GUICtrlComboBox_SetCurSel($g_hCmbTrainTimeToSkip, $g_iTrainTimeToSkip)
 			_cmbSwitchAcc(False)
+			
 		Case "Save"
 			;FarmSchedule
 			For $i = 0 To 7

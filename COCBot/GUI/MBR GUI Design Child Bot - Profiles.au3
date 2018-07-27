@@ -14,7 +14,7 @@
 ; ===============================================================================================================================
 #include-once
 
-Global $g_hCmbProfile = 0, $g_hTxtVillageName = 0, $g_hBtnAddProfile = 0, $g_hBtnConfirmAddProfile = 0, $g_hBtnConfirmRenameProfile = 0, _
+Global $g_hCmbProfile = 0, $g_hTxtVillageName = 0, $g_hBtnAddProfile = 0, $g_hBtnConfirmAddProfile = 0, $g_hBtnConfirmRenameProfile = 0, $g_hChkOnlySCIDAccounts = 0, $g_hCmbWhatSCIDAccount2Use = 0 , _
 	   $g_hBtnDeleteProfile = 0, $g_hBtnCancelProfileChange = 0, $g_hBtnRenameProfile = 0, $g_hBtnPullSharedPrefs = 0, $g_hBtnPushSharedPrefs = 0, $g_hBtnRecycle = 0
 Global $g_hRadAltuFaltuSCID = 0, $btnScanSCIDAcc = 0		;AltuFaltu-n
 
@@ -23,7 +23,7 @@ Func CreateBotProfiles()
 	Local $x = 25, $y = 45
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "Group_01", "Switch Profiles"), $x - 20, $y - 20, $g_iSizeWGrpTab2, 55)
 	$x -= 5
-		$g_hCmbProfile = GUICtrlCreateCombo("", $x - 3, $y + 1, 130, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_hCmbProfile = GUICtrlCreateCombo("", $x - 3, $y + 1, 100, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "CmbProfile_Info_01", "Use this to switch to a different profile")& @CRLF & _
 							   GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "CmbProfile_Info_02", "Your profiles can be found in") & ": " & @CRLF & $g_sProfilePath)
 			setupProfileComboBox()
@@ -80,7 +80,7 @@ Func CreateBotProfiles()
 			_GUIImageList_AddBitmap($bIconRecycle, @ScriptDir & "\images\Button\iconRecycle_4.bmp")
 			_GUIImageList_AddBitmap($bIconRecycle, @ScriptDir & "\images\Button\iconRecycle.bmp")
 		
-		$g_hBtnAddProfile = GUICtrlCreateButton("", $x + 135, $y, 24, 24)
+		$g_hBtnAddProfile = GUICtrlCreateButton("", $x + 115, $y, 24, 24)
 			_GUICtrlButton_SetImageList($g_hBtnAddProfile, $bIconAdd, 4)
 			GUICtrlSetOnEvent(-1, "btnAddConfirm")
 			GUICtrlSetState(-1, $GUI_SHOW)
@@ -95,7 +95,7 @@ Func CreateBotProfiles()
 			GUICtrlSetOnEvent(-1, "btnRenameConfirm")
 			GUICtrlSetState(-1, $GUI_HIDE)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnConfirmAddProfile_Info_01", -1))
-		$g_hBtnDeleteProfile = GUICtrlCreateButton("", $x + 164, $y, 24, 24)
+		$g_hBtnDeleteProfile = GUICtrlCreateButton("", $x + 145, $y, 24, 24)
 			_GUICtrlButton_SetImageList($g_hBtnDeleteProfile, $bIconDelete, 4)
 			GUICtrlSetOnEvent(-1, "btnDeleteCancel")
 			GUICtrlSetState(-1, $GUI_SHOW)
@@ -105,19 +105,19 @@ Func CreateBotProfiles()
 			GUICtrlSetOnEvent(-1, "btnDeleteCancel")
 			GUICtrlSetState(-1, $GUI_HIDE)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnCancelProfileChange_Info_01", "Cancel"))
-		$g_hBtnRenameProfile = GUICtrlCreateButton("", $x + 194, $y, 24, 24)
+		$g_hBtnRenameProfile = GUICtrlCreateButton("", $x + 172, $y, 24, 24)
 			_GUICtrlButton_SetImageList($g_hBtnRenameProfile, $bIconEdit, 4)
 			GUICtrlSetOnEvent(-1, "btnRenameConfirm")
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnRenameProfile_Info_01", "Rename Profile"))
-		$g_hBtnPullSharedPrefs = GUICtrlCreateButton("", $x + 224, $y, 24, 24)
+		$g_hBtnPullSharedPrefs = GUICtrlCreateButton("", $x + 200, $y, 24, 24)
 			_GUICtrlButton_SetImageList($g_hBtnPullSharedPrefs, $bIconPull, 4)
 			GUICtrlSetOnEvent(-1, "btnPullSharedPrefs")
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnPullSharedPrefs_Info_01", "Pull CoC shared_prefs folder"))
-		$g_hBtnPushSharedPrefs = GUICtrlCreateButton("", $x + 254, $y, 24, 24)
+		$g_hBtnPushSharedPrefs = GUICtrlCreateButton("", $x + 227, $y, 24, 24)
 			_GUICtrlButton_SetImageList($g_hBtnPushSharedPrefs, $bIconPush, 4)
 			GUICtrlSetOnEvent(-1, "btnPushSharedPrefs")
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnPushSharedPrefs_Info_01", "Push CoC shared_prefs folder"))
-		$g_hBtnRecycle = GUICtrlCreateButton("", $x + 283, $y + 2, 22, 22)
+		$g_hBtnRecycle = GUICtrlCreateButton("", $x + 255, $y + 2, 22, 22)
 			_GUICtrlButton_SetImageList($g_hBtnRecycle, $bIconRecycle, 4)
 			GUICtrlSetOnEvent(-1, "btnRecycle")
 			GUICtrlSetState(-1, $GUI_SHOW)
@@ -127,6 +127,13 @@ Func CreateBotProfiles()
 			Else
 				GUICtrlSetState(-1, $GUI_ENABLE)
 			EndIf
+		$g_hChkOnlySCIDAccounts = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "ChkOnlySCIDAccounts", "SC_ID"), $x + 285, $y, -1, -1)
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "ChkOnlySCIDAccounts_Info_01", "Are you using SC_ID?"))
+			GUICtrlSetOnEvent(-1, "OnlySCIDAccounts")
+		$g_hCmbWhatSCIDAccount2Use = GUICtrlCreateCombo("", $x + 290 + 47, $y , 83, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			GUICtrlSetData(-1, "Account nº1|Account nº2|Account nº3|Account nº4|Account nº5", "Account nº1")
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "WhatSCIDAccount2Use_Info_01", "Select the correct account from Login Window!"))
+			GUICtrlSetOnEvent(-1, "WhatSCIDAccount2Use")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 EndFunc   ;==>CreateBotProfiles
