@@ -52,7 +52,7 @@ Global $g_hChkUpgradesToIgnore[13] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Global $g_hChkUpgradeAllOrNone = 0, $g_hChkUpgradeRepeatAllOrNone = 0, $g_hChkUpdateNewUpgradesOnly = 0, $g_hBtnTop = 0, $g_hBtnBottom = 0, $g_hBtnUp = 0, $g_hBtnDown = 0
 
 ;Wall/Building Upgrading Priority - by RK MOD
-Global $g_hChkUpgrPriority = 0, $g_hCmbUpgrPriority = 0
+Global $g_hChkUpgrPriority = 0, $g_hCmbUpgrdPriority = 0
 
 Func CreateVillageUpgrade()
 
@@ -372,14 +372,14 @@ Func CreateWallsSubTab()
 			GUICtrlSetState(-1, $GUI_ENABLE)
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			GUICtrlSetOnEvent(-1, "chkSaveWallBldr")
-			
+		;Wall/Building Upgrading Priority by RK MOD	 
 		$g_hChkUpgrPriority = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Walls", "ChkUpgrPriority", "Upgrading Priority") & ": ", $x + 18, $y + 95, -1, -1)
 			GUICtrlSetOnEvent(-1, "chkUpgrPriority")
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Walls", "UpgrPriority_Info_01", "Enable this Option if you Upgrading Priority"))
-		$g_hCmbUpgrPriority = GUICtrlCreateCombo("", $x + 135, $y + 95, 64, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_hCmbUpgrdPriority = GUICtrlCreateCombo("", $x + 135, $y + 95, 64, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetState(-1, $GUI_DISABLE)
 			GUICtrlSetOnEvent(-1, "cmbUpgrPriority")
-			GUICtrlSetData(-1, "Wall|Building", "Wall")
+			GUICtrlSetData(-1, "Walls |Building  ", "Walls ")
 
 	$x += 225
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Walls", "LblSearchforWalls", "Search for Walls level") & ":", $x, $y + 2, -1, -1)

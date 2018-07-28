@@ -14,24 +14,21 @@
 Func chkUpgrPriority()
 	If GUICtrlRead($g_hChkUpgrPriority) = $GUI_CHECKED Then	   
 		$g_iChkUpgrPriority = 1
+		GUICtrlSetState($g_hCmbUpgrdPriority, $GUI_ENABLE)
 	Else
 		$g_iChkUpgrPriority = 0
+		GUICtrlSetState($g_hCmbUpgrdPriority, $GUI_DISABLE)
 	EndIf
-	If GUICtrlRead($g_hChkUpgrPriority) = $GUI_CHECKED Then
-	    GUICtrlSetState($g_hCmbUpgrPriority, $GUI_ENABLE)
-	Else
-   	    GUICtrlSetState($g_hCmbUpgrPriority, $GUI_DISABLE)
-	EndIf	
 EndFunc   ;==>chkUpgrPriority
 
 
 Func UpgrPriority()
 
-	Switch _GUICtrlComboBox_GetCurSel($g_hCmbUpgrPriority)
+	Switch _GUICtrlComboBox_GetCurSel($g_hCmbUpgrdPriority)
 		Case 0
-			$g_iCmbUpgrPriority = "Wall"
+			$g_iCmbUpgrdPriority = "Walls"
 		Case 1
-			$g_iCmbUpgrPriority = "Building"
+			$g_iCmbUpgrdPriority = "Building"
 	EndSwitch
 
-EndFunc   ;==>BoostBrMagic
+EndFunc   ;==>UpgrdPriority
