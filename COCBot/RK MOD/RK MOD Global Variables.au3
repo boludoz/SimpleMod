@@ -203,3 +203,5 @@ Global Const $UP = True, $DOWN = False, $TILL_END = True
 
 ; ================================================== Fill - Added by RK MOD ================================== ;
 Global $g_iSpaceForTroopsFill = 0
+
+Global $g_iChkUpgrPriority = 0, $g_iCmbUpgrPriority = 0
