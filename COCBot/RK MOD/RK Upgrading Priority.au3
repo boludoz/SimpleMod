@@ -10,9 +10,8 @@
 ; Example .......: No
 ; ===============================================================================================================================
 
-
 Func chkUpgrPriority()
-	If GUICtrlRead($g_hChkUpgrPriority) = $GUI_CHECKED Then	   
+	If GUICtrlRead($g_hChkUpgrPriority) = $GUI_CHECKED Then
 		$g_iChkUpgrPriority = 1
 		GUICtrlSetState($g_hCmbUpgrdPriority, $GUI_ENABLE)
 	Else
@@ -22,7 +21,7 @@ Func chkUpgrPriority()
 EndFunc   ;==>chkUpgrPriority
 
 
-Func UpgrPriority()
+Func UpgrdPriority()
 
 	Switch _GUICtrlComboBox_GetCurSel($g_hCmbUpgrdPriority)
 		Case "Walls"
