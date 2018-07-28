@@ -378,7 +378,7 @@ Func CreateWallsSubTab()
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Walls", "UpgrPriority_Info_01", "Enable this Option if you Upgrading Priority"))
 		$g_hCmbUpgrdPriority = GUICtrlCreateCombo("", $x + 135, $y + 95, 64, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetState(-1, $GUI_DISABLE)
-			GUICtrlSetOnEvent(-1, "cmbUpgrPriority")
+			GUICtrlSetOnEvent(-1, "cmbUpgrdPriority")
 			GUICtrlSetData(-1, "Walls |Building  ", "Walls ")
 
 	$x += 225

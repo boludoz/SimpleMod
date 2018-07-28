@@ -25,10 +25,10 @@ EndFunc   ;==>chkUpgrPriority
 Func UpgrPriority()
 
 	Switch _GUICtrlComboBox_GetCurSel($g_hCmbUpgrdPriority)
-		Case 0
-			$g_iCmbUpgrdPriority = "Walls"
-		Case 1
-			$g_iCmbUpgrdPriority = "Building"
+		Case "Walls"
+			$g_iCmbUpgrdPriority = 0
+		Case "Building"
+			$g_iCmbUpgrdPriority = 1
 	EndSwitch
 
 EndFunc   ;==>UpgrdPriority

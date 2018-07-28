@@ -204,4 +204,6 @@ Global Const $UP = True, $DOWN = False, $TILL_END = True
 ; ================================================== Fill - Added by RK MOD ================================== ;
 Global $g_iSpaceForTroopsFill = 0
 
+; ================================================== Wall/Building Upgrading Priority by RK MOD	======================================== ;
+
 Global $g_iChkUpgrPriority = 0, $g_iCmbUpgrdPriority = 0

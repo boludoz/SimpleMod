@@ -192,9 +192,10 @@ Func ReadConfig_RKMod()
 	
 	$g_ibUpdateNewUpgradesOnly = (IniRead($g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", 0) = 1)
 	
-	
+	; ================================================== Wall/Building Upgrading Priority by RK MOD	======================================== ;
+
 	IniReadS($g_iChkUpgrPriority, $g_sProfileConfigPath, "upgrade", "chkUpgrPriority", $g_iChkUpgrPriority, "Int")
-	IniReadS($g_iCmbUpgrdPriority, $g_sProfileConfigPath, "upgrade", "CmbUpgrdPriority", 1, "int")
+	IniReadS($g_iCmbUpgrdPriority, $g_sProfileConfigPath, "upgrade", "CmbUpgrdPriority", 0, "int")
 	
 	
 EndFunc   ;==>ReadConfig_RKMod
@@ -387,6 +388,7 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	
 	_Ini_Add("upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly ? 1 : 0)
 	
+	; ================================================== Wall/Building Upgrading Priority by RK MOD	======================================== ;
 	
 	_Ini_Add("upgrade", "chkUpgrPriority", $g_iChkUpgrPriority ? 1 : 0)
 	_Ini_Add("upgrade", "cmbUpgrdPriority", _GUICtrlComboBox_GetCurSel($g_hCmbUpgrdPriority))
@@ -575,7 +577,7 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			
 			$g_ibUpdateNewUpgradesOnly = (GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED)
 			
-			
+			; ================================================== Wall/Building Upgrading Priority by RK MOD	======================================== ;
 						
 			$g_iChkUpgrPriority = GUICtrlRead($g_hChkUpgrPriority) = $GUI_CHECKED ? 1 : 0
 			$g_iCmbUpgrdPriority = _GUICtrlComboBox_GetCurSel($g_hCmbUpgrdPriority)
@@ -797,6 +799,7 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			
 			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly ? $GUI_CHECKED : $GUI_UNCHECKED)
 			
+			; ================================================== Wall/Building Upgrading Priority by RK MOD	======================================== ;
 			
 			GUICtrlSetState($g_hChkUpgrPriority, $g_iChkUpgrPriority = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			chkUpgrPriority()
