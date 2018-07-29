@@ -16,11 +16,6 @@ Func chkUpgrPriority()
 	Else
 		$g_iChkUpgrPriority = 0
 	EndIf
-	If GUICtrlRead($g_hChkUpgrPriority) = $GUI_CHECKED Then
-	    GUICtrlSetState($g_hCmbUpgrdPriority, $GUI_ENABLE)
-	Else
-   	    GUICtrlSetState($g_hCmbUpgrdPriority, $GUI_DISABLE)
-	EndIf
 EndFunc   ;==>chkUpgrPriority
 
 
