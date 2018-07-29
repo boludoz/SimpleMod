@@ -784,7 +784,7 @@ Func DonateSpellType(Const $iSpellIndex, $Quant = 0, Const $Custom = False, Cons
 		Return
 	EndIf
 	$donaterow = 3 ;row of spells
-	$Slot = $Slot - 12
+	$Slot = $Slot - 14
 	$donateposinrow = $Slot
 	$YComp = 203 ; correct 860x780
 
