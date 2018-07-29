@@ -46,8 +46,8 @@ DROP  |A          |1          |1          |warden     |0          |0          |5
 WAIT  |3000-3300  |           |           |           |           |           |           |           |
 DROP  |H          |1          |1          |FSpell     |0          |0          |50-100     |           |
 DROP  |N          |1          |1          |RSpell     |0          |0          |0          |700-900    |
-DROP  |M          |4          |1          |RSpell     |0          |0          |0          |           |
-DROP  |N          |4          |1          |RSpell     |0          |0          |100-200    |           |
+DROP  |M          |5          |1          |RSpell     |0          |0          |0          |           |
+DROP  |N          |5          |1          |RSpell     |0          |0          |100-200    |           |
 DROP  |D          |2-8        |50%        |mini       |20-30      |10-20      |0          |           |
 DROP  |A          |1-7        |50%        |mini       |20-30      |10-20      |100-200    |           |
 DROP  |A-B        |9          |1          |babyd      |30-50      |0          |500-800    |           |
