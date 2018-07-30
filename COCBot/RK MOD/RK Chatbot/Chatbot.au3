@@ -148,7 +148,7 @@ Func chkRusLang()
     Else
     $g_iChkRusLang = 0
     EndIf
-EndFunc ;==>chkAutoCamp
+EndFunc ;==>chkRusLang
 
 Func ChatGuiEditUpdate()
  Global $glb1 = GUICtrlRead($editGlobalMessages1)

@@ -148,7 +148,7 @@ Func AttackBarCheck($Remaining = False, $pMatchMode = $DB)
 						Else
 							; In case of Spells + Heroes
 							; June 2018 Update
-							If StringInStr($aResult[$i][0], "Spell") <> 0 And $CheckSlotwHero = True then
+							If StringInStr($aResult[$i][0], "Spell") <> 0 And $CheckSlotwHero = True Then
 								$Slottemp[0] = $Slottemp[0] + 13
 								$iSlotCompensation = -6
 							EndIf
