@@ -71,6 +71,9 @@
 
 #include "RK Check Warden Mode.au3"
 
+;Wall/Building Upgrading Priority 
+#include "RK Upgrading Priority.au3"
+
 #include "RK UpgradesMgmt.au3"
 
 #include "RK Config.au3"

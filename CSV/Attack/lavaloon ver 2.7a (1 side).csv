@@ -1,5 +1,5 @@
 NOTE  |Author: Ahsan Iqbal
-NOTE  |Attack: lavaloon -ver. 2.6.4a- (1 side)
+NOTE  |Attack: lavaloon -ver. 2.7a- (1 side)
 NOTE  |Make Troops: 28 loon , 2-3 lava, 10-30 minions, 4 wallbreaker, 7 babydrag
 NOTE  |Make Spells: 3 rage, 3-5 haste, 2 haste (CC)/ 1 rage (CC), 1-2 freeze spell
 
@@ -28,44 +28,40 @@ MAKE  |M          |FRONT-LEFT |10         |-13        |INT-EXT    |0          |0
 MAKE  |N          |FRONT-Right|10         |-13        |INT-EXT    |0          |0          |           |
 MAKE  |O          |FRONT-LEFT |10         |-20        |INT-EXT    |0          |0          |           |
 MAKE  |P          |FRONT-Right|10         |-20        |INT-EXT    |0          |0          |           |
-MAKE  |Q          |FRONT-Right|10         |-26        |INT-EXT    |0          |0          |           |
-MAKE  |R          |FRONT-LEFT |10         |-26        |INT-EXT    |0          |0          |           |
+MAKE  |Q          |FRONT-Right|10         |-27        |INT-EXT    |0          |0          |           |
+MAKE  |R          |FRONT-LEFT |10         |-27        |INT-EXT    |0          |0          |           |
 
       |VECTOR_____|INDEX______|QTY_X_VECT_|TROOPNAME__|DELAY_DROP_|DELAYCHANGE|SLEEPAFTER_|SLEEPBEFORE|
-SWIPE |RIGHT      |100        |300        |50         |           |           |           |           |	          	  
 DROP  |A-B        |4          |1          |Lava       |20-30      |0          |100-300    |           |
 DROP  |A          |1          |1          |Lava       |20-30      |0          |200-300    |           |
-SWIPE |LEFT       |100        |300        |50         |           |           |           |           |           
 DROP  |D          |3-8        |25%        |Ball       |20-30      |10-20      |0          |           |
 DROP  |A          |1-6        |25%        |Ball       |20-30      |10-20      |100-200    |           |
 DROP  |C          |3-8        |25%        |Ball       |20-30      |10-20      |0          |           |
 DROP  |B          |1-6        |25%        |Ball       |20-30      |10-20      |100-200    |           |
-DROP  |I          |1          |1          |HaSpell    |0          |0          |0          |           |
-DROP  |I          |5          |1          |HaSpell    |0          |0          |0          |           |
-DROP  |J          |4          |1          |HaSpell    |0          |0          |0          |           |
+DROP  |J          |1          |1          |HaSpell    |10-20      |0          |0          |           |
+DROP  |I          |4          |1          |HaSpell    |10-20      |0          |0          |           |
+DROP  |J          |4          |1          |HaSpell    |10-20      |0          |0          |           |
 DROP  |A          |1          |1          |Castle     |0          |0          |100-300    |           |
 DROP  |A          |1          |1          |warden     |0          |0          |50-100     |           |
 WAIT  |3000-3300  |           |           |           |           |           |           |           |
 DROP  |H          |1          |1          |FSpell     |0          |0          |50-100     |           |
-DROP  |M          |1          |1          |RSpell     |0          |0          |0          |700-900    |
-DROP  |M          |6          |1          |RSpell     |0          |0          |0          |           |
-DROP  |N          |4          |1          |RSpell     |0          |0          |100-200    |           |
-SWIPE |LEFT       |100        |300        |50         |           |           |           |           |
+DROP  |N          |1          |1          |RSpell     |10-20      |           |0          |700-900    |
+DROP  |M          |4          |1          |RSpell     |10-20      |           |0          |           |
+DROP  |N          |4          |1          |RSpell     |10-20      |           |100-200    |           |
 DROP  |D          |2-8        |50%        |mini       |20-30      |10-20      |0          |           |
 DROP  |A          |1-7        |50%        |mini       |20-30      |10-20      |100-200    |           |
 DROP  |A-B        |9          |1          |babyd      |30-50      |0          |500-800    |           |
 DROP  |A          |1          |1          |warden     |0          |0          |50-100     |1500-2000  |
 DROP  |O          |1          |1          |RSpell     |0          |0          |100        |3000-4000  |
-DROP  |P          |3          |1          |HaSpell    |0          |0          |0          |           |
+DROP  |P          |2          |1          |HaSpell    |0          |0          |0          |           |
 RECALC|           |           |           |           |           |           |           |           |
-DROP  |O          |4          |1          |HaSpell    |0          |0          |100        |           |
+DROP  |O          |2          |1          |HaSpell    |0          |0          |100        |           |
 RECALC|           |           |           |           |           |           |           |           |
 DROP  |Q          |2          |1          |HaSpell    |0          |0          |100        |2000-3000  |
-DROP  |R          |3          |1          |HaSpell    |0          |0          |100        |           |
+DROP  |R          |2          |1          |HaSpell    |0          |0          |100        |           |
 DROP  |G          |1          |1          |FSpell     |0          |0          |100        |           |
 DROP  |R          |1          |1          |RSpell     |0          |0          |100        |2000-3000  |
-SWIPE |LEFT       |100        |300        |50         |           |           |           |           |           
-WAIT  |5500-6000  |           |           |           |           |           |           |           |
+WAIT  |4000-5000  |           |           |           |           |           |           |           |
 DROP  |A          |1          |1          |king       |0          |0          |200-300    |           |  
 DROP  |A          |1          |100%       |wall       |0          |0          |50-100     |           |
 DROP  |A          |1          |1          |queen      |0          |0          |500-800    |           |

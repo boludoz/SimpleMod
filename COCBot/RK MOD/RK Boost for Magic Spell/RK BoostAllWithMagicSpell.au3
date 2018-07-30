@@ -197,9 +197,9 @@ Func BoostWhitC($g_iXCollect = 0, $g_iYCollect = 0)
 	
 	; Verify that it takes at least one day to proceed.
 	Local $iSTime[3] = [@MDAY, @HOUR, @MIN]
-	If $iSTime[0] <= $g_iLastTime[0] and $iSTime[1] <= $g_iLastTime[1] and $iSTime[2] <= $g_iLastTime[2] then return
+	If $iSTime[0] <= $g_iLastTime[0] And $iSTime[1] <= $g_iLastTime[1] And $iSTime[2] <= $g_iLastTime[2] Then Return
 
-	If $g_iXCollect = 0 or $g_iYCollect = 0 then return
+	If $g_iXCollect = 0 Or $g_iYCollect = 0 Then Return
 	
 	; Verifying existent Variables to run this routine
 	If Not $g_iChkBoostCMagic Then Return
@@ -234,7 +234,7 @@ Func BoostWhitC($g_iXCollect = 0, $g_iYCollect = 0)
 		
 		; boosting with Mine
 		Local $bCanBoost = False
-		If $bBoosted Then return
+		If $bBoosted Then Return
 		
 			_Sleep(500)
 			If QuickMis("BC1", $BoostCCollect, 136, 609, 726, 711) Then

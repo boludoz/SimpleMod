@@ -702,6 +702,11 @@ Func ApplyConfig_600_17($TypeReadSave)
 			EndSwitch
 			GUICtrlSetState($g_hChkSaveWallBldr, $g_bUpgradeWallSaveBuilder ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbWalls, $g_iCmbUpgradeWallsLevel)
+			; ================================================== Wall/Building Upgrading Priority by RK MOD	========================;
+			GUICtrlSetState($g_hChkUpgrPriority, $g_iChkUpgrPriority = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbUpgrdPriority, $g_iCmbUpgrdPriority)
+			chkUpgrPriority()
+			UpgrdPriority()
 			For $i = 4 To 13
 				GUICtrlSetData($g_ahWallsCurrentCount[$i], $g_aiWallsCurrentCount[$i])
 			Next
@@ -720,6 +725,9 @@ Func ApplyConfig_600_17($TypeReadSave)
 			EndIf
 			$g_bUpgradeWallSaveBuilder = (GUICtrlRead($g_hChkSaveWallBldr) = $GUI_CHECKED)
 			$g_iCmbUpgradeWallsLevel = _GUICtrlComboBox_GetCurSel($g_hCmbWalls)
+			; ================================================== Wall/Building Upgrading Priority by RK MOD	========================;
+			$g_iChkUpgrPriority = GUICtrlRead($g_hChkUpgrPriority) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbUpgrdPriority = _GUICtrlComboBox_GetCurSel($g_hCmbUpgrdPriority)
 			For $i = 4 To 13
 				$g_aiWallsCurrentCount[$i] = Number(GUICtrlRead($g_ahWallsCurrentCount[$i]))
 			Next

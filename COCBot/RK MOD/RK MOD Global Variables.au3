@@ -210,3 +210,6 @@ Global $g_bChkUseGTFO = False, $g_bChkUseKickOut = False, $g_bChkKickOutSpammers
 Global $g_iTxtMinSaveGTFO_Elixir = 200000, $g_iTxtMinSaveGTFO_DE = 2000, _
 	$g_iTxtDonatedCap = 8, $g_iTxtReceivedCap = 35, _
 	$g_iTxtKickLimit = 6
+; ================================================== Wall/Building Upgrading Priority by RK MOD	======================================== ;
+
+Global $g_iChkUpgrPriority = 0, $g_iCmbUpgrdPriority = 0

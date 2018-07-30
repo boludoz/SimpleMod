@@ -508,6 +508,9 @@ Func SaveConfig_600_17()
 	_Ini_Add("upgrade", "use-storage", $g_iUpgradeWallLootType)
 	_Ini_Add("upgrade", "savebldr", $g_bUpgradeWallSaveBuilder ? 1 : 0)
 	_Ini_Add("upgrade", "walllvl", $g_iCmbUpgradeWallsLevel)
+	; ================================================== Wall/Building Upgrading Priority by RK MOD	========================;
+	_Ini_Add("Priority upgrade", "chkUpgrPriority", $g_iChkUpgrPriority ? 1 : 0)
+	_Ini_Add("Priority upgrade", "cmbUpgrdPriority", _GUICtrlComboBox_GetCurSel($g_hCmbUpgrdPriority))
 	For $i = 4 To 13
 		_Ini_Add("Walls", "Wall" & StringFormat("%02d", $i), $g_aiWallsCurrentCount[$i])
 	Next
