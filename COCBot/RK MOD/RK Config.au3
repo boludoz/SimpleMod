@@ -817,15 +817,17 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			
 			; ================================================== GTFO - Added by RK MOD ======================================== ;
 			
-			$g_bChkUseGTFO = (GUICtrlRead($g_hChkUseGTFO) = $GUI_CHECKED)
-			$g_iTxtMinSaveGTFO_Elixir = Number(GUICtrlRead($g_hTxtMinSaveGTFO_Elixir))
-			$g_iTxtMinSaveGTFO_DE = Number( GUICtrlRead($g_hTxtMinSaveGTFO_DE))
+			GUICtrlSetState($g_hChkUseGTFO, $g_bChkUseGTFO = True ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtMinSaveGTFO_Elixir, $g_iTxtMinSaveGTFO_Elixir)
+			GUICtrlSetData($g_hTxtMinSaveGTFO_DE, $g_iTxtMinSaveGTFO_DE)
+			ApplyGTFO()
 
-			$g_bChkUseKickOut = (GUICtrlRead($g_hChkUseKickOut) = $GUI_CHECKED)
-			$g_iTxtDonatedCap = Number(GUICtrlRead($g_hTxtDonatedCap))
-			$g_iTxtReceivedCap = Number(GUICtrlRead($g_hTxtReceivedCap))
-			$g_bChkKickOutSpammers = (GUICtrlRead($g_hChkKickOutSpammers) = $GUI_CHECKED)
-			$g_iTxtKickLimit = Number(GUICtrlRead($g_hTxtKickLimit))
+			GUICtrlSetState($g_hChkUseKickOut, $g_bChkUseKickOut = True ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
+			GUICtrlSetData($g_hTxtReceivedCap, $g_iTxtReceivedCap)
+			GUICtrlSetState($g_hChkKickOutSpammers, $g_bChkKickOutSpammers = True ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtKickLimit, $g_iTxtKickLimit)
+			ApplyKickOut()
 
 	EndSwitch
 
