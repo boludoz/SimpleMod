@@ -192,7 +192,8 @@ Func ReadConfig_RKMod()
 
 	$g_ibUpdateNewUpgradesOnly = (IniRead($g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", 0) = 1)
 
-	; GTFO - Team AiO MOD++
+	; ==================================================  GTFO - Added by RK MOD ================================================ ;
+	
 	IniReadS($g_bChkUseGTFO, $g_sProfileConfigPath, "GTFO", "chkUseGTFO", $g_bChkUseGTFO, "Bool")
 	IniReadS($g_iTxtMinSaveGTFO_Elixir, $g_sProfileConfigPath, "GTFO", "txtMinSaveGTFO_Elixir", $g_iTxtMinSaveGTFO_Elixir, "Int")
 	IniReadS($g_iTxtMinSaveGTFO_DE, $g_sProfileConfigPath, "GTFO", "txtMinSaveGTFO_DE", $g_iTxtMinSaveGTFO_DE, "Int")
@@ -207,15 +208,6 @@ EndFunc   ;==>ReadConfig_RKMod
 Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	ApplyConfig_RKMod(GetApplyConfigSaveAction())
 
-	; GTFO - Team AiO MOD++
-	_Ini_Add("GTFO", "chkUseGTFO", $g_bChkUseGTFO)
-	_Ini_Add("GTFO", "txtMinSaveGTFO_Elixir",$g_iTxtMinSaveGTFO_Elixir)
-	_Ini_Add("GTFO", "txtMinSaveGTFO_DE", $g_iTxtMinSaveGTFO_DE)
-	_Ini_Add("GTFO", "chkUseKickOut", $g_bChkUseKickOut)
-	_Ini_Add("GTFO", "txtDonatedCap", $g_iTxtDonatedCap)
-	_Ini_Add("GTFO", "txtReceivedCap", $g_iTxtReceivedCap)
-	_Ini_Add("GTFO", "chkKickOutSpammers", $g_bChkKickOutSpammers)
-	_Ini_Add("GTFO", "txtKickLimit", $g_iTxtKickLimit)
 
 	; ================================================== CSV SPEED - Added by RK MOD =============================== ;
 
@@ -400,6 +392,17 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	; ================================================== Upgrade Management - Added by RK MOD ================================== ;
 
 	_Ini_Add("upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly ? 1 : 0)
+	
+	; ==================================================  GTFO - Added by RK MOD ================================================ ;
+	
+	_Ini_Add("GTFO", "chkUseGTFO", $g_bChkUseGTFO)
+	_Ini_Add("GTFO", "txtMinSaveGTFO_Elixir",$g_iTxtMinSaveGTFO_Elixir)
+	_Ini_Add("GTFO", "txtMinSaveGTFO_DE", $g_iTxtMinSaveGTFO_DE)
+	_Ini_Add("GTFO", "chkUseKickOut", $g_bChkUseKickOut)
+	_Ini_Add("GTFO", "txtDonatedCap", $g_iTxtDonatedCap)
+	_Ini_Add("GTFO", "txtReceivedCap", $g_iTxtReceivedCap)
+	_Ini_Add("GTFO", "chkKickOutSpammers", $g_bChkKickOutSpammers)
+	_Ini_Add("GTFO", "txtKickLimit", $g_iTxtKickLimit)
 
 EndFunc   ;==>SaveConfig_RKMod
 
@@ -413,17 +416,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 		     $icmbCSVSpeed[$LB] = _GUICtrlComboBox_GetCurSel($cmbCSVSpeed[$LB])
 			 $icmbCSVSpeed[$DB] = _GUICtrlComboBox_GetCurSel($cmbCSVSpeed[$DB])
-
-			; GTFO - Team AiO MOD++
-			$g_bChkUseGTFO = (GUICtrlRead($g_hChkUseGTFO) = $GUI_CHECKED)
-			$g_iTxtMinSaveGTFO_Elixir = Number(GUICtrlRead($g_hTxtMinSaveGTFO_Elixir))
-			$g_iTxtMinSaveGTFO_DE = Number( GUICtrlRead($g_hTxtMinSaveGTFO_DE))
-
-			$g_bChkUseKickOut = (GUICtrlRead($g_hChkUseKickOut) = $GUI_CHECKED)
-			$g_iTxtDonatedCap = Number(GUICtrlRead($g_hTxtDonatedCap))
-			$g_iTxtReceivedCap = Number(GUICtrlRead($g_hTxtReceivedCap))
-			$g_bChkKickOutSpammers = (GUICtrlRead($g_hChkKickOutSpammers) = $GUI_CHECKED)
-			$g_iTxtKickLimit = Number(GUICtrlRead($g_hTxtKickLimit))
 
 			; ================================================== Super XP - Added by RK MOD ========================== ;
 
@@ -576,23 +568,36 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$g_iChkBoostCMagic = GUICtrlRead($g_hChkBoostCMagic) = $GUI_CHECKED ? 1 : 0
 			$g_iCmbBoostClMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic)
 
-			; ================================================== Multi Finger - Added by RK MOD ======================================== ;
+			; ================================================== Multi Finger - Added by RK MOD =================================== ;
 			$g_iMultiFingerStyle = _GUICtrlComboBox_GetCurSel($g_hCmbDBMultiFinger)
 
-			; ================================================== Unit/Wave Factor - Added by RK MOD ======================================== ;
+			; ================================================== Unit/Wave Factor - Added by RK MOD =============================== ;
 			$g_iChkUnitFactor = (GUICtrlRead($g_hChkUnitFactor) = $GUI_CHECKED)
 			$g_iChkWaveFactor = (GUICtrlRead($g_hChkWaveFactor) = $GUI_CHECKED)
 			$g_iTxtUnitFactor = GUICtrlRead($g_hTxtUnitFactor)
 			$g_iTxtWaveFactor = GUICtrlRead($g_hTxtWaveFactor)
 
-			; ================================================== Check Grand Warden Mode - Added by RK MOD ================================= ;
+			; ================================================== Check Grand Warden Mode - Added by RK MOD ======================== ;
 
 			$g_bCheckWardenMode = (GUICtrlRead($g_hChkCheckWardenMode) = $GUI_CHECKED)
 			$g_iCheckWardenMode = _GUICtrlComboBox_GetCurSel($g_hCmbCheckWardenMode)
 
-			; ================================================== Upgrade Management - Added by RK MOD ================================= ;
+			; ================================================== Upgrade Management - Added by RK MOD ============================= ;
 
 			$g_ibUpdateNewUpgradesOnly = (GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED)
+			
+			; ================================================== GTFO - Added by RK MOD =========================================== ;
+			
+			$g_bChkUseGTFO = (GUICtrlRead($g_hChkUseGTFO) = $GUI_CHECKED)
+			$g_iTxtMinSaveGTFO_Elixir = Number(GUICtrlRead($g_hTxtMinSaveGTFO_Elixir))
+			$g_iTxtMinSaveGTFO_DE = Number( GUICtrlRead($g_hTxtMinSaveGTFO_DE))
+
+			$g_bChkUseKickOut = (GUICtrlRead($g_hChkUseKickOut) = $GUI_CHECKED)
+			$g_iTxtDonatedCap = Number(GUICtrlRead($g_hTxtDonatedCap))
+			$g_iTxtReceivedCap = Number(GUICtrlRead($g_hTxtReceivedCap))
+			$g_bChkKickOutSpammers = (GUICtrlRead($g_hChkKickOutSpammers) = $GUI_CHECKED)
+			$g_iTxtKickLimit = Number(GUICtrlRead($g_hTxtKickLimit))
+
 
 		Case "Read"
 
@@ -809,6 +814,18 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			; ==================================================  Upgrade Management - Added by RK MOD ======================================== ;
 
 			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly ? $GUI_CHECKED : $GUI_UNCHECKED)
+			
+			; ================================================== GTFO - Added by RK MOD ======================================== ;
+			
+			$g_bChkUseGTFO = (GUICtrlRead($g_hChkUseGTFO) = $GUI_CHECKED)
+			$g_iTxtMinSaveGTFO_Elixir = Number(GUICtrlRead($g_hTxtMinSaveGTFO_Elixir))
+			$g_iTxtMinSaveGTFO_DE = Number( GUICtrlRead($g_hTxtMinSaveGTFO_DE))
+
+			$g_bChkUseKickOut = (GUICtrlRead($g_hChkUseKickOut) = $GUI_CHECKED)
+			$g_iTxtDonatedCap = Number(GUICtrlRead($g_hTxtDonatedCap))
+			$g_iTxtReceivedCap = Number(GUICtrlRead($g_hTxtReceivedCap))
+			$g_bChkKickOutSpammers = (GUICtrlRead($g_hChkKickOutSpammers) = $GUI_CHECKED)
+			$g_iTxtKickLimit = Number(GUICtrlRead($g_hTxtKickLimit))
 
 	EndSwitch
 

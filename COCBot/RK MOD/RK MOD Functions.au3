@@ -29,11 +29,11 @@
 
 #include "RK Switch Profiles.au3"
 
-;GTFO Mod
-#include "GTFO Mod\GTFO.au3"
-#include "GTFO Mod\KickOut.au3"
+;GTFO - Added by RK MOD
+#include "RK GTFO\GTFO.au3"
+#include "RK GTFO\KickOut.au3"
 
-; Bot Humanization
+; Bot Humanization - Added by RK MOD
 #include "RK Bot Humanization\BotHumanization.au3"
 #include "RK Bot Humanization\AttackNDefenseActions.au3"
 #include "RK Bot Humanization\BestClansNPlayersActions.au3"
@@ -41,18 +41,17 @@
 #include "RK Bot Humanization\ClanActions.au3"
 #include "RK Bot Humanization\ClanWarActions.au3"
 
-;#include "RK DoubleTrain\RK Double Train.au3"
 
-; getOcr
+; getOcr - Added by RK MOD
 #include "RK OCR\getMyOcr.au3"
 
 
-; Chat
+;NEW ChatBot by RK MOD
 #include "RK Chatbot\Chatbot.au3"
 #include "RK Chatbot\ChatFunc.au3"
 #include "RK Chatbot\Multy Lang.au3"
 
-; Boost for Magic Spell
+; Boost for Magic Spell by RK MOD
 #include "RK Boost for Magic Spell\RK Boost for Magic Spell.au3"
 #include "RK Boost for Magic Spell\RK BoostAllWithMagicSpell.au3"
 

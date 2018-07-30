@@ -229,95 +229,6 @@ Func GUIControl_WM_ACTIVATEAPP($hWin, $iMsg, $wParam, $lParam)
 	Return $GUI_RUNDEFMSG
 EndFunc   ;==>GUIControl_WM_ACTIVATEAPP
 
-; GTFO - Team AiO MOD++
-Func ApplyGTFO()
-	$g_bChkUseGTFO = (GUICtrlRead($g_hChkUseGTFO) = $GUI_CHECKED)
-	If $g_bChkUseGTFO = True Then
-		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_ENABLE)
-		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_ENABLE)
-	Else
-		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_DISABLE)
-		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_DISABLE)
-	EndIf
-EndFunc   ;==>ApplyGTFO
-
-Func ApplyElixirGTFO()
-	$g_iTxtMinSaveGTFO_Elixir = Number(GUICtrlRead($g_hTxtMinSaveGTFO_Elixir))
-EndFunc   ;==>ApplyElixirGTFO
-
-Func ApplyDarkElixirGTFO()
-	$g_iTxtMinSaveGTFO_DE = Number(GUICtrlRead($g_hTxtMinSaveGTFO_DE))
-EndFunc   ;==>ApplyDarkElixirGTFO
-
-Func ApplyKickOut()
-	$g_bChkUseKickOut = (GUICtrlRead($g_hChkUseKickOut) = $GUI_CHECKED)
-	If $g_bChkUseKickOut = True Then
-		GUICtrlSetState($g_hTxtDonatedCap, $GUI_ENABLE)
-		GUICtrlSetState($g_hTxtReceivedCap, $GUI_ENABLE)
-		GUICtrlSetState($g_hChkKickOutSpammers, $GUI_ENABLE)
-		GUICtrlSetState($g_hTxtKickLimit, $GUI_ENABLE)
-	Else
-		GUICtrlSetState($g_hTxtDonatedCap, $GUI_DISABLE)
-		GUICtrlSetState($g_hTxtReceivedCap, $GUI_DISABLE)
-		GUICtrlSetState($g_hChkKickOutSpammers, $GUI_DISABLE)
-		GUICtrlSetState($g_hTxtKickLimit, $GUI_DISABLE)
-	EndIf
-	ApplyKickOutSpammers()
-	ApplyKickLimits()
-EndFunc   ;==>ApplyKickOut
-
-Func ApplyDonatedCap()
-	$g_iTxtDonatedCap = Number(GUICtrlRead($g_hTxtDonatedCap))
-	If $g_iTxtDonatedCap < 0 Then
-		$g_iTxtDonatedCap = 0
-		GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
-	EndIf
-
-	If $g_iTxtDonatedCap > 8 Then
-		$g_iTxtDonatedCap = 8
-		GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
-	EndIf
-EndFunc   ;==>ApplyDonatedCap
-
-Func ApplyReceivedCap()
-	$g_iTxtReceivedCap = Number(GUICtrlRead($g_hTxtReceivedCap))
-	If $g_iTxtReceivedCap < 0 Then
-		$g_iTxtReceivedCap = 0
-		GUICtrlSetData($g_hTxtReceivedCap, $g_iTxtReceivedCap)
-	EndIf
-	If $g_iTxtReceivedCap > 35 Then
-		$g_iTxtReceivedCap = 35
-		GUICtrlSetData($g_hTxtReceivedCap, $g_iTxtReceivedCap)
-	EndIf
-EndFunc   ;==>ApplyReceivedCap
-
-; Kick Spammer to kick only donating members
-Func ApplyKickOutSpammers()
-	$g_bChkKickOutSpammers = (GUICtrlRead($g_hChkKickOutSpammers) = $GUI_CHECKED)
-	If $g_bChkKickOutSpammers = True Then
-		GUICtrlSetState($g_hTxtDonatedCap, $GUI_DISABLE)
-		GUICtrlSetState($g_hTxtReceivedCap, $GUI_DISABLE)
-	Else
-		If $g_bChkUseKickOut = True Then
-			GUICtrlSetState($g_hTxtDonatedCap, $GUI_ENABLE)
-			GUICtrlSetState($g_hTxtReceivedCap, $GUI_ENABLE)
-		EndIf
-	EndIf
-EndFunc   ;==>ApplyKickOutSpammers
-
-; Set Kick Limite according to your need
-Func ApplyKickLimits()
-	$g_iTxtKickLimit = Number(GUICtrlRead($g_hTxtKickLimit))
-	If $g_iTxtKickLimit < 1 Then
-		$g_iTxtKickLimit = 1
-		GUICtrlSetData($g_hTxtKickLimit, $g_iTxtKickLimit)
-	EndIf
-	If $g_iTxtKickLimit > 9 Then
-		$g_iTxtKickLimit = 9
-		GUICtrlSetData($g_hTxtKickLimit, $g_iTxtKickLimit)
-	EndIf
-EndFunc   ;==>ApplyKickLimits
-
 Func GUIControl_WM_NCACTIVATE($hWin, $iMsg, $wParam, $lParam)
 	Local $wasCritical = SetCriticalMessageProcessing(True)
 	Local $wasAllowed = $g_bTogglePauseAllowed
@@ -2036,11 +1947,13 @@ Func tabDONATE()
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_RequestCC)
 			GUISetState(@SW_HIDE, $g_hGUI_DONATECC)
 			GUISetState(@SW_HIDE, $g_hGUI_ScheduleCC)
+			GUISetState(@SW_HIDE,$g_hGUI_GTFOMOD)
 			GUICtrlSetPos($g_hChkDonate, $tabdonx[2] - 15, $tabdonx[3] - 15)
 
 		Case $tabidx = 1 ; Donate CC
 			GUISetState(@SW_HIDE, $g_hGUI_RequestCC)
 			GUISetState(@SW_HIDE, $g_hGUI_ScheduleCC)
+			GUISetState(@SW_HIDE,$g_hGUI_GTFOMOD)
 			If GUICtrlRead($g_hChkDonate) = $GUI_CHECKED Then
 				GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_DONATECC)
 				GUICtrlSetState($g_hLblDonateDisabled, $GUI_HIDE)
@@ -2053,6 +1966,7 @@ Func tabDONATE()
 		Case $tabidx = 2 ; Schedule
 			GUISetState(@SW_HIDE, $g_hGUI_RequestCC)
 			GUISetState(@SW_HIDE, $g_hGUI_DONATECC)
+			GUISetState(@SW_HIDE,$g_hGUI_GTFOMOD)
 			If GUICtrlRead($g_hChkDonate) = $GUI_CHECKED Then
 				GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_ScheduleCC)
 				GUICtrlSetState($g_hLblScheduleDisabled, $GUI_HIDE)
@@ -2061,7 +1975,13 @@ Func tabDONATE()
 				GUICtrlSetState($g_hLblScheduleDisabled, $GUI_SHOW)
 			EndIf
 			GUICtrlSetPos($g_hChkDonate, $tabdonx[2] - 15, $tabdonx[3] - 15)
-
+			
+        Case $tabidx = 3 ; GTFOMOD
+		    GUISetState(@SW_SHOWNOACTIVATE,$g_hGUI_GTFOMOD)
+			GUISetState(@SW_HIDE, $g_hGUI_RequestCC)
+			GUISetState(@SW_HIDE, $g_hGUI_DONATECC)
+			GUISetState(@SW_HIDE, $g_hGUI_ScheduleCC)
+			GUICtrlSetPos($g_hChkDonate, $tabdonx[2] - 15, $tabdonx[3] - 15)
 	EndSelect
 
 EndFunc   ;==>tabDONATE
