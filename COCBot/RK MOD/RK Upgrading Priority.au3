@@ -23,7 +23,7 @@ Func UpgrdPriority()
 
 	Switch _GUICtrlComboBox_GetCurSel($g_hCmbUpgrdPriority)
 		Case "Walls"
-			$g_iCmbUpgrdPriority = 0 Then UpgradeWall()
+			$g_iCmbUpgrdPriority = 0 
 		Case "Building"
 			$g_iCmbUpgrdPriority = 1
 	EndSwitch
