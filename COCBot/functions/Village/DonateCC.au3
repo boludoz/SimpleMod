@@ -605,7 +605,7 @@ Func DonateTroopType(Const $iTroopIndex, $Quant = 0, Const $Custom = False, Cons
 	$donateposinrow = $Slot
 	If $Slot >= 7 And $Slot <= 13 Then
 		$donaterow = 2 ;second row of troops
-		$Slot = $Slot - 6
+		$Slot = $Slot - 7
 		$donateposinrow = $Slot
 		$YComp = 88 ; correct 860x780
 	EndIf
