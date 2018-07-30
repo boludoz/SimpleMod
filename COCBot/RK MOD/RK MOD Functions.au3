@@ -74,6 +74,9 @@
 ;Wall/Building Upgrading Priority 
 #include "RK Upgrading Priority.au3"
 
+;Demen's DoubleTrain
+#include "RK DoubleTrain.au3"
+
 #include "RK UpgradesMgmt.au3"
 
 #include "RK Config.au3"

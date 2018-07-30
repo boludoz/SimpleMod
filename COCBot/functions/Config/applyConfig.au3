@@ -2087,13 +2087,13 @@ Func ApplyConfig_600_52_1($TypeReadSave)
 			GUICtrlSetState($g_ahChkArmy[0], $g_bQuickTrainArmy[0] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_ahChkArmy[1], $g_bQuickTrainArmy[1] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_ahChkArmy[2], $g_bQuickTrainArmy[2] ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkMultiClick, $g_bChkMultiClick ? $GUI_CHECKED : $GUI_UNCHECKED)
+            GUICtrlSetState($g_hChkMultiClick, $g_bChkMultiClick ? $GUI_CHECKED : $GUI_UNCHECKED) ; Multi-ClickArmy3 - Demen
 		Case "Save"
 			$g_bQuickTrainEnable = (GUICtrlRead($g_hChkUseQuickTrain) = $GUI_CHECKED)
 			$g_bQuickTrainArmy[0] = (GUICtrlRead($g_ahChkArmy[0]) = $GUI_CHECKED)
 			$g_bQuickTrainArmy[1] = (GUICtrlRead($g_ahChkArmy[1]) = $GUI_CHECKED)
 			$g_bQuickTrainArmy[2] = (GUICtrlRead($g_ahChkArmy[2]) = $GUI_CHECKED)
-			$g_bChkMultiClick = (GUICtrlRead($g_hChkMultiClick) = $GUI_CHECKED)
+            $g_bChkMultiClick = (GUICtrlRead($g_hChkMultiClick) = $GUI_CHECKED); Multi-ClickArmy3 - Demen
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_52_1
 
@@ -2128,8 +2128,8 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			; spell capacity and forced flag
 			GUICtrlSetData($g_hTxtTotalCountSpell, $g_iTotalSpellValue)
 			GUICtrlSetState($g_hChkForceBrewBeforeAttack, $g_bForceBrewSpells ? $GUI_CHECKED : $GUI_UNCHECKED)
-			; DoubleTrain - Demen
-			GUICtrlSetState($g_hChkDoubleTrain, $g_bDoubleTrain ? $GUI_CHECKED : $GUI_UNCHECKED)
+            ; DoubleTrain - Demen
+            GUICtrlSetState($g_hChkDoubleTrain, $g_bDoubleTrain ? $GUI_CHECKED : $GUI_UNCHECKED)
 		Case "Save"
 			; troop/spell levels and counts
 			For $T = 0 To $eTroopCount - 1
@@ -2147,8 +2147,8 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			; spell capacity and forced flag
 			$g_iTotalSpellValue = GUICtrlRead($g_hTxtTotalCountSpell)
 			$g_bForceBrewSpells = (GUICtrlRead($g_hChkForceBrewBeforeAttack) = $GUI_CHECKED)
-			; DoubleTrain - Demen
-			$g_bDoubleTrain = (GUICtrlRead($g_hChkDoubleTrain) = $GUI_CHECKED)
+            ; DoubleTrain - Demen
+            $g_bDoubleTrain = (GUICtrlRead($g_hChkDoubleTrain) = $GUI_CHECKED)
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_52_2
 

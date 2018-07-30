@@ -23,7 +23,9 @@ Global $g_ahTxtTrainArmyTroopCount[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Global $g_ahLblTrainArmyTroopLevel[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Global $g_ahTxtTrainArmySpellCount[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Global $g_ahLblTrainArmySpellLevel[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Global $g_hTxtFullTroop = 0, $g_hChkTotalCampForced = 0, $g_hTxtTotalCampForced = 0, $g_hChkForceBrewBeforeAttack = 0, $g_hChkDoubleTrain = 0, $g_hChkMultiClick = 0 , $g_hChkAutoCamp = 0
+Global $g_hTxtFullTroop = 0, $g_hChkTotalCampForced = 0, $g_hTxtTotalCampForced = 0, $g_hChkForceBrewBeforeAttack = 0
+Global $g_hChkDoubleTrain = 0, $g_hChkMultiClick = 0 ; DoubleTrain & Multi-Click Army3 - Demen
+Global $g_hChkAutoCamp = 0 ; Auto Camp by bld
 
 Global $g_hGrpTrainTroops = 0, $g_hGrpCookSpell = 0
 Global $g_ahPicTrainArmyTroop[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -141,12 +143,12 @@ Func CreateTroopsSpellsSubTab()
 			If $i = 0 Then GUICtrlSetState(-1, $GUI_CHECKED)
 			GUICtrlSetOnEvent(-1, "chkQuickTrainCombo")
 		Next
-		$g_hChkMultiClick = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkMultiClick", "Multi-click Army 3"), $x + 120 + 3 * 60, $y + 20, -1, 15)
-			GUICtrlSetState(-1, $GUI_UNCHECKED)
-			GUICtrlSetState(-1, $GUI_HIDE)
-		$g_hLblRemoveArmy = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "Btn_Remove_Army", "Remove Army"), $x + 335, $y + 20, -1, 15, $SS_LEFT)
-		$g_hBtnRemoveArmy = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnResetButton, $x + 405, $y + 17, 24, 24)
-			GUICtrlSetOnEvent(-1, "Removecamp")
+        $g_hLblRemoveArmy = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "Btn_Remove_Army", "Remove Army"), $x + 335, $y + 20, -1, 15, $SS_LEFT)
+        $g_hBtnRemoveArmy = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnResetButton, $x + 405, $y + 17, 24, 24)
+            GUICtrlSetOnEvent(-1, "Removecamp")
+        $g_hChkMultiClick = GUICtrlCreateCheckbox("Multi-click Army 3", $x + 120 + 3 * 60, $y + 20, -1, 15) ; Multi-Click Army3 Demen
+            GUICtrlSetState(-1, $GUI_UNCHECKED) ; Multi-Click Army3 Demen
+            GUICtrlSetState(-1, $GUI_HIDE) ; Multi-Click Army3 Demen
 
 	$x = 10
 	$y = 45
@@ -520,10 +522,10 @@ Func CreateTroopsSpellsSubTab()
 			GUICtrlSetData(-1, "0|2|4|6|7|8|9|10|11", "0")
 			GUICtrlSetOnEvent(-1, "TotalSpellCountClick")
 			
-			; DoubleTrain - Demen
-		$g_hChkDoubleTrain = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkDoubleTrain", "Double Train Army"), $x + 275, $y, -1, 15)
-           _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkDoubleTrain01", "Train 2nd set of troops & spells after training 1st combo" & @CRLF & "Make sure to enter correct 'Total Camp', 'Total Spell' and number of troops/spells in your setting"))
-		
+        ; DoubleTrain - Demen
+        $g_hChkDoubleTrain = GUICtrlCreateCheckbox("Double Train Army", $x + 275, $y, -1, 15)
+            _GUICtrlSetTip(-1, "Train 2nd set of troops & spells after training 1st combo" & @CRLF & "Make sure to enter correct 'Total Camp', 'Total Spell' and number of troops/spells in your setting")
+		; Auto Camp - Bld
 		$g_hChkAutoCamp = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkAutoCamp", "Auto update camps"), $x + 120, $y, -1, 15)   
 		 
 	$y += 13

@@ -110,7 +110,6 @@
 #include "functions\CreateArmy\TrainClick.au3"
 #include "functions\CreateArmy\TrainRevamp.au3"
 #include "functions\CreateArmy\TrainIt.au3"
-#include "functions\CreateArmy\DoubleTrain.au3"
 
 #include "functions\CreateArmy\getArmyTroops\getArmyTroopTime.au3"
 #include "functions\CreateArmy\getArmyTroops\getArmyTroopCapacity.au3"

@@ -926,9 +926,8 @@ Global $g_iTrainArmyFullTroopPct = 100
 Global $g_bTotalCampForced = False, $g_iTotalCampForcedValue = 200
 Global $g_bForceBrewSpells = False
 Global $g_iTotalSpellValue = 0
-Global $g_bDoubleTrain, $g_bDoubleTrainDone = False ; DoubleTrain Demen
+Global $g_bDoubleTrain, $g_bDoubleTrainDone = False, $g_bChkMultiClick ; DoubleTrain Demen
 Global $g_abDoubleTrainDone[8] = [False, False, False, False, False, False, False, False]; DoubleTrain Demen
-Global $g_bChkMultiClick
 
 ; <><><><> Attack Plan / Train Army / Boost <><><><>
 Global $g_iCmbBoostBarracks = 0, $g_iCmbBoostSpellFactory = 0, $g_iCmbBoostBarbarianKing = 0, $g_iCmbBoostArcherQueen = 0, $g_iCmbBoostWarden = 0

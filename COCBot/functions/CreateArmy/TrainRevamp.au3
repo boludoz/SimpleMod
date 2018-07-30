@@ -30,14 +30,14 @@ Func TrainRevamp()
 		If $g_bFirstStart Then $g_bFirstStart = False
 		Return
 	EndIf
-    
-	If ProfileSwitchAccountEnabled() Then $g_bDoubleTrainDone = $g_abDoubleTrainDone[$g_iCurAccount]
-	If $g_bIsFullArmywithHeroesAndSpells And $g_bDoubleTrainDone Then $g_bDoubleTrainDone = False
-	If Not $g_bQuickTrainEnable Then
-		TrainRevampOldStyle()
-		DoubleTrain()
-		Return
-	EndIf
+    ; Double train - RK Mod by Demen
+    If ProfileSwitchAccountEnabled() Then $g_bDoubleTrainDone = $g_abDoubleTrainDone[$g_iCurAccount]
+    If $g_bIsFullArmywithHeroesAndSpells And $g_bDoubleTrainDone Then $g_bDoubleTrainDone = False
+    If Not $g_bQuickTrainEnable Then
+        TrainRevampOldStyle()
+        DoubleTrain()
+        Return
+    EndIf
 
 	If $g_bDebugSetlogTrain Then SetLog(" - Initial Quick train Function")
 
@@ -46,11 +46,12 @@ Func TrainRevamp()
 	CheckIfArmyIsReady()
 
 	If Not $g_bRunState Then Return
+	
+    ; Double train - RK Mod by Demen
+    If $g_bDoubleTrain And ($g_bDoubleTrainDone Or $g_bIsFullArmywithHeroesAndSpells) Then
+        ; Do nothing DoubleQuickTrain()
 
-	If $g_bDoubleTrain And ($g_bDoubleTrainDone Or $g_bIsFullArmywithHeroesAndSpells) Then
-		; Do nothing DoubleQuickTrain()
-
-	ElseIf $g_bIsFullArmywithHeroesAndSpells Or ($g_CurrentCampUtilization = 0 And $g_bFirstStart) Then
+    ElseIf $g_bIsFullArmywithHeroesAndSpells Or ($g_CurrentCampUtilization = 0 And $g_bFirstStart) Then
 
 		If $g_bIsFullArmywithHeroesAndSpells Then SetLog(" - Your Army is Full, let's make troops before Attack!", $COLOR_INFO)
 		If ($g_CurrentCampUtilization = 0 And $g_bFirstStart) Then
@@ -83,7 +84,7 @@ Func TrainRevamp()
 		If $g_bFirstStart Then $g_bFirstStart = False
 	EndIf
 
-	DoubleQuickTrain()
+	DoubleQuickTrain() ; Double train - RK Mod by Demen
 
 	ClickP($aAway, 2, 0, "#0346") ;Click Away
 	If _Sleep(1000) Then Return ; Delay AFTER the click Away Prevents lots of coc restarts
@@ -151,13 +152,15 @@ Func TrainRevampOldStyle()
 	If $g_iActiveDonate = -1 Then PrepareDonateCC()
 
 	CheckIfArmyIsReady()
-    
-	If $g_bDoubleTrainDone And $g_bDoubleTrain Then
-		If $g_bDebugSetlogTrain Then SetLog("Double train already done, let's skip training" )
-		If _Sleep(250) Then Return
-		ClickP($aAway, 2, 0, "#0346") ;Click Away
-		Return
-	EndIf
+	
+	; Double train - RK Mod by Demen
+    If $g_bDoubleTrainDone And $g_bDoubleTrain Then
+        If $g_bDebugSetlogTrain Then SetLog("Double train already done, let's skip training" )
+        If _Sleep(250) Then Return
+        EndGainCost("Train")
+        ClickP($aAway, 2, 0, "#0346") ;Click Away
+        Return
+    EndIf
 	
 	If ThSnipesSkiptrain() Then Return
 
@@ -1741,29 +1744,32 @@ Func ResetVariables($sArmyType = "")
 
 EndFunc   ;==>ResetVariables
 
-Func TrainArmyNumber($Army, $iMultiClick = 5)
+Func TrainArmyNumber($Army, $iMultiClick = 5) ; Double train - RK Mod by Demen
 
 	Local $a_TrainArmy[3][4] = [[784, 368, 0x6fb830, 10], [784, 485, 0x72bb2f, 10], [784, 602, 0x71ba2f, 10]]
 	SetLog("Using Quick Train Tab", $COLOR_INFO)
 	If Not $g_bRunState Then Return
 
-	For $Num = 0 To 2
-		If $Army[$Num] Then
-		    Local $iClick = 1, $sLog = ""
-			If $g_bChkMultiClick And $Num = 2 Then
-				$iClick = $iMultiClick
-				If $iClick > 1 Then $sLog = ", Multi-click x" & $iClick & " times"
-			EndIf
-			If _ColorCheck(_GetPixelColor($a_TrainArmy[$Num][0], $a_TrainArmy[$Num][1], True), Hex($a_TrainArmy[$Num][2], 6), $a_TrainArmy[$Num][3]) Then
-				Click($a_TrainArmy[$Num][0], $a_TrainArmy[$Num][1], $iClick)
-				SetLog(" - Making the Army " & $Num + 1 & $sLog, $COLOR_INFO)
-				If _Sleep(500) Then Return
-			ElseIf $iClick = 1 Then
-				SetLog(" - Error Clicking On Army: " & $Num + 1 & "| Pixel was :" & _GetPixelColor($a_TrainArmy[$Num][0], $a_TrainArmy[$Num][1], True), $COLOR_ACTION)
-				SetLog(" - Please 'edit' the Army " & $Num + 1 & " before start the BOT!!!", $COLOR_ERROR)
-			EndIf
-		EndIf
-	Next
+    For $Num = 0 To 2
+        If $Army[$Num] Then
+            ; Multi-Click Army3 - Demen
+            Local $iClick = 1, $sLog = ""
+            If $g_bChkMultiClick And $Num = 2 Then
+                $iClick = $iMultiClick
+                If $iClick > 1 Then $sLog = ", Multi-click x" & $iClick & " times"
+            EndIf
+            If _ColorCheck(_GetPixelColor($a_TrainArmy[$Num][0], $a_TrainArmy[$Num][1], True), Hex($a_TrainArmy[$Num][2], 6), $a_TrainArmy[$Num][3]) Then
+                Click($a_TrainArmy[$Num][0], $a_TrainArmy[$Num][1], 1)
+                SetLog(" - Making the Army " & $Num + 1, $COLOR_INFO)
+                Click($a_TrainArmy[$Num][0], $a_TrainArmy[$Num][1], $iClick) ; Multi-Click Army3 - Demen
+                SetLog(" - Making the Army " & $Num + 1 & $sLog, $COLOR_INFO) ; Multi-Click Army3 - Demen
+                If _Sleep(500) Then Return
+            Else
+            ElseIf $iClick = 1 Then ; Multi-Click Army3 - Demen
+                SetLog(" - Error Clicking On Army: " & $Num + 1 & "| Pixel was :" & _GetPixelColor($a_TrainArmy[$Num][0], $a_TrainArmy[$Num][1], True), $COLOR_ACTION)
+                SetLog(" - Please 'edit' the Army " & $Num + 1 & " before start the BOT!!!", $COLOR_ERROR)
+            EndIf
+
 
 EndFunc   ;==>TrainArmyNumber
 
