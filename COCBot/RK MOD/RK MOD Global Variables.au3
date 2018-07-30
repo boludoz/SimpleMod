@@ -61,7 +61,7 @@ Global $cmbSwLang = 0
 
 ; ================================================ Skip Request CC - Added by RK MOD =================================================== ;
 
-Global $g_bSkipRequestCC, $g_iSkipRequestCCTroop, $g_iSkipRequestCCSpell 
+Global $g_bSkipRequestCC, $g_iSkipRequestCCTroop, $g_iSkipRequestCCSpell
 
 ; ================================================ First Request CC Troops - Added by RK MOD ======================================== ;
 
@@ -203,3 +203,10 @@ Global Const $UP = True, $DOWN = False, $TILL_END = True
 
 ; ================================================== Fill - Added by RK MOD ================================== ;
 Global $g_iSpaceForTroopsFill = 0
+
+
+; GTFO Mod
+Global $g_bChkUseGTFO = False, $g_bChkUseKickOut = False, $g_bChkKickOutSpammers = False
+Global $g_iTxtMinSaveGTFO_Elixir = 200000, $g_iTxtMinSaveGTFO_DE = 2000, _
+	$g_iTxtDonatedCap = 8, $g_iTxtReceivedCap = 35, _
+	$g_iTxtKickLimit = 6

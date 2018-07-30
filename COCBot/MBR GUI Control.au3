@@ -20,6 +20,7 @@ Global $g_bRedrawBotWindow[3] = [True, False, False] ; [0] = window redraw enabl
 Global $g_hFrmBot_WNDPROC = 0
 Global $g_hFrmBot_WNDPROC_ptr = 0
 
+
 ;~ ------------------------------------------------------
 ;~ Control Tab Files
 ;~ ------------------------------------------------------
@@ -228,6 +229,95 @@ Func GUIControl_WM_ACTIVATEAPP($hWin, $iMsg, $wParam, $lParam)
 	Return $GUI_RUNDEFMSG
 EndFunc   ;==>GUIControl_WM_ACTIVATEAPP
 
+; GTFO - Team AiO MOD++
+Func ApplyGTFO()
+	$g_bChkUseGTFO = (GUICtrlRead($g_hChkUseGTFO) = $GUI_CHECKED)
+	If $g_bChkUseGTFO = True Then
+		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_ENABLE)
+		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_ENABLE)
+	Else
+		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_DISABLE)
+	EndIf
+EndFunc   ;==>ApplyGTFO
+
+Func ApplyElixirGTFO()
+	$g_iTxtMinSaveGTFO_Elixir = Number(GUICtrlRead($g_hTxtMinSaveGTFO_Elixir))
+EndFunc   ;==>ApplyElixirGTFO
+
+Func ApplyDarkElixirGTFO()
+	$g_iTxtMinSaveGTFO_DE = Number(GUICtrlRead($g_hTxtMinSaveGTFO_DE))
+EndFunc   ;==>ApplyDarkElixirGTFO
+
+Func ApplyKickOut()
+	$g_bChkUseKickOut = (GUICtrlRead($g_hChkUseKickOut) = $GUI_CHECKED)
+	If $g_bChkUseKickOut = True Then
+		GUICtrlSetState($g_hTxtDonatedCap, $GUI_ENABLE)
+		GUICtrlSetState($g_hTxtReceivedCap, $GUI_ENABLE)
+		GUICtrlSetState($g_hChkKickOutSpammers, $GUI_ENABLE)
+		GUICtrlSetState($g_hTxtKickLimit, $GUI_ENABLE)
+	Else
+		GUICtrlSetState($g_hTxtDonatedCap, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtReceivedCap, $GUI_DISABLE)
+		GUICtrlSetState($g_hChkKickOutSpammers, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtKickLimit, $GUI_DISABLE)
+	EndIf
+	ApplyKickOutSpammers()
+	ApplyKickLimits()
+EndFunc   ;==>ApplyKickOut
+
+Func ApplyDonatedCap()
+	$g_iTxtDonatedCap = Number(GUICtrlRead($g_hTxtDonatedCap))
+	If $g_iTxtDonatedCap < 0 Then
+		$g_iTxtDonatedCap = 0
+		GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
+	EndIf
+
+	If $g_iTxtDonatedCap > 8 Then
+		$g_iTxtDonatedCap = 8
+		GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
+	EndIf
+EndFunc   ;==>ApplyDonatedCap
+
+Func ApplyReceivedCap()
+	$g_iTxtReceivedCap = Number(GUICtrlRead($g_hTxtReceivedCap))
+	If $g_iTxtReceivedCap < 0 Then
+		$g_iTxtReceivedCap = 0
+		GUICtrlSetData($g_hTxtReceivedCap, $g_iTxtReceivedCap)
+	EndIf
+	If $g_iTxtReceivedCap > 35 Then
+		$g_iTxtReceivedCap = 35
+		GUICtrlSetData($g_hTxtReceivedCap, $g_iTxtReceivedCap)
+	EndIf
+EndFunc   ;==>ApplyReceivedCap
+
+; Kick Spammer to kick only donating members
+Func ApplyKickOutSpammers()
+	$g_bChkKickOutSpammers = (GUICtrlRead($g_hChkKickOutSpammers) = $GUI_CHECKED)
+	If $g_bChkKickOutSpammers = True Then
+		GUICtrlSetState($g_hTxtDonatedCap, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtReceivedCap, $GUI_DISABLE)
+	Else
+		If $g_bChkUseKickOut = True Then
+			GUICtrlSetState($g_hTxtDonatedCap, $GUI_ENABLE)
+			GUICtrlSetState($g_hTxtReceivedCap, $GUI_ENABLE)
+		EndIf
+	EndIf
+EndFunc   ;==>ApplyKickOutSpammers
+
+; Set Kick Limite according to your need
+Func ApplyKickLimits()
+	$g_iTxtKickLimit = Number(GUICtrlRead($g_hTxtKickLimit))
+	If $g_iTxtKickLimit < 1 Then
+		$g_iTxtKickLimit = 1
+		GUICtrlSetData($g_hTxtKickLimit, $g_iTxtKickLimit)
+	EndIf
+	If $g_iTxtKickLimit > 9 Then
+		$g_iTxtKickLimit = 9
+		GUICtrlSetData($g_hTxtKickLimit, $g_iTxtKickLimit)
+	EndIf
+EndFunc   ;==>ApplyKickLimits
+
 Func GUIControl_WM_NCACTIVATE($hWin, $iMsg, $wParam, $lParam)
 	Local $wasCritical = SetCriticalMessageProcessing(True)
 	Local $wasAllowed = $g_bTogglePauseAllowed
@@ -407,7 +497,7 @@ Func GUIControl_AndroidEmbedded($hWin, $iMsg, $wParam, $lParam)
 				;If $g_bDebugAndroidEmbedded Then AndroidShield("GUIControl_AndroidEmbedded WM_SETFOCUS", Default, False, 0, True)
 				;AndroidShield(Default, False, 10, AndroidShieldHasFocus())
 			Else
-				
+
 				If $GUIControl_AndroidEmbedded_Call[0] <> $hCtrlTarget Or $GUIControl_AndroidEmbedded_Call[1] <> $iMsg Or $GUIControl_AndroidEmbedded_Call[2] <> $wParam Or $GUIControl_AndroidEmbedded_Call[3] <> $lParam Then
 					; protect against strange infinite loops with BS1/2 when using Ctrl-MouseWheel
 					If $g_bDebugAndroidEmbedded Then SetDebugLog("GUIControl_AndroidEmbedded: FORWARD $hWin=" & $hWin & ", $iMsg=" & Hex($iMsg) & ", $wParam=" & $wParam & ", $lParam=" & $lParam & ", $hCtrlTarget=" & $hCtrlTarget, Default, True)
@@ -625,12 +715,12 @@ Func GUIControl_WM_MOVE($hWind, $iMsg, $wParam, $lParam)
 			SetCriticalMessageProcessing($wasCritical)
 			Return $GUI_RUNDEFMSG
 		EndIf
-        
+
 		If $g_bAndroidEmbedded And $g_bAndroidEmbeddedWindowZeroPosition Then
 			; tell Android Window new bot position, this is currently only required for Nox 6.2.0.0 to fix user clicks when docked
 			_SendMessage($g_hAndroidWindow, $iMsg, $wParam, $lParam)
 		EndIf
-		
+
 		; update bot pos variables
 		Local $g_iFrmBotPos = WinGetPos($g_hFrmBot)
 		If $g_bAndroidEmbedded = False Then
@@ -1175,7 +1265,7 @@ Func BotGuiModeToggle()
 			GUICtrlDelete($g_hTabAttack)
 			GUICtrlDelete($g_hTabBot)
 			GUICtrlDelete($g_hTabAbout)
-			
+
 			GUICtrlDelete($g_hTabMOD)
 			GUICtrlDelete($g_hGUI_MOD)
 
@@ -1679,9 +1769,9 @@ Func SetTime($bForceUpdate = False)
 		_TicksToTime(Int(__TimerDiff($g_hTimerSinceStarted) + $g_iTimePassed), $hour, $min, $sec)
 		GUICtrlSetData($g_hLblResultRuntimeNow, StringFormat("%02i:%02i:%02i", $hour, $min, $sec))
 	EndIf
-	
+
 	; Return
-	
+
 	Local Static $DisplayLoop = 0
 	If $DisplayLoop >= 30 Then ; Conserve Clock Cycles on Updating times
 		$DisplayLoop = 0
@@ -1746,7 +1836,7 @@ Func tabMain()
 			GUISetState(@SW_HIDE, $g_hGUI_MOD)
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_ATTACK)
 			tabAttack()
-        
+
 		Case $tabidx = 3 ; MOD
 			GUISetState(@SW_HIDE, $g_hGUI_VILLAGE)
 			GUISetState(@SW_HIDE, $g_hGUI_LOG)
@@ -1754,7 +1844,7 @@ Func tabMain()
 			GUISetState(@SW_HIDE, $g_hGUI_BOT)
 			GUISetState(@SW_HIDE, $g_hGUI_ABOUT)
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_MOD)
-			
+
 		Case $tabidx = 4 ; Options
 			GUISetState(@SW_HIDE, $g_hGUI_LOG)
 			GUISetState(@SW_HIDE, $g_hGUI_VILLAGE)

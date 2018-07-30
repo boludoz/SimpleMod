@@ -19,6 +19,7 @@
 ;#include "functions\Other\Synchronization.au3" ; now included in LaunchConsole.au3
 #include "functions\Other\OnAutoItErrorRegisterBot.au3"
 
+
 #include "functions\Attack\AttackReport.au3"
 #include "functions\Attack\BuildingSide.au3"
 #include "functions\Attack\GoldElixirChangeThSnipes.au3"

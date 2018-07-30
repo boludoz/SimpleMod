@@ -29,6 +29,10 @@
 
 #include "RK Switch Profiles.au3"
 
+;GTFO Mod
+#include "GTFO Mod\GTFO.au3"
+#include "GTFO Mod\KickOut.au3"
+
 ; Bot Humanization
 #include "RK Bot Humanization\BotHumanization.au3"
 #include "RK Bot Humanization\AttackNDefenseActions.au3"
