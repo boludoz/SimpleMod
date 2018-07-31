@@ -566,18 +566,6 @@ Func ChatbotMessage() ; run the chatbot
 			SetLog("Found chat message: " & $ChatMsg, $COLOR_GREEN)
 			Local $SentMessage = False
 			
-			; Prevents the sending of repeated messages.
-			If $ChatbotClanUseResponses And Not $SentMessage Then
-				For $a = 0 To UBound($ClanResponses) - 1
-					Local $Response = $ClanResponses[$a][1]
-					If StringCompare($Response, $sLastChat) Then
-						$SentMessage = True
-						Setlog("Repeated answer, jump.")
-						ExitLoop
-					EndIf
-				Next
-			EndIf
-		
 			If $ChatMsg = "" Or $ChatMsg = " " Then
 				If $ChatbotClanAlwaysMsg Then
 					If Not ChatbotChatClanInput() Then Return
