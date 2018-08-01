@@ -721,7 +721,7 @@ Func runBot() ;Bot that runs everything in order
 			;If _Sleep($DELAYRUNBOT5) Then Return
 			;If $g_bFirstStart Then checkArmyCamp(True, True, False, True)
 		    $g_bcanRequestCC = True
-			If $g_bReqCCFirst Then
+			If $g_bReqCCFirst and BalanceRecRec(True) Then
 				RequestCC()
 				If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			EndIf
@@ -991,7 +991,7 @@ Func _Idle() ;Sequence that runs until Full Army
 		If $g_bRestart = True Then ExitLoop
 		$TimeIdle += Round(__TimerDiff($hTimer) / 1000, 2) ;In Seconds
 
-		If $g_bCanRequestCC = True Then RequestCC()
+		If $g_bCanRequestCC = True and BalanceRecRec(True) Then RequestCC()
 
 		SetLog("Time Idle: " & StringFormat("%02i", Floor(Floor($TimeIdle / 60) / 60)) & ":" & StringFormat("%02i", Floor(Mod(Floor($TimeIdle / 60), 60))) & ":" & StringFormat("%02i", Floor(Mod($TimeIdle, 60))))
 
@@ -1203,7 +1203,7 @@ Func _RunFunction($action)
 			_Sleep($DELAYRUNBOT3)
             EndIf			
 		Case "RequestCC"
-			If Not $g_bReqCCFirst Then ; MOD move the Request CC Troops function to the beginning of the run loop
+			If Not $g_bReqCCFirst and BalanceRecRec(True) Then ; MOD move the Request CC Troops function to the beginning of the run loop
 				RequestCC()
 			EndIf
 			If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
