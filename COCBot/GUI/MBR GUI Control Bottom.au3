@@ -46,9 +46,9 @@ Func Initiate()
 		$g_bInitiateSwitchAcc = True
 		$g_iFirstTimeLab = 0
 		
-		$g_bDoubleTrainDone = False
-		Local $abEmptyDoubleTrainDone = [False, False, False, False, False, False, False, False]
-		$g_abDoubleTrainDone = $abEmptyDoubleTrainDone
+        $g_bDoubleTrainDone = False     ; Double train - RK Mod by Demen
+        Local $abEmptyDoubleTrainDone = [False, False, False, False, False, False, False, False] ; Double train - RK Mod by Demen
+        $g_abDoubleTrainDone = $abEmptyDoubleTrainDone ; Double train - RK Mod by Demen
 
 		If $g_bNotifyDeleteAllPushesOnStart Then _DeletePush()
 

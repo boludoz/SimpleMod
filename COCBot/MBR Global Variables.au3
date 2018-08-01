@@ -209,7 +209,7 @@ Global $g_bAndroidEmbedEnabled = True
 Global $g_bAndroidEmbedded = False
 Global $g_bAndroidEmbeddedWindowZeroPosition = True ; If true, the parent Android Window is not positioned in bot at the bottom but at offset 0,0 (fixes Nox 6.2.0.0 clicks not working)
 Global $g_aiAndroidEmbeddedCtrlTarget[10] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Global $g_avAndroidShieldStatus[5] = [Default, 0, 0, Default, Default] ; Current Android Shield status (0: True = Shield Up, False = Shield Down, Default only for init; 1: Color; 2: Transparency = 0-255; 3: Invisible Shield; 4: Detached Shield
+Global $g_avAndroidShieldStatus[5] = [Default, 0, 0, Default, Default] ; Current Android Shield status (0: True = Shield Up, False = Shield Down, Default only for init; 1: Color; 2: Transparency = 0-255; 3: Invisible Shield; 4: Detached Shield)
 
 Global $g_bPoliteCloseCoC = False ; True: PoliteCloseCoC() function will try to perform a polite close by going back and press exit button, False am force-stop to kill game
 Global Const $g_bAndroidBackgroundLaunchEnabled = False ; Headless mode not finished yet (2016-07-13, cosote)
@@ -926,9 +926,8 @@ Global $g_iTrainArmyFullTroopPct = 100
 Global $g_bTotalCampForced = False, $g_iTotalCampForcedValue = 200
 Global $g_bForceBrewSpells = False
 Global $g_iTotalSpellValue = 0
-Global $g_bDoubleTrain, $g_bDoubleTrainDone = False ; DoubleTrain Demen
+Global $g_bDoubleTrain, $g_bDoubleTrainDone = False, $g_bChkMultiClick ; DoubleTrain Demen
 Global $g_abDoubleTrainDone[8] = [False, False, False, False, False, False, False, False]; DoubleTrain Demen
-Global $g_bChkMultiClick
 
 ; <><><><> Attack Plan / Train Army / Boost <><><><>
 Global $g_iCmbBoostBarracks = 0, $g_iCmbBoostSpellFactory = 0, $g_iCmbBoostBarbarianKing = 0, $g_iCmbBoostArcherQueen = 0, $g_iCmbBoostWarden = 0
@@ -1329,7 +1328,8 @@ Global Const $g_aaiTroopsToBeUsed[12] = [$g_aiUseAllTroops, $g_aiUseBarracks, $g
 Global $g_bTHSnipeUsedKing = False
 Global $g_bTHSnipeUsedQueen = False
 Global $g_bTHSnipeUsedWarden = False
-Global $g_avAttackTroops[22][2] ;11 Slots of troops -  Name, Amount (was [12][2], + 11 slots extended (Slot11+))
+Global $g_avAttackTroops[22][2] ;11 Slots of troops -  Name, Amount (was [12][2], + 11 slots extended (Slot11+)) RK Mod by Demen
+Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; Slot11+
 Global $g_bFullArmy = False ;Check for full army or not
 Global $g_iKingSlot = -1, $g_iQueenSlot = -1, $g_iWardenSlot = -1, $g_iClanCastleSlot = -1
 

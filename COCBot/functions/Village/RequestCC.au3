@@ -130,6 +130,33 @@ Func RequestCC($ClickPAtEnd = True, $specifyText = "")
 
 EndFunc   ;==>RequestCC
 
+Func BalanceRecRec($bSetLog = False)
+
+	If Not $g_bCanRequestCC Then Return False ; Will disable donation
+	If Not $g_bUseCCBalanced Then Return True ; will enable the donation
+
+	Local $hour = StringSplit(_NowTime(4), ":", $STR_NOCOUNT)
+
+	If Not $g_abRequestCCHours[$hour[0]] Then Return False ; will disable the donation
+
+
+	If $g_bUseCCBalanced Then
+		If $g_iTroopsDonated = 0 And $g_iTroopsReceived = 0 Then ProfileReport()
+		If Number($g_iTroopsDonated) <> 0 Then
+			If Number(Number($g_iTroopsReceived) / Number($g_iTroopsDonated)) >= (Number($g_iCCReceived) / Number($g_iCCDonated)) Then
+				;Stop Donating
+				If $bSetLog Then SetLog("Skipping Receive because Donate/Recieve Ratio is wrong", $COLOR_INFO)
+				Return False
+			Else
+				; Continue
+				Return True
+			EndIf
+		EndIf
+	Else
+		Return True
+	EndIf
+EndFunc   ;==>BalanceRecRec
+
 Func _makerequest()
 	;click button request troops
 	Click($aRequestTroopsAO[0], $aRequestTroopsAO[1], 1, 0, "0336") ;Select text for request

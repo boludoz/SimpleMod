@@ -668,6 +668,9 @@ Func ReadConfig_600_17()
 	IniReadS($g_iUpgradeWallLootType, $g_sProfileConfigPath, "upgrade", "use-storage", 0, "int")
 	IniReadS($g_bUpgradeWallSaveBuilder, $g_sProfileConfigPath, "upgrade", "savebldr", False, "Bool")
 	IniReadS($g_iCmbUpgradeWallsLevel, $g_sProfileConfigPath, "upgrade", "walllvl", 6, "int")
+	; ================================================== Wall/Building Upgrading Priority by RK MOD	========================;
+	IniReadS($g_iChkUpgrPriority, $g_sProfileConfigPath, "Priority upgrade", "chkUpgrPriority", $g_iChkUpgrPriority, "Int")
+	IniReadS($g_hCmbUpgrdPriority, $g_sProfileConfigPath, "Priority upgrade", "CmbUpgrdPriority", 0, "int")
 	For $i = 4 To 13
 		IniReadS($g_aiWallsCurrentCount[$i], $g_sProfileConfigPath, "Walls", "Wall" & StringFormat("%02d", $i), 0, "int")
 	Next
@@ -1264,7 +1267,7 @@ Func ReadConfig_600_52_1()
 	$g_bQuickTrainArmy[0] = (IniRead($g_sProfileConfigPath, "troop", "QuickTrainArmy1", "0") = "1")
 	$g_bQuickTrainArmy[1] = (IniRead($g_sProfileConfigPath, "troop", "QuickTrainArmy2", "0") = "1")
 	$g_bQuickTrainArmy[2] = (IniRead($g_sProfileConfigPath, "troop", "QuickTrainArmy3", "0") = "1")
-	$g_bChkMultiClick = (IniRead($g_sProfileConfigPath, "troop", "MultiClickArmy3", "0") = "1")
+    $g_bChkMultiClick = (IniRead($g_sProfileConfigPath, "troop", "MultiClickArmy3", "0") = "1") ; Muilti-ClickArmy3 - Demen
 EndFunc   ;==>ReadConfig_600_52_1
 
 Func ReadConfig_600_52_2()
@@ -1304,8 +1307,8 @@ Func ReadConfig_600_52_2()
 	IniReadS($g_iTotalSpellValue, $g_sProfileConfigPath, "Spells", "SpellFactory", 0, "int")
 	$g_iTotalSpellValue = Int($g_iTotalSpellValue)
 	
-	; DoubleTrain - Demen
-	$g_bDoubleTrain = (IniRead($g_sProfileConfigPath, "troop", "DoubleTrain", "0") = "1")
+    ; DoubleTrain - Demen
+    $g_bDoubleTrain = (IniRead($g_sProfileConfigPath, "troop", "DoubleTrain", "0") = "1")
 	
 EndFunc   ;==>ReadConfig_600_52_2
 

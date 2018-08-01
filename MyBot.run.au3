@@ -592,7 +592,7 @@ Func FinalInitialization(Const $sAI)
 	DisableProcessWindowsGhosting()
 
 	UpdateMainGUI()
-	
+
 	; temporary solution for the most recent MEmu versions
 	CheckClickAdbNewVersions()
 
@@ -721,7 +721,7 @@ Func runBot() ;Bot that runs everything in order
 			;If _Sleep($DELAYRUNBOT5) Then Return
 			;If $g_bFirstStart Then checkArmyCamp(True, True, False, True)
 		    $g_bcanRequestCC = True
-			If $g_bReqCCFirst Then
+			If $g_bReqCCFirst and BalanceRecRec(True) Then
 				RequestCC()
 				If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			EndIf
@@ -740,9 +740,9 @@ Func runBot() ;Bot that runs everything in order
 				EndIf
 				If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
 			WEnd
-			
+
 			If ($g_iCommandStop = 0 Or $g_iCommandStop = 3) And ProfileSwitchAccountEnabled() And Not $g_abDonateOnly[$g_iCurAccount] Then checkSwitchAcc()
-			
+
 			AddIdleTime()
 			If $g_bRunState = False Then Return
 			If $g_bRestart = True Then ContinueLoop
@@ -949,7 +949,7 @@ Func _Idle() ;Sequence that runs until Full Army
 				checkMainScreen(False)
 				$g_iActualTrainSkip = $g_iActualTrainSkip + 1
 			Else
-				SetLog("Humanize bot, prevent to delete and recreate troops " & $g_iActualTrainSkip + 1 & "/" & $g_iMaxTrainSkip, $color_blue)				
+				SetLog("Humanize bot, prevent to delete and recreate troops " & $g_iActualTrainSkip + 1 & "/" & $g_iMaxTrainSkip, $color_blue)
 				If $g_iActualTrainSkip >= $g_iMaxTrainSkip Then
 					$g_iActualTrainSkip = 0
 				EndIf
@@ -991,7 +991,7 @@ Func _Idle() ;Sequence that runs until Full Army
 		If $g_bRestart = True Then ExitLoop
 		$TimeIdle += Round(__TimerDiff($hTimer) / 1000, 2) ;In Seconds
 
-		If $g_bCanRequestCC = True Then RequestCC()
+		If $g_bCanRequestCC = True and BalanceRecRec(True) Then RequestCC()
 
 		SetLog("Time Idle: " & StringFormat("%02i", Floor(Floor($TimeIdle / 60) / 60)) & ":" & StringFormat("%02i", Floor(Mod(Floor($TimeIdle / 60), 60))) & ":" & StringFormat("%02i", Floor(Mod($TimeIdle, 60))))
 
@@ -1201,9 +1201,9 @@ Func _RunFunction($action)
 		    If $g_iChkLabCheck = 0 Then
 			LabGuiDisplay()
 			_Sleep($DELAYRUNBOT3)
-            EndIf			
+            EndIf
 		Case "RequestCC"
-			If Not $g_bReqCCFirst Then ; MOD move the Request CC Troops function to the beginning of the run loop
+			If Not $g_bReqCCFirst and BalanceRecRec(True) Then ; MOD move the Request CC Troops function to the beginning of the run loop
 				RequestCC()
 			EndIf
 			If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
@@ -1231,7 +1231,7 @@ Func _RunFunction($action)
 		Case "SuperXP"
 			MainSuperXPHandler()
 			_Sleep($DELAYRUNBOT3)
-		Case "Humanization" 
+		Case "Humanization"
 			BotHumanization()
 			_Sleep($DELAYRUNBOT3)
 		Case "CollectFreeMagicItems"

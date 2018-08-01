@@ -14,7 +14,11 @@
 ; ===============================================================================================================================
 #include-once
 
-Global $g_hGUI_DONATE = 0, $g_hGUI_DONATE_TAB = 0, $g_hGUI_DONATE_TAB_ITEM1 = 0, $g_hGUI_DONATE_TAB_ITEM2 = 0, $g_hGUI_DONATE_TAB_ITEM3 = 0
+Global $g_hGUI_DONATE = 0, $g_hGUI_DONATE_TAB = 0, $g_hGUI_DONATE_TAB_ITEM1 = 0, $g_hGUI_DONATE_TAB_ITEM2 = 0, $g_hGUI_DONATE_TAB_ITEM3 = 0, $g_hGUI_DONATE_TAB_ITEM4 = 0
+Global $g_hLblGFTO = 0, $g_hChkUseGTFO = 0, $g_hTxtMinSaveGTFO_Elixir = 0, $g_hTxtMinSaveGTFO_DE = 0
+Global $g_hLblKickout = 0, $g_hChkUseKickOut = 0, $g_hTxtDonatedCap = 0, $g_hTxtReceivedCap = 0, $g_hChkKickOutSpammers = 0, $g_hTxtKickLimit = 0
+Global $g_hLblInitialDonated = 0, $g_hLblCurrentDonated = 0, $g_hGUI_GTFOMOD = 0
+
 
 ; Request
 Global $g_hChkRequestTroopsEnable = 0, $g_hTxtRequestCC = 0, $g_ahChkRequestCCHours[24] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -80,6 +84,7 @@ Global $g_hChkUseCCBalanced = 0, $g_hCmbCCDonated = 0, $g_hCmbCCReceived = 0
 GLobal $g_hLblDonateCChour = 0, $g_ahLblDonateCChoursE = 0
 GLobal $g_hLblDonateCChours[12] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
+
 Func CreateVillageDonate()
 	$g_hGUI_DONATE = _GUICreate("", $g_iSizeWGrpTab2, $g_iSizeHGrpTab2, 5, 25, BitOR($WS_CHILD, $WS_TABSTOP), -1, $g_hGUI_VILLAGE)
 	;GUISetBkColor($COLOR_WHITE, $g_hGUI_DONATE)
@@ -100,6 +105,9 @@ Func CreateVillageDonate()
 	$g_hGUI_DONATE_TAB_ITEM3 = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_02_STab_02_STab_03", "Schedule Donations"))
 	$g_hLblScheduleDisabled = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Main GUI", "disabled_Tab_02_STab_02_STab_Info_01", -1) & " " & GetTranslatedFileIni("MBR Main GUI", "Tab_02_STab_02_STab_02", -1) & " " & GetTranslatedFileIni("MBR Main GUI", "disabled_Tab_03_STab_02_STab_Info_02", -1), 5, 30, $g_iSizeWGrpTab3, 374)
 		GUICtrlSetState(-1, $GUI_HIDE)
+	$g_hGUI_DONATE_TAB_ITEM4 = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_02_STab_02_STab_04", "GTFO Mod"))
+		GTFOMODGUI()
+		GUICtrlSetState(-1, $GUI_HIDE)
 	GUICtrlCreateTabItem("")
 
 EndFunc   ;==>CreateVillageDonate
@@ -113,7 +121,7 @@ Func CreateRequestSubTab()
 	Local $x = $xStart
 	Local $y = $yStart
 	$g_hGrpRequestCC = GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "Group_01", "Clan Castle Troops"), $x - 20, $y - 20, $g_iSizeWGrpTab3, $g_iSizeHGrpTab3)
-	$y += 10
+	$y += 3
 	$x += 10
 		_GUICtrlCreateIcon($g_sLibIconPath, $eIcnCCRequest, $x - 5, $y, 64, 64, $BS_ICON)
 		$g_hChkRequestTroopsEnable = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkRequestTroopsEnable", "Request Troops / Spells"), $x + 40 + 30, $y - 6)
@@ -121,14 +129,14 @@ Func CreateRequestSubTab()
 		$g_hTxtRequestCC = GUICtrlCreateInput(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "TxtRequestCC", "Anything please"), $x + 40 + 30, $y + 15, 155, 20, BitOR($SS_CENTER, $ES_AUTOHSCROLL))
 			GUICtrlSetState(-1, $GUI_DISABLE)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "TxtRequestCC_Info_01", "This text is used on your request for troops in the Clan chat."))
-	 
+
 	 ; Russian Request- by RK MOD
-	$y += 20  
+	$y += 20
 		$g_hChkRusLang2 = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkRusLang2_01", "Russian request"), $x + 240, $y - 27, -1, -1)
 		_GUICtrlSetTip(-1,  GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkRusLang2_02", "On. Russian request for troops. Note: The input language in the Android emulator must be RUSSIAN."))
 		GUICtrlSetState(-1, $GUI_UNCHECKED)
 		GUICtrlSetOnEvent(-1, "chkRusLang2")
-		
+
 	 ; Request troops for defense Add RK MOD
 		$g_hChkRequestTroopsEnableDefense = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkRequestTroopsEnableDefense", "Request Defense troops"), $x + 240, $y - 6)
 			GUICtrlSetOnEvent(-1, "chkRequestDefense")
@@ -138,14 +146,14 @@ Func CreateRequestSubTab()
 		$g_hTxtRequestDefenseEarly = GUICtrlCreateInput("0", $x + 350, $y + 40, 25, 16, $SS_CENTER)
 			GUICtrlSetLimit(-1, 3)
 			GUICtrlSetBkColor(-1, $COLOR_MONEYGREEN)
-     
+
 	 ; move the Request CC Troops function to the beginning of the run loop	- Add RK MOD
 	 $y += 17
  		$g_hChkReqCCFirst = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkReqCCFirst", "Request early"), $x + 70, $y + 20 , -1, -1)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkReqCCFirst_Info_01", "Request troops at the beginning of the run loop"))
      		GUICtrlSetState(-1, $GUI_DISABLE)
 			GUICtrlSetOnEvent(-1, "chkReqCCFirst")
-	
+
 		; Skip Request CC - Add RK MOD
 	$y += 25
 		$g_hChkSkipRequestCC = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkSkipRequestCC", "Skip request when:"), $x + 70, $y + 25)
@@ -165,8 +173,8 @@ Func CreateRequestSubTab()
 			GUICtrlSetLimit(-1, 1)
         _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "TxtSkipRequestCCSpell", "Stop sending request when received this number of CC Spells" & @CRLF & "Set to ""2+"" means when CC Spell is full" & @CRLF & "Set to ""0"" means to always ignore CC Spell"))
 			GUICtrlSetOnEvent(-1, "chkSkipRequestCC")
-		
-		
+
+
 	$x += 29 + 30
 	$y += 150
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "Only_during_hours", "Only during these hours of each day"), $x + 30, $y, 300, 20, $BS_MULTILINE)
@@ -387,7 +395,7 @@ Func CreateDonateSubTab()
 		$g_ahBtnDonateTroop[$eTroopElectroDragon] = GUICtrlCreateButton("", $x + 2, $y, $Offx - 2, $Offx - 2, $BS_ICON)
 			_GUICtrlSetImage(-1, $g_sLibIconPath, $eIcnElectroDragon, 1)
 			GUICtrlSetOnEvent(-1, "btnDonateTroop")
-	$x += $Offx		
+	$x += $Offx
 		$g_ahLblDonateTroop[$eTroopMinion] = GUICtrlCreateLabel("", $x, $y - 2, $Offx + 2, $Offx + 2)
 			GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 			GUICtrlSetState(-1, $GUI_DISABLE)
@@ -468,7 +476,7 @@ Func CreateDonateSubTab()
 		$g_ahBtnDonateTroop[$eTroopWitch] = GUICtrlCreateButton("", $x + 2, $y, $Offx - 2, $Offx - 2, $BS_ICON)
 			_GUICtrlSetImage(-1, $g_sLibIconPath, $eIcnWitch, 1)
 			GUICtrlSetOnEvent(-1, "btnDonateTroop")
-	$x += $Offx		
+	$x += $Offx
 		$g_ahLblDonateTroop[$eTroopLavaHound] = GUICtrlCreateLabel("", $x, $y - 2, $Offx + 2, $Offx + 2)
 			GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
 			GUICtrlSetState(-1, $GUI_DISABLE)
@@ -1267,7 +1275,7 @@ Func CreateDonateSubTab()
 			GUICtrlSetData(-1, StringFormat(GetTranslatedFileIni("MBR GUI Design Child Village - Donate", "TxtBlacklistTroop_Item_31", "no electro dragon\r\nelectrodrag no\r\nedrag no")))
 			_GUICtrlSetTip(-1, $sTxtKeywordsNoTip & " " & $sTxtElectroDragons)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-	
+
 	$x = $xStart
 	$y = $Offy
 	$g_ahGrpDonateTroop[$eTroopMinion] = GUICtrlCreateGroup($sTxtMinions, $x - 20, $y - 20, $g_iSizeWGrpTab3, 169)
@@ -1427,7 +1435,7 @@ Func CreateDonateSubTab()
 			GUICtrlSetData(-1, StringFormat(GetTranslatedFileIni("MBR GUI Design Child Village - Donate", "TxtBlacklistTroop_Item_22", "no witches\r\nwitch no")))
 			_GUICtrlSetTip(-1, $sTxtKeywordsNoTip & " " & $sTxtWitches)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-	
+
 	$x = $xStart
 	$y = $Offy
 	$g_ahGrpDonateTroop[$eTroopLavaHound] = GUICtrlCreateGroup($SetLog, $x - 20, $y - 20, $g_iSizeWGrpTab3, 169)
@@ -1762,7 +1770,7 @@ Func CreateDonateSubTab()
 
 	$x = $xStart
 	$y = $Offy
-	;;; Additional Custom Donate #3 ~ Additional Custom Donate by NguyenAnhHD
+	;;; Additional Custom Donate #3 ~ Additional Custom Donate 
 	$g_ahGrpDonateTroop[$eCustomC] = GUICtrlCreateGroup($sDonateTxtCustomC, $x - 20, $y - 20, $g_iSizeWGrpTab3, 169)
 	$x -= 10
 	$y -= 2
@@ -1832,7 +1840,7 @@ Func CreateDonateSubTab()
 
 	$x = $xStart
 	$y = $Offy
-	;;; Additional Custom Donate #4 ~ Additional Custom Donate by NguyenAnhHD
+	;;; Additional Custom Donate #4 ~ Additional Custom Donate 
 	$g_ahGrpDonateTroop[$eCustomD] = GUICtrlCreateGroup($sDonateTxtCustomD, $x - 20, $y - 20, $g_iSizeWGrpTab3, 169)
 	$x -= 10
 	$y -= 2
@@ -2104,3 +2112,81 @@ Func CreateScheduleSubTab()
 
 EndFunc   ;==>CreateScheduleSubTab
 #EndRegion
+
+Func GTFOMODGUI()
+   
+	Local $x = 25, $y = 45
+	GUICtrlCreateGroup(GetTranslatedFileIni("MOD GUI Design - Misc", "Group_01", "Special Kickass Donation"), $x - 20, $y - 20, $g_iSizeWGrpTab2, 130)
+
+	$x -= 17
+		$g_hLblGFTO = GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "LblGTFO", "Lightning Fast Troops'n'Spells Donation"), $x, $y, 436, 22, BitOR($SS_CENTER, $SS_CENTERIMAGE))
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MOD GUI Design - Misc", "LblGTFO_Info_01", "This is a Standalone feature!") & @CRLF & _
+							   GetTranslatedFileIni("MOD GUI Design - Misc", "LblGTFO_Info_02", "Just Set your custom train, correct capacities") & @CRLF & _
+							   GetTranslatedFileIni("MOD GUI Design - Misc", "LblGTFO_Info_03", "And This feature!"))
+			GUICtrlSetBkColor($g_hLblGFTO, 0x3498DB) ; Blue
+			GUICtrlSetFont($g_hLblGFTO, 12)
+
+	$y += 30
+		$g_hChkUseGTFO = GUICtrlCreateCheckbox(GetTranslatedFileIni("MOD GUI Design - Misc", "ChkUseGTFO", "Enable it (at your own risks...)"), $x + 20, $y, -1, 17)
+		GUICtrlSetOnEvent(-1, "ApplyGTFO")
+
+	$y += 5
+	$x -= 15
+		GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "LblMinSaveGTFO_01", "Exit SKD when Elixir") & " <", $x + 25, $y + 25, -1, -1)
+		$g_hTxtMinSaveGTFO_Elixir = GUICtrlCreateInput("200000", $x + 160, $y + 22, 56, 21, BitOR($ES_CENTER, $ES_NUMBER))
+			GUICtrlSetOnEvent(-1, "ApplyElixirGTFO")
+		GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "LblMinSaveGTFO_02", "Exit SKD when Dark Elixir") & " <", $x + 25, $y + 50, -1, -1)
+		$g_hTxtMinSaveGTFO_DE = GUICtrlCreateInput("2000", $x + 160, $y + 47, 56, 21, BitOR($ES_CENTER, $ES_NUMBER))
+			GUICtrlSetOnEvent(-1, "ApplyDarkElixirGTFO")
+
+	$x += 210
+	$y += 2
+		GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "Label_01", "Goal of SKD is lightning fast donation"), $x + 2, $y, 250, -1, $SS_CENTER)
+		GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "Label_02", "SKD is perfect for GTFO and to win a lot of XP !"), $x + 2, $y + 18, 250, -1, $SS_CENTER)
+		GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "Label_03", "Time usage: 95% on Donations, 5% on Training"), $x + 2, $y + 36, 250, -1, $SS_CENTER)
+
+		GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "Label_04", "Initial") & ": ", $x + 17, $y + 54, -1, -1)
+		$g_hLblInitialDonated = GUICtrlCreateLabel("0", $x + 52, $y + 54, 40, -1, $SS_LEFT)
+
+		GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "Label_05", "Current") & ": ", $x + 112, $y + 54, -1, -1)
+		$g_hLblCurrentDonated = GUICtrlCreateLabel("0", $x + 157, $y + 54, 40, -1, $SS_LEFT)
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+
+	Local $x = 25, $y = 180
+	GUICtrlCreateGroup(GetTranslatedFileIni("MOD GUI Design - Misc", "Group_02", "Special Kickass New Members"), $x - 20, $y - 20, $g_iSizeWGrpTab2, 150)
+
+	$x -= 17
+		$g_hLblKickout = GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "LblKickout", "Kickout Spammers / New Members"), $x, $y, 436, 22, BitOR($SS_CENTER, $SS_CENTERIMAGE))
+			GUICtrlSetBkColor($g_hLblKickout, 0x3498db) ; Blue
+			GUICtrlSetFont($g_hLblKickout, 12)
+
+	$y += 30
+		$g_hChkUseKickOut = GUICtrlCreateCheckbox(GetTranslatedFileIni("MOD GUI Design - Misc", "ChkUseKickOut", "Enable it (at your own risks...)"), $x + 20, $y, -1, 17)
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MOD GUI Design - Misc", "ChkUseKickOut_Info_01", "Is necessary to be a Co-Leader or Leader"))
+			GUICtrlSetOnEvent(-1, "ApplyKickOut")
+
+	$y += 25
+		GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "LblDonatedCap", "Donated Cap"), $x + 20, $y, -1, -1)
+		$g_hTxtDonatedCap = GUICtrlCreateInput("8", $x + 120, $y - 2, 56, 21, BitOR($ES_CENTER, $ES_NUMBER))
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MOD GUI Design - Misc", "LblDonatedCap_Info_01", "New member + Donated Troops Limits, when reach will be kick [0-8]"))
+			GUICtrlSetOnEvent(-1, "ApplyDonatedCap")
+
+	$y += 25
+		GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "LblReceivedCap", "Received Cap"), $x + 20, $y, -1, -1)
+		$g_hTxtReceivedCap = GUICtrlCreateInput("35", $x + 120, $y - 2, 56, 21, BitOR($ES_CENTER, $ES_NUMBER))
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MOD GUI Design - Misc", "LblReceivedCap_Info_01", "New member + Received Troops limits, when reach will be kick [0-35]"))
+			GUICtrlSetOnEvent(-1, "ApplyReceivedCap")
+
+	$y -= 10
+		$g_hChkKickOutSpammers = GUICtrlCreateCheckbox(GetTranslatedFileIni("MOD GUI Design - Misc", "ChkKickOutSpammers", "KickOut Spammers"), $x + 190, $y, -1, 17)
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MOD GUI Design - Misc", "ChkKickOutSpammers_Info_01", "Kick only members with Donations and '0' Requests!"))
+			GUICtrlSetOnEvent(-1, "ApplyKickOutSpammers")
+
+		GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "LblKickLimit", "Kickout Limits"), $x + 359, $y - 15, -1, -1)
+		$g_hTxtKickLimit = GUICtrlCreateInput("6", $x + 365, $y, 56, 21, BitOR($ES_CENTER, $ES_NUMBER))
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MOD GUI Design - Misc", "LblKickLimit_Info_01", "How many Members will be kick each time.[1-9]") & @CRLF & _
+							   GetTranslatedFileIni("MOD GUI Design - Misc", "LblKickLimit_Info_02", "From Bottom Rank to Top"))
+			GUICtrlSetOnEvent(-1, "ApplyKickLimits")
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+
+EndFunc   ;==>GTFOMODGUI
