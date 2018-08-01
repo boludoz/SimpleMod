@@ -19,6 +19,7 @@
 ;#include "functions\Other\Synchronization.au3" ; now included in LaunchConsole.au3
 #include "functions\Other\OnAutoItErrorRegisterBot.au3"
 
+
 #include "functions\Attack\AttackReport.au3"
 #include "functions\Attack\BuildingSide.au3"
 #include "functions\Attack\GoldElixirChangeThSnipes.au3"
@@ -109,7 +110,6 @@
 #include "functions\CreateArmy\TrainClick.au3"
 #include "functions\CreateArmy\TrainRevamp.au3"
 #include "functions\CreateArmy\TrainIt.au3"
-#include "functions\CreateArmy\DoubleTrain.au3"
 
 #include "functions\CreateArmy\getArmyTroops\getArmyTroopTime.au3"
 #include "functions\CreateArmy\getArmyTroops\getArmyTroopCapacity.au3"

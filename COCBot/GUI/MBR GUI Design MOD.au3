@@ -654,3 +654,4 @@ Func TabItem8()
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 EndFunc   ;==>TabItem8
+

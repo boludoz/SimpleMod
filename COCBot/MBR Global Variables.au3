@@ -926,9 +926,8 @@ Global $g_iTrainArmyFullTroopPct = 100
 Global $g_bTotalCampForced = False, $g_iTotalCampForcedValue = 200
 Global $g_bForceBrewSpells = False
 Global $g_iTotalSpellValue = 0
-Global $g_bDoubleTrain, $g_bDoubleTrainDone = False ; DoubleTrain Demen
+Global $g_bDoubleTrain, $g_bDoubleTrainDone = False, $g_bChkMultiClick ; DoubleTrain Demen
 Global $g_abDoubleTrainDone[8] = [False, False, False, False, False, False, False, False]; DoubleTrain Demen
-Global $g_bChkMultiClick
 
 ; <><><><> Attack Plan / Train Army / Boost <><><><>
 Global $g_iCmbBoostBarracks = 0, $g_iCmbBoostSpellFactory = 0, $g_iCmbBoostBarbarianKing = 0, $g_iCmbBoostArcherQueen = 0, $g_iCmbBoostWarden = 0
@@ -1329,7 +1328,8 @@ Global Const $g_aaiTroopsToBeUsed[12] = [$g_aiUseAllTroops, $g_aiUseBarracks, $g
 Global $g_bTHSnipeUsedKing = False
 Global $g_bTHSnipeUsedQueen = False
 Global $g_bTHSnipeUsedWarden = False
-Global $g_avAttackTroops[22][2] ;11 Slots of troops -  Name, Amount (was [12][2], + 11 slots extended (Slot11+))
+Global $g_avAttackTroops[22][2] ;11 Slots of troops -  Name, Amount (was [12][2], + 11 slots extended (Slot11+)) RK Mod by Demen
+Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; Slot11+
 Global $g_bFullArmy = False ;Check for full army or not
 Global $g_iKingSlot = -1, $g_iQueenSlot = -1, $g_iWardenSlot = -1, $g_iClanCastleSlot = -1
 

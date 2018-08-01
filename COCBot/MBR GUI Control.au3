@@ -20,6 +20,7 @@ Global $g_bRedrawBotWindow[3] = [True, False, False] ; [0] = window redraw enabl
 Global $g_hFrmBot_WNDPROC = 0
 Global $g_hFrmBot_WNDPROC_ptr = 0
 
+
 ;~ ------------------------------------------------------
 ;~ Control Tab Files
 ;~ ------------------------------------------------------
@@ -407,7 +408,7 @@ Func GUIControl_AndroidEmbedded($hWin, $iMsg, $wParam, $lParam)
 				;If $g_bDebugAndroidEmbedded Then AndroidShield("GUIControl_AndroidEmbedded WM_SETFOCUS", Default, False, 0, True)
 				;AndroidShield(Default, False, 10, AndroidShieldHasFocus())
 			Else
-				
+
 				If $GUIControl_AndroidEmbedded_Call[0] <> $hCtrlTarget Or $GUIControl_AndroidEmbedded_Call[1] <> $iMsg Or $GUIControl_AndroidEmbedded_Call[2] <> $wParam Or $GUIControl_AndroidEmbedded_Call[3] <> $lParam Then
 					; protect against strange infinite loops with BS1/2 when using Ctrl-MouseWheel
 					If $g_bDebugAndroidEmbedded Then SetDebugLog("GUIControl_AndroidEmbedded: FORWARD $hWin=" & $hWin & ", $iMsg=" & Hex($iMsg) & ", $wParam=" & $wParam & ", $lParam=" & $lParam & ", $hCtrlTarget=" & $hCtrlTarget, Default, True)
@@ -625,12 +626,12 @@ Func GUIControl_WM_MOVE($hWind, $iMsg, $wParam, $lParam)
 			SetCriticalMessageProcessing($wasCritical)
 			Return $GUI_RUNDEFMSG
 		EndIf
-        
+
 		If $g_bAndroidEmbedded And $g_bAndroidEmbeddedWindowZeroPosition Then
 			; tell Android Window new bot position, this is currently only required for Nox 6.2.0.0 to fix user clicks when docked
 			_SendMessage($g_hAndroidWindow, $iMsg, $wParam, $lParam)
 		EndIf
-		
+
 		; update bot pos variables
 		Local $g_iFrmBotPos = WinGetPos($g_hFrmBot)
 		If $g_bAndroidEmbedded = False Then
@@ -1175,7 +1176,7 @@ Func BotGuiModeToggle()
 			GUICtrlDelete($g_hTabAttack)
 			GUICtrlDelete($g_hTabBot)
 			GUICtrlDelete($g_hTabAbout)
-			
+
 			GUICtrlDelete($g_hTabMOD)
 			GUICtrlDelete($g_hGUI_MOD)
 
@@ -1679,9 +1680,9 @@ Func SetTime($bForceUpdate = False)
 		_TicksToTime(Int(__TimerDiff($g_hTimerSinceStarted) + $g_iTimePassed), $hour, $min, $sec)
 		GUICtrlSetData($g_hLblResultRuntimeNow, StringFormat("%02i:%02i:%02i", $hour, $min, $sec))
 	EndIf
-	
+
 	; Return
-	
+
 	Local Static $DisplayLoop = 0
 	If $DisplayLoop >= 30 Then ; Conserve Clock Cycles on Updating times
 		$DisplayLoop = 0
@@ -1746,7 +1747,7 @@ Func tabMain()
 			GUISetState(@SW_HIDE, $g_hGUI_MOD)
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_ATTACK)
 			tabAttack()
-        
+
 		Case $tabidx = 3 ; MOD
 			GUISetState(@SW_HIDE, $g_hGUI_VILLAGE)
 			GUISetState(@SW_HIDE, $g_hGUI_LOG)
@@ -1754,7 +1755,7 @@ Func tabMain()
 			GUISetState(@SW_HIDE, $g_hGUI_BOT)
 			GUISetState(@SW_HIDE, $g_hGUI_ABOUT)
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_MOD)
-			
+
 		Case $tabidx = 4 ; Options
 			GUISetState(@SW_HIDE, $g_hGUI_LOG)
 			GUISetState(@SW_HIDE, $g_hGUI_VILLAGE)
@@ -1946,11 +1947,13 @@ Func tabDONATE()
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_RequestCC)
 			GUISetState(@SW_HIDE, $g_hGUI_DONATECC)
 			GUISetState(@SW_HIDE, $g_hGUI_ScheduleCC)
+			GUISetState(@SW_HIDE,$g_hGUI_GTFOMOD)
 			GUICtrlSetPos($g_hChkDonate, $tabdonx[2] - 15, $tabdonx[3] - 15)
 
 		Case $tabidx = 1 ; Donate CC
 			GUISetState(@SW_HIDE, $g_hGUI_RequestCC)
 			GUISetState(@SW_HIDE, $g_hGUI_ScheduleCC)
+			GUISetState(@SW_HIDE,$g_hGUI_GTFOMOD)
 			If GUICtrlRead($g_hChkDonate) = $GUI_CHECKED Then
 				GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_DONATECC)
 				GUICtrlSetState($g_hLblDonateDisabled, $GUI_HIDE)
@@ -1963,6 +1966,7 @@ Func tabDONATE()
 		Case $tabidx = 2 ; Schedule
 			GUISetState(@SW_HIDE, $g_hGUI_RequestCC)
 			GUISetState(@SW_HIDE, $g_hGUI_DONATECC)
+			GUISetState(@SW_HIDE,$g_hGUI_GTFOMOD)
 			If GUICtrlRead($g_hChkDonate) = $GUI_CHECKED Then
 				GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_ScheduleCC)
 				GUICtrlSetState($g_hLblScheduleDisabled, $GUI_HIDE)
@@ -1971,7 +1975,13 @@ Func tabDONATE()
 				GUICtrlSetState($g_hLblScheduleDisabled, $GUI_SHOW)
 			EndIf
 			GUICtrlSetPos($g_hChkDonate, $tabdonx[2] - 15, $tabdonx[3] - 15)
-
+			
+        Case $tabidx = 3 ; GTFOMOD
+		    GUISetState(@SW_SHOWNOACTIVATE,$g_hGUI_GTFOMOD)
+			GUISetState(@SW_HIDE, $g_hGUI_RequestCC)
+			GUISetState(@SW_HIDE, $g_hGUI_DONATECC)
+			GUISetState(@SW_HIDE, $g_hGUI_ScheduleCC)
+			GUICtrlSetPos($g_hChkDonate, $tabdonx[2] - 15, $tabdonx[3] - 15)
 	EndSelect
 
 EndFunc   ;==>tabDONATE
