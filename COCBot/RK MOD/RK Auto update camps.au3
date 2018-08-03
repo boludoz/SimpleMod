@@ -1,5 +1,5 @@
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: OCRbypass / RK Auto Update camps v.0.5 (#ID135-)
+; Name ..........: OCRbypass / RK Auto Update camps v.0.7 (#ID135-)
 ; Description ...: ByPass camps. capacity auto update
 ; Author ........: Boludoz (25/6/2018) Rulesss (1/7/2018)
 ; Modified ......: Boludoz (1/7/2018)
@@ -11,7 +11,6 @@
 ; ===============================================================================================================================
 
 Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of troops in army Window
-; BYPASS HACK
     Local $aTempResult[3] = [0, 0, 0]
 	Local $aResult[3] = [0, 0, 0]
 	$aResult[0] = getOcrAndCapture("coc-NewCapacity", $x_start, $y_start, 67, 14, True)
@@ -28,22 +27,22 @@ Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of tr
 		;GUICtrlSetData($g_hTxtTotalMachine, $aResult[2])
 		;$g_iTotalMachine = $aResult[2]
 		; Spell
-		If $aResult[2] <= 11 Then
-		GUICtrlSetData($g_hTxtTotalCountSpell, $aResult[2])
-		$g_iTotalSpellValue = $aResult[2]
-		; Army
-		ElseIf $aResult[2] >= 15 Then
-		GUICtrlSetData($g_hTxtTotalCampForced, $aResult[2])
-		$g_iTotalCampForcedValue = $aResult[2]
-		lblTotalCountTroop1()
+			If $aResult[2] <= 11 Then
+				GUICtrlSetData($g_hTxtTotalCountSpell, $aResult[2])
+				$g_iTotalSpellValue = $aResult[2]
+				; Army
+			  ElseIf $aResult[2] >= 15 Then
+				GUICtrlSetData($g_hTxtTotalCampForced, $aResult[2])
+				$g_iTotalCampForcedValue = $aResult[2]
+				
+				If $dbg = 1 Then Setlog($aResult[0])
+				If $dbg = 1 Then Setlog($g_iTotalSpellValue)
+				If $dbg = 1 Then Setlog($g_iTotalCampForcedValue)
+				
+				lblTotalCountTroop1()
+			EndIf	
 	Else
 		SetLog("DEBUG | ERROR on GetCurrentArmy", $COLOR_ERROR)
-	EndIf
-
-	If $dbg = 1 Then Setlog($aResult[0])
-	If $dbg = 1 Then Setlog($g_iTotalSpellValue)
-	If $dbg = 1 Then Setlog($g_iTotalCampForcedValue)
-
 	EndIf
 
 	Return $aResult[0]
@@ -53,7 +52,7 @@ Func CheckAutoCamp() ; Only first Run and th5 + (Then every time he does the tro
 	Local $dbg = 0
 	If $dbg = 1 Then Setlog($g_iTotalSpellValue)
 	Local $iCmpSpell = StringCompare($g_iTotalSpellValue, "0")
-        If $iCmpSpell = 0 And $g_iTownHallLevel >= 5 Then ; Spell camp
+        If $iCmpSpell = 0 Then ;And $g_iTownHallLevel >= 5 Then ; Spell camp
             Click(30, 584)
             If _Sleep(1000) Then Return
             Click(407, 132)

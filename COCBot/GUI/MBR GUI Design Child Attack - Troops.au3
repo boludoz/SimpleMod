@@ -525,7 +525,7 @@ Func CreateTroopsSpellsSubTab()
 			
         ; DoubleTrain - Demen
         $g_hChkDoubleTrain = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkDoubleTrain", "Double Train Army"), $x + 275, $y, -1, 15)
-            _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkDoubleTrain01",  "MBR GUI Design Child Attack - Troops", "Train 2nd set of troops & spells after training 1st combo" & @CRLF & "Make sure to enter correct 'Total Camp', 'Total Spell' and number of troops/spells in your setting"))
+            _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkDoubleTrain01",  "Train 2nd set of troops & spells after training 1st combo" & @CRLF & "Make sure to enter correct 'Total Camp', 'Total Spell' and number of troops/spells in your setting"))
 		; Auto Camp - Bld
 		$g_hChkAutoCamp = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkAutoCamp", "Auto update camps"), $x + 120, $y, -1, 15)   
 		 

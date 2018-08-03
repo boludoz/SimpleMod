@@ -51,8 +51,7 @@ DROP  |N          |4          |1          |RSpell     |0-20       |           |1
 DROP  |D          |2-8        |50%        |mini       |0-30       |10-20      |0          |           |
 DROP  |A          |1-7        |50%        |mini       |0-30       |10-20      |100-200    |           |
 DROP  |A-B        |9          |1          |babyd      |0-50       |0          |500-800    |           |
-DROP  |A          |1          |1          |warden     |0          |0          |50-100     |1500-2000  |
-DROP  |O          |1          |1          |RSpell     |0          |0          |100        |3000-4000  |
+DROP  |A          |1          |1          |warden     |0          |0          |50-100     |2000-2500  |
 DROP  |P          |2          |1          |HaSpell    |0          |0          |0          |           |
 RECALC|           |           |           |           |           |           |           |           |
 DROP  |O          |2          |1          |HaSpell    |0          |0          |100        |           |
@@ -60,7 +59,7 @@ RECALC|           |           |           |           |           |           | 
 DROP  |Q          |2          |1          |HaSpell    |0          |0          |100        |2000-3000  |
 DROP  |R          |2          |1          |HaSpell    |0          |0          |100        |           |
 DROP  |G          |1          |1          |FSpell     |0          |0          |100        |           |
-DROP  |R          |1          |1          |RSpell     |0          |0          |100        |2000-3000  |
+DROP  |R          |1          |1          |RSpell     |0          |0          |100        |3000-4000  |
 WAIT  |4000-5000  |           |           |           |           |           |           |           |
 DROP  |A          |1          |1          |king       |0          |0          |200-300    |           |  
 DROP  |A          |1          |100%       |wall       |0          |0          |50-100     |           |
