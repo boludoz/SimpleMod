@@ -64,6 +64,8 @@
 
 -- GTFO.
 -- Wall/Building Upgrading Priority.
+-- Check Collector Outside.
+-- Skip receive/request CC if limit is higher.
 
 **IMPROVED AND FIXED**
 
@@ -71,3 +73,5 @@
 -- Donate spells.
 -- Double train army.
 -- Slot11.
+-- AUTO-CAMPS.
+-- ChatBot. 
