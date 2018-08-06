@@ -19,6 +19,7 @@ Func ParseAttackCSV($debug = False)
 	Local $sErrorText, $sTargetVectors = ""
 	Local $iTroopIndex, $bWardenDrop = False
 	Local $SWIPE = ""
+    Local $sides2drop[4] = [False, False , False , False]
 	
 ;====================== RK MOD ===========================
     For $v = 0 To 25 ; Zero all 26 vectors from last atttack in case here is error MAKE'ing new vectors
