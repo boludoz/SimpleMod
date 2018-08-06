@@ -17,9 +17,13 @@ Func TestImglocTroopBar()
 	$g_bDebugSetlog = True
 	$g_bDebugOcr = True
 	$g_bDebugImageSave = True
+	Local $tempSieges = $g_aiCurrentSiegeMachines
+	$g_aiCurrentSiegeMachines[$eSiegeWallWrecker] = 1
+	$g_aiCurrentSiegeMachines[$eSiegeBattleBlimp] = 1
 
 	SetLog("=========== Imgloc ============")
-	PrepareAttack($DB)
+	PrepareAttack($DB, False , True)
+	$g_aiCurrentSiegeMachines = $tempSieges
 	$g_bDebugSetlog = False
 	$g_bDebugOcr = False
 	$g_bDebugImageSave = False
@@ -37,6 +41,7 @@ Func AttackBarCheck($Remaining = False, $pMatchMode = $DB)
 		$CheckSlotwHero = False
 	EndIf
 
+	If $g_bDraggedAttackBar Then DragAttackBar($g_iTotalAttackSlot, True )
 
 	; Reset to level one the Spells level
 	$g_iLSpellLevel = 1
@@ -48,7 +53,7 @@ Func AttackBarCheck($Remaining = False, $pMatchMode = $DB)
 	; Capture the screen for comparison
 	_CaptureRegion2($x, $y, $x1, $y1)
 
-	Local $strinToReturn = ""
+	Local $strinToReturn = "" , $hStarttime = _Timer_Init()
 	; Perform the search
 	Local $res = DllCallMyBot("SearchMultipleTilesBetweenLevels", "handle", $g_hHBitmap2, "str", $g_sImgAttackBarDir, "str", "FV", "Int", 0, "str", "FV", "Int", 0, "Int", 1000)
 
@@ -112,6 +117,9 @@ Func AttackBarCheck($Remaining = False, $pMatchMode = $DB)
 
 			_ArraySort($aResult, 0, 0, 0, 1) ; Sort By X position , will be the Slot 0 to $i
 
+			If $g_bDebugSetlog Then SetDebugLog("Benchmark Bar Detection: " & StringFormat("%.2f", _Timer_Diff($hStarttime))& "'ms")
+			$hStarttime =  _Timer_Init()
+
 			If Not $Remaining Then
 				$CheckSlot12 = _ColorCheck(_GetPixelColor(17, 643, True), Hex(0x478AC6, 6), 15) Or _  	 ; Slot Filled / Background Blue / More than 11 Slots
 						_ColorCheck(_GetPixelColor(17, 643, True), Hex(0x434343, 6), 10) ; Slot deployed / Gray / More than 11 Slots
@@ -158,6 +166,7 @@ Func AttackBarCheck($Remaining = False, $pMatchMode = $DB)
 								$aResult[$i][3] = Number(getTroopCountSmall(Number($Slottemp[0]), 640)) ; For small Numbers
 								$aResult[$i][4] = $Slottemp[1]
 							EndIf
+
 							If StringInStr($aResult[$i][0], "ESpell") <> 0 And $g_bSmartZapEnable = True Then
 								$aResult[$i][5] = getTroopsSpellsLevel(Number($Slottemp[0]) + $iSlotCompensation, 704)
 								If $aResult[$i][5] <> "" Then $g_iESpellLevel = $aResult[$i][5] ; If they aren't empty will store the correct level, or will be level 1 , just in case
@@ -180,6 +189,9 @@ Func AttackBarCheck($Remaining = False, $pMatchMode = $DB)
 			Next
 		EndIf
 	EndIf
+
+
+	If $g_bDebugSetlog Then SetDebugLog("Benchmark Bar OCR : " & StringFormat("%.2f", _Timer_Diff($hStarttime))& "'ms")
 
 	If $g_bDebugImageSave Then
 		Local $x = 0, $y = 659, $x1 = 853, $y1 = 698
@@ -204,8 +216,8 @@ Func AttackBarCheck($Remaining = False, $pMatchMode = $DB)
 		_GDIPlus_BitmapDispose($editedImage)
 	EndIf
 
-	; Drag & checking Slot11 - RK MOD (ID193-)
-	If $pMatchMode <= $LB And $CheckSlot12 And IsArray($aResult) Then
+	; Drag left & checking extended troops from Slot11+ ONLY if not a smart attack
+	If $pMatchMode <= $LB And $CheckSlot12 And UBound($aResult)> 1 And $g_aiAttackAlgorithm[$pMatchMode] <> 3 Then
 		SetDebuglog("$strinToReturn 1st page = " & $strinToReturn)
 		Local $aLastTroop1stPage[2]
 		$aLastTroop1stPage[0] = $aResult[UBound($aResult) - 1][0] ; Name of troop at last slot 1st page
@@ -218,7 +230,6 @@ Func AttackBarCheck($Remaining = False, $pMatchMode = $DB)
 
 	$strinToReturn = StringTrimLeft($strinToReturn, 1)
 
-	; SetLog("String: " & $strinToReturn)
 	; Will return [0] = Name , [1] = X , [2] = Y , [3] = Quantities , [4] = Slot Number
 	; Old style is: "|" & Troopa Number & "#" & Slot Number & "#" & Quantities
 	Return $strinToReturn

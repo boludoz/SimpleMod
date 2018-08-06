@@ -21,6 +21,7 @@
 
 
 #include "functions\Attack\AttackReport.au3"
+#include "functions\Attack\AttackStats.au3"
 #include "functions\Attack\BuildingSide.au3"
 #include "functions\Attack\GoldElixirChangeThSnipes.au3"
 #include "functions\Attack\GoldElixirChangeEBO.au3"
@@ -33,6 +34,7 @@
 #include "functions\Attack\Attack Algorithms\algorithmTH.au3"
 #include "functions\Attack\Attack Algorithms\THAttackTypes.au3"
 #include "functions\Attack\Attack Algorithms\AttackFromCSV.au3"
+#include "functions\Attack\Attack Algorithms\SmartFarm.au3"
 
 #include "functions\Attack\AttackCSV\AttackCSVDebugImage.au3"
 #include "functions\Attack\AttackCSV\CheckCSVValues.au3"
@@ -78,9 +80,9 @@
 #include "functions\Attack\RedArea\GetOffestPixelRedArea2.au3"
 #include "functions\Attack\RedArea\GetPixelDropTroop.au3"
 #include "functions\Attack\RedArea\GetPixelSide.au3"
-#include "functions\Attack\RedArea\GetVectorPixelAverage.au3"
+;#include "functions\Attack\RedArea\GetVectorPixelAverage.au3"
 #include "functions\Attack\RedArea\GetVectorPixelOnEachSide.au3"
-#include "functions\Attack\RedArea\GetVectorPixelToDeploy.au3"
+;#include "functions\Attack\RedArea\GetVectorPixelToDeploy.au3"
 #include "functions\Attack\RedArea\PointInPoly.au3"
 
 #include "functions\Attack\Troops\CheckHeroesHealth.au3"
@@ -108,7 +110,8 @@
 #include "functions\CreateArmy\OpenArmyOverview.au3"
 #include "functions\CreateArmy\SmartWait4Train.au3"
 #include "functions\CreateArmy\TrainClick.au3"
-#include "functions\CreateArmy\TrainRevamp.au3"
+#include "functions\CreateArmy\TrainSystem.au3"
+#include "functions\CreateArmy\TrainSiege.au3"
 #include "functions\CreateArmy\TrainIt.au3"
 
 #include "functions\CreateArmy\getArmyTroops\getArmyTroopTime.au3"
@@ -123,11 +126,14 @@
 #include "functions\CreateArmy\getArmySpells\getArmySpellCapacity.au3"
 #include "functions\CreateArmy\getArmySpells\getArmySpellCount.au3"
 
+#include "functions\CreateArmy\getArmySiegeMachines\getArmySiegeMachines.au3"
+
 #include "functions\CreateArmy\getArmyCCTroops\getArmyCCStatus.au3"
 ;#include "functions\CreateArmy\getArmyCCTroops\getArmyCCTroops.au3" Not in use yet, soonish hopefully
 
 #include "functions\CreateArmy\getArmyCCSpells\getArmyCCSpellCapacity.au3"
 #include "functions\CreateArmy\getArmyCCSpells\getArmyCCSpell.au3"
+#include "functions\CreateArmy\getArmyCCSiegeMachines\getArmyCCSiegeMachines.au3"
 #EndRegion CreateArmy / Train
 
 #include "functions\Image Search\ImageSearch.au3"

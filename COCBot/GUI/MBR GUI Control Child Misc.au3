@@ -50,8 +50,8 @@ Func btnAddConfirm()
 			GUICtrlSetState($g_hBtnRenameProfile, $GUI_HIDE)
 			GUICtrlSetState($g_hBtnPullSharedPrefs, $GUI_HIDE)
 			GUICtrlSetState($g_hBtnPushSharedPrefs, $GUI_HIDE)
-			GUICtrlSetState($g_hBtnRecycle, $GUI_HIDE) ; Add RK MOD
-			
+			GUICtrlSetState($g_hBtnSaveprofile, $GUI_HIDE)
+            GUICtrlSetState($g_hBtnSaveprofile, $GUI_HIDE)		
 		Case $g_hBtnConfirmAddProfile
 			Local $newProfileName = StringRegExpReplace(GUICtrlRead($g_hTxtVillageName), '[/:*?"<>|]', '_')
 			If FileExists($g_sProfilePath & "\" & $newProfileName) Then
@@ -78,13 +78,10 @@ Func btnAddConfirm()
 			GUICtrlSetState($g_hBtnRenameProfile, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnPullSharedPrefs, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnPushSharedPrefs, $GUI_SHOW)
-            GUICtrlSetState($g_hBtnRecycle, $GUI_SHOW) ; Add RK MOD
+            GUICtrlSetState($g_hBtnSaveprofile, $GUI_SHOW)
 			
 			If GUICtrlGetState($g_hBtnDeleteProfile) <> $GUI_ENABLE Then GUICtrlSetState($g_hBtnDeleteProfile, $GUI_ENABLE)
 			If GUICtrlGetState($g_hBtnRenameProfile) <> $GUI_ENABLE Then GUICtrlSetState($g_hBtnRenameProfile, $GUI_ENABLE)
-			
-			If GUICtrlGetState($g_hBtnRecycle) <> $GUI_ENABLE Then GUICtrlSetState($g_hBtnRecycle, $GUI_ENABLE) ; Add RK MOD
-			
 		Case Else
 			SetLog("If you are seeing this log message there is something wrong.", $COLOR_ERROR)
 	EndSwitch
@@ -120,6 +117,7 @@ Func btnDeleteCancel()
 			GUICtrlSetState($g_hBtnRenameProfile, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnPullSharedPrefs, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnPushSharedPrefs, $GUI_SHOW)
+            GUICtrlSetState($g_hBtnSaveprofile, $GUI_SHOW)
 		Case Else
 			SetLog("If you are seeing this log message there is something wrong.", $COLOR_ERROR)
 	EndSwitch
@@ -127,7 +125,6 @@ Func btnDeleteCancel()
 	If GUICtrlRead($g_hCmbProfile) = "<No Profiles>" Then
 		GUICtrlSetState($g_hBtnDeleteProfile, $GUI_DISABLE)
 		GUICtrlSetState($g_hBtnRenameProfile, $GUI_DISABLE)
-		GUICtrlSetState($g_hBtnRecycle, $GUI_DISABLE) ; Add RK MOD
 	EndIf
 EndFunc   ;==>btnDeleteCancel
 
@@ -149,8 +146,7 @@ Func btnRenameConfirm()
 			GUICtrlSetState($g_hBtnConfirmRenameProfile, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnPullSharedPrefs, $GUI_HIDE)
 			GUICtrlSetState($g_hBtnPushSharedPrefs, $GUI_HIDE)
-			GUICtrlSetState($g_hBtnRecycle, $GUI_HIDE) ; Add RK MOD
-			
+			GUICtrlSetState($g_hBtnSaveprofile, $GUI_HIDE)			
 		Case $g_hBtnConfirmRenameProfile
 			Local $newProfileName = StringRegExpReplace(GUICtrlRead($g_hTxtVillageName), '[/:*?"<>|]', '_')
 			If FileExists($g_sProfilePath & "\" & $newProfileName) Then
@@ -177,8 +173,8 @@ Func btnRenameConfirm()
 			GUICtrlSetState($g_hBtnRenameProfile, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnPullSharedPrefs, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnPushSharedPrefs, $GUI_SHOW)
-			GUICtrlSetState($g_hBtnRecycle, $GUI_SHOW) ; Add RK MOD
-			
+			GUICtrlSetState($g_hBtnSaveprofile, $GUI_SHOW)
+            GUICtrlSetState($g_hBtnSaveprofile, $GUI_SHOW)
 		Case Else
 			SetLog("If you are seeing this log message there is something wrong.", $COLOR_ERROR)
 	EndSwitch
@@ -190,6 +186,14 @@ EndFunc
 
 Func btnPushSharedPrefs()
 	PushSharedPrefs()
+EndFunc
+
+Func BtnSaveprofile()
+	Setlog("Saving your setting...", $COLOR_INFO)
+	SaveConfig()
+	readConfig()
+	applyConfig()
+	Setlog("Done!", $COLOR_SUCCESS
 EndFunc
 
 Func OnlySCIDAccounts()

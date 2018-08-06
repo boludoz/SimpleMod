@@ -74,6 +74,7 @@ Func ParseAttackCSV($debug = False)
 										Else
 											$sidex &= "RIGHT"
 										EndIf
+										$sides2drop[0] = True
 									Case 2
 										$sidex = "BACK_"
 										If Random(0, 1, 1) = 0 Then
@@ -81,6 +82,7 @@ Func ParseAttackCSV($debug = False)
 										Else
 											$sidex &= "RIGHT"
 										EndIf
+										$sides2drop[1] = True
 									Case 3
 										$sidex = "LEFT_"
 										If Random(0, 1, 1) = 0 Then
@@ -88,6 +90,7 @@ Func ParseAttackCSV($debug = False)
 										Else
 											$sidex &= "BACK"
 										EndIf
+										$sides2drop[2] = True
 									Case 4
 										$sidex = "RIGHT_"
 										If Random(0, 1, 1) = 0 Then
@@ -95,6 +98,7 @@ Func ParseAttackCSV($debug = False)
 										Else
 											$sidex &= "BACK"
 										EndIf
+										$sides2drop[3] = True
 								EndSwitch
 							EndIf
 							If CheckCsvValues("MAKE", 1, $value1) And CheckCsvValues("MAKE", 5, $value5) Then
@@ -129,8 +133,8 @@ Func ParseAttackCSV($debug = False)
 							$sErrorText = "value2"
 						EndIf
 						If $sErrorText <> "" Then ; log error message
-							SetLog("Discard row, bad " & $sErrorText & " parameter:row " & $rownum)
-							debugAttackCSV("Discard row, bad " & $sErrorText & " parameter:row " & $rownum)
+							SetLog("Discard row, bad " & $sErrorText & " parameter: row " & $iLine + 1)
+							debugAttackCSV("Discard row, bad " & $sErrorText & " parameter: row " & $iLine + 1)
 						Else ; debuglog vectors
 							For $i = 0 To UBound(Execute("$ATTACKVECTOR_" & $value1)) - 1
 								Local $pixel = Execute("$ATTACKVECTOR_" & $value1 & "[" & $i & "]")
@@ -348,8 +352,8 @@ Func ParseAttackCSV($debug = False)
 							EndIf
 						Next
 						If $sErrorText <> "" Then
-								SetLog("Discard row, " & $sErrorText & " parameter:row " & $rownum)
-							debugAttackCSV("Discard row, " & $sErrorText & " parameter:row " & $rownum)
+							SetLog("Discard row, " & $sErrorText & ": row " & $iLine + 1)
+							debugAttackCSV("Discard row, " & $sErrorText & ": row " & $iLine + 1)
 						Else
 ; ============= RK MOD - REMAIN TROOPS CVS ========================
                             ; REMAIN CMD from @chalicucu | ProMac Updated 
@@ -871,6 +875,9 @@ Func ParseAttackCSV($debug = False)
 				CheckHeroesHealth()
 			EndIf
 			If _Sleep($DELAYRESPOND) Then  Return ; check for pause/stop after each line of CSV
+		Next
+		For $i = 0 to 3
+			If $sides2drop[$i] then $g_iSidesAttack +=1
 		Next
 		ReleaseClicks()
 	Else

@@ -20,7 +20,6 @@ Global $g_bRedrawBotWindow[3] = [True, False, False] ; [0] = window redraw enabl
 Global $g_hFrmBot_WNDPROC = 0
 Global $g_hFrmBot_WNDPROC_ptr = 0
 
-
 ;~ ------------------------------------------------------
 ;~ Control Tab Files
 ;~ ------------------------------------------------------
@@ -496,12 +495,6 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 			btnAttackNowTS()
 			;Case $idMENU_DONATE_SUPPORT
 			;	ShellExecute("https://mybot.run/forums/index.php?/donate/make-donation/")
-		Case $g_hBtnNotifyDeleteMessages
-			If $g_bRunState Then
-				btnDeletePBMessages() ; call with flag when bot is running to execute on _sleep() idle
-			Else
-				PushMsg("DeleteAllPBMessages") ; call directly when bot is stopped
-			EndIf
 		Case $g_hBtnMakeScreenshot
 			If $g_bRunState Then
 				; call with flag when bot is running to execute on _sleep() idle
@@ -549,7 +542,8 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 		Case $g_hChkMakeIMGCSV
 			chkmakeIMGCSV()
 		Case $g_hBtnTestTrain
-			btnTestTrain()
+			;btnTestTrain()
+			TestSmartFarm()
 		Case $g_hBtnTestDonateCC
 			btnTestDonateCC()
 		Case $g_hBtnTestRequestCC
@@ -573,7 +567,11 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 		Case $g_hBtnTestimglocTroopBar
 			TestImglocTroopBar()
 		Case $g_hBtnTestAttackCSV
-			btnTestAttackCSV()
+			Local $RuntimeA = $g_bRunState
+			$g_bRunState = True
+			Setlog("Army Window Test")
+			_checkArmyCamp(False,False,False, True)
+			$g_bRunState = $RuntimeA
 		Case $g_hBtnTestBuildingLocation
 			btnTestGetLocationBuilding()
 		Case $g_hBtnTestFindButton
@@ -600,6 +598,20 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 			btnTestSmartWait()
 		Case $g_hBtnConsoleWindow
 			btnConsoleWindow()
+		Case $g_hBtnTestTrainsimgloc
+
+			Local $RuntimeA = $g_bRunState
+			$g_bRunState = True
+			Setlog("Queued Spells Test")
+			CheckQueueSpells()
+			$g_bRunState = $RuntimeA
+		Case $g_hBtnTestQuickTrainsimgloc
+
+			Local $RuntimeA = $g_bRunState
+			$g_bRunState = True
+			Setlog("Queued Troops Test")
+			CheckQueueTroops()
+			$g_bRunState = $RuntimeA
 	EndSwitch
 
 	If $lParam = $g_hCmbGUILanguage Then
@@ -2037,6 +2049,7 @@ Func tabDeadbase()
 			GUISetState(@SW_HIDE, $g_hGUI_DEADBASE_ATTACK_STANDARD)
 			GUISetState(@SW_HIDE, $g_hGUI_DEADBASE_ATTACK_SCRIPTED)
 			GUISetState(@SW_HIDE, $g_hGUI_DEADBASE_ATTACK_MILKING)
+			GUISetState(@SW_HIDE, $g_hGUI_DEADBASE_ATTACK_SMARTFARM)
 	EndSelect
 
 EndFunc   ;==>tabDeadbase
