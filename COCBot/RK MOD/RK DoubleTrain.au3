@@ -360,7 +360,9 @@ Func DoubleQuickTrain($bSetlog, $bDebug)
 	If Not $bDoubleTrainTroop Or Not $bDoubleTrainSpell Then
 		OpenQuickTrainTab(False, "DoubleQuickTrain()")
 		If _Sleep(500) Then Return
-		TrainArmyNumber($g_bQuickTrainArmy)
+		Local $iMultiClick = 1
+		If $g_bChkMultiClick Then $iMultiClick = _Max(Ceiling(($SpellCamp[1] * 2 - $SpellCamp[0]) / 2), 1)
+		TrainArmyNumber($g_bQuickTrainArmy, $iMultiClick)
 	Else
 		If $bSetlog Then SetLog("Full queue, skip Double Quick Train")
 	EndIf
