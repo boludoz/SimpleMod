@@ -58,7 +58,12 @@
 -- Goblin XP.
 -- Classic Four Finger.
 
+
+
+
 **v3.0.3**
+
+Update to v 7.6
 
 **Added**
 
@@ -66,12 +71,11 @@
 -- Wall/Building Upgrading Priority.
 -- Check Collector Outside.
 -- Skip receive/request CC if limit is higher.
+-- Smart Train.
 
 **IMPROVED AND FIXED**
 
 -- Check Stop For War.
--- Donate spells.
 -- Double train army.
--- Slot11.
 -- AUTO-CAMPS.
 -- ChatBot. 

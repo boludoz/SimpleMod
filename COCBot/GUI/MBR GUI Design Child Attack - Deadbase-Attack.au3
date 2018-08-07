@@ -192,7 +192,7 @@ Func CreateAttackSearchDeadBaseAttack()
 		GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	Local $x = 10, $y = 332
-		GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "Group_03", "Siege Machines"), $x - 5, $y , 145, 40, $SS_CENTER)
+		GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "Group_03_info", "Siege Machines"), $x - 5, $y , 145, 40, $SS_CENTER)
 
 			$g_hCmbDBSiege = GUICtrlCreateCombo("", $x, $y + 14, 130, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "Cmb-Siege_Item_01", "Castle only") & "|" & _

@@ -447,6 +447,11 @@ Func ReadConfig_600_11()
 	For $i = 0 To 23
 		$g_abRequestCCHours[$i] = ($g_abRequestCCHours[$i] = "1")
 	Next
+	
+	$g_bRequestTroopsEnableDefense = (IniRead($g_sProfileConfigPath, "RequestDefense", "RequestDefenseEnable", "0") = "1")
+	$g_sRequestTroopsTextDefense = IniRead($g_sProfileConfigPath, "RequestDefense", "txtRequestDefense", "")
+	$g_iRequestDefenseEarly = Int(IniRead($g_sProfileConfigPath, "RequestDefense", "RequestDefenseEarly", "0"))
+	
 EndFunc   ;==>ReadConfig_600_11
 
 Func ReadConfig_600_12()
@@ -1340,6 +1345,12 @@ Func ReadConfig_600_52_2()
 	
     ; DoubleTrain - Demen
     $g_bDoubleTrain = (IniRead($g_sProfileConfigPath, "troop", "DoubleTrain", "0") = "1")
+	;SmartTrain - RK MOD (Demen)
+	IniReadS($g_bChkSmartTrain, $g_sProfileConfigPath, "SmartTrain", "Enable", False, "Bool")
+	IniReadS($g_bChkPreciseArmyCamp, $g_sProfileConfigPath, "SmartTrain", "ChkPreciseTroops", False, "Bool")
+	IniReadS($g_bChkFillArcher, $g_sProfileConfigPath, "SmartTrain", "ChkFillArcher", False, "Bool")
+	IniReadS($g_iTxtFillArcher, $g_sProfileConfigPath, "SmartTrain", "TxtFillArcher", 5, "int")
+	IniReadS($g_bChkFillEQ, $g_sProfileConfigPath, "SmartTrain", "ChkFillEQ", False, "Bool")
 	
 EndFunc   ;==>ReadConfig_600_52_2
 

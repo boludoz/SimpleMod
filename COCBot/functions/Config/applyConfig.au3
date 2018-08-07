@@ -416,12 +416,23 @@ Func ApplyConfig_600_11($TypeReadSave)
 			For $i = 0 To 23
 				GUICtrlSetState($g_ahChkRequestCCHours[$i], $g_abRequestCCHours[$i] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			Next
+			
+			GUICtrlSetState($g_hChkRequestTroopsEnableDefense, $g_bRequestTroopsEnableDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
+			chkRequestDefense()
+			GUICtrlSetData($g_hTxtRequestCCDefense, $g_sRequestTroopsTextDefense)
+			GUICtrlSetData($g_hTxtRequestDefenseEarly, $g_iRequestDefenseEarly)
+			
 		Case "Save"
 			$g_bRequestTroopsEnable = (GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED)
 			$g_sRequestTroopsText = GUICtrlRead($g_hTxtRequestCC)
 			For $i = 0 To 23
 				$g_abRequestCCHours[$i] = (GUICtrlRead($g_ahChkRequestCCHours[$i]) = $GUI_CHECKED)
 			Next
+			
+			$g_bRequestTroopsEnableDefense = (GUICtrlRead($g_hChkRequestTroopsEnableDefense) = $GUI_CHECKED)
+			$g_sRequestTroopsTextDefense = GUICtrlRead($g_hTxtRequestCCDefense)
+			$g_iRequestDefenseEarly = GUICtrlRead($g_hTxtRequestDefenseEarly)
+			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_11
 
@@ -2190,6 +2201,13 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			GUICtrlSetState($g_hChkForceBrewBeforeAttack, $g_bForceBrewSpells ? $GUI_CHECKED : $GUI_UNCHECKED)
             ; DoubleTrain - Demen
             GUICtrlSetState($g_hChkDoubleTrain, $g_bDoubleTrain ? $GUI_CHECKED : $GUI_UNCHECKED)
+			;SmartTrain - RK MOD (Demen)
+			GUICtrlSetState($g_hChkSmartTrain, $g_bChkSmartTrain ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkPreciseArmyCamp, $g_bChkPreciseArmyCamp ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkFillArcher, $g_bChkFillArcher ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtFillArcher, $g_iTxtFillArcher)
+			GUICtrlSetState($g_hChkFillEQ, $g_bChkFillEQ ? $GUI_CHECKED : $GUI_UNCHECKED)
+			chkSmartTrain()
 		Case "Save"
 			; troop/spell levels and counts
 			For $T = 0 To $eTroopCount - 1
@@ -2213,6 +2231,12 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			$g_bForceBrewSpells = (GUICtrlRead($g_hChkForceBrewBeforeAttack) = $GUI_CHECKED)
             ; DoubleTrain - Demen
             $g_bDoubleTrain = (GUICtrlRead($g_hChkDoubleTrain) = $GUI_CHECKED)
+			;SmartTrain - RK MOD (Demen)
+			$g_bChkSmartTrain = (GUICtrlRead($g_hChkSmartTrain) = $GUI_CHECKED)
+			$g_bChkPreciseArmyCamp = (GUICtrlRead($g_hChkPreciseArmyCamp) = $GUI_CHECKED)
+			$g_bChkFillArcher = (GUICtrlRead($g_hChkFillArcher) = $GUI_CHECKED)
+			$g_iTxtFillArcher = GUICtrlRead($g_hTxtFillArcher)
+			$g_bChkFillEQ = (GUICtrlRead($g_hChkFillEQ) = $GUI_CHECKED)
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_52_2
 

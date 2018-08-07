@@ -1018,7 +1018,7 @@ Func _Idle() ;Sequence that runs until Full Army
 		If $g_bRestart = True Then ExitLoop
 		$TimeIdle += Round(__TimerDiff($hTimer) / 1000, 2) ;In Seconds
 
-		If $g_bCanRequestCC = True and BalanceRecRec(True) Then RequestCC()
+		If $g_bCanRequestCC = True And BalanceRecRec(True) Then RequestCC()
 
 		SetLog("Time Idle: " & StringFormat("%02i", Floor(Floor($TimeIdle / 60) / 60)) & ":" & StringFormat("%02i", Floor(Mod(Floor($TimeIdle / 60), 60))) & ":" & StringFormat("%02i", Floor(Mod($TimeIdle, 60))))
 

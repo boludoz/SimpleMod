@@ -396,6 +396,11 @@ Func SaveConfig_600_11()
 		$string &= ($g_abRequestCCHours[$i] ? "1" : "0") & "|"
 	Next
 	_Ini_Add("planned", "RequestHours", $string)
+	
+	_Ini_Add("RequestDefense", "RequestDefenseEnable", $g_bRequestTroopsEnableDefense ? 1 : 0)
+	_Ini_Add("RequestDefense", "txtRequestDefense", $g_sRequestTroopsTextDefense)
+	_Ini_Add("RequestDefense", "RequestDefenseEarly", $g_iRequestDefenseEarly)
+
 EndFunc   ;==>SaveConfig_600_11
 
 Func SaveConfig_600_12()
@@ -1197,7 +1202,13 @@ Func SaveConfig_600_52_2()
 	
     ; DoubleTrain - Demen
     _Ini_Add("troop", "DoubleTrain", $g_bDoubleTrain ? 1 : 0)
-
+    ;SmartTrain - RK MOD (Demen)
+	_Ini_Add("SmartTrain", "Enable", $g_bChkSmartTrain ? 1 : 0)
+	_Ini_Add("SmartTrain", "ChkPreciseTroops", $g_bChkPreciseArmyCamp ? 1 : 0)
+	_Ini_Add("SmartTrain", "ChkFillArcher", $g_bChkFillArcher ? 1 : 0)
+	_Ini_Add("SmartTrain", "TxtFillArcher", $g_iTxtFillArcher)
+	_Ini_Add("SmartTrain", "ChkFillEQ", $g_bChkFillEQ ? 1 : 0)
+	
 EndFunc   ;==>SaveConfig_600_52_2
 
 Func SaveConfig_600_54()
