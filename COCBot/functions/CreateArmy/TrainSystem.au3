@@ -1527,7 +1527,7 @@ Func ResetVariables($sArmyType = "")
 
 EndFunc   ;==>ResetVariables
 
-Func TrainArmyNumber($Army)
+Func TrainArmyNumber($Army, $iMultiClick = 5)
 
 	Local $a_TrainArmy[3][4] = [[784, 368, 0x6fb830, 10], [784, 485, 0x72bb2f, 10], [784, 602, 0x71ba2f, 10]]
 	SetLog("Using Quick Train Tab", $COLOR_INFO)

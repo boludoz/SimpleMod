@@ -193,7 +193,7 @@ Func BtnSaveprofile()
 	SaveConfig()
 	readConfig()
 	applyConfig()
-	Setlog("Done!", $COLOR_SUCCESS
+	Setlog("Done!", $COLOR_SUCCESS)
 EndFunc
 
 Func OnlySCIDAccounts()
