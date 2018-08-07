@@ -148,11 +148,12 @@ Func CheckSwitchAcc()
 		SetSwitchAccLog("Stay at [" & $g_iCurAccount + 1 & "]", $COLOR_SUCCESS)
 		If _Sleep(500) Then Return
 	Else
+		
 
 		If $g_bChkSmartSwitch = True Then ; Smart switch
 			SetDebugLog("-Smart Switch-")
 			$nMinRemainTrain = CheckTroopTimeAllAccount($bForceSwitch)
-
+			
 			If $nMinRemainTrain <= 1 And Not $bForceSwitch And Not $g_bDonateLikeCrazy Then ; Active (force switch shall give priority to Donate Account)
 				If $g_bDebugSetlog Then SetDebugLog("Switch to or Stay at Active Account: " & $g_iNextAccount + 1, $COLOR_DEBUG)
 				$g_iDonateSwitchCounter = 0
@@ -173,7 +174,7 @@ Func CheckSwitchAcc()
 				EndIf
 			EndIf
 		Else ; Normal switch (continuous)
-			SetDebugLog("-Normal Switch-")
+		    SetDebugLog("-Normal Switch-")
 			$g_iNextAccount = $g_iCurAccount + 1
 			If $g_iNextAccount > $g_iTotalAcc Then $g_iNextAccount = 0
 			While $abAccountNo[$g_iNextAccount] = False
@@ -189,7 +190,7 @@ Func CheckSwitchAcc()
         
 		SetDebugLog("- Current Account: " & $g_asProfileName[$g_iCurAccount] & " number: " & $g_iCurAccount + 1)
 		SetDebugLog("- Next Account: " & $g_asProfileName[$g_iNextAccount] & " number: " & $g_iNextAccount + 1)
-
+		
 		; Just a loop for all acc to check it if necessary
 		For $i = 0 To $g_iTotalAcc
 			; Check if the next account is PBT and IF the remain Train Time is Less/More than 2 minutes OR the account is disable
@@ -389,7 +390,7 @@ EndIf
 
 		$StartOnlineTime = TimerInit()
 		SetSwitchAccLog("Switched to Acc [" & $NextAccount + 1 & "]", $COLOR_SUCCESS)
-
+		
 		; Reset the log
 		$g_hLogFile = 0
 
@@ -686,28 +687,53 @@ EndFunc   ;==>SwitchCOCAcc_ConfirmSCID
 
 Func SwitchCOCAcc_ClickAccountSCID(ByRef $bResult, $NextAccount, $iStep = 4)
 	Local $YCoord = Int(336 + 73.5 * $NextAccount)
+	Local $DeltaTotal8Acc = $g_iTotalAcc = 7 ? 14 : 0
 	Local $iRetryCloseSCIDTab = 0
 	For $i = 0 To 30 ; Checking "Log in with SuperCell ID" button continuously in 30sec
 		If _ColorCheck(_GetPixelColor($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], True), Hex($aLoginWithSupercellID[2], 6), $aLoginWithSupercellID[3]) And _
-				_ColorCheck(_GetPixelColor($aLoginWithSupercellID2[0], $aLoginWithSupercellID2[1], True), Hex($aLoginWithSupercellID2[2], 6), $aLoginWithSupercellID2[3]) Then
+		               _ColorCheck(_GetPixelColor($aLoginWithSupercellID2[0], $aLoginWithSupercellID2[1], True), Hex($aLoginWithSupercellID2[2], 6), $aLoginWithSupercellID2[3]) Then
 			SetLog("   " & $iStep & ". Click Log in with Supercell ID")
 			Click($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], 1, 0, "Click Log in with SC_ID")
-			If _Sleep(3000) Then Return "Exit"
+			If _Sleep(600) Then Return "Exit"
 
 			For $j = 0 To 20 ; Checking Account List continuously in 20sec
-				If _ColorCheck(_GetPixelColor($aListAccountSCID[0], $aListAccountSCID[1], True), Hex($aListAccountSCID[2], 6), $aListAccountSCID[3]) Then
+				If QuickMIS("BC1", $g_sImgListAccounts, 490, 201, 524, 232) Then
+					Local $bDragDone = False
 					If $NextAccount >= 4 Then
 						$YCoord = Int(408 - 73.5 * ($g_iTotalAcc - $NextAccount))
+						SetLog("     drag for more accounts")
 						ClickDrag(700, 590, 700, 172, 2000)
-						If _Sleep(500) Then Return "Exit"
+						If _Sleep(250) Then Return "Exit"
+						For $x = 0 To 5
+							If QuickMIS("N1", $g_sImgListAccounts, 415, 470, 442, 487) = "OR" Then
+								$bDragDone =  True
+								ExitLoop
+							EndIf
+							If _Sleep(250) Then Return "Exit" ; wait 1.5 seconds for last account to show up
+						Next
 					EndIf
-					Click(270, $YCoord) ; Click Account
-					SetLog("   " & ($iStep + 1) & ". Click Account [" & $NextAccount + 1 & "] Supercell ID")
-					If _Sleep(500) Then Return "Exit"
-					SetLog("Please wait for loading CoC...!")
+
+					If $NextAccount < 4 Or $bDragDone Then
+						Click(270, $YCoord, 3, 1000) ; Click Account
+						If _Sleep(250) Then Return "Exit"
+						$bResult = True
+					EndIf
+				ElseIf QuickMIS("BC1", $g_sImgListAccounts, 470, 190, 497, 297) Then
+					$YCoord = Int(359 - 16 * ($g_iTotalAcc - 1) + 32 * $NextAccount) + $DeltaTotal8Acc
+					Click(300, $YCoord, 3, 1000) ; Click Account
+					If _Sleep(250) Then Return "Exit"
 					$bResult = True
+				EndIf
+
+				If $bResult Then
+					SetLog("   " & ($iStep + 1) & ". Click Account [" & $NextAccount + 1 & "] Supercell ID")
+									  
+					SetLog("Please wait for loading CoC...!")
+					
 					Return "OK"
-				ElseIf $j = 10 Then
+				EndIf
+
+				If $j = 20 Then
 					$iRetryCloseSCIDTab += 1
 					If $iRetryCloseSCIDTab <= 3 Then
 						SetLog("   " & $iStep & ".5 Click Close Tab Supercell ID")
@@ -838,7 +864,7 @@ Func DisableGUI_AfterLoadNewProfile()
 	$g_bGUIControlDisabled = True
 	For $i = $g_hFirstControlToHide To $g_hLastControlToHide
 		If IsAlwaysEnabledControl($i) Then ContinueLoop
-		If $g_bNotifyPBEnable And $i = $g_hBtnNotifyDeleteMessages Then ContinueLoop ; exclude the DeleteAllMesages button when PushBullet is enabled
+		;If $g_bNotifyPBEnable And $i = $g_hBtnNotifyDeleteMessages Then ContinueLoop ; exclude the DeleteAllMesages button when PushBullet is enabled
 		If BitAND(GUICtrlGetState($i), $GUI_ENABLE) Then GUICtrlSetState($i, $GUI_DISABLE)
 	Next
 	ControlEnable("", "", $g_hCmbGUILanguage)
@@ -985,9 +1011,9 @@ Func CheckLoginWithSupercellIDScreen()
 	Local $AccountsCoord[0][2]
 
 	; Account List check be there, validate with imgloc
-		If UBound(decodeSingleCoord(FindImageInPlace("LoginWithSupercellID", $g_sImgLoginWithSupercellID, "318,678(125,30)", False))) > 1 Then
-			; Google Account selection found
-			SetLog("Verified Log in with Supercell ID boot screen")
+	If UBound(decodeSingleCoord(FindImageInPlace("LoginWithSupercellID", $g_sImgLoginWithSupercellID, "318,678(125,30)", False))) > 1 Then
+		; Google Account selection found
+		SetLog("Verified Log in with Supercell ID boot screen")
 
 		Click($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], 1, 0, "Click Log in with SC_ID")
 		If _Sleep(2000) Then Return
@@ -1014,7 +1040,7 @@ Func CheckLoginWithSupercellIDScreen()
 			EndIf
 
 			If $g_bRunState = False Then Return
-			If _sleep(1000) Then Return
+			If _Sleep(1000) Then Return
 		Next
 	Else
 		SetDebugLog("Log in with Supercell ID boot screen not verified")

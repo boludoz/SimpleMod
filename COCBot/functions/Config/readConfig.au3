@@ -452,6 +452,10 @@ Func ReadConfig_600_11()
 	$g_sRequestTroopsTextDefense = IniRead($g_sProfileConfigPath, "RequestDefense", "txtRequestDefense", "")
 	$g_iRequestDefenseEarly = Int(IniRead($g_sProfileConfigPath, "RequestDefense", "RequestDefenseEarly", "0"))
 	
+	; ================================================== Russian Request - by RK MOD ================================= ;
+
+	IniReadS($g_iChkRusLang2, $g_sProfileConfigPath, "Lang", "ChkRusLang2", $g_iChkRusLang2, "Int")
+	
 EndFunc   ;==>ReadConfig_600_11
 
 Func ReadConfig_600_12()

@@ -422,6 +422,11 @@ Func ApplyConfig_600_11($TypeReadSave)
 			GUICtrlSetData($g_hTxtRequestCCDefense, $g_sRequestTroopsTextDefense)
 			GUICtrlSetData($g_hTxtRequestDefenseEarly, $g_iRequestDefenseEarly)
 			
+			; ================================================== Russian Request - by RK MOD ======================================== ;
+
+			GUICtrlSetState($g_hChkRusLang2, $g_iChkRusLang2 = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+   		    chkRusLang2()
+			
 		Case "Save"
 			$g_bRequestTroopsEnable = (GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED)
 			$g_sRequestTroopsText = GUICtrlRead($g_hTxtRequestCC)
@@ -432,6 +437,10 @@ Func ApplyConfig_600_11($TypeReadSave)
 			$g_bRequestTroopsEnableDefense = (GUICtrlRead($g_hChkRequestTroopsEnableDefense) = $GUI_CHECKED)
 			$g_sRequestTroopsTextDefense = GUICtrlRead($g_hTxtRequestCCDefense)
 			$g_iRequestDefenseEarly = GUICtrlRead($g_hTxtRequestDefenseEarly)
+			
+			; ================================================== Russian Request - by RK MOD ================================= ;
+
+			$g_iChkRusLang2 = GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED ? 1 : 0
 			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_11

@@ -400,7 +400,11 @@ Func SaveConfig_600_11()
 	_Ini_Add("RequestDefense", "RequestDefenseEnable", $g_bRequestTroopsEnableDefense ? 1 : 0)
 	_Ini_Add("RequestDefense", "txtRequestDefense", $g_sRequestTroopsTextDefense)
 	_Ini_Add("RequestDefense", "RequestDefenseEarly", $g_iRequestDefenseEarly)
+    
+	; ================================================== Russian Request - by RK MOD ================================= ;
 
+	_Ini_Add("Lang", "chkRusLang2", $g_iChkRusLang2 ? 1 : 0)
+	
 EndFunc   ;==>SaveConfig_600_11
 
 Func SaveConfig_600_12()
