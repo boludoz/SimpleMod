@@ -259,11 +259,11 @@ Func CheckForFullArmy()
 			(($g_bFullArmy = False And _ColorCheck(_GetPixelColor(391, 126, True), Hex(0x605C4C, 6), 15)) Or _
 			($g_bFullArmySpells = False And _ColorCheck(_GetPixelColor(587, 126, True), Hex(0x605C4D, 6), 15))) Then ; if Full army was false and nothing was in 'Train' and 'Brew' Queue then check for train
 
-		If $DebugSX = 1 Then SetLog("SX|CFFA TrainRevamp Condi. #1")
-		TrainRevamp()
+		If $DebugSX = 1 Then SetLog("SX|CFFA TrainSystem Condi. #1")
+		TrainSystem()
 	ElseIf $g_bIsFullArmywithHeroesAndSpells = True And $ichkEnableSuperXP = 1 And $irbSXTraining = 1 Then ; Train Troops Before Attack
-		If $DebugSX = 1 Then SetLog("SX|CFFA TrainRevamp Condi. #2")
-		TrainRevamp()
+		If $DebugSX = 1 Then SetLog("SX|CFFA TrainSystem Condi. #2")
+		TrainSystem()
 	EndIf
 
 	;ClickP($aAway, 2, 0, "#0346") ;Click Away

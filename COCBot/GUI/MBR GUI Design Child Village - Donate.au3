@@ -26,8 +26,9 @@ Global $g_hChkRequestTroopsEnable = 0, $g_hTxtRequestCC = 0, $g_ahChkRequestCCHo
 Global $g_hChkRequestCCHoursE1 = 0, $g_hChkRequestCCHoursE2 = 0
 Global $g_hGrpRequestCC = 0, $g_hLblRequestCCHoursAM = 0, $g_hLblRequestCCHoursPM = 0
 Global $g_hLblRequestCChour = 0, $g_ahLblRequestCChoursE = 0
-GLobal $g_hLblRequestCChours[12] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+Global $g_hLblRequestCChours[12] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Global $g_hChkSkipRequestCC, $g_hTxtSkipRequestCCTroop, $g_hTxtSkipRequestCCSpell, $g_hLblSkipRequestCCTroop, $g_hLblSkipRequestCCSpell ; Skip Request CC - Add RK MOD
+Global $g_hTxtRequestCountCCTroop, $g_hTxtRequestCountCCSpell, $g_hChkClanCastleSpell = 0, $g_hCmbClanCastleSpell = 0, $g_hCmbClanCastleSpell = 0,$g_hCmbClanCastleSpell2 = 0, $g_hTxtClanCastleSpell
 
 ; Request CC Troops CC First - Add RK MOD
 Global $g_hchkReqCCFirst = 0
@@ -41,13 +42,13 @@ Global $g_hChkRequestTroopsEnableDefense, $g_hTxtRequestCCDefense, $g_hTxtReques
 
 ; Donate
 Global $g_hChkExtraAlphabets = 0, $g_hChkExtraChinese = 0, $g_hChkExtraKorean = 0, $g_hChkExtraPersian = 0
-Global $g_ahChkDonateTroop[$eTroopCount + $g_iCustomDonateConfigs] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Global $g_ahChkDonateAllTroop[$eTroopCount + $g_iCustomDonateConfigs] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Global $g_ahTxtDonateTroop[$eTroopCount + $g_iCustomDonateConfigs] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Global $g_ahTxtBlacklistTroop[$eTroopCount + $g_iCustomDonateConfigs] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Global $g_ahGrpDonateTroop[$eTroopCount + $g_iCustomDonateConfigs] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Global $g_ahLblDonateTroop[$eTroopCount + $g_iCustomDonateConfigs] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Global $g_ahBtnDonateTroop[$eTroopCount + $g_iCustomDonateConfigs] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+Global $g_ahChkDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeMachineCount] = 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+Global $g_ahChkDonateAllTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeMachineCount] = 	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+Global $g_ahTxtDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeMachineCount] = 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+Global $g_ahTxtBlacklistTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeMachineCount] = 	[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+Global $g_ahGrpDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeMachineCount] = 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+Global $g_ahLblDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeMachineCount] = 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
+Global $g_ahBtnDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeMachineCount] = 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
 
 Global $g_ahChkDonateSpell[$eSpellCount] = [0, 0, 0, 0, 0, -1, 0, 0, 0, 0] ; element $eSpellClone (5) is unused
 Global $g_ahChkDonateAllSpell[$eSpellCount] = [0, 0, 0, 0, 0, -1, 0, 0, 0, 0] ; element $eSpellClone (5) is unused
@@ -85,7 +86,6 @@ Global $g_hChkUseCCBalanced = 0, $g_hCmbCCDonated = 0, $g_hCmbCCReceived = 0
 GLobal $g_hLblDonateCChour = 0, $g_ahLblDonateCChoursE = 0
 GLobal $g_hLblDonateCChours[12] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-
 Func CreateVillageDonate()
 	$g_hGUI_DONATE = _GUICreate("", $g_iSizeWGrpTab2, $g_iSizeHGrpTab2, 5, 25, BitOR($WS_CHILD, $WS_TABSTOP), -1, $g_hGUI_VILLAGE)
 	;GUISetBkColor($COLOR_WHITE, $g_hGUI_DONATE)
@@ -115,6 +115,17 @@ EndFunc   ;==>CreateVillageDonate
 
 #Region CreateRequestSubTab
 Func CreateRequestSubTab()
+	Local $sTxtLightningSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortLightningSpells", -1)
+	Local $sTxtHealSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortHealSpells", -1)
+	Local $sTxtRageSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortRageSpells", -1)
+	Local $sTxtJumpSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortJumpSpells", -1)
+	Local $sTxtFreezeSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortFreezeSpells", -1)
+	Local $sTxtPoisonSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortPoisonSpells", -1)
+	Local $sTxtEarthquakeSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortEarthquakeSpells", -1)
+	Local $sTxtHasteSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortHasteSpells", -1)
+	Local $sTxtSkeletonSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortSkeletonSpells", -1)
+
+	Local $sTxtTip = ""
 	Local $xStart = 25, $yStart = 45
 	$g_hGUI_RequestCC = _GUICreate("", $g_iSizeWGrpTab3, $g_iSizeHGrpTab3, $xStart - 20, $yStart - 20, BitOR($WS_CHILD, $WS_TABSTOP), -1, $g_hGUI_DONATE)
 	; GUISetBkColor($COLOR_WHITE)
@@ -122,7 +133,7 @@ Func CreateRequestSubTab()
 	Local $x = $xStart
 	Local $y = $yStart
 	$g_hGrpRequestCC = GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "Group_01", "Clan Castle Troops"), $x - 20, $y - 20, $g_iSizeWGrpTab3, $g_iSizeHGrpTab3)
-	$y += 3
+	$y += 10
 	$x += 10
 		_GUICtrlCreateIcon($g_sLibIconPath, $eIcnCCRequest, $x - 5, $y, 64, 64, $BS_ICON)
 		$g_hChkRequestTroopsEnable = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkRequestTroopsEnable", "Request Troops / Spells"), $x + 40 + 30, $y - 6)
@@ -143,45 +154,65 @@ Func CreateRequestSubTab()
 			GUICtrlSetOnEvent(-1, "chkRequestDefense")
 		$g_hTxtRequestCCDefense = GUICtrlCreateInput(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "TxtRequestCCDefense", "Defense troop please"), $x + 240, $y + 15, 155, 20, BitOR($SS_CENTER, $ES_AUTOHSCROLL))
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "LblRequestCCDefense", "When shield time") & " <", $x + 256, $y + 40, -1, 15)
-		GUICtrlCreateLabel("min", $x + 378, $y + 40, 20, 15)
+		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "Lblmin", "min"), $x + 378, $y + 40, 20, 15)
 		$g_hTxtRequestDefenseEarly = GUICtrlCreateInput("0", $x + 350, $y + 40, 25, 16, $SS_CENTER)
 			GUICtrlSetLimit(-1, 3)
 			GUICtrlSetBkColor(-1, $COLOR_MONEYGREEN)
 
 	 ; move the Request CC Troops function to the beginning of the run loop	- Add RK MOD
-	 $y += 17
- 		$g_hChkReqCCFirst = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkReqCCFirst", "Request early"), $x + 70, $y + 20 , -1, -1)
+	 $y += 25
+ 		$g_hChkReqCCFirst = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkReqCCFirst", "Request early"), $x + 70, $y - 5 , -1, -1)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkReqCCFirst_Info_01", "Request troops at the beginning of the run loop"))
      		GUICtrlSetState(-1, $GUI_DISABLE)
 			GUICtrlSetOnEvent(-1, "chkReqCCFirst")
 
 		; Skip Request CC - Add RK MOD
-	$y += 25
-		$g_hChkSkipRequestCC = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkSkipRequestCC", "Skip request when:"), $x + 70, $y + 25)
+	$y += 45
+		$g_hChkSkipRequestCC = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkSkipRequestCC", "Skip request when:"), $x + 70, $y + 30)
  			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkSkipRequestCC01", "Stop sending request when CC Troop and/or Spell is full." & @CRLF & "or when CC Troop and/or Spell reaches certain amount received." & @CRLF & "Enable this option to ignore CC Siege Machine"))
 			GUICtrlSetOnEvent(-1, "chkSkipRequestCC")
-		$g_hTxtSkipRequestCCTroop = GUICtrlCreateInput("40", $x + 259, $y + 15, 25, 16, BitOR($SS_RIGHT, $ES_NUMBER))
+		$g_hTxtSkipRequestCCTroop = GUICtrlCreateInput("40", $x + 259, $y + 20, 25, 16, BitOR($SS_RIGHT, $ES_NUMBER))
 			GUICtrlSetLimit(-1, 2)
 		_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "TxtSkipRequestCCTroop", "Stop sending request when received this number of CC Troops" & @CRLF & "Set to ""40+"" means when CC Troop is full" & @CRLF & "Set to ""0"" means to always ignore CC Troop"))
 			GUICtrlSetOnEvent(-1, "chkSkipRequestCC")
-		$g_hLblSkipRequestCCTroop = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "LblSkipRequestCCTroop", "CC Troops >="), $x + 185, $y + 17)
-		GUICtrlCreateLabel("x", $x + 285, $y + 17, -1, 14)
+		$g_hLblSkipRequestCCTroop = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "LblSkipRequestCCTroop", "CC Troops >="), $x + 185, $y + 25)
+		GUICtrlCreateLabel("x", $x + 285, $y + 20, -1, 14)
 
-		$g_hLblSkipRequestCCSpell = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "LblSkipRequestCCSpell", "CC Spells   >="), $x + 185, $y + 35)
-		GUICtrlCreateLabel("x", $x + 285, $y + 35, -1, 15)
-		$g_hTxtSkipRequestCCSpell = GUICtrlCreateInput("2", $x + 259, $y + 33, 25, 16, BitOR($SS_RIGHT, $ES_NUMBER))
+		$g_hLblSkipRequestCCSpell = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "LblSkipRequestCCSpell", "CC Spells   >="), $x + 185, $y + 45)
+		GUICtrlCreateLabel("x", $x + 285, $y + 45, -1, 15)
+		$g_hTxtSkipRequestCCSpell = GUICtrlCreateInput("2", $x + 259, $y + 45, 25, 16, BitOR($SS_RIGHT, $ES_NUMBER))
 			GUICtrlSetLimit(-1, 1)
         _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "TxtSkipRequestCCSpell", "Stop sending request when received this number of CC Spells" & @CRLF & "Set to ""2+"" means when CC Spell is full" & @CRLF & "Set to ""0"" means to always ignore CC Spell"))
 			GUICtrlSetOnEvent(-1, "chkSkipRequestCC")
+		
+     $y += 45
+		$g_hCmbClanCastleSpell = GUICtrlCreateCombo(GetTranslatedFileIni("MBR GUI Design Child Attack - Search", "CmbWaitForClanCastleSpell", "Any"), $x + 325, $y - 25, 70, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			GUICtrlSetData(-1, $sTxtLightningSpells & "|" & _
+							   $sTxtHealSpells & "|" & _
+							   $sTxtRageSpells & "|" & _
+							   $sTxtJumpSpells & "|" & _
+							   $sTxtFreezeSpells & "|" & _
+							   $sTxtPoisonSpells & "|" & _
+							   $sTxtEarthquakeSpells & "|" & _
+							   $sTxtHasteSpells & "|" & _
+							   $sTxtSkeletonSpells)
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Search", "ChkWaitForClanCastleSpell_Info_01", -1))
+			GUICtrlSetOnEvent(-1, "cmbClanCastleSpell")
+		$g_hTxtClanCastleSpell = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Search", "TxtWaitForCastleSpell", "And"), $x + 297, $y - 10, -1, -1)
+		$g_hCmbClanCastleSpell2 = GUICtrlCreateCombo(GetTranslatedFileIni("MBR GUI Design Child Attack - Search", "CmbWaitForClanCastleSpell", "Any"), $x + 325, $y + 5, 70, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			GUICtrlSetData(-1, $sTxtFreezeSpells & "|" & _
+							   $sTxtPoisonSpells & "|" & _
+							   $sTxtEarthquakeSpells & "|" & _
+							   $sTxtHasteSpells & "|" & _
+							   $sTxtSkeletonSpells)
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Search", "ChkWaitForClanCastleSpell_Info_01", -1))		
 
+	$x += 70
+	$y += 65
+		GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "Only_during_hours", "Only during these hours of each day"), $x, $y, 300, 20, $BS_MULTILINE)
 
-	$x += 29 + 30
-	$y += 150
-		GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "Only_during_hours", "Only during these hours of each day"), $x + 30, $y, 300, 20, $BS_MULTILINE)
-
-	$x += 30
-	$y += 25
+	$y += 20
 		$g_hLblRequestCChour = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "Hour", "Hour") & ":", $x, $y, -1, 15)
 			Local $sTxtTip = GetTranslatedFileIni("MBR Global GUI Design", "Only_during_hours", -1)
 			_GUICtrlSetTip(-1, $sTxtTip)
@@ -330,6 +361,9 @@ Func CreateDonateSubTab()
 	Local $sTxtBabyDragons = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtBabyDragons", "Baby Dragons")
 	Local $sTxtMiners = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtMiners", "Miners")
 	Local $sTxtElectroDragons = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtElectroDragons", "Electro Dragons")
+
+	Local $sTxtWallWreckers = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtWallWreckers", "Wall Wreckers")
+	Local $sTxtBattleBlimps = GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtBattleBlimps", "Battle Blimps")
 
 	Local $sTxtLightningSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortLightningSpells", "Lightning")
 	Local $sTxtHealSpells = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtShortHealSpells", "Heal")
@@ -491,23 +525,21 @@ Func CreateDonateSubTab()
 		$g_ahBtnDonateTroop[$eTroopBowler] = GUICtrlCreateButton("", $x + 2, $y, $Offx - 2, $Offx - 2, $BS_ICON)
 			_GUICtrlSetImage(-1, $g_sLibIconPath, $eIcnBowler, 1)
 			GUICtrlSetOnEvent(-1, "btnDonateTroop")
+	$x += $Offx
+		$g_ahLblDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeWallWrecker] = GUICtrlCreateLabel("", $x, $y - 2, $Offx + 2, $Offx + 2)
+			GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$g_ahBtnDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeWallWrecker] = GUICtrlCreateButton("", $x + 2, $y, $Offx - 2, $Offx - 2, $BS_ICON)
+			_GUICtrlSetImage(-1, $g_sLibIconPath, $eIcnWallW, 1)
+			GUICtrlSetOnEvent(-1, "btnDonateTroop")
+	$x += $Offx
+		$g_ahLblDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeBattleBlimp] = GUICtrlCreateLabel("", $x, $y - 2, $Offx + 2, $Offx + 2)
+			GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
+			GUICtrlSetState(-1, $GUI_DISABLE)
+		$g_ahBtnDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeBattleBlimp] = GUICtrlCreateButton("", $x + 2, $y, $Offx - 2, $Offx - 2, $BS_ICON)
+			_GUICtrlSetImage(-1, $g_sLibIconPath, $eIcnBattleB, 1)
+			GUICtrlSetOnEvent(-1, "btnDonateTroop")
 
-	$x += $Offx
-		$g_hLblDonateTroopTBD1 = GUICtrlCreateLabel("", $x, $y - 2, $Offx + 2, $Offx + 2)
-			GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
-			GUICtrlSetState(-1, $GUI_DISABLE)
-		GUICtrlCreateButton("", $x + 2, $y, $Offx - 2, $Offx - 2, $BS_ICON)
-			GUICtrlSetState(-1, $GUI_DISABLE)
-;~			_GUICtrlSetImage(-1, $g_sLibIconPath, $eIcnTroops, 0)
-;~			GUICtrlSetOnEvent(-1, "btnDonateTroop")
-	$x += $Offx
-		$g_hLblDonateTroopTBD2 = GUICtrlCreateLabel("", $x, $y - 2, $Offx + 2, $Offx + 2)
-			GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
-			GUICtrlSetState(-1, $GUI_DISABLE)
-		GUICtrlCreateButton("", $x + 2, $y, $Offx - 2, $Offx - 2, $BS_ICON)
-			GUICtrlSetState(-1, $GUI_DISABLE)
-;~			_GUICtrlSetImage(-1, $g_sLibIconPath, $eIcnTroops, 0)
-;~			GUICtrlSetOnEvent(-1, "btnDonateTroop")
 	;$x += $Offx
 		;$g_hLblDonateTroopTBD3 = GUICtrlCreateLabel("", $x, $y - 2, $Offx + 2, $Offx + 2)
 			;GUICtrlSetBkColor(-1, $GUI_BKCOLOR_TRANSPARENT)
@@ -1501,6 +1533,71 @@ Func CreateDonateSubTab()
 			_GUICtrlSetTip(-1, $sTxtKeywordsNoTip & " " & $sTxtBowlers)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
+	; SIEGE - $sTxtBattleBlimps
+	$x = $xStart
+	$y = $Offy
+	$g_ahGrpDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeWallWrecker] = GUICtrlCreateGroup($sTxtWallWreckers, $x - 20, $y - 20, $g_iSizeWGrpTab3, 169)
+	$x -= 10
+	$y -= 4
+		GUICtrlSetState(-1, $GUI_HIDE)
+		_GUICtrlCreateIcon($g_sLibIconPath, $eIcnWallW, $x + 215, $y, 64, 64, $BS_ICON)
+			GUICtrlSetState(-1, $GUI_HIDE)
+		$g_ahChkDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeWallWrecker] = GUICtrlCreateCheckbox($sTxtDonate & " " & $sTxtWallWreckers, $x + 285, $y + 10, -1, -1)
+			GUICtrlSetState(-1, $GUI_HIDE)
+			_GUICtrlSetTip(-1, $sTxtDonateTip & " " & $sTxtWallWreckers & " " & $sTxtDonateTipTroop)
+			GUICtrlSetOnEvent(-1, "chkDonateTroop")
+		;$g_ahChkDonateAllTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeWallWrecker] = GUICtrlCreateCheckbox($sTxtDonateAll, $x + 285, $y + 30, -1, -1)
+			;GUICtrlSetState(-1, $GUI_HIDE)
+			;_GUICtrlSetTip(-1, $sTxtDonateTip & " " & $sTxtWallWreckers & " " & $sTxtDonateTipAll & @CRLF & $sTxtIgnoreAll)
+			;GUICtrlSetOnEvent(-1, "chkDonateAllTroop")
+		GUICtrlCreateLabel($sTxtKeywords & " " & $sTxtWallWreckers & ":" , $x - 5, $y + 5, -1, -1)
+			GUICtrlSetState(-1, $GUI_HIDE)
+		$g_ahTxtDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeWallWrecker] = GUICtrlCreateEdit("", $x - 5, $y + 20, 205, 125, BitOR($ES_WANTRETURN, $ES_CENTER, $ES_AUTOVSCROLL))
+			GUICtrlSetState(-1, $GUI_HIDE)
+			GUICtrlSetData(-1, StringFormat(GetTranslatedFileIni("MBR GUI Design Child Village - Donate", "TxtDonateTroop_Item_32", "wall wreckers\r\nsieges\r\nwreckers")))
+			_GUICtrlSetTip(-1, $sTxtKeywords & " " & $sTxtWallWreckers)
+		GUICtrlCreateLabel($sTxtKeywordsNo & ":", $x + 215, $y + 70, -1, -1)
+			GUICtrlSetState(-1, $GUI_HIDE)
+		$g_ahTxtBlacklistTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeWallWrecker] = GUICtrlCreateEdit("", $x + 215, $y + 85, 200, 60, BitOR($ES_WANTRETURN, $ES_CENTER, $ES_AUTOVSCROLL))
+			GUICtrlSetState(-1, $GUI_HIDE)
+			GUICtrlSetBkColor(-1, 0x505050)
+			GUICtrlSetColor(-1, $COLOR_WHITE)
+			GUICtrlSetData(-1, StringFormat(GetTranslatedFileIni("MBR GUI Design Child Village - Donate", "TxtBlacklistTroop_Item_32", "no wreckers\r\nsiege no")))
+			_GUICtrlSetTip(-1, $sTxtKeywordsNoTip & " " & $sTxtWallWreckers)
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+
+	$x = $xStart
+	$y = $Offy
+	$g_ahGrpDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeBattleBlimp] = GUICtrlCreateGroup($sTxtBattleBlimps, $x - 20, $y - 20, $g_iSizeWGrpTab3, 169)
+	$x -= 10
+	$y -= 4
+		GUICtrlSetState(-1, $GUI_HIDE)
+		_GUICtrlCreateIcon($g_sLibIconPath, $eIcnBattleB, $x + 215, $y, 64, 64, $BS_ICON)
+			GUICtrlSetState(-1, $GUI_HIDE)
+		$g_ahChkDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeBattleBlimp] = GUICtrlCreateCheckbox($sTxtDonate & " " & $sTxtBattleBlimps, $x + 285, $y + 10, -1, -1)
+			GUICtrlSetState(-1, $GUI_HIDE)
+			_GUICtrlSetTip(-1, $sTxtDonateTip & " " & $sTxtBattleBlimps & " " & $sTxtDonateTipTroop)
+			GUICtrlSetOnEvent(-1, "chkDonateTroop")
+		;$g_ahChkDonateAllTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeBattleBlimp] = GUICtrlCreateCheckbox($sTxtDonateAll, $x + 285, $y + 30, -1, -1)
+			;GUICtrlSetState(-1, $GUI_HIDE)
+			;_GUICtrlSetTip(-1, $sTxtDonateTip & " " & $sTxtBattleBlimps & " " & $sTxtDonateTipAll & @CRLF & $sTxtIgnoreAll)
+			;GUICtrlSetOnEvent(-1, "chkDonateAllTroop")
+		GUICtrlCreateLabel($sTxtKeywords & " " & $sTxtBattleBlimps & ":" , $x - 5, $y + 5, -1, -1)
+			GUICtrlSetState(-1, $GUI_HIDE)
+		$g_ahTxtDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeBattleBlimp] = GUICtrlCreateEdit("", $x - 5, $y + 20, 205, 125, BitOR($ES_WANTRETURN, $ES_CENTER, $ES_AUTOVSCROLL))
+			GUICtrlSetState(-1, $GUI_HIDE)
+			GUICtrlSetData(-1, StringFormat(GetTranslatedFileIni("MBR GUI Design Child Village - Donate", "TxtDonateTroop_Item_33", "battle blimps\r\nsieges\r\nblimps")))
+			_GUICtrlSetTip(-1, $sTxtKeywords & " " & $sTxtBattleBlimps)
+		GUICtrlCreateLabel($sTxtKeywordsNo & ":", $x + 215, $y + 70, -1, -1)
+			GUICtrlSetState(-1, $GUI_HIDE)
+		$g_ahTxtBlacklistTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeBattleBlimp] = GUICtrlCreateEdit("", $x + 215, $y + 85, 200, 60, BitOR($ES_WANTRETURN, $ES_CENTER, $ES_AUTOVSCROLL))
+			GUICtrlSetState(-1, $GUI_HIDE)
+			GUICtrlSetBkColor(-1, 0x505050)
+			GUICtrlSetColor(-1, $COLOR_WHITE)
+			GUICtrlSetData(-1, StringFormat(GetTranslatedFileIni("MBR GUI Design Child Village - Donate", "TxtBlacklistTroop_Item_33", "no blimps\r\nsiege no")))
+			_GUICtrlSetTip(-1, $sTxtKeywordsNoTip & " " & $sTxtBattleBlimps)
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+
 	$x = $xStart
 	$y = $Offy
 	$g_ahGrpDonateSpell[$eSpellPoison] = GUICtrlCreateGroup($sTxtPoisonSpells, $x - 20, $y - 20, $g_iSizeWGrpTab3, 169)
@@ -2091,7 +2188,7 @@ Func CreateScheduleSubTab()
 	$y += 12
 		$g_hChkUseCCBalanced = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate_Schedule", "Group_04", -1), $x, $y+2, -1, -1)
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
-			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate_Schedule", "ChkUseCCBalanced_Info_01", "Disable Clan Castle Usage if Ratio is not correct. Will Auto Continue when the Ratio is correct again"))
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate_Schedule", "ChkUseCCBalanced_Info_01", "Disable Clan Castle Usage or Donations if Ratio is not correct. Will Auto Continue when the Ratio is correct again"))
 			GUICtrlSetOnEvent(-1, "chkBalanceDR")
 
 	$x += 290
@@ -2102,8 +2199,7 @@ Func CreateScheduleSubTab()
 			GUICtrlSetOnEvent(-1, "cmbBalanceDR")
 		GUICtrlCreateLabel("/", $x + 73, $y + 5, -1, -1)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate_Schedule", "LblCCDonated-Received_Info_01", "Wanted donated / received ratio") & @CRLF & _
-							   GetTranslatedFileIni("MBR GUI Design Child Village - Donate_Schedule", "LblCCDonated-Received_Info_02", "1/1 means donated = received, 1/2 means donated = half the received etc.")& @CRLF & _
-							   GetTranslatedFileIni("MBR GUI Design Child Village - Donate_Schedule", "LblCCDonated-Received_Info_03", "Balance receive/request not stopping donate, only stops CC from deploying."))
+							   GetTranslatedFileIni("MBR GUI Design Child Village - Donate_Schedule", "LblCCDonated-Received_Info_02", "1/1 means donated = received, 1/2 means donated = half the received etc."))
 		$g_hCmbCCReceived = GUICtrlCreateCombo("", $x + 80, $y, 30, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate_Schedule", "CmbCCReceived_Info_01", "Received ratio"))
 			GUICtrlSetData(-1, "1|2|3|4|5", "1")

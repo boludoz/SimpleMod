@@ -148,20 +148,11 @@ Func ReadConfig_RKMod()
 	IniReadS($ChatbotPbSendNew, $g_sProfileConfigPath, "Chatbot", "chkPbSendNewChats", $ChatbotPbSendNew, "Int")
 	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "Int")
 
-	; ================================================== Russian Request - by RK MOD ================================= ;
-
-	IniReadS($g_iChkRusLang2, $g_sProfileConfigPath, "Lang", "ChkRusLang2", $g_iChkRusLang2, "Int")
 
 	; ================================================== Max logout time by RK MOD ================================= ;
 
 	IniReadS($g_bTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime, "Bool")
 	IniReadS($g_iTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime, "int")
-
-	; ================================================== Request troops for defense by RK MOD ================================= ;
-
-	$g_bRequestTroopsEnableDefense = (IniRead($g_sProfileConfigPath, "RequestDefense", "RequestDefenseEnable", "0") = "1")
-	$g_sRequestTroopsTextDefense = IniRead($g_sProfileConfigPath, "RequestDefense", "txtRequestDefense", "")
-	$g_iRequestDefenseEarly = Int(IniRead($g_sProfileConfigPath, "RequestDefense", "RequestDefenseEarly", "0"))
 
 	; ================================================== Boost for Magic Spell by RK MOD ================================= ;
 
@@ -348,20 +339,11 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	_Ini_Add("Chatbot", "genericMsgClan", $cGeneric)
 	_Ini_Add("Chatbot", "responseMsgClan", $cResp)
 
-	; ================================================== Russian Request - by RK MOD ================================= ;
-
-	_Ini_Add("Lang", "chkRusLang2", $g_iChkRusLang2 ? 1 : 0)
-
 	; ================================================== Max logout time - by RK MOD ================================= ;
 
 	_Ini_Add("TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime)
 	_Ini_Add("TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime)
 
-	; ================================================== Request troops for defense - by RK MOD ================================= ;
-
-	_Ini_Add("RequestDefense", "RequestDefenseEnable", $g_bRequestTroopsEnableDefense ? 1 : 0)
-	_Ini_Add("RequestDefense", "txtRequestDefense", $g_sRequestTroopsTextDefense)
-	_Ini_Add("RequestDefense", "RequestDefenseEarly", $g_iRequestDefenseEarly)
 
 	; ================================================== Boost for Magic Spell by RK MOD ================================= ;
 
@@ -546,20 +528,11 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$ChatbotPbSendNew = GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED ? 1 : 0
             $g_iChkRusLang = GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED ? 1 : 0
 
-			; ================================================== Russian Request - by RK MOD ================================= ;
-
-			$g_iChkRusLang2 = GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED ? 1 : 0
 
 			; ================================================== Max logout time - by RK MOD ================================= ;
 
 			$g_bTrainLogoutMaxTime = (GUICtrlRead($g_hChkTrainLogoutMaxTime) = $GUI_CHECKED)
 			$g_iTrainLogoutMaxTime = GUICtrlRead($g_hTxtTrainLogoutMaxTime)
-
-			; ================================================== Request troops for defense - by RK MOD ================================= ;
-
-			$g_bRequestTroopsEnableDefense = (GUICtrlRead($g_hChkRequestTroopsEnableDefense) = $GUI_CHECKED)
-			$g_sRequestTroopsTextDefense = GUICtrlRead($g_hTxtRequestCCDefense)
-			$g_iRequestDefenseEarly = GUICtrlRead($g_hTxtRequestDefenseEarly)
 
 			; ================================================== Boost for Magic Spell by RK MOD ================================= ;
 
@@ -764,22 +737,11 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			chkPbSendNewChats()
 			ChatGuiEditUpdate()
 
-			; ================================================== Russian Request - by RK MOD ======================================== ;
-
-			GUICtrlSetState($g_hChkRusLang2, $g_iChkRusLang2 = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-   		    chkRusLang2()
 			; ================================================== Max logout time - by RK MOD ======================================== ;
 
 			GUICtrlSetState($g_hChkTrainLogoutMaxTime, $g_bTrainLogoutMaxTime = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			chkTrainLogoutMaxTime()
 			GUICtrlSetData($g_hTxtTrainLogoutMaxTime, $g_iTrainLogoutMaxTime)
-
-			; ================================================== Request troops for defense - by RK MOD ============================== ;
-
-			GUICtrlSetState($g_hChkRequestTroopsEnableDefense, $g_bRequestTroopsEnableDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
-			chkRequestDefense()
-			GUICtrlSetData($g_hTxtRequestCCDefense, $g_sRequestTroopsTextDefense)
-			GUICtrlSetData($g_hTxtRequestDefenseEarly, $g_iRequestDefenseEarly)
 
 			; ================================================== Boost for Magic Spell by RK MOD ================================= ;
 

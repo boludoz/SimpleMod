@@ -17,24 +17,24 @@ Func CheckHeroesHealth()
     If $g_bCheckKingPower Or $g_bCheckQueenPower Or $g_bCheckWardenPower Then
         ForceCaptureRegion() ; ensure no screenshot caching kicks in
 
-        ; =============== Slot11 RK MOD (ID193-) =======================
-        Local $TempKingSlot = $g_iKingSlot
-        Local $TempQueenSlot = $g_iQueenSlot
-        Local $TempWardenSlot = $g_iWardenSlot
-        If $g_iKingSlot >= 11 Or $g_iQueenSlot >= 11 Or $g_iWardenSlot >= 11 Then
-            If $g_bDraggedAttackBar = False Then DragAttackBar($g_iTotalAttackSlot, False) ; drag forward
-        ElseIf $g_iKingSlot >= 0 And $g_iQueenSlot >= 0 And $g_iWardenSlot >= 0 And ($g_iKingSlot < $g_iTotalAttackSlot - 10 Or $g_iQueenSlot < $g_iTotalAttackSlot - 10 Or $g_iWardenSlot < $g_iTotalAttackSlot - 10) Then
-            If $g_bDraggedAttackBar Then DragAttackBar($g_iTotalAttackSlot, True) ; return drag
-        EndIf
-        If $g_bDraggedAttackBar Then
-            $TempKingSlot -= $g_iTotalAttackSlot - 10
-            $TempQueenSlot -= $g_iTotalAttackSlot - 10
-            $TempWardenSlot -= $g_iTotalAttackSlot - 10
-        EndIf
-        ; ==============================================================
-        Local $aDisplayTime[$eHeroCount] = [0, 0, 0] ; array to hold converted timerdiff into seconds
+		Local $aDisplayTime[$eHeroCount] = [0, 0, 0] ; array to hold converted timerdiff into seconds
 
-        If $g_bDebugSetlog Then
+		; Slot11+
+		Local $TempKingSlot = $g_iKingSlot
+		Local $TempQueenSlot = $g_iQueenSlot
+		Local $TempWardenSlot = $g_iWardenSlot
+		If $g_iKingSlot >= 11 Or $g_iQueenSlot >= 11 Or $g_iWardenSlot >= 11 Then
+			If $g_bDraggedAttackBar = False Then DragAttackBar($g_iTotalAttackSlot, False) ; drag forward
+		ElseIf $g_iKingSlot >= 0 And $g_iQueenSlot >= 0 And $g_iWardenSlot >= 0 And ($g_iKingSlot < $g_iTotalAttackSlot - 10 Or $g_iQueenSlot < $g_iTotalAttackSlot - 10 Or $g_iWardenSlot < $g_iTotalAttackSlot - 10) Then
+			If $g_bDraggedAttackBar Then DragAttackBar($g_iTotalAttackSlot, True) ; return drag
+		EndIf
+		If $g_bDraggedAttackBar Then
+			$TempKingSlot -= $g_iTotalAttackSlot - 10
+			$TempQueenSlot -= $g_iTotalAttackSlot - 10
+			$TempWardenSlot -= $g_iTotalAttackSlot - 10
+		EndIf
+
+		If $g_bDebugSetlog Then
 			SetDebugLog("CheckHeroesHealth() for Queen started ")
 			If _Sleep($DELAYRESPOND) Then Return ; improve pause button response
 		EndIf

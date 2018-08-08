@@ -213,3 +213,7 @@ Global $g_iTxtMinSaveGTFO_Elixir = 200000, $g_iTxtMinSaveGTFO_DE = 2000, _
 ; ================================================== Wall/Building Upgrading Priority by RK MOD	======================================== ;
 
 Global $g_iChkUpgrPriority = 0, $g_iCmbUpgrdPriority = 0
+
+; ================================================== SmartTrain - RK MOD (Demen) ======================================== ;
+
+Global $g_bChkSmartTrain = False, $g_bChkPreciseArmyCamp = False, $g_bChkFillArcher = False, $g_bChkFillEQ = False, $g_iTxtFillArcher = 5
