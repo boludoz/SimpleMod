@@ -80,8 +80,8 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 
 	;=========== Slot11 - RK MOD (ID193-) ==============
 	;search slot where is the troop...
-	Local $troopPosition = -1, $troopSlotConst = -1 ; $troopSlotConst = xx/22 (the unique slot number of troop) - Slot11 - Demen_S11_#9003
-					   
+	Local $troopPosition = -1
+	Local $troopSlotConst = -1 ; $troopSlotConst = xx/22 (the unique slot number of troop) - Slot11+
 	For $i = 0 To UBound($g_avAttackTroops) - 1
 		If $g_avAttackTroops[$i][0] = $iTroopIndex And $g_avAttackTroops[$i][1] > 0 Then
 					  
@@ -131,10 +131,10 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 	If $troopPosition = -1 Or $usespell = False Then
 
 		If $usespell = True Then
-			SetLog("No troop found in your attack troops list")
-			debugAttackCSV("No troop found in your attack troops list")
+			SetLog("No " & NameOfTroop($iTroopIndex) & "  found in your attack troops list")
+			debugAttackCSV("No " & NameOfTroop($iTroopIndex) & " found in your attack troops list")
 		Else
-			If $g_bDebugSetlog Then SetDebugLog("discard use spell", $COLOR_DEBUG)
+			If $g_bDebugSetlog Then SetDebugLog("Discard use " & NameOfTroop($iTroopIndex), $COLOR_DEBUG)
 		EndIf
 
 	Else
@@ -244,13 +244,13 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 							If $debug = True Then
 								SetLog("dropHeroes(" & $pixel[0] & ", " & $pixel[1] & ", -1, -1," & $g_iWardenSlot & ") ")
 							Else
-								dropHeroes($pixel[0], $pixel[1], -1, -1, $troopPosition) ; was $g_iWardenSlot, Slot11 - RK MOD (ID193-)
+								dropHeroes($pixel[0], $pixel[1], -1, $troopPosition, -1) ; was $g_iQueenSlot, Slot11 - RK MOD (ID193-)
 							EndIf
-						Case $eCastle
+						Case $eCastle, $eWallW, $eBattleB
 							If $debug = True Then
 								SetLog("dropCC(" & $pixel[0] & ", " & $pixel[1] & ", " & $g_iClanCastleSlot & ")")
 							Else
-								dropCC($pixel[0], $pixel[1], $troopPosition) ; was $g_iClanCastleSlot, Slot11 - RK MOD (ID193-)
+								dropHeroes($pixel[0], $pixel[1], -1, $troopPosition, -1) ; was $g_iQueenSlot, Slot11 - RK MOD (ID193-)
 							EndIf
 						Case $eLSpell To $eSkSpell
 							If $debug = True Then

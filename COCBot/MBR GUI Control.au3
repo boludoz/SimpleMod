@@ -20,7 +20,6 @@ Global $g_bRedrawBotWindow[3] = [True, False, False] ; [0] = window redraw enabl
 Global $g_hFrmBot_WNDPROC = 0
 Global $g_hFrmBot_WNDPROC_ptr = 0
 
-
 ;~ ------------------------------------------------------
 ;~ Control Tab Files
 ;~ ------------------------------------------------------
@@ -367,7 +366,6 @@ Func GUIControl_WM_MOUSE($hWin, $iMsg, $wParam, $lParam)
 		SetCriticalMessageProcessing($wasCritical)
 		Return $GUI_RUNDEFMSG
 	EndIf
-	Local $hCtrlTarget = $g_aiAndroidEmbeddedCtrlTarget[0]
 	If $iMsg <> $WM_MOUSEMOVE Or $g_iAndroidEmbedMode <> 0 Then
 		; not all message got thru here, so disabled
 		;$x += $g_aiMouseOffset[0]
@@ -408,7 +406,7 @@ Func GUIControl_AndroidEmbedded($hWin, $iMsg, $wParam, $lParam)
 				;If $g_bDebugAndroidEmbedded Then AndroidShield("GUIControl_AndroidEmbedded WM_SETFOCUS", Default, False, 0, True)
 				;AndroidShield(Default, False, 10, AndroidShieldHasFocus())
 			Else
-
+				Local $hCtrlTarget = $g_aiAndroidEmbeddedCtrlTarget[0]
 				If $GUIControl_AndroidEmbedded_Call[0] <> $hCtrlTarget Or $GUIControl_AndroidEmbedded_Call[1] <> $iMsg Or $GUIControl_AndroidEmbedded_Call[2] <> $wParam Or $GUIControl_AndroidEmbedded_Call[3] <> $lParam Then
 					; protect against strange infinite loops with BS1/2 when using Ctrl-MouseWheel
 					If $g_bDebugAndroidEmbedded Then SetDebugLog("GUIControl_AndroidEmbedded: FORWARD $hWin=" & $hWin & ", $iMsg=" & Hex($iMsg) & ", $wParam=" & $wParam & ", $lParam=" & $lParam & ", $hCtrlTarget=" & $hCtrlTarget, Default, True)
@@ -497,12 +495,6 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 			btnAttackNowTS()
 			;Case $idMENU_DONATE_SUPPORT
 			;	ShellExecute("https://mybot.run/forums/index.php?/donate/make-donation/")
-		Case $g_hBtnNotifyDeleteMessages
-			If $g_bRunState Then
-				btnDeletePBMessages() ; call with flag when bot is running to execute on _sleep() idle
-			Else
-				PushMsg("DeleteAllPBMessages") ; call directly when bot is stopped
-			EndIf
 		Case $g_hBtnMakeScreenshot
 			If $g_bRunState Then
 				; call with flag when bot is running to execute on _sleep() idle
@@ -550,7 +542,8 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 		Case $g_hChkMakeIMGCSV
 			chkmakeIMGCSV()
 		Case $g_hBtnTestTrain
-			btnTestTrain()
+			;btnTestTrain()
+			TestSmartFarm()
 		Case $g_hBtnTestDonateCC
 			btnTestDonateCC()
 		Case $g_hBtnTestRequestCC
@@ -574,7 +567,11 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 		Case $g_hBtnTestimglocTroopBar
 			TestImglocTroopBar()
 		Case $g_hBtnTestAttackCSV
-			btnTestAttackCSV()
+			Local $RuntimeA = $g_bRunState
+			$g_bRunState = True
+			Setlog("Army Window Test")
+			_checkArmyCamp(False,False,False, True)
+			$g_bRunState = $RuntimeA
 		Case $g_hBtnTestBuildingLocation
 			btnTestGetLocationBuilding()
 		Case $g_hBtnTestFindButton
@@ -601,6 +598,20 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 			btnTestSmartWait()
 		Case $g_hBtnConsoleWindow
 			btnConsoleWindow()
+		Case $g_hBtnTestTrainsimgloc
+
+			Local $RuntimeA = $g_bRunState
+			$g_bRunState = True
+			Setlog("Queued Spells Test")
+			CheckQueueSpells()
+			$g_bRunState = $RuntimeA
+		Case $g_hBtnTestQuickTrainsimgloc
+
+			Local $RuntimeA = $g_bRunState
+			$g_bRunState = True
+			Setlog("Queued Troops Test")
+			CheckQueueTroops()
+			$g_bRunState = $RuntimeA
 	EndSwitch
 
 	If $lParam = $g_hCmbGUILanguage Then
@@ -2038,6 +2049,7 @@ Func tabDeadbase()
 			GUISetState(@SW_HIDE, $g_hGUI_DEADBASE_ATTACK_STANDARD)
 			GUISetState(@SW_HIDE, $g_hGUI_DEADBASE_ATTACK_SCRIPTED)
 			GUISetState(@SW_HIDE, $g_hGUI_DEADBASE_ATTACK_MILKING)
+			GUISetState(@SW_HIDE, $g_hGUI_DEADBASE_ATTACK_SMARTFARM)
 	EndSelect
 
 EndFunc   ;==>tabDeadbase
@@ -2098,7 +2110,7 @@ Func Bind_ImageList($nCtrl, ByRef $hImageList)
 	Switch $nCtrl
 		Case $g_hTabMain
 			; the icons for main tab
-			Local $aIconIndex = [$eIcnHourGlass, $eIcnTH12, $eIcnAttack, $eIcnGUI, $eIcnInfo]
+			Local $aIconIndex = [$eIcnHourGlass, $eIcnTH12, $eIcnAttack, $eTitan, $eIcnGUI, $eIcnInfo]
 
 		Case $g_hGUI_VILLAGE_TAB
 			; the icons for village tab

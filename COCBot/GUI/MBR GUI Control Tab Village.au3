@@ -60,6 +60,18 @@ Func chkRequestCCHours()
 	SetRedrawBotWindowControls($bWasRedraw, $g_hGrpRequestCC, "chkRequestCCHours")
 EndFunc   ;==>chkRequestCCHours
 
+
+Func cmbClanCastleSpell()
+	Local $iSpellSelection = _GUICtrlComboBox_GetCurSel($g_hCmbClanCastleSpell)
+	If $iSpellSelection < 5 Then
+		GUICtrlSetState($g_hCmbClanCastleSpell2, BitOR($GUI_HIDE, $GUI_DISABLE))
+		GUICtrlSetState($g_hTxtClanCastleSpell, BitOR($GUI_HIDE, $GUI_DISABLE))
+	Else
+		GUICtrlSetState($g_hCmbClanCastleSpell2, BitOR($GUI_SHOW, $GUI_ENABLE))
+		GUICtrlSetState($g_hTxtClanCastleSpell, BitOR($GUI_SHOW, $GUI_ENABLE))
+	EndIf
+EndFunc   ;==>cmbDBWaitForCCSpell
+
 ; Skip request CC - Add RK MOD
 Func chkSkipRequestCC()
 	If GUICtrlRead($g_hChkSkipRequestCC) = $GUI_CHECKED Then
