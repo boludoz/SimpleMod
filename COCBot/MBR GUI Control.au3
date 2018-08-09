@@ -786,6 +786,8 @@ Func GUIControl_WM_NOTIFY($hWind, $iMsg, $wParam, $lParam)
 			tabTHSnipe()
 		Case $g_hGUI_BOT_TAB
 			tabBot()
+		Case $g_hGUI_SWITCH_OPTIONS_TAB
+			tabSwitchOptions()
 		Case Else
 			$bCheckEmbeddedShield = False
 	EndSwitch
