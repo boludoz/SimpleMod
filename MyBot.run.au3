@@ -741,7 +741,7 @@ Func runBot() ;Bot that runs everything in order
 			;If _Sleep($DELAYRUNBOT5) Then Return
 			;If $g_bFirstStart Then checkArmyCamp(True, True, False, True)
 		    $g_bcanRequestCC = True
-			If $g_bReqCCFirst and BalanceRecRec(True) Then
+			If $g_bReqCCFirst And BalanceRecRec(True) Then
 				RequestCC()
 				If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			EndIf
@@ -1244,7 +1244,7 @@ Func _RunFunction($action)
 			_Sleep($DELAYRUNBOT3)
             EndIf
 		Case "RequestCC"
-			If Not $g_bReqCCFirst and BalanceRecRec(True) Then ; MOD move the Request CC Troops function to the beginning of the run loop
+			If Not $g_bReqCCFirst And BalanceRecRec(True) Then ; MOD move the Request CC Troops function to the beginning of the run loop
 				RequestCC()
 			EndIf
 			If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
@@ -1290,6 +1290,9 @@ Func FirstCheck()
 	If ProfileSwitchAccountEnabled() And $g_abDonateOnly[$g_iCurAccount] Then Return
 
 	VillageReport()
+	
+	If $g_bReqCCFirst = 1 Then RequestCC()
+	
 	If Not $g_bRunState Then Return
 
 	If $g_bOutOfGold = True And (Number($g_aiCurrentLoot[$eLootGold]) >= Number($g_iTxtRestartGold)) Then ; check if enough gold to begin searching again

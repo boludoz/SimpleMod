@@ -212,25 +212,25 @@ Func chkSwitchAcc()
 		For $i = $g_hCmbTotalAccount To $g_ahChkDonate[7]
 			GUICtrlSetState($i, $GUI_ENABLE)
 		Next
+		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_UNCHECKED)
+		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_DISABLE)
+		OnlySCIDAccounts()
 		For $i = 0 To 7
 			GUICtrlSetState($g_ahChkSetFarm[$i], $GUI_ENABLE)
 			_chkSetFarmSchedule($i)
 		Next
-		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_UNCHECKED)
-		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_DISABLE)
-		OnlySCIDAccounts()
 	Else
 		releaseSwitchAccountMutex()
 		For $i = $g_hCmbTotalAccount To $g_ahChkDonate[7]
 			GUICtrlSetState($i, $GUI_DISABLE)
 		Next
+		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_ENABLE)
+		OnlySCIDAccounts()
 		For $i = 0 To 7
 			For $j = $g_ahChkSetFarm[$i] To $g_ahCmbTime2[$i]
 				GUICtrlSetState($j, $GUI_DISABLE)
 			Next
 		Next
-		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_ENABLE)
-		OnlySCIDAccounts()
 	EndIf
 EndFunc   ;==>chkSwitchAcc
 
@@ -440,6 +440,7 @@ Func _chkSetFarmSchedule($i)
 				$g_ahCmbAction2[$i] & "#" & $g_ahCmbCriteria2[$i] & "#" & $g_ahTxtResource2[$i] & "#" & $g_ahCmbTime2[$i])
 	EndIf
 EndFunc   ;==>_chkSetFarmSchedule
+
 Func cmbCriteria1()
 	For $i = 0 To UBound($g_ahCmbCriteria1) - 1
 		If @GUI_CtrlId = $g_ahCmbCriteria1[$i] Then
