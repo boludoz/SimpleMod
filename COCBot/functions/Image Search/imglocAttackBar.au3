@@ -96,7 +96,7 @@ Func AttackBarCheck($Remaining = False, $pMatchMode = $DB)
 				; Check if exist a double Castle Spells but with different levels
 				If $iMultipleCoords > 1 And StringInStr($aResult[$i + $iResultAddDup][0], "Spell") <> 0 Then
 					If $g_bDebugSetlog Then SetDebugLog($aResult[$i + $iResultAddDup][0] & " detected " & $iMultipleCoords & " times!")
-					For $j = 0 To $iMultipleCoords - 1
+					For $j = 1 To $iMultipleCoords - 1
 						Local $aCoordsSplit2 = $aCoords[$j]
 						If UBound($aCoordsSplit2) = 2 Then
 							; add slot
@@ -149,7 +149,7 @@ Func AttackBarCheck($Remaining = False, $pMatchMode = $DB)
 					If UBound($Slottemp) = 2 Then
 						If $g_bDebugSetlog Then SetDebugLog("OCR : " & $Slottemp[0] & "|SLOT: " & $Slottemp[1], $COLOR_DEBUG) ;Debug
 						If $CheckSlotwHero Then $iSlotCompensation = 10
-						If $aResult[$i][0] = "Castle" Or $aResult[$i][0] = "King" Or $aResult[$i][0] = "Queen" Or $aResult[$i][0] = "Warden" Then
+						If $aResult[$i][0] = "Castle" Or $aResult[$i][0] = "King" Or $aResult[$i][0] = "Queen" Or $aResult[$i][0] = "Warden" Or $aResult[$i][0] = "WallW" Or $aResult[$i][0] = "BattleB" Then
 							$aResult[$i][3] = 1
 							$aResult[$i][4] = $Slottemp[1]
 						Else
