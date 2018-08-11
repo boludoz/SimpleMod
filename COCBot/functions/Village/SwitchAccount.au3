@@ -132,7 +132,7 @@ Func CheckSwitchAcc()
 
 		ClickP($aAway, 1, 0, "#0000") ;Click Away
 
-		$iWaitTime = _ArrayMax($g_aiTimeTrain)
+		$iWaitTime = _ArrayMax($g_aiTimeTrain, 1, 0, 2) ; Not check Siege Machine time: $g_aiTimeTrain[3]
 		If $bReachAttackLimit And $iWaitTime <= 0 Then
 			SetLog("This account has attacked twice in a row, switching to another account", $COLOR_INFO)
 			SetSwitchAccLog(" - Reach attack limit: " & $g_aiAttackedCountAcc[$g_iCurAccount] - $g_aiAttackedCountSwitch[$g_iCurAccount])
@@ -148,12 +148,11 @@ Func CheckSwitchAcc()
 		SetSwitchAccLog("Stay at [" & $g_iCurAccount + 1 & "]", $COLOR_SUCCESS)
 		If _Sleep(500) Then Return
 	Else
-		
 
 		If $g_bChkSmartSwitch = True Then ; Smart switch
 			SetDebugLog("-Smart Switch-")
 			$nMinRemainTrain = CheckTroopTimeAllAccount($bForceSwitch)
-			
+
 			If $nMinRemainTrain <= 1 And Not $bForceSwitch And Not $g_bDonateLikeCrazy Then ; Active (force switch shall give priority to Donate Account)
 				If $g_bDebugSetlog Then SetDebugLog("Switch to or Stay at Active Account: " & $g_iNextAccount + 1, $COLOR_DEBUG)
 				$g_iDonateSwitchCounter = 0
@@ -174,7 +173,7 @@ Func CheckSwitchAcc()
 				EndIf
 			EndIf
 		Else ; Normal switch (continuous)
-		    SetDebugLog("-Normal Switch-")
+			SetDebugLog("-Normal Switch-")
 			$g_iNextAccount = $g_iCurAccount + 1
 			If $g_iNextAccount > $g_iTotalAcc Then $g_iNextAccount = 0
 			While $abAccountNo[$g_iNextAccount] = False
@@ -187,10 +186,10 @@ Func CheckSwitchAcc()
 				$g_aiTimerStart[$g_iNextAccount] = TimerInit() ; reset timer
 			EndIf
 		EndIf
-        
+
 		SetDebugLog("- Current Account: " & $g_asProfileName[$g_iCurAccount] & " number: " & $g_iCurAccount + 1)
 		SetDebugLog("- Next Account: " & $g_asProfileName[$g_iNextAccount] & " number: " & $g_iNextAccount + 1)
-		
+
 		; Just a loop for all acc to check it if necessary
 		For $i = 0 To $g_iTotalAcc
 			; Check if the next account is PBT and IF the remain Train Time is Less/More than 2 minutes OR the account is disable
@@ -390,7 +389,7 @@ EndIf
 
 		$StartOnlineTime = TimerInit()
 		SetSwitchAccLog("Switched to Acc [" & $NextAccount + 1 & "]", $COLOR_SUCCESS)
-		
+
 		; Reset the log
 		$g_hLogFile = 0
 
@@ -675,7 +674,7 @@ Func SwitchCOCAcc_ConfirmSCID(ByRef $bResult)
 
 		SetDebugLog("Checking LogOut & Confirm button x:" & $aButtonLogOutSCID[0] & " y:" & $aButtonLogOutSCID[1] & " : " & _GetPixelColor($aButtonLogOutSCID[0], $aButtonLogOutSCID[1], True))
 
-		If $i = 20 Then
+		If $i = 30 Then
 			$bResult = False
 			;ExitLoop 2
 			Return "Error"
@@ -691,7 +690,7 @@ Func SwitchCOCAcc_ClickAccountSCID(ByRef $bResult, $NextAccount, $iStep = 4)
 	Local $iRetryCloseSCIDTab = 0
 	For $i = 0 To 30 ; Checking "Log in with SuperCell ID" button continuously in 30sec
 		If _ColorCheck(_GetPixelColor($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], True), Hex($aLoginWithSupercellID[2], 6), $aLoginWithSupercellID[3]) And _
-		               _ColorCheck(_GetPixelColor($aLoginWithSupercellID2[0], $aLoginWithSupercellID2[1], True), Hex($aLoginWithSupercellID2[2], 6), $aLoginWithSupercellID2[3]) Then
+				_ColorCheck(_GetPixelColor($aLoginWithSupercellID2[0], $aLoginWithSupercellID2[1], True), Hex($aLoginWithSupercellID2[2], 6), $aLoginWithSupercellID2[3]) Then
 			SetLog("   " & $iStep & ". Click Log in with Supercell ID")
 			Click($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], 1, 0, "Click Log in with SC_ID")
 			If _Sleep(600) Then Return "Exit"
@@ -815,7 +814,7 @@ Func CheckTroopTimeAllAccount($bExcludeCurrent = False) ; Return the minimum rem
 	Local $abAccountNo = AccountNoActive()
 	Local $iMinRemainTrain
 	If $bExcludeCurrent = False Then
-		If $g_abPBActive[$g_iCurAccount] = False Then $g_aiRemainTrainTime[$g_iCurAccount] = _ArrayMax($g_aiTimeTrain) ; remaintraintime of current account - in minutes If not PBT
+		If $g_abPBActive[$g_iCurAccount] = False Then $g_aiRemainTrainTime[$g_iCurAccount] = _ArrayMax($g_aiTimeTrain, 1, 0, 2) ; remaintraintime of current account - in minutes If not PBT
 		$g_aiTimerStart[$g_iCurAccount] = TimerInit() ; start counting elapse of training time of current account
 	EndIf
 
@@ -853,9 +852,9 @@ Func CheckTroopTimeAllAccount($bExcludeCurrent = False) ; Return the minimum rem
 			EndIf
 		EndIf
 	Next
-    
+
 	SetDebugLog("- Min Remain Train Time is " & $iMinRemainTrain)
-	
+
 	Return $iMinRemainTrain
 
 EndFunc   ;==>CheckTroopTimeAllAccount
@@ -1031,7 +1030,7 @@ Func CheckLoginWithSupercellIDScreen()
 				_ArraySort($AccountsCoord, 0, 0, 0, 1) ; short by column 1 [Y]
 				Setlog("SC_ID account number " & $g_iWhatSCIDAccount2Use + 1)
 				If $g_iWhatSCIDAccount2Use + 1 > UBound($XCoordinates) Then
-					setlog("You selected a SCID undetected account!!", $COLOR_ERROR)
+					Setlog("You selected a SCID undetected account!!", $COLOR_ERROR)
 					ExitLoop
 				EndIf
 				Click($AccountsCoord[$g_iWhatSCIDAccount2Use][0] - 150, $AccountsCoord[$g_iWhatSCIDAccount2Use][1], 1)

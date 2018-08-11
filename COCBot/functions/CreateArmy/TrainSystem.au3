@@ -54,7 +54,6 @@ Func TrainSystem()
 	;SmartTrain - RK MOD (Demen)
 	If $g_bChkSmartTrain Then
 		SmartTrain()
-		TrainSiege()
 		ResetVariables("donated")
 		EndGainCost("Train")
 		Return

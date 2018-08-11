@@ -229,7 +229,7 @@ Func ProcessCommandLine()
 						If StringInStr(FileGetAttrib($sProfilePath), "D") Then
 							$g_sProfilePath = $sProfilePath
 						Else
-							SetLog("Profiles Path doesn't exist: " & $sProfilePath, $COLOR_ERROR);
+							SetLog("Profiles Path doesn't exist: " & $sProfilePath, $COLOR_ERROR) ;
 						EndIf
 					Else
 						$bOptionDetected = False
@@ -536,7 +536,7 @@ Func FinalInitialization(Const $sAI)
 	If CheckPrerequisites(True) Then
 		MBRFunc(True) ; start MyBot.run.dll, after this point .net is initialized and threads popup all the time
 		setAndroidPID() ; set Android PID
-		SetBotGuiPID(); set GUI PID
+		SetBotGuiPID() ; set GUI PID
 	EndIf
 
 	If $g_bFoundRunningAndroid Then
@@ -593,9 +593,6 @@ Func FinalInitialization(Const $sAI)
 
 	UpdateMainGUI()
 
-	; temporary solution for the most recent MEmu versions
-	CheckClickAdbNewVersions()
-
 EndFunc   ;==>FinalInitialization
 
 ; #FUNCTION# ====================================================================================================================
@@ -624,7 +621,10 @@ Func MainLoop($bCheckPrerequisitesOK = True)
 	EndIf
 
 	Local $hStarttime = _Timer_Init()
-
+   
+    ; Check the Supported Emulator versions
+	CheckEmuNewVersions()
+	
 	;Reset Telegram message
 	NotifyGetLastMessageFromTelegram()
 	$g_iTGLastRemote = $g_sTGLast_UID
@@ -669,7 +669,7 @@ Func runBot() ;Bot that runs everything in order
 	Local $iWaitTime
 
 	InitiateSwitchAcc()
-	If ProfileSwitchAccountEnabled() And $g_bReMatchAcc And $g_bRunState Then 	;AltuFaltu-m
+	If ProfileSwitchAccountEnabled() And $g_bReMatchAcc And $g_bRunState Then ;AltuFaltu-m
 		SetLog("Rematching Account [" & $g_iNextAccount + 1 & "] with Profile [" & GUICtrlRead($g_ahCmbProfile[$g_iNextAccount]) & "]")
 		SwitchCoCAcc($g_iNextAccount)
 	EndIf
@@ -723,6 +723,7 @@ Func runBot() ;Bot that runs everything in order
 			If _Sleep($DELAYRUNBOT3) Then Return
 			VillageReport()
 			ProfileSwitch()
+			CheckFarmSchedule()
 			CheckStopForWar()
 			If $g_bOutOfGold = True And (Number($g_aiCurrentLoot[$eLootGold]) >= Number($g_iTxtRestartGold)) Then ; check if enough gold to begin searching again
 				$g_bOutOfGold = False ; reset out of gold flag
@@ -740,12 +741,12 @@ Func runBot() ;Bot that runs everything in order
 			;If $g_bFirstStart Then ProfileReport()
 			;If _Sleep($DELAYRUNBOT5) Then Return
 			;If $g_bFirstStart Then checkArmyCamp(True, True, False, True)
-		    $g_bcanRequestCC = True
+			$g_bcanRequestCC = True
 			If $g_bReqCCFirst And BalanceRecRec(True) Then
 				RequestCC()
 				If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			EndIf
-			Local $aRndFuncList = ['LabCheck','Collect', 'CheckTombs', 'ReArm', 'CleanYard']
+			Local $aRndFuncList = ['LabCheck', 'Collect', 'CheckTombs', 'ReArm', 'CleanYard']
 			While 1
 				If $g_bRunState = False Then Return
 				If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
@@ -770,14 +771,14 @@ Func runBot() ;Bot that runs everything in order
 				$currentForecast = readCurrentForecast()
 				If $currentForecast >= Number($iTxtForecastBoost, 3) Then
 					If _GUICtrlComboBox_GetCurSel($g_hCmbBoostBarracks) > 0 Then
-						 SetLog("Boost Time !", $COLOR_GREEN)
+						SetLog("Boost Time !", $COLOR_GREEN)
 					Else
-						 SetLog("Boost barracks disabled!", $COLOR_GREEN)
+						SetLog("Boost barracks disabled!", $COLOR_GREEN)
 					EndIf
 				Else
-			    SetLog("Forecast index is below the required value, no boost !", $COLOR_RED)
+					SetLog("Forecast index is below the required value, no boost !", $COLOR_RED)
 				EndIf
- 			EndIf
+			EndIf
 			If $iChkForecastPause = 1 Then
 				$currentForecast = readCurrentForecast()
 			EndIf
@@ -906,7 +907,7 @@ Func _Idle() ;Sequence that runs until Full Army
 		If _Sleep($DELAYIDLE1) Then Return
 		If $g_iCommandStop = -1 Then SetLog("====== Waiting for full army ======", $COLOR_SUCCESS)
 		If $ChatbotChatGlobal = True Or $ChatbotChatClan = True Then
-		ChatbotMessage()
+			ChatbotMessage()
 		EndIf
 		Local $hTimer = __TimerInit()
 		Local $iReHere = 0, $bNoCheckRedChatIcon = True
@@ -984,7 +985,7 @@ Func _Idle() ;Sequence that runs until Full Army
 		If $g_iCommandStop = 0 And $g_bTrainEnabled = True Then
 			If Not ($g_bIsFullArmywithHeroesAndSpells) Then
 				If $g_iActualTrainSkip < $g_iMaxTrainSkip Then
-				    MainSuperXPHandler()
+					MainSuperXPHandler()
 					If CheckNeedOpenTrain($g_sTimeBeforeTrain) Then TrainSystem()
 					If $g_bRestart = True Then ExitLoop
 					If _Sleep($DELAYIDLE1) Then ExitLoop
@@ -1018,7 +1019,7 @@ Func _Idle() ;Sequence that runs until Full Army
 		If $g_bRestart = True Then ExitLoop
 		$TimeIdle += Round(__TimerDiff($hTimer) / 1000, 2) ;In Seconds
 
-		If $g_bCanRequestCC = True And BalanceRecRec(True) Then RequestCC()
+		If $g_bcanRequestCC = True And BalanceRecRec(True) Then RequestCC()
 
 		SetLog("Time Idle: " & StringFormat("%02i", Floor(Floor($TimeIdle / 60) / 60)) & ":" & StringFormat("%02i", Floor(Mod(Floor($TimeIdle / 60), 60))) & ":" & StringFormat("%02i", Floor(Mod($TimeIdle, 60))))
 
@@ -1069,8 +1070,8 @@ Func AttackMain() ;Main control for attack functions
 				;SetLog("BullyMode: " & $g_abAttackTypeEnable[$TB] & ", Bully Hero: " & BitAND($g_aiAttackUseHeroes[$g_iAtkTBMode], $g_aiSearchHeroWaitEnable[$g_iAtkTBMode], $g_iHeroAvailable) & "|" & $g_aiSearchHeroWaitEnable[$g_iAtkTBMode] & "|" & $g_iHeroAvailable, $COLOR_DEBUG)
 			EndIf
 			_ClanGames()
-			If $ChatbotChatGlobal = true or $ChatbotChatClan = True Then
-			ChatbotMessage()
+			If $ChatbotChatGlobal = True Or $ChatbotChatClan = True Then
+				ChatbotMessage()
 			EndIf
 			ClickP($aAway, 1, 0, "#0000") ;Click Away to prevent any pages on top
 			PrepareSearch()
@@ -1193,13 +1194,13 @@ Func _RunFunction($action)
 				If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			EndIf
 		Case "SendChat"
-		    If $ChatbotChatGlobal = True Or $ChatbotChatClan = True Then
-               ChatbotMessage()
-		    EndIf
+			If $ChatbotChatGlobal = True Or $ChatbotChatClan = True Then
+				ChatbotMessage()
+			EndIf
 		Case "DonateCC,Train"
-		; ======================= RK MOD (#ID135-)
-		    If $g_iChkAutoCamp = 1 Then CheckAutoCamp()
-		; ======================= RK MOD (#ID135-)
+			; ======================= RK MOD (#ID135-)
+			If $g_iChkAutoCamp = 1 Then CheckAutoCamp()
+			; ======================= RK MOD (#ID135-)
 			If $g_iActiveDonate And $g_bChkDonate Then
 				;If $g_bFirstStart Then
 				;	getArmyTroopCapacity(True, False)
@@ -1239,10 +1240,10 @@ Func _RunFunction($action)
 		Case "BoostAll"
 			BoostAllWithMagicSpell()
 		Case "LabCheck"
-		    If $g_iChkLabCheck = 0 Then
-			LabGuiDisplay()
-			_Sleep($DELAYRUNBOT3)
-            EndIf
+			If $g_iChkLabCheck = 0 Then
+				LabGuiDisplay()
+				_Sleep($DELAYRUNBOT3)
+			EndIf
 		Case "RequestCC"
 			If Not $g_bReqCCFirst And BalanceRecRec(True) Then ; MOD move the Request CC Troops function to the beginning of the run loop
 				RequestCC()
@@ -1257,7 +1258,7 @@ Func _RunFunction($action)
 		Case "UpgradeBuilding"
 			UpgradeBuilding()
 			_Sleep($DELAYRUNBOT3)
- 			AutoUpgrade()
+			AutoUpgrade()
 			_Sleep($DELAYRUNBOT3)
 		Case "BuilderBase"
 			If isOnBuilderBase() Or (($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades) And SwitchBetweenBases()) Then
@@ -1286,10 +1287,11 @@ Func _RunFunction($action)
 EndFunc   ;==>_RunFunction
 
 Func FirstCheck()
-
+     
 	If ProfileSwitchAccountEnabled() And $g_abDonateOnly[$g_iCurAccount] Then Return
 
 	VillageReport()
+	CheckFarmSchedule()
 	
 	If $g_bReqCCFirst = 1 Then RequestCC()
 	
