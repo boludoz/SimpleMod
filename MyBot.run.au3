@@ -593,9 +593,6 @@ Func FinalInitialization(Const $sAI)
 
 	UpdateMainGUI()
 
-	; temporary solution for the most recent MEmu versions
-	CheckClickAdbNewVersions()
-
 EndFunc   ;==>FinalInitialization
 
 ; #FUNCTION# ====================================================================================================================
@@ -624,7 +621,10 @@ Func MainLoop($bCheckPrerequisitesOK = True)
 	EndIf
 
 	Local $hStarttime = _Timer_Init()
-
+   
+    ; Check the Supported Emulator versions
+	CheckEmuNewVersions()
+	
 	;Reset Telegram message
 	NotifyGetLastMessageFromTelegram()
 	$g_iTGLastRemote = $g_sTGLast_UID

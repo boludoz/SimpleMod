@@ -578,7 +578,7 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			GUICtrlSetState($g_hChkReqCCFirst, $g_bReqCCFirst = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			chkReqCCFirst()
-			; ================================================ AutoCamp - Added by RK MOD (#ID135-) ========================================
+			; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
 
 			GUICtrlSetState($g_hChkAutoCamp, $g_iChkAutoCamp = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
    		    chkAutoCamp()
