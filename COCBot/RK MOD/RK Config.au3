@@ -164,16 +164,6 @@ Func ReadConfig_RKMod()
 		IniReadS($g_iLastTime[$i], $g_sProfileBuildingPath, "other", "LastTimeCollectors" & $i, 0, "int")
 	Next
 
-	; ================================================== Multi Finger - Added by RK MOD ==================== ;
-	IniReadS($g_iMultiFingerStyle, $g_sProfileConfigPath, "MultiFinger", "Select", 2, "int")
-
-
-	; ================================================== Unit/Wave Factor - Added by RK MOD ==================== ;
-	IniReadS($g_iChkUnitFactor, $g_sProfileConfigPath, "SetSleep", "EnableUnitFactor", 0, "Int")
-	IniReadS($g_iTxtUnitFactor, $g_sProfileConfigPath, "SetSleep", "UnitFactor", 10 ,"Int")
-	IniReadS($g_iChkWaveFactor, $g_sProfileConfigPath, "SetSleep", "EnableWaveFactor", 0, "Int")
-	IniReadS($g_iTxtWaveFactor, $g_sProfileConfigPath, "SetSleep", "WaveFactor", 100 ,"Int")
-
 	; ==================================================  Upgrade Management - Added by RK MOD ==================== ;
 
 	$g_ibUpdateNewUpgradesOnly = (IniRead($g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", 0) = 1)
@@ -350,17 +340,6 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 			_Ini_Add("boost", "LastTimeCollectors" & $i, $g_iLastTime[0])
 	Next
 
-	; ================================================== Multi Finger - Added by RK MOD ======================================== ;
-
-	_Ini_Add("MultiFinger", "Select", _GUICtrlComboBox_GetCurSel($g_hcmbDBMultiFinger))
-
-	; ================================================== Unit/Wave Factor - Added by RK MOD ======================================== ;
-
-	_Ini_Add("SetSleep", "EnableUnitFactor", $g_iChkUnitFactor ? 1 : 0)
-	_Ini_Add("SetSleep", "EnableWaveFactor", $g_iChkWaveFactor ? 1 : 0)
-    _Ini_Add("SetSleep", "UnitFactor", GUICtrlRead($g_hTxtUnitFactor))
-	_Ini_Add("SetSleep", "WaveFactor", GUICtrlRead($g_hTxtWaveFactor))
-
 	; ================================================== Upgrade Management - Added by RK MOD ================================== ;
 
 	_Ini_Add("upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly ? 1 : 0)
@@ -531,15 +510,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$g_iChkBoostCMagic = GUICtrlRead($g_hChkBoostCMagic) = $GUI_CHECKED ? 1 : 0
 			$g_iCmbBoostClMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic)
 
-			; ================================================== Multi Finger - Added by RK MOD =================================== ;
-			$g_iMultiFingerStyle = _GUICtrlComboBox_GetCurSel($g_hCmbDBMultiFinger)
-
-			; ================================================== Unit/Wave Factor - Added by RK MOD =============================== ;
-			$g_iChkUnitFactor = (GUICtrlRead($g_hChkUnitFactor) = $GUI_CHECKED)
-			$g_iChkWaveFactor = (GUICtrlRead($g_hChkWaveFactor) = $GUI_CHECKED)
-			$g_iTxtUnitFactor = GUICtrlRead($g_hTxtUnitFactor)
-			$g_iTxtWaveFactor = GUICtrlRead($g_hTxtWaveFactor)
-
 			; ================================================== Upgrade Management - Added by RK MOD ============================= ;
 
 			$g_ibUpdateNewUpgradesOnly = (GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED)
@@ -579,10 +549,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			GUICtrlSetState($chkSXBK, $ichkSXBK = $eHeroKing ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($chkSXAQ, $ichkSXAQ = $eHeroQueen ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($chkSXGW, $ichkSXGW = $eHeroWarden ? $GUI_CHECKED : $GUI_UNCHECKED)
-
-			; ================================================= Classic Foure Fingers - Added by RK MOD ========================= ;
-			cmbStandardDropSidesAB()
-			Bridge()
 
 			; ================================================== Forecast - by RK MOD ================================ ;
 
@@ -738,19 +704,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbBoostClMagic, $g_iCmbBoostClMagic)
 			chkBoostCMagic()
 			BoostClMagic()
-
-			; ================================================== Multi Finger - Added by RK MOD ======================================== ;
-
-			_GUICtrlComboBox_SetCurSel($g_hCmbDBMultiFinger, $g_iMultiFingerStyle)
-
-			; ================================================== Unit/Wave Factor  - Added by RK MOD ======================================== ;
-
-			GUICtrlSetState($g_hChkUnitFactor, $g_iChkUnitFactor ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetData($g_hTxtUnitFactor, $g_iTxtUnitFactor)
-			chkUnitFactor()
-			GUICtrlSetState($g_hChkWaveFactor, $g_iChkWaveFactor ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetData($g_hTxtWaveFactor, $g_iTxtWaveFactor)
-			chkWaveFactor()
 
 			; ==================================================  Upgrade Management - Added by RK MOD ======================================== ;
 

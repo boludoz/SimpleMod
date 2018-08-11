@@ -1380,6 +1380,22 @@ Func ApplyConfig_600_29_DB_Standard($TypeReadSave)
 			GUICtrlSetState($g_hChkAttackNearGoldMineDB, $g_abAttackStdSmartNearCollectors[$DB][0] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkAttackNearElixirCollectorDB, $g_abAttackStdSmartNearCollectors[$DB][1] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkAttackNearDarkElixirDrillDB, $g_abAttackStdSmartNearCollectors[$DB][2] ? $GUI_CHECKED : $GUI_UNCHECKED)
+			; ================================================= Classic Foure Fingers - Added by RK MOD ========================= ;
+			cmbStandardDropSidesAB()
+			Bridge()
+			; ================================================== Multi Finger - Added by RK MOD ======================================== ;
+
+			_GUICtrlComboBox_SetCurSel($g_hCmbDBMultiFinger, $g_iMultiFingerStyle)
+
+			; ================================================== Unit/Wave Factor  - Added by RK MOD ======================================== ;
+
+			GUICtrlSetState($g_hChkUnitFactor, $g_iChkUnitFactor ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtUnitFactor, $g_iTxtUnitFactor)
+			chkUnitFactor()
+			GUICtrlSetState($g_hChkWaveFactor, $g_iChkWaveFactor ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtWaveFactor, $g_iTxtWaveFactor)
+			chkWaveFactor()
+			
 		Case "Save"
 			$g_aiAttackStdDropOrder[$DB] = _GUICtrlComboBox_GetCurSel($g_hCmbStandardDropOrderDB)
 			$g_aiAttackStdDropSides[$DB] = _GUICtrlComboBox_GetCurSel($g_hCmbStandardDropSidesDB)
@@ -1391,7 +1407,16 @@ Func ApplyConfig_600_29_DB_Standard($TypeReadSave)
 			$g_abAttackStdSmartNearCollectors[$DB][0] = (GUICtrlRead($g_hChkAttackNearGoldMineDB) = $GUI_CHECKED)
 			$g_abAttackStdSmartNearCollectors[$DB][1] = (GUICtrlRead($g_hChkAttackNearElixirCollectorDB) = $GUI_CHECKED)
 			$g_abAttackStdSmartNearCollectors[$DB][2] = (GUICtrlRead($g_hChkAttackNearDarkElixirDrillDB) = $GUI_CHECKED)
+            
+			; ================================================== Multi Finger - Added by RK MOD =================================== ;
+			$g_iMultiFingerStyle = _GUICtrlComboBox_GetCurSel($g_hCmbDBMultiFinger)
 
+			; ================================================== Unit/Wave Factor - Added by RK MOD =============================== ;
+			$g_iChkUnitFactor = (GUICtrlRead($g_hChkUnitFactor) = $GUI_CHECKED)
+			$g_iChkWaveFactor = (GUICtrlRead($g_hChkWaveFactor) = $GUI_CHECKED)
+			$g_iTxtUnitFactor = GUICtrlRead($g_hTxtUnitFactor)
+			$g_iTxtWaveFactor = GUICtrlRead($g_hTxtWaveFactor)
+			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_29_DB_Standard
 

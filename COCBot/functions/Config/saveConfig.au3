@@ -822,6 +822,16 @@ Func SaveConfig_600_29_DB_Standard()
 	_Ini_Add("attack", "DBSmartAttackGoldMine", $g_abAttackStdSmartNearCollectors[$DB][0] ? 1 : 0)
 	_Ini_Add("attack", "DBSmartAttackElixirCollector", $g_abAttackStdSmartNearCollectors[$DB][1] ? 1 : 0)
 	_Ini_Add("attack", "DBSmartAttackDarkElixirDrill", $g_abAttackStdSmartNearCollectors[$DB][2] ? 1 : 0)
+	; ================================================== Multi Finger - Added by RK MOD ======================================== ;
+
+	_Ini_Add("MultiFinger", "Select", _GUICtrlComboBox_GetCurSel($g_hcmbDBMultiFinger))
+
+	; ================================================== Unit/Wave Factor - Added by RK MOD ======================================== ;
+
+	_Ini_Add("SetSleep", "EnableUnitFactor", $g_iChkUnitFactor ? 1 : 0)
+	_Ini_Add("SetSleep", "EnableWaveFactor", $g_iChkWaveFactor ? 1 : 0)
+    _Ini_Add("SetSleep", "UnitFactor", GUICtrlRead($g_hTxtUnitFactor))
+	_Ini_Add("SetSleep", "WaveFactor", GUICtrlRead($g_hTxtWaveFactor))
 EndFunc   ;==>SaveConfig_600_29_DB_Standard
 
 Func SaveConfig_600_29_DB_Scripted()
