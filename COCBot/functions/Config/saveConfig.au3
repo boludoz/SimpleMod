@@ -484,6 +484,17 @@ Func SaveConfig_600_13()
 	_Ini_Add("donate", "cmbFilterDonationsCC", $g_iCmbDonateFilter)
 	_Ini_Add("donate", "SkipDonateNearFulLTroopsEnable", $g_bDonateSkipNearFullEnable ? 1 : 0)
 	_Ini_Add("donate", "SkipDonateNearFulLTroopsPercentual", $g_iDonateSkipNearFullPercent)
+	; ==================================================  GTFO - Added by RK MOD ================================================ ;
+	
+	_Ini_Add("GTFO", "chkUseGTFO", $g_bChkUseGTFO)
+	_Ini_Add("GTFO", "txtMinSaveGTFO_Elixir",$g_iTxtMinSaveGTFO_Elixir)
+	_Ini_Add("GTFO", "txtMinSaveGTFO_DE", $g_iTxtMinSaveGTFO_DE)
+	_Ini_Add("GTFO", "chkUseKickOut", $g_bChkUseKickOut)
+	_Ini_Add("GTFO", "txtDonatedCap", $g_iTxtDonatedCap)
+	_Ini_Add("GTFO", "txtReceivedCap", $g_iTxtReceivedCap)
+	_Ini_Add("GTFO", "chkKickOutSpammers", $g_bChkKickOutSpammers)
+	_Ini_Add("GTFO", "txtKickLimit", $g_iTxtKickLimit)
+
 EndFunc   ;==>SaveConfig_600_13
 
 Func SaveConfig_600_15()

@@ -168,17 +168,6 @@ Func ReadConfig_RKMod()
 
 	$g_ibUpdateNewUpgradesOnly = (IniRead($g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", 0) = 1)
 
-	; ==================================================  GTFO - Added by RK MOD ================================================ ;
-	
-	IniReadS($g_bChkUseGTFO, $g_sProfileConfigPath, "GTFO", "chkUseGTFO", $g_bChkUseGTFO, "Bool")
-	IniReadS($g_iTxtMinSaveGTFO_Elixir, $g_sProfileConfigPath, "GTFO", "txtMinSaveGTFO_Elixir", $g_iTxtMinSaveGTFO_Elixir, "Int")
-	IniReadS($g_iTxtMinSaveGTFO_DE, $g_sProfileConfigPath, "GTFO", "txtMinSaveGTFO_DE", $g_iTxtMinSaveGTFO_DE, "Int")
-	IniReadS($g_bChkUseKickOut, $g_sProfileConfigPath, "GTFO", "chkUseKickOut", $g_bChkUseKickOut, "Bool")
-	IniReadS($g_iTxtDonatedCap, $g_sProfileConfigPath, "GTFO", "txtDonatedCap", $g_iTxtDonatedCap, "Int")
-	IniReadS($g_iTxtReceivedCap, $g_sProfileConfigPath, "GTFO", "txtReceivedCap", $g_iTxtReceivedCap, "Int")
-	IniReadS($g_bChkKickOutSpammers, $g_sProfileConfigPath, "GTFO", "chkKickOutSpammers", $g_bChkKickOutSpammers, "Bool")
-	IniReadS($g_iTxtKickLimit, $g_sProfileConfigPath, "GTFO", "txtKickLimit", $g_iTxtKickLimit, "Int")
-
 EndFunc   ;==>ReadConfig_RKMod
 
 Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
@@ -344,16 +333,6 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 
 	_Ini_Add("upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly ? 1 : 0)
 	
-	; ==================================================  GTFO - Added by RK MOD ================================================ ;
-	
-	_Ini_Add("GTFO", "chkUseGTFO", $g_bChkUseGTFO)
-	_Ini_Add("GTFO", "txtMinSaveGTFO_Elixir",$g_iTxtMinSaveGTFO_Elixir)
-	_Ini_Add("GTFO", "txtMinSaveGTFO_DE", $g_iTxtMinSaveGTFO_DE)
-	_Ini_Add("GTFO", "chkUseKickOut", $g_bChkUseKickOut)
-	_Ini_Add("GTFO", "txtDonatedCap", $g_iTxtDonatedCap)
-	_Ini_Add("GTFO", "txtReceivedCap", $g_iTxtReceivedCap)
-	_Ini_Add("GTFO", "chkKickOutSpammers", $g_bChkKickOutSpammers)
-	_Ini_Add("GTFO", "txtKickLimit", $g_iTxtKickLimit)
 
 EndFunc   ;==>SaveConfig_RKMod
 
@@ -514,19 +493,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			$g_ibUpdateNewUpgradesOnly = (GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED)
 			
-			; ================================================== GTFO - Added by RK MOD =========================================== ;
-			
-			$g_bChkUseGTFO = (GUICtrlRead($g_hChkUseGTFO) = $GUI_CHECKED)
-			$g_iTxtMinSaveGTFO_Elixir = Number(GUICtrlRead($g_hTxtMinSaveGTFO_Elixir))
-			$g_iTxtMinSaveGTFO_DE = Number( GUICtrlRead($g_hTxtMinSaveGTFO_DE))
-
-			$g_bChkUseKickOut = (GUICtrlRead($g_hChkUseKickOut) = $GUI_CHECKED)
-			$g_iTxtDonatedCap = Number(GUICtrlRead($g_hTxtDonatedCap))
-			$g_iTxtReceivedCap = Number(GUICtrlRead($g_hTxtReceivedCap))
-			$g_bChkKickOutSpammers = (GUICtrlRead($g_hChkKickOutSpammers) = $GUI_CHECKED)
-			$g_iTxtKickLimit = Number(GUICtrlRead($g_hTxtKickLimit))
-
-
 		Case "Read"
 
 
@@ -709,20 +675,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly ? $GUI_CHECKED : $GUI_UNCHECKED)
 			
-			; ================================================== GTFO - Added by RK MOD ======================================== ;
-			
-			GUICtrlSetState($g_hChkUseGTFO, $g_bChkUseGTFO = True ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetData($g_hTxtMinSaveGTFO_Elixir, $g_iTxtMinSaveGTFO_Elixir)
-			GUICtrlSetData($g_hTxtMinSaveGTFO_DE, $g_iTxtMinSaveGTFO_DE)
-			ApplyGTFO()
-
-			GUICtrlSetState($g_hChkUseKickOut, $g_bChkUseKickOut = True ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
-			GUICtrlSetData($g_hTxtReceivedCap, $g_iTxtReceivedCap)
-			GUICtrlSetState($g_hChkKickOutSpammers, $g_bChkKickOutSpammers = True ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetData($g_hTxtKickLimit, $g_iTxtKickLimit)
-			ApplyKickOut()
-
 	EndSwitch
 
 EndFunc   ;==>ApplyConfig_RKMod
