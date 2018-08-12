@@ -5,7 +5,7 @@
 ; Parameters ....: ---
 ; Return values .: ---
 ; Author ........: ProMac
-; Modified ......: 06/2017 , MHK2012(05/2018)
+; Modified ......: 06/2017, Boludoz (10/06/2018|11/08/18)
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2018
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......: ---
@@ -41,7 +41,7 @@ Func MainGTFO()
 
 	; GTFO Main Loop
 	While 1
-		SetLogCentered(" GTFO v0.2 ", Default, Default, True)
+		SetLogCentered(" GTFO v0.4 ", Default, Default, True)
 		; Just a user log
 		$_diffTimer = (TimerDiff($_timer) / 1000) / 60
 		If Not $_bFirstLoop Then
@@ -115,6 +115,14 @@ Func TrainGTFO()
 
 	; Check Resources values
 	StartGainCost()
+
+	; Smart Train - Team AiO MOD++
+	If $g_bChkSmartTrain Then
+		SmartTrain()
+;~ 		ResetVariables("donated")
+		EndGainCost("Train")
+		Return
+	EndIf
 
 	; Is necessary to be Custom Train Troops to be accurate
 	If Not OpenArmyOverview(True, "TrainGTFO()") Then Return
@@ -198,8 +206,8 @@ Func DonateGTFO()
 
 	If _Sleep($DELAYRUNBOT3) Then Return
 
-;~ 	; Scroll Up
-;~ 	ScrollUp()
+	; Scroll Up
+	;ScrollUp()
 
 	; +++++++++++++++++++++++++++++
 	; MAIN DONATE LOOP ON CLAN CHAT
@@ -252,15 +260,10 @@ Func DonateGTFO()
 				If DonateIT(10) Then $_bReturnS = True ; Donated Spells , lets Train it
 
 				; Close Donate Window - Return to Chat
-				ClickP($aAway, 1, 0, "1")
+				ChatRandomWait()
 			Else
 				; Doesn't exist Requests lets exits from this loop
-;~ 				ClickP($aAway, 1, 0)
-				If ScrollDown() Then
-					$y = 200
-				Else
-					$firstrun = True
-				EndIf
+				ChatRandomWait()
 				ExitLoop
 			EndIf
 
@@ -278,7 +281,7 @@ Func DonateGTFO()
 		WEnd
 
 		; A click just to mantain the 'Game active'
-;~ 		ClickP($aAway, 1, 0, "2")
+		ChatRandomWait()
 	WEnd
 
 	AutoItSetOption("MouseClickDelay", 10)
@@ -286,6 +289,23 @@ Func DonateGTFO()
 	CloseClanChat()
 
 EndFunc   ;==>DonateGTFO
+
+Func ChatRandomWait()
+	Local $i = 0
+	Local $h = Random(1, 32, 1)
+
+			While $i <= $h
+					If _Sleep(Random(1, 753, 1)) Then Return
+					$i = $i + 1
+					Sleep(50) ; CPU
+			WEnd
+				Local $x = Random(0, 93, 1)
+				Local $y = Random(85, 673, 1)
+
+			ClickDrag($x + Random(0, 20, 1), $y + Random(1, 60, 1), $x, $y)
+			If _sleep(100) Then Return
+			Sleep(50) ; CPU
+EndFunc
 
 Func OpenClanChat()
 
@@ -371,9 +391,8 @@ Func ScrollDown()
 		Click($Scroll[0], $Scroll[1], 1, 0, "#0172")
 		If _Sleep($DELAYDONATECC2) Then Return
 		Return True
-	Else
-		Return False
 	EndIf
+	Return False
 EndFunc   ;==>ScrollDown
 
 Func DonateIT($Slot)
@@ -388,16 +407,23 @@ Func DonateIT($Slot)
 		;         after that check if exist the next slot ... True click 8x
 		;         than check if the slot 1 is empty return to train troops
 
-		Click(395 + ($Slot * 68), $g_iDonationWindowY + 57 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
-		SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
+		; dadad5 Out of troops on Slot 0
+		;If not _ColorCheck(_GetPixelColor(385 + ($Slot * 68), $g_iDonationWindowY + 70 + $YComp, True), Hex(0xDADAD5, 6), 5) Then
+
+		Click(385 + ($Slot * 68), $g_iDonationWindowY + 70 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
+		;SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
+		;EndIf
 
 		$Slot += 1
 		$iTroopIndex = $Slot
 
-		Click(395 + ($Slot * 68), $g_iDonationWindowY + 57 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
-		SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
+		;If not _ColorCheck(_GetPixelColor(385 + ($Slot * 68), $g_iDonationWindowY + 70 + $YComp, True), Hex(0xDADAD5, 6), 5) Then
 
-		; dadad5 Out of troops on Slot 0
+		Click(385 + ($Slot * 68), $g_iDonationWindowY + 70 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
+		;SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
+		;EndIf
+
+	; dadad5 Out of troops on Slot 0
 		If _ColorCheck(_GetPixelColor(350, $g_iDonationWindowY + 105 + $YComp, True), Hex(0xDADAD5, 6), 5) Then
 			SetLog("No More troops let's train!", $COLOR_INFO)
 			$g_OutOfTroops = True
@@ -424,9 +450,6 @@ Func DonateIT($Slot)
 		$g_aiDonateStatsSpells[$iTroopIndex][0] += 1
 		$g_iSpellsNumber += 1
 		Return True
-	Else
-		SetLog(" - Spells Empty or Filled!", $COLOR_ERROR)
-		Return False
 	EndIf
 
 EndFunc   ;==>DonateIT
@@ -511,92 +534,3 @@ Func _DonateWindow()
 	If $g_bDebugSetlog  Then SetDebugLog("_DonateWindow Open Exit", $COLOR_DEBUG)
 	Return True
 EndFunc   ;==>_DonateWindow
-
-; GTFO Control
-Func ApplyGTFO()
-	$g_bChkUseGTFO = (GUICtrlRead($g_hChkUseGTFO) = $GUI_CHECKED)
-	If $g_bChkUseGTFO = True Then
-		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_ENABLE)
-		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_ENABLE)
-	Else
-		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_DISABLE)
-		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_DISABLE)
-	EndIf
-EndFunc   ;==>ApplyGTFO
-
-Func ApplyElixirGTFO()
-	$g_iTxtMinSaveGTFO_Elixir = Number(GUICtrlRead($g_hTxtMinSaveGTFO_Elixir))
-EndFunc   ;==>ApplyElixirGTFO
-
-Func ApplyDarkElixirGTFO()
-	$g_iTxtMinSaveGTFO_DE = Number(GUICtrlRead($g_hTxtMinSaveGTFO_DE))
-EndFunc   ;==>ApplyDarkElixirGTFO
-
-Func ApplyKickOut()
-	$g_bChkUseKickOut = (GUICtrlRead($g_hChkUseKickOut) = $GUI_CHECKED)
-	If $g_bChkUseKickOut = True Then
-		GUICtrlSetState($g_hTxtDonatedCap, $GUI_ENABLE)
-		GUICtrlSetState($g_hTxtReceivedCap, $GUI_ENABLE)
-		GUICtrlSetState($g_hChkKickOutSpammers, $GUI_ENABLE)
-		GUICtrlSetState($g_hTxtKickLimit, $GUI_ENABLE)
-	Else
-		GUICtrlSetState($g_hTxtDonatedCap, $GUI_DISABLE)
-		GUICtrlSetState($g_hTxtReceivedCap, $GUI_DISABLE)
-		GUICtrlSetState($g_hChkKickOutSpammers, $GUI_DISABLE)
-		GUICtrlSetState($g_hTxtKickLimit, $GUI_DISABLE)
-	EndIf
-	ApplyKickOutSpammers()
-	ApplyKickLimits()
-EndFunc   ;==>ApplyKickOut
-
-Func ApplyDonatedCap()
-	$g_iTxtDonatedCap = Number(GUICtrlRead($g_hTxtDonatedCap))
-	If $g_iTxtDonatedCap < 0 Then
-		$g_iTxtDonatedCap = 0
-		GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
-	EndIf
-
-	If $g_iTxtDonatedCap > 8 Then
-		$g_iTxtDonatedCap = 8
-		GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
-	EndIf
-EndFunc   ;==>ApplyDonatedCap
-
-Func ApplyReceivedCap()
-	$g_iTxtReceivedCap = Number(GUICtrlRead($g_hTxtReceivedCap))
-	If $g_iTxtReceivedCap < 0 Then
-		$g_iTxtReceivedCap = 0
-		GUICtrlSetData($g_hTxtReceivedCap, $g_iTxtReceivedCap)
-	EndIf
-	If $g_iTxtReceivedCap > 35 Then
-		$g_iTxtReceivedCap = 35
-		GUICtrlSetData($g_hTxtReceivedCap, $g_iTxtReceivedCap)
-	EndIf
-EndFunc   ;==>ApplyReceivedCap
-
-; Kick Spammer to kick only donating members
-Func ApplyKickOutSpammers()
-	$g_bChkKickOutSpammers = (GUICtrlRead($g_hChkKickOutSpammers) = $GUI_CHECKED)
-	If $g_bChkKickOutSpammers = True Then
-		GUICtrlSetState($g_hTxtDonatedCap, $GUI_DISABLE)
-		GUICtrlSetState($g_hTxtReceivedCap, $GUI_DISABLE)
-	Else
-		If $g_bChkUseKickOut = True Then
-			GUICtrlSetState($g_hTxtDonatedCap, $GUI_ENABLE)
-			GUICtrlSetState($g_hTxtReceivedCap, $GUI_ENABLE)
-		EndIf
-	EndIf
-EndFunc   ;==>ApplyKickOutSpammers
-
-; Set Kick Limite according to your need
-Func ApplyKickLimits()
-	$g_iTxtKickLimit = Number(GUICtrlRead($g_hTxtKickLimit))
-	If $g_iTxtKickLimit < 1 Then
-		$g_iTxtKickLimit = 1
-		GUICtrlSetData($g_hTxtKickLimit, $g_iTxtKickLimit)
-	EndIf
-	If $g_iTxtKickLimit > 9 Then
-		$g_iTxtKickLimit = 9
-		GUICtrlSetData($g_hTxtKickLimit, $g_iTxtKickLimit)
-	EndIf
-EndFunc   ;==>ApplyKickLimits
