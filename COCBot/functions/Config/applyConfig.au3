@@ -600,6 +600,19 @@ Func ApplyConfig_600_13($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbCCDonated, $g_iCCDonated - 1)
 			_GUICtrlComboBox_SetCurSel($g_hCmbCCReceived, $g_iCCReceived - 1)
 			chkBalanceDR()
+			; ================================================== GTFO - Added by RK MOD ======================================== ;
+			
+			GUICtrlSetState($g_hChkUseGTFO, $g_bChkUseGTFO = True ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtMinSaveGTFO_Elixir, $g_iTxtMinSaveGTFO_Elixir)
+			GUICtrlSetData($g_hTxtMinSaveGTFO_DE, $g_iTxtMinSaveGTFO_DE)
+			ApplyGTFO()
+
+			GUICtrlSetState($g_hChkUseKickOut, $g_bChkUseKickOut = True ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
+			GUICtrlSetData($g_hTxtReceivedCap, $g_iTxtReceivedCap)
+			GUICtrlSetState($g_hChkKickOutSpammers, $g_bChkKickOutSpammers = True ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtKickLimit, $g_iTxtKickLimit)
+			ApplyKickOut()
 
 		Case "Save"
 			$g_bDonateHoursEnable = (GUICtrlRead($g_hChkDonateHoursEnable) = $GUI_CHECKED)
@@ -612,6 +625,18 @@ Func ApplyConfig_600_13($TypeReadSave)
 			$g_bUseCCBalanced = (GUICtrlRead($g_hChkUseCCBalanced) = $GUI_CHECKED)
 			$g_iCCDonated = _GUICtrlComboBox_GetCurSel($g_hCmbCCDonated) + 1
 			$g_iCCReceived = _GUICtrlComboBox_GetCurSel($g_hCmbCCReceived) + 1
+			; ================================================== GTFO - Added by RK MOD =========================================== ;
+			
+			$g_bChkUseGTFO = (GUICtrlRead($g_hChkUseGTFO) = $GUI_CHECKED)
+			$g_iTxtMinSaveGTFO_Elixir = Number(GUICtrlRead($g_hTxtMinSaveGTFO_Elixir))
+			$g_iTxtMinSaveGTFO_DE = Number( GUICtrlRead($g_hTxtMinSaveGTFO_DE))
+
+			$g_bChkUseKickOut = (GUICtrlRead($g_hChkUseKickOut) = $GUI_CHECKED)
+			$g_iTxtDonatedCap = Number(GUICtrlRead($g_hTxtDonatedCap))
+			$g_iTxtReceivedCap = Number(GUICtrlRead($g_hTxtReceivedCap))
+			$g_bChkKickOutSpammers = (GUICtrlRead($g_hChkKickOutSpammers) = $GUI_CHECKED)
+			$g_iTxtKickLimit = Number(GUICtrlRead($g_hTxtKickLimit))
+
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_13
 
