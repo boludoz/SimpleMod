@@ -477,7 +477,7 @@ EndFunc   ;==>cmbCriteria2
 
 Func _cmbCriteria2($i)
 	Local $aiDefaultValue[4] = ["01000000", "01000000", "020000", "3000"]
-    Local $aiDefaultLimit[4] = [11999999, 11999999, 239999, 5999]
+	Local $aiDefaultLimit[4] = [11999999, 11999999, 239999, 5999]
 	Local $iCmbCriteria = _GUICtrlComboBox_GetCurSel($g_ahCmbCriteria2[$i])
 	Switch $iCmbCriteria
 		Case 0
