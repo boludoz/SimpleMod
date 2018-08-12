@@ -5,7 +5,7 @@
 ; Parameters ....: ---
 ; Return values .: ---
 ; Author ........: ProMac
-; Modified ......: 06/2017 , MHK2012(05/2018)
+; Modified ......: 06/2017, Boludoz (10/06/2018|11/08/18)
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2018
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......: ---
@@ -41,7 +41,7 @@ Func MainGTFO()
 
 	; GTFO Main Loop
 	While 1
-		SetLogCentered(" GTFO v0.2 ", Default, Default, True)
+		SetLogCentered(" GTFO v0.4 ", Default, Default, True)
 		; Just a user log
 		$_diffTimer = (TimerDiff($_timer) / 1000) / 60
 		If Not $_bFirstLoop Then
@@ -115,6 +115,14 @@ Func TrainGTFO()
 
 	; Check Resources values
 	StartGainCost()
+
+	; Smart Train - Team AiO MOD++
+	If $g_bChkSmartTrain Then
+		SmartTrain()
+;~ 		ResetVariables("donated")
+		EndGainCost("Train")
+		Return
+	EndIf
 
 	; Is necessary to be Custom Train Troops to be accurate
 	If Not OpenArmyOverview(True, "TrainGTFO()") Then Return
@@ -198,8 +206,8 @@ Func DonateGTFO()
 
 	If _Sleep($DELAYRUNBOT3) Then Return
 
-;~ 	; Scroll Up
-;~ 	ScrollUp()
+	; Scroll Up
+	;ScrollUp()
 
 	; +++++++++++++++++++++++++++++
 	; MAIN DONATE LOOP ON CLAN CHAT
@@ -252,15 +260,10 @@ Func DonateGTFO()
 				If DonateIT(10) Then $_bReturnS = True ; Donated Spells , lets Train it
 
 				; Close Donate Window - Return to Chat
-				ClickP($aAway, 1, 0, "1")
+				ChatRandomWait()
 			Else
 				; Doesn't exist Requests lets exits from this loop
-;~ 				ClickP($aAway, 1, 0)
-				If ScrollDown() Then
-					$y = 200
-				Else
-					$firstrun = True
-				EndIf
+				ChatRandomWait()
 				ExitLoop
 			EndIf
 
@@ -278,7 +281,7 @@ Func DonateGTFO()
 		WEnd
 
 		; A click just to mantain the 'Game active'
-;~ 		ClickP($aAway, 1, 0, "2")
+		ChatRandomWait()
 	WEnd
 
 	AutoItSetOption("MouseClickDelay", 10)
@@ -286,6 +289,23 @@ Func DonateGTFO()
 	CloseClanChat()
 
 EndFunc   ;==>DonateGTFO
+
+Func ChatRandomWait()
+	Local $i = 0
+	Local $h = Random(1, 32, 1)
+
+			While $i <= $h
+					If _Sleep(Random(1, 753, 1)) Then Return
+					$i = $i + 1
+					Sleep(50) ; CPU
+			WEnd
+				Local $x = Random(0, 93, 1)
+				Local $y = Random(85, 673, 1)
+
+			ClickDrag($x + Random(0, 20, 1), $y + Random(1, 60, 1), $x, $y)
+			If _sleep(100) Then Return
+			Sleep(50) ; CPU
+EndFunc
 
 Func OpenClanChat()
 
@@ -371,9 +391,8 @@ Func ScrollDown()
 		Click($Scroll[0], $Scroll[1], 1, 0, "#0172")
 		If _Sleep($DELAYDONATECC2) Then Return
 		Return True
-	Else
-		Return False
 	EndIf
+	Return False
 EndFunc   ;==>ScrollDown
 
 Func DonateIT($Slot)
@@ -388,16 +407,23 @@ Func DonateIT($Slot)
 		;         after that check if exist the next slot ... True click 8x
 		;         than check if the slot 1 is empty return to train troops
 
-		Click(395 + ($Slot * 68), $g_iDonationWindowY + 57 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
-		SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
+		; dadad5 Out of troops on Slot 0
+		;If not _ColorCheck(_GetPixelColor(385 + ($Slot * 68), $g_iDonationWindowY + 70 + $YComp, True), Hex(0xDADAD5, 6), 5) Then
+
+		Click(385 + ($Slot * 68), $g_iDonationWindowY + 70 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
+		;SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
+		;EndIf
 
 		$Slot += 1
 		$iTroopIndex = $Slot
 
-		Click(395 + ($Slot * 68), $g_iDonationWindowY + 57 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
-		SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
+		;If not _ColorCheck(_GetPixelColor(385 + ($Slot * 68), $g_iDonationWindowY + 70 + $YComp, True), Hex(0xDADAD5, 6), 5) Then
 
-		; dadad5 Out of troops on Slot 0
+		Click(385 + ($Slot * 68), $g_iDonationWindowY + 70 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
+		;SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
+		;EndIf
+
+	; dadad5 Out of troops on Slot 0
 		If _ColorCheck(_GetPixelColor(350, $g_iDonationWindowY + 105 + $YComp, True), Hex(0xDADAD5, 6), 5) Then
 			SetLog("No More troops let's train!", $COLOR_INFO)
 			$g_OutOfTroops = True
@@ -424,9 +450,6 @@ Func DonateIT($Slot)
 		$g_aiDonateStatsSpells[$iTroopIndex][0] += 1
 		$g_iSpellsNumber += 1
 		Return True
-	Else
-		SetLog(" - Spells Empty or Filled!", $COLOR_ERROR)
-		Return False
 	EndIf
 
 EndFunc   ;==>DonateIT
