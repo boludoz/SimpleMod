@@ -116,14 +116,6 @@ Func TrainGTFO()
 	; Check Resources values
 	StartGainCost()
 
-	; Smart Train - Team AiO MOD++
-	If $g_bChkSmartTrain Then
-		SmartTrain()
-;~ 		ResetVariables("donated")
-		EndGainCost("Train")
-		Return
-	EndIf
-
 	; Is necessary to be Custom Train Troops to be accurate
 	If Not OpenArmyOverview(True, "TrainGTFO()") Then Return
 

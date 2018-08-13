@@ -59,6 +59,7 @@ Func RequestCC($ClickPAtEnd = True, $specifyText = "")
 			ClickR($aArmyTrainButtonRND, $aArmyTrainButton[0], $aArmyTrainButton[1], 1, 0)
 		EndIf
 	EndIf
+
 	If _Sleep($DELAYREQUESTCC1) Then Return
 
 	checkAttackDisable($g_iTaBChkIdle) ; Early Take-A-Break detection
@@ -73,12 +74,12 @@ Func RequestCC($ClickPAtEnd = True, $specifyText = "")
 			ExitLoop ; wait 6*500ms = 3 seconds max
 		EndIf
 	WEnd
-    
+
 	If $ClickPAtEnd Then
 		getArmyCCSpellCapacity(False, False, False)
 		CheckCCSpells()
 	EndIf
-	
+
 	Local $color1 = _GetPixelColor($aRequestTroopsAO[0], $aRequestTroopsAO[1] + 20, True) ; Gray/Green color at 20px below Letter "R"
 	Local $color2 = _GetPixelColor($aRequestTroopsAO[0], $aRequestTroopsAO[1], True) ; White/Green color at Letter "R"
 
