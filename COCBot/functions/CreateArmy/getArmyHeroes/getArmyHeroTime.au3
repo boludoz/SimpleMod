@@ -18,7 +18,7 @@
 Func getArmyHeroTime($iHeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = False)
 
 	If $g_bDebugSetlogTrain Or $g_bDebugSetlog Then SetLog("Begin getArmyHeroTime:", $COLOR_DEBUG)
-    
+
 	; Grab Healed Heroes - RK MOD
 	$g_asHeroHealTime[0] = ""
 	$g_asHeroHealTime[1] = ""
@@ -73,9 +73,20 @@ Func getArmyHeroTime($iHeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = F
 		$sResult = getRemainTHero($aHeroRemainData[$index][0], $aHeroRemainData[$index][1]) ;Get Hero training time via OCR.
 
 		If $sResult <> "" Then
+			Local $bBoosted = False
+			If QuickMIS("BC1", @ScriptDir & "\imgxml\Resources\Boosted", 435, 300, 500, 337) or QuickMIS("BC1", @ScriptDir & "\imgxml\Resources\Boosted", 435, 155, 500, 190) Then ; search for treasury button
+				$bBoosted = True
+			EndIf
 
-			$aResultHeroes[$index] = ConvertOCRTime($aHeroRemainData[$index][2] & " recover" , $sResult, False) ; update global array
-			If _DateDiff("h", $g_aiHeroBoost[$index], _NowCalc()) < 1 Then $aResultHeroes[$index] /= 4 ; Check if Bot boosted Heroes and boost is still active and if it is then reduce heal time ;)
+			$aResultHeroes[$index] = ConvertOCRTime($aHeroRemainData[$index][2] & " recover", $sResult, False) ; update global array
+			If _DateDiff("h", $g_aiHeroBoost[$index], _NowCalc()) < 1 Then
+				$aResultHeroes[$index] /= 4 ; Check if Bot boosted Heroes and boost is still active and if it is then reduce heal time ;)
+				$bBoosted = False
+			EndIf
+
+			If $bBoosted Then
+				$aResultHeroes[$index] /= 4
+			EndIf
 
 			SetLog("Remaining " & $aHeroRemainData[$index][2] & " recover time: " & StringFormat("%.2f", $aResultHeroes[$index]), $COLOR_INFO)
 
@@ -109,9 +120,9 @@ Func getArmyHeroTime($iHeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = F
 	If $iHeroType = $eHeroKing Or $iHeroType = $eHeroQueen Or $iHeroType = $eHeroWarden Then
 		Return $iRemainTrainHeroTimer ; return one requested hero value
 	ElseIf StringInStr($iHeroType, "all", $STR_NOCASESENSEBASIC) > 0 Then
-	    ; Grab Healed Heroes - RK MOD
+		; Grab Healed Heroes - RK MOD
 		For $i = 0 To 2
-			If $aResultHeroes[$i] <> "" and $aResultHeroes[$i] > 0 Then $g_asHeroHealTime[$i] = _DateAdd("s", $aResultHeroes[$i] * 60, _NowCalc())
+			If $aResultHeroes[$i] <> "" And $aResultHeroes[$i] > 0 Then $g_asHeroHealTime[$i] = _DateAdd("s", $aResultHeroes[$i] * 60, _NowCalc())
 			SetDebugLog($aHeroRemainData[$i][2] & " heal time: " & $g_asHeroHealTime[$i])
 		Next
 		; calling function needs to check if heroattack enabled & herowait enabled for attack mode used!
