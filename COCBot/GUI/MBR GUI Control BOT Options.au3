@@ -450,8 +450,8 @@ Func cmbCriteria1()
 EndFunc   ;==>cmbCriteria1
 
 Func _cmbCriteria1($i)
-	Local $aiDefaultValue[4] = ["9000000", "9000000", "180000", "5000"]
-	Local $aiDefaultLimit[4] = [9999999, 9999999, 199999, 9999]
+	Local $aiDefaultValue[4] = ["11500000", "11500000", "235000", "5900"]
+	Local $aiDefaultLimit[4] = [12000000, 12000000, 240000, 6000]
 	Local $iCmbCriteria = _GUICtrlComboBox_GetCurSel($g_ahCmbCriteria1[$i])
 	Switch $iCmbCriteria
 		Case 0
@@ -476,8 +476,8 @@ Func cmbCriteria2()
 EndFunc   ;==>cmbCriteria2
 
 Func _cmbCriteria2($i)
-	Local $aiDefaultValue[4] = ["1000000", "1000000", "020000", "3000"]
-	Local $aiDefaultLimit[4] = [9999999, 9999999, 199999, 9999]
+	Local $aiDefaultValue[4] = ["01000000", "01000000", "020000", "3000"]
+	Local $aiDefaultLimit[4] = [11999999, 11999999, 239999, 5999]
 	Local $iCmbCriteria = _GUICtrlComboBox_GetCurSel($g_ahCmbCriteria2[$i])
 	Switch $iCmbCriteria
 		Case 0
