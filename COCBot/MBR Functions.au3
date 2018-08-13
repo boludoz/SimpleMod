@@ -19,7 +19,6 @@
 ;#include "functions\Other\Synchronization.au3" ; now included in LaunchConsole.au3
 #include "functions\Other\OnAutoItErrorRegisterBot.au3"
 
-
 #include "functions\Attack\AttackReport.au3"
 #include "functions\Attack\AttackStats.au3"
 #include "functions\Attack\BuildingSide.au3"
@@ -133,6 +132,7 @@
 
 #include "functions\CreateArmy\getArmyCCSpells\getArmyCCSpellCapacity.au3"
 #include "functions\CreateArmy\getArmyCCSpells\getArmyCCSpell.au3"
+
 #include "functions\CreateArmy\getArmyCCSiegeMachines\getArmyCCSiegeMachines.au3"
 #EndRegion CreateArmy / Train
 

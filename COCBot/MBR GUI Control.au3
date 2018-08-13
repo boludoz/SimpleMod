@@ -203,6 +203,12 @@ Func GUIControl_WM_SHELLHOOK($hWin, $iMsg, $wParam, $lParam)
 				;BotToFront($lParam)
 				BotMinimizeRestore(False, "GUIControl_WM_SHELLHOOK", False, 0, $g_hAndroidWindow)
 				;If Not $g_bIsHidden Then HideAndroidWindow(False, False, Default, "GUIControl_WM_SHELLHOOK") ; Android can be hidden
+				#cs moved to GUIControl_WM_ACTIVATEAPP as it enters here without activating the bot
+					Case Not $g_bIsHidden And $lParam = $g_hFrmBot ;And WinActive($g_hFrmBot)
+					; show Android without activating
+					HideAndroidWindow(False, False)
+					;AndroidToFront()
+				#ce
 		EndSelect
 	EndIf
 EndFunc   ;==>GUIControl_WM_SHELLHOOK
@@ -1687,6 +1693,9 @@ Func SetTime($bForceUpdate = False)
 		_TicksToTime(Int(__TimerDiff($g_hTimerSinceStarted) + $g_iTimePassed), $hour, $min, $sec)
 		GUICtrlSetData($g_hLblResultRuntimeNow, StringFormat("%02i:%02i:%02i", $hour, $min, $sec))
 	EndIf
+
+	; Return
+
 	Local Static $DisplayLoop = 0
 	If $DisplayLoop >= 30 Then ; Conserve Clock Cycles on Updating times
 		$DisplayLoop = 0
