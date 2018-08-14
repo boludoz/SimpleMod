@@ -547,6 +547,10 @@ Func ApplyDarkElixirGTFO()
 	$g_iTxtMinSaveGTFO_DE = Number(GUICtrlRead($g_hTxtMinSaveGTFO_DE))
 EndFunc   ;==>ApplyDarkElixirGTFO
 
+Func ApplyClanReturnGTFO()
+	$g_sTxtClanID = GUICtrlRead($g_hTxtClanID)
+EndFunc   ;==>ApplyClanReturnGTFO
+
 Func ApplyKickOut()
 	$g_bChkUseKickOut = (GUICtrlRead($g_hChkUseKickOut) = $GUI_CHECKED)
 	If $g_bChkUseKickOut = True Then
@@ -615,3 +619,11 @@ Func ApplyKickLimits()
 		GUICtrlSetData($g_hTxtKickLimit, $g_iTxtKickLimit)
 	EndIf
 EndFunc   ;==>ApplyKickLimits
+
+Func chkGTFOClanHop()
+	$g_bGTFOClanHop = (GUICtrlRead($g_hGTFOClanHop) = $GUI_CHECKED)
+EndFunc   ;==>chkGTFOClanHop
+
+Func chkGTFOReturnClan()
+	$g_bGTFOReturnClan = (GUICtrlRead($g_hGTFOReturnClan) = $GUI_CHECKED)
+EndFunc   ;==>chkGTFOReturnClan
