@@ -43,7 +43,7 @@ Func _AutoUpgrade()
 
 		ClickP($aAway, 1, 0, "#0000") ;Click Away
 		randomSleep($DELAYAUTOUPGRADEBUILDING1)
-		VillageReport(True, True)
+		VillageReport(True, False)
 
 		; If save wall builder is enable, make sure to reserve builder if enabled
 		; also reserve builders for hero upgrading
