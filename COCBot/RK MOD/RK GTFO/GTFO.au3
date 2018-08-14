@@ -23,6 +23,8 @@ Global $g_bSetDoubleArmy = False
 Func MainGTFO()
 
 	If Not $g_bChkUseGTFO Then Return
+	
+	If $g_iCycle >= $g_iTxtCyclesGTFO Then Return
 
 	If $g_aiCurrentLoot[$eLootElixir] <> 0 And $g_aiCurrentLoot[$eLootElixir] < $g_iTxtMinSaveGTFO_Elixir Then
 		SetLog("Elixir Limits Reached!! Let's farm!", $COLOR_INFO)
@@ -97,6 +99,10 @@ Func MainGTFO()
 			SetLog("Dark Elixir Limits Reached!! Let's farm!", $COLOR_INFO)
 			ExitLoop
 		EndIf
+		
+		$g_iCycle += 1
+		If $g_iCycle >= $g_iTxtCyclesGTFO Then ExitLoop
+
 		; Donate Loop on Clan Chat
 		DonateGTFO()
 
@@ -205,7 +211,6 @@ Func DonateGTFO()
 	; MAIN DONATE LOOP ON CLAN CHAT
 	; +++++++++++++++++++++++++++++
 	While 1
-
 		; Function to take nmore responsive the GUI /STOP and PASUE
 		If Not $g_bRunState Then Return
 		If _Sleep($DELAYRUNBOT3) Then Return
@@ -533,9 +538,20 @@ Func ApplyGTFO()
 	If $g_bChkUseGTFO = True Then
 		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_ENABLE)
+		
+		GUICtrlSetState($g_hTxtCyclesGTFO, $GUI_ENABLE)
+		GUICtrlSetState($g_hTxtClanID, $GUI_ENABLE)
+		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_ENABLE)
+		GUICtrlSetState($g_hChkGTFOClanHop, $GUI_ENABLE)
+
 	Else
 		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_DISABLE)
+		
+		GUICtrlSetState($g_hTxtCyclesGTFO, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtClanID, $GUI_DISABLE)
+		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_DISABLE)
+		GUICtrlSetState($g_hChkGTFOClanHop, $GUI_DISABLE)		
 	EndIf
 EndFunc   ;==>ApplyGTFO
 
@@ -545,6 +561,10 @@ EndFunc   ;==>ApplyElixirGTFO
 
 Func ApplyDarkElixirGTFO()
 	$g_iTxtMinSaveGTFO_DE = Number(GUICtrlRead($g_hTxtMinSaveGTFO_DE))
+EndFunc   ;==>ApplyDarkElixirGTFO
+
+Func ApplyCyclesGTFO()
+	$g_iTxtCyclesGTFO = Number(GUICtrlRead($g_hTxtCyclesGTFO))
 EndFunc   ;==>ApplyDarkElixirGTFO
 
 Func ApplyClanReturnGTFO()
@@ -621,9 +641,16 @@ Func ApplyKickLimits()
 EndFunc   ;==>ApplyKickLimits
 
 Func chkGTFOClanHop()
-	$g_bGTFOClanHop = (GUICtrlRead($g_hGTFOClanHop) = $GUI_CHECKED)
+	$g_bChkGTFOClanHop = (GUICtrlRead($g_hChkGTFOClanHop) = $GUI_CHECKED)
+	If $g_bChkUseGTFO and $g_bChkGTFOClanHop = True Then
+		GUICtrlSetState($g_hTxtClanID, $GUI_ENABLE)
+		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_ENABLE)
+	Else
+		GUICtrlSetState($g_hTxtClanID, $GUI_DISABLE)
+		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_DISABLE)
+	EndIf
 EndFunc   ;==>chkGTFOClanHop
 
 Func chkGTFOReturnClan()
-	$g_bGTFOReturnClan = (GUICtrlRead($g_hGTFOReturnClan) = $GUI_CHECKED)
+	$g_bChkGTFOReturnClan = (GUICtrlRead($g_hChkGTFOReturnClan) = $GUI_CHECKED)
 EndFunc   ;==>chkGTFOReturnClan
