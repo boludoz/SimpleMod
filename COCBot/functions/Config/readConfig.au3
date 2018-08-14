@@ -646,7 +646,10 @@ Func ReadConfig_600_13()
 	$g_iDonateSkipNearFullPercent = Int(IniRead($g_sProfileConfigPath, "donate", "SkipDonateNearFulLTroopsPercentual", 90))
 	$g_bDonateSkipNearFullEnable = (IniRead($g_sProfileConfigPath, "donate", "SkipDonateNearFulLTroopsEnable", "1") = "1")
 	; ==================================================  GTFO - Added by RK MOD ================================================ ;
-	
+	IniReadS($g_bGTFOClanHop, $g_sProfileConfigPath, "GTFO", "GTFOClanHop", $g_bGTFOClanHop, "Bool")
+	IniReadS($g_bGTFOReturnClan, $g_sProfileConfigPath, "GTFO", "GTFOReturnClan", $g_bGTFOReturnClan, "Bool")
+
+	IniReadS($g_sTxtClanID, $g_sProfileConfigPath, "GTFO", "txtClanID", $g_sTxtClanID)
 	IniReadS($g_bChkUseGTFO, $g_sProfileConfigPath, "GTFO", "chkUseGTFO", $g_bChkUseGTFO, "Bool")
 	IniReadS($g_iTxtMinSaveGTFO_Elixir, $g_sProfileConfigPath, "GTFO", "txtMinSaveGTFO_Elixir", $g_iTxtMinSaveGTFO_Elixir, "Int")
 	IniReadS($g_iTxtMinSaveGTFO_DE, $g_sProfileConfigPath, "GTFO", "txtMinSaveGTFO_DE", $g_iTxtMinSaveGTFO_DE, "Int")
