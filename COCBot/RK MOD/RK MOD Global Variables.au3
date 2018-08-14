@@ -137,20 +137,21 @@ Global $ichkTrophySwitchMax, $itxtMaxTrophyAmount, $icmbTrophyMaxProfile, $ichkT
 Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; flag if AttackBar is dragged or not
 
 ; ================================================ NEW ChatBot - by RK MOD ======================================== ;
-Global $ChatbotChatGlobal = 0
-Global $ChatbotScrambleGlobal = 0
-Global $ChatbotSwitchLang = 0
-Global $ChatbotChatClan = 0
-Global $ChatbotClanUseResponses = 0
-Global $ChatbotClanAlwaysMsg = 0
-Global $ChatbotUseNotify = 0
-Global $ChatbotPbSendNew = 0
+Global $g_iChatbotChatGlobal = 0
+Global $g_iChatbotScrambleGlobal = 0
+Global $g_iChatbotSwitchLang = 0
+Global $g_iChatbotChatClan = 0
+Global $g_iChatbotClanUseResponses = 0
+Global $g_iChatbotClanAlwaysMsg = 0
+Global $g_iChatbotUseNotify = 0
+Global $g_iChatbotPbSendNew = 0
 Global $g_iChkRusLang = 0
-Global $ClanMessages = ""
-Global $ClanResponses = ""
-Global $ClanResponses0
-Global $GlobalMessages1 = ""
-Global $GlobalMessages2 = ""
+Global $g_iCmbLang = 8
+Global $g_iClanMessages = ""
+Global $g_iClanResponses = ""
+Global $g_iClanResponses0
+Global $g_iGlobalMessages1 = ""
+Global $g_iGlobalMessages2 = ""
 Global $glb1 
 Global $glb2
 Global $cResp
