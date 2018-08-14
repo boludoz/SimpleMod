@@ -18,15 +18,14 @@ Func UpgradeWall()
 	If $g_bAutoUpgradeWallsEnable = True Then
 		SetLog("Checking Upgrade Walls", $COLOR_INFO)
 		If SkipWallUpgrade() Then Return
-		If $g_iCmbUpgrdPriority = 1 And Not $g_iFreeBuilderCount = 1 Then Return
 		If $g_iFreeBuilderCount > 0 Then
 			ClickP($aAway, 1, 0, "#0313") ; click away
 			Local $MinWallGold = Number($g_aiCurrentLoot[$eLootGold] - $g_iWallCost) > Number($g_iUpgradeWallMinGold) ; Check if enough Gold
 			Local $MinWallElixir = Number($g_aiCurrentLoot[$eLootElixir] - $g_iWallCost) > Number($g_iUpgradeWallMinElixir) ; Check if enough Elixir
-			Local $iElixierPriority = ($g_bAutoLabUpgradeEnable = False Or ((($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0) Or $g_sLabUpgradeTime <> "")) And (($g_bUpgradeWallSaveBuilder = False Or (($g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = True)) Or ($g_iChkAutoUpgrade = 0 Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1))))
-			Local $iGoldPriority = (($g_bUpgradeWallSaveBuilder = False Or ($g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = True)) Or ($g_iChkAutoUpgrade = 0 Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[0] = 1)))
+			Local $iElixierPriority = ($g_bAutoLabUpgradeEnable = False Or ((($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0) Or $g_sLabUpgradeTime <> "")) And (($g_iCmbUpgrdPriority = 0 Or (($g_iFreeBuilderCount = 1 And $g_iCmbUpgrdPriority = 1)) Or ($g_iChkAutoUpgrade = 0 Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1))))
+			Local $iGoldPriority = (($g_iCmbUpgrdPriority = 0 Or ($g_iFreeBuilderCount = 1 And $g_iCmbUpgrdPriority = 1)) Or ($g_iChkAutoUpgrade = 0 Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[0] = 1)))
 			
-			While ($g_iUpgradeWallLootType = 0 And $MinWallGold) Or ($g_iUpgradeWallLootType = 1 And $MinWallElixir) Or ($g_iUpgradeWallLootType = 2 And (($MinWallGold And $iGoldPriority) Or ($MinWallElixir And $iElixierPriority)))
+			While ($g_iUpgradeWallLootType = 0 And ($MinWallGold And $iGoldPriority)) Or ($g_iUpgradeWallLootType = 1 And ($MinWallElixir And $iElixierPriority)) Or ($g_iUpgradeWallLootType = 2 And (($MinWallGold And $iGoldPriority) Or ($MinWallElixir And $iElixierPriority)))
 
 				Switch $g_iUpgradeWallLootType
 					Case 0
