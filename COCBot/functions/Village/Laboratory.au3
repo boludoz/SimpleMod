@@ -320,7 +320,7 @@ Func Laboratory()
 		Case 1 To 19 ; regular elixir
 			ContinueCase
 		Case 31 To 32
-			If (($iAvailElixir < ($aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinElixir)) Or (($iAvailElixir < $aUpgradeValue[$g_iCmbLaboratory]) And ($aUpgradeValue[$g_iCmbLaboratory] > 11000000)) Then
+			If (($iAvailElixir < ($aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinElixir)) Or (($iAvailElixir < $aUpgradeValue[$g_iCmbLaboratory]) And ($aUpgradeValue[$g_iCmbLaboratory] > $g_iLimitBreakGE [$g_iTownHallLevel])) Then
 				SetLog("Insufficent Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinElixir & " user reserve, available: " & $iAvailElixir, $COLOR_INFO)
 				ClickP($aAway, 2, $DELAYLABORATORY4, "#0355")
 				Return False
@@ -332,7 +332,7 @@ Func Laboratory()
 			EndIf
 
 		Case 20 To 30; Dark Elixir
-			If ($iAvailDark < $aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinDark) Or (($iAvailDark < $aUpgradeValue[$g_iCmbLaboratory]) And ($aUpgradeValue[$g_iCmbLaboratory] > 200000)) Then 
+			If ($iAvailDark < $aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinDark) Or (($iAvailDark < $aUpgradeValue[$g_iCmbLaboratory]) And ($aUpgradeValue[$g_iCmbLaboratory] > $g_iLimitBreakDE [$g_iTownHallLevel])) Then 
 				SetLog("Insufficent Dark Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinDark & " user reserve, available: " & $iAvailDark, $COLOR_INFO)
 				ClickP($aAway, 2, $DELAYLABORATORY4, "#0357")
 				Return False
