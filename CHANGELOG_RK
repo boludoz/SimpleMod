@@ -89,6 +89,8 @@ Update to v 7.6.1
 
 **Added**
 
+-- Builder time status.
+
 
 
 **IMPROVED AND FIXED**
@@ -102,3 +104,11 @@ Update to v 7.6.1
 -- Unit/Wave Factor.
 -- Classic Four Finger.
 -- Smart Train.
+-- Switch Profiles.
+-- ChatBot.
+-- GTFO.
+-- Wall/Building Upgrading Priority.
+
+** Removed **
+
+-- Double train army.
