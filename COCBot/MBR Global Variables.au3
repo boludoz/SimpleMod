@@ -850,6 +850,9 @@ Global $g_bDonateSkipNearFullEnable = 1
 Global $g_iDonateSkipNearFullPercent = 90
 
 ; <><><><> Village / Upgrade <><><><>
+; General
+Global Const $g_iLimitBreakGE [12] = (2250, 6300, 90000, 450000, 900000, 1800000, 3600000, 5400000, 7200000, 7650000, 9000000, 10800000)
+Global Const $g_iLimitBreakDE [12] = (0, 0, 0, 0, 0, 0, 18000, 72000, 171000, 180000, 180000, 216000)
 ; Lab
 Global $g_bAutoLabUpgradeEnable = False, $g_iCmbLaboratory = 0
 ; Heroes
