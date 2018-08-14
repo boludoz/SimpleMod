@@ -30,7 +30,7 @@ Func UpgradeWall()
 
 				Switch $g_iUpgradeWallLootType
 					Case 0
-						If $MinWallGold Then
+						If $MinWallGold And $iGoldPriority Then
 							SetLog("Upgrading Wall using Gold", $COLOR_SUCCESS)
 							If imglocCheckWall() Then
 								If Not UpgradeWallGold() Then
@@ -46,7 +46,7 @@ Func UpgradeWall()
 							SetLog("Gold is below minimum, Skipping Upgrade", $COLOR_ERROR)
 						EndIf
 					Case 1
-						If $MinWallElixir Then
+						If $MinWallElixir And $iElixierPriority Then
 							SetLog("Upgrading Wall using Elixir", $COLOR_SUCCESS)
 							If imglocCheckWall() Then
 								If Not UpgradeWallElixir() Then
