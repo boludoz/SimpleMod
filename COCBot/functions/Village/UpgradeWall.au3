@@ -119,8 +119,6 @@ EndFunc   ;==>UpgradeWall
 
 Func UpgradeWallGold()
 
-	Local $uGoldPriority = ($g_iUpgradeWallLootType < 2) Or (($g_iUpgradeWallLootType = 2) And ($g_bUpgradeWallSaveBuilder = False Or ($g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = True) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[0] = 1)))
-
 	;Click($WallxLOC, $WallyLOC)
 	If _Sleep($DELAYRESPOND) Then Return
 
@@ -135,7 +133,7 @@ Func UpgradeWallGold()
 		If _Sleep($DELAYUPGRADEWALLGOLD2) Then Return
 
 		If _ColorCheck(_GetPixelColor(677, 150 + $g_iMidOffsetY, True), Hex(0xE1090E, 6), 20) Then ; wall upgrade window red x
-			If (isNoUpgradeLoot(False) = True) And $uGoldPriority Then
+			If (isNoUpgradeLoot(False) = True) Then
 				SetLog("Upgrade stopped due no loot", $COLOR_ERROR)
 				Return False
 			EndIf
@@ -170,8 +168,6 @@ EndFunc   ;==>UpgradeWallGold
 
 Func UpgradeWallElixir()
 
-	Local $uElixierPriority = ($g_iUpgradeWallLootType < 2) Or (($g_iUpgradeWallLootType = 2) And ($g_bAutoLabUpgradeEnable = False Or ((($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0) Or $g_sLabUpgradeTime <> "")) And ($g_bUpgradeWallSaveBuilder = False Or (($g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = True) Or (g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1))))
-
 	;Click($WallxLOC, $WallyLOC)
 	If _Sleep($DELAYRESPOND) Then Return
 
@@ -182,7 +178,7 @@ Func UpgradeWallElixir()
 
 		If _Sleep($DELAYUPGRADEWALLELIXIR2) Then Return
 		If _ColorCheck(_GetPixelColor(677, 150 + $g_iMidOffsetY, True), Hex(0xE1090E, 6), 20) Then
-			If (isNoUpgradeLoot(False) = True) And $uElixierPriority Then
+			If (isNoUpgradeLoot(False) = True) Then
 				SetLog("Upgrade stopped due to insufficient loot", $COLOR_ERROR)
 				Return False
 			EndIf
