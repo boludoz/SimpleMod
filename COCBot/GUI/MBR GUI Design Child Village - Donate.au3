@@ -16,10 +16,9 @@
 
 ; GFTO- RK MOD
 Global $g_hGUI_DONATE = 0, $g_hGUI_DONATE_TAB = 0, $g_hGUI_DONATE_TAB_ITEM1 = 0, $g_hGUI_DONATE_TAB_ITEM2 = 0, $g_hGUI_DONATE_TAB_ITEM3 = 0, $g_hGUI_DONATE_TAB_ITEM4 = 0
-Global $g_hLblGFTO = 0, $g_hChkUseGTFO = 0, $g_hTxtMinSaveGTFO_Elixir = 0, $g_hTxtMinSaveGTFO_DE = 0
+Global $g_hLblGFTO = 0, $g_hChkUseGTFO = 0, $g_hTxtMinSaveGTFO_Elixir = 0, $g_hTxtMinSaveGTFO_DE = 0, $g_bGTFOClanHop = 0, $g_bGTFOReturnClan = 0
 Global $g_hLblKickout = 0, $g_hChkUseKickOut = 0, $g_hTxtDonatedCap = 0, $g_hTxtReceivedCap = 0, $g_hChkKickOutSpammers = 0, $g_hTxtKickLimit = 0
 Global $g_hLblInitialDonated = 0, $g_hLblCurrentDonated = 0, $g_hGUI_GTFOMOD = 0
-
 
 ; Request
 Global $g_hChkRequestTroopsEnable = 0, $g_hTxtRequestCC = 0, $g_ahChkRequestCCHours[24] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -2210,10 +2209,14 @@ Func CreateScheduleSubTab()
 EndFunc   ;==>CreateScheduleSubTab
 #EndRegion
 
+Func _ColorGetRandomColor()
+    Return Dec(Hex(Random(0, 255, 1), 2) & Hex(Random(0, 255, 1), 2) & Hex(Random(0, 255, 1), 2))
+EndFunc
+
 Func GTFOMODGUI()
    
 	Local $x = 25, $y = 45
-	GUICtrlCreateGroup(GetTranslatedFileIni("MOD GUI Design - Misc", "Group_01", "Special Kickass Donation"), $x - 20, $y - 20, $g_iSizeWGrpTab2, 130)
+	GUICtrlCreateGroup(GetTranslatedFileIni("MOD GUI Design - Misc", "Group_01", "Special Kickass Donation"), $x - 20, $y - 20, $g_iSizeWGrpTab2, 230)
     GUICtrlSetFont(-1, 9, $FW_BOLD, "Arial", $CLEARTYPE_QUALITY)
     GUICtrlSetColor(-1, $COLOR_BLACK)
 	
@@ -2222,7 +2225,7 @@ Func GTFOMODGUI()
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MOD GUI Design - Misc", "LblGTFO_Info_01", "This is a Standalone feature!") & @CRLF & _
 							   GetTranslatedFileIni("MOD GUI Design - Misc", "LblGTFO_Info_02", "Just Set your custom train, correct capacities") & @CRLF & _
 							   GetTranslatedFileIni("MOD GUI Design - Misc", "LblGTFO_Info_03", "And This feature!"))
-			GUICtrlSetBkColor($g_hLblGFTO, 0x3498DB) ; Blue
+			GUICtrlSetBkColor($g_hLblGFTO, _ColorGetRandomColor()) ; Blue
 			GUICtrlSetFont($g_hLblGFTO, 12, 500, 0, "Arial", $CLEARTYPE_QUALITY)
 			GUICtrlSetColor(-1, $COLOR_BLACK)
 			
@@ -2246,6 +2249,22 @@ Func GTFOMODGUI()
 		    GUICtrlSetColor(-1, $COLOR_BLACK)
 			GUICtrlSetOnEvent(-1, "ApplyDarkElixirGTFO")
 			
+		$g_hGTFOClanHop = GUICtrlCreateCheckbox(GetTranslatedFileIni("MOD GUI Design - Misc", "GTFOClanHop", "Clan hop after jump donate"), $x + 30, $y + 75, -1, -1)
+		GUICtrlSetFont(-1, 9, $FW_BOLD, "Arial", $CLEARTYPE_QUALITY)
+        GUICtrlSetColor(-1, $COLOR_BLACK)
+		GUICtrlSetOnEvent(-1, "chkGTFOClanHop")
+		
+		$g_hGTFOReturnClan = GUICtrlCreateCheckbox(GetTranslatedFileIni("MOD GUI Design - Misc", "GTFOReturnClan", "Return to clan after finish"), $x + 30, $y + 100, -1, -1)
+		GUICtrlSetFont(-1, 9, $FW_BOLD, "Arial", $CLEARTYPE_QUALITY)
+        GUICtrlSetColor(-1, $COLOR_BLACK)
+		GUICtrlSetOnEvent(-1, "chkGTFOReturnClan")
+			
+		GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "LblClanReturn", "Return to clan") & ": ", $x + 25, $y + 125, -1, -1)
+		$g_hTxtClanID = GUICtrlCreateInput("#XXXXXX", $x + 160, $y + 123, 56, 21)
+			GUICtrlSetFont(-1, 9, $FW_BOLD, "Arial", $CLEARTYPE_QUALITY)
+			GUICtrlSetColor(-1, $COLOR_BLACK)
+			GUICtrlSetOnEvent(-1, "ApplyClanReturnGTFO")
+
 	$x += 210
 	$y += 2
 		GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "Label_01", "Goal of SKD is lightning fast donation"), $x + 2, $y, 250, -1, $SS_CENTER)
@@ -2263,16 +2282,21 @@ Func GTFOMODGUI()
 		$g_hLblCurrentDonated = GUICtrlCreateLabel("0", $x + 157, $y + 54, 40, -1, $SS_LEFT)
 		GUICtrlSetFont(-1, 9, $FW_BOLD, "Arial", $CLEARTYPE_QUALITY)
         GUICtrlSetColor(-1, $COLOR_BLACK)
+		
+		$g_hTxtClanID = GUICtrlCreateInput("#XXXXXX", $x + 157, $y + 54, 40, -1, $SS_LEFT)
+		GUICtrlSetFont(-1, 9, $FW_BOLD, "Arial", $CLEARTYPE_QUALITY)
+        GUICtrlSetColor(-1, $COLOR_BLACK)
+
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-	Local $x = 25, $y = 180
+	Local $x = 25, $y = 280
 	GUICtrlCreateGroup(GetTranslatedFileIni("MOD GUI Design - Misc", "Group_02", "Special Kickass New Members"), $x - 20, $y - 20, $g_iSizeWGrpTab2, 150)
     GUICtrlSetFont(-1, 9, $FW_BOLD, "Arial", $CLEARTYPE_QUALITY)
     GUICtrlSetColor(-1, $COLOR_BLACK)
 	
 	$x -= 17
 		$g_hLblKickout = GUICtrlCreateLabel(GetTranslatedFileIni("MOD GUI Design - Misc", "LblKickout", "Kickout Spammers / New Members"), $x, $y, 436, 22, BitOR($SS_CENTER, $SS_CENTERIMAGE))
-			GUICtrlSetBkColor($g_hLblKickout, 0x3498db) ; Blue
+			GUICtrlSetBkColor($g_hLblKickout, _ColorGetRandomColor()) ; Blue
 			GUICtrlSetFont($g_hLblKickout, 12, 500, 0, "Arial", $CLEARTYPE_QUALITY)
 			GUICtrlSetColor(-1, $COLOR_BLACK)
 
