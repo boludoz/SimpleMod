@@ -328,8 +328,9 @@ Func TabItem3()
    GUICtrlSetState(-1, $GUI_UNCHECKED)
    GUICtrlSetOnEvent(-1, "chkSwitchLang")   
 	;======kychera===========
-   $g_iCmbLang = GUICtrlCreateCombo("", 390 - $x, 184 - $y, 50, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+   $g_hCmbLang = GUICtrlCreateCombo("", 390 - $x, 184 - $y, 50, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
    GUICtrlSetData(-1, "EN|FR|DE|ES|IT|NL|NO|PR|TR|RU", "RU")
+   GUICtrlSetState(-1, $GUI_INDETERMINATE)
    ;==========================
    
    $g_hChkRusLang = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkRusLang_01", "Russian"), $x + 250, $y - 55, 115, 17)
