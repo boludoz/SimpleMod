@@ -485,8 +485,8 @@ Func SaveConfig_600_13()
 	_Ini_Add("donate", "SkipDonateNearFulLTroopsEnable", $g_bDonateSkipNearFullEnable ? 1 : 0)
 	_Ini_Add("donate", "SkipDonateNearFulLTroopsPercentual", $g_iDonateSkipNearFullPercent)
 	; ==================================================  GTFO - Added by RK MOD ================================================ ;
-	_Ini_Add("GTFO", "chkGTFOClanHop", $g_bGTFOClanHop)
-	_Ini_Add("GTFO", "chkGTFOReturnClan", $g_bGTFOReturnClan)
+	_Ini_Add("GTFO", "chkGTFOClanHop", $g_bChkGTFOClanHop)
+	_Ini_Add("GTFO", "chkGTFOReturnClan", $g_bChkGTFOReturnClan)
 	_Ini_Add("GTFO", "chkUseGTFO", $g_bChkUseGTFO)
 
 	_Ini_Add("GTFO", "txtClanID", GUICtrlRead($g_hTxtClanID))
