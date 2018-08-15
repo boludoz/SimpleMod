@@ -146,7 +146,7 @@ Global $g_iChkChatbotClanAlwaysMsg = 0
 Global $g_iChkChatbotUseNotify = 0
 Global $g_iChkChatbotPbSendNew = 0
 Global $g_iChkChkRusLang = 0
-Global $g_iChkCmbLang = 8
+Global $g_iCmbLang = 8
 Global $g_iChkClanMessages = ""
 Global $g_iChkClanResponses = ""
 Global $g_iChkClanResponses0
