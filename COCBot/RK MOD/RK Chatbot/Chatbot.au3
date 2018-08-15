@@ -19,47 +19,47 @@
 #include <EditConstants.au3>
 
 Func ChatbotReadSettings()	
-	$g_iClanMessages = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "genericMsgClan", "Testing on Chat|Hey all"), "|", 2)
-	$g_iClanResponses0 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "responseMsgClan", "keyword:Response|hello:Hi, Welcome to the clan|hey:Hey, how's it going?"), "|", 2)
-	Global $g_iClanResponses1[UBound($g_iClanResponses0)][2] ;
-	For $a = 0 To UBound($g_iClanResponses0) - 1
-		$TmpResp = StringSplit($g_iClanResponses0[$a], ":", 2)
+	$g_iChkClanMessages = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "genericMsgClan", "Testing on Chat|Hey all"), "|", 2)
+	$g_iChkClanResponses0 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "responseMsgClan", "keyword:Response|hello:Hi, Welcome to the clan|hey:Hey, how's it going?"), "|", 2)
+	Global $g_iChkClanResponses1[UBound($g_iChkClanResponses0)][2] ;
+	For $a = 0 To UBound($g_iChkClanResponses0) - 1
+		$TmpResp = StringSplit($g_iChkClanResponses0[$a], ":", 2)
 		If UBound($TmpResp) > 0 Then
-			$g_iClanResponses1[$a][0] = $TmpResp[0]
+			$g_iChkClanResponses1[$a][0] = $TmpResp[0]
 		Else
-			$g_iClanResponses1[$a][0] = "<invalid>"
+			$g_iChkClanResponses1[$a][0] = "<invalid>"
 		EndIf
 		If UBound($TmpResp) > 1 Then
-			$g_iClanResponses1[$a][1] = $TmpResp[1]
+			$g_iChkClanResponses1[$a][1] = $TmpResp[1]
 		Else
-			$g_iClanResponses1[$a][1] = "<undefined>"
+			$g_iChkClanResponses1[$a][1] = "<undefined>"
 		EndIf
 	Next
 
-	$g_iClanResponses = $g_iClanResponses1
+	$g_iChkClanResponses = $g_iChkClanResponses1
 
-	$g_iGlobalMessages1 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "globalMsg1", "War Clan Recruiting|Active War Clan accepting applications"), "|", 2)
-	$g_iGlobalMessages2 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "globalMsg2", "Join now|Apply now"), "|", 2)
+	$g_iChkGlobalMessages1 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "globalMsg1", "War Clan Recruiting|Active War Clan accepting applications"), "|", 2)
+	$g_iChkGlobalMessages2 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "globalMsg2", "Join now|Apply now"), "|", 2)
 EndFunc   ;==>ChatbotReadSettings
 
 
 Func chkGlobalChat()  
-    $g_iChatbotChatGlobal = 1  
+    $g_iChkChatbotChatGlobal = 1  
     If GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_ENABLE)
 		GUICtrlSetState($g_hCmbLang, $GUI_SHOW)
 		GUICtrlSetState($g_hChkRusLang, $GUI_ENABLE)
-		GUICtrlSetState($editGlobalMessages1, $GUI_ENABLE)
-		GUICtrlSetState($editGlobalMessages2, $GUI_ENABLE)
+		GUICtrlSetState($g_hTxtEditGlobalMessages1, $GUI_ENABLE)
+		GUICtrlSetState($g_hTxtEditGlobalMessages2, $GUI_ENABLE)
 	Else
-	    $g_iChatbotChatGlobal = 0
+	    $g_iChkChatbotChatGlobal = 0
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_DISABLE)
 		GUICtrlSetState($g_hCmbLang, $GUI_INDETERMINATE)
 		GUICtrlSetState($g_hChkRusLang, $GUI_DISABLE)
-		GUICtrlSetState($editGlobalMessages1, $GUI_DISABLE)
-		GUICtrlSetState($editGlobalMessages2, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtEditGlobalMessages1, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtEditGlobalMessages2, $GUI_DISABLE)
 	EndIf
 	If  GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED And GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED Then
 	    GUICtrlSetState($g_hCmbLang, $GUI_ENABLE)
@@ -71,17 +71,17 @@ EndFunc ;==>chkGlobalChat
 
 Func chkGlobalScramble()
 	If GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED Then
-		$g_iChatbotScrambleGlobal = 1
+		$g_iChkChatbotScrambleGlobal = 1
 	Else
-		$g_iChatbotScrambleGlobal = 0
+		$g_iChkChatbotScrambleGlobal = 0
 	EndIf
 EndFunc   ;==>chkGlobalScramble	 
 
 Func chkSwitchLang()
 	If GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED Then
-		$g_iChatbotSwitchLang = 1
+		$g_iChkChatbotSwitchLang = 1
 	Else
-		$g_iChatbotSwitchLang = 0
+		$g_iChkChatbotSwitchLang = 0
 	EndIf
 	If GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED Then
 	    GUICtrlSetState($g_hCmbLang, $GUI_ENABLE)
@@ -91,54 +91,54 @@ Func chkSwitchLang()
 EndFunc   ;==>chkSwitchLang	
 
 Func chkClanChat()
-    $g_iChatbotChatClan = 1
+    $g_iChkChatbotChatClan = 1
    	If GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hChkUseResponses, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkUseGeneric, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkChatNotify, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkPbSendNewChats, $GUI_ENABLE)
-		GUICtrlSetState($editResponses, $GUI_ENABLE)
-		GUICtrlSetState($editGeneric, $GUI_ENABLE)
+		GUICtrlSetState($g_hTxtEditResponses, $GUI_ENABLE)
+		GUICtrlSetState($g_hTxtEditGeneric, $GUI_ENABLE)
 	Else
-	    $g_iChatbotChatClan = 0
+	    $g_iChkChatbotChatClan = 0
 		GUICtrlSetState($g_hChkUseResponses, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkUseGeneric, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkChatNotify, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkPbSendNewChats, $GUI_DISABLE)
-		GUICtrlSetState($editResponses, $GUI_DISABLE)
-		GUICtrlSetState($editGeneric, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtEditResponses, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtEditGeneric, $GUI_DISABLE)
 	EndIf
 EndFunc ;==>chkClanChat
 
 Func chkUseResponses()
 	If GUICtrlRead($g_hChkUseResponses) = $GUI_CHECKED Then
-		$g_iChatbotClanUseResponses = 1
+		$g_iChkChatbotClanUseResponses = 1
 	Else
-		$g_iChatbotClanUseResponses = 0
+		$g_iChkChatbotClanUseResponses = 0
 	EndIf
 EndFunc   ;==>chkUseResponses 
 
 Func chkUseGeneric()
 	If GUICtrlRead($g_hChkUseGeneric) = $GUI_CHECKED Then
-		$g_iChatbotClanAlwaysMsg = 1
+		$g_iChkChatbotClanAlwaysMsg = 1
 	Else
-		$g_iChatbotClanAlwaysMsg = 0
+		$g_iChkChatbotClanAlwaysMsg = 0
 	EndIf
 EndFunc   ;==>chkUseGeneric
 
 Func chkChatNotify()
 	If GUICtrlRead($g_hChkChatNotify) = $GUI_CHECKED Then
-		$g_iChatbotUseNotify = 1
+		$g_iChkChatbotUseNotify = 1
 	Else
-		$g_iChatbotUseNotify = 0
+		$g_iChkChatbotUseNotify = 0
 	EndIf
 EndFunc   ;==>chkChatNotify
 
 Func chkPbSendNewChats()
 	If GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED Then
-		$g_iChatbotPbSendNew = 1
+		$g_iChkChatbotPbSendNew = 1
 	Else
-		$g_iChatbotPbSendNew = 0
+		$g_iChkChatbotPbSendNew = 0
 	EndIf
 EndFunc   ;==>chkPbSendNewChats
 
@@ -151,11 +151,11 @@ Func chkRusLang()
 EndFunc ;==>chkRusLang
 
 Func ChatGuiEditUpdate()
- Global $glb1 = GUICtrlRead($editGlobalMessages1)
- Global $glb2 = GUICtrlRead($editGlobalMessages2)
+ Global $glb1 = GUICtrlRead($g_hTxtEditGlobalMessages1)
+ Global $glb2 = GUICtrlRead($g_hTxtEditGlobalMessages2)
 
- Global $cResp = GUICtrlRead($editResponses)
- Global $cGeneric = GUICtrlRead($editGeneric)
+ Global $cResp = GUICtrlRead($g_hTxtEditResponses)
+ Global $cGeneric = GUICtrlRead($g_hTxtEditGeneric)
 
 	; how 2 be lazy 101 =======
 	$glb1 = StringReplace($glb1, @CRLF, "|")
@@ -273,7 +273,7 @@ Func ChatbotIsLastChatNew() ; returns true if the last chat was not by you, fals
 EndFunc   ;==>ChatbotIsLastChatNew
 
 Func ChatbotNotifySendChat()
-   If Not $g_iChatbotUseNotify Then Return
+   If Not $g_iChkChatbotUseNotify Then Return
    
    Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
    Local $Time = @HOUR & "." & @MIN & "." & @SEC
@@ -293,7 +293,7 @@ Func ChatbotNotifySendChat()
 EndFunc
 
 Func ChatbotNotifyQueueChat($Chat)
-   If Not $g_iChatbotUseNotify Then Return
+   If Not $g_iChkChatbotUseNotify Then Return
    _ArrayAdd($ChatbotQueuedChats, $Chat)
 EndFunc
 
@@ -303,13 +303,13 @@ Func ChatbotNotifyQueueChatRead()
 EndFunc
 
 Func ChatbotNotifyStopChatRead()
-   If Not $g_iChatbotUseNotify Then Return
+   If Not $g_iChkChatbotUseNotify Then Return
    $ChatbotReadInterval = 0
    $ChatbotIsOnInterval = False
 EndFunc
 
 Func ChatbotNotifyIntervalChatRead($Interval)
-   If Not $g_iChatbotUseNotify Then Return
+   If Not $g_iChkChatbotUseNotify Then Return
    $ChatbotReadInterval = $Interval
    $ChatbotIsOnInterval = True
    ChatbotStartTimer()
@@ -460,14 +460,14 @@ EndFunc   ;==>ChangeLanguageToTR
 ; MAIN SCRIPT ==============================================
 
 Func ChatbotMessage() ; run the chatbot
-	If $g_iChatbotChatGlobal Then
+	If $g_iChkChatbotChatGlobal Then
 		SetLog("Chatbot: Sending some chats", $COLOR_GREEN)
-	ElseIf $g_iChatbotChatClan Then
+	ElseIf $g_iChkChatbotChatClan Then
 		SetLog("Chatbot: Sending some chats", $COLOR_GREEN)
 	EndIf
-	If $g_iChatbotChatGlobal Then
+	If $g_iChkChatbotChatGlobal Then
 ;========================Kychera modified==========================================
-		If $g_iChatbotSwitchLang = 1 Then
+		If $g_iChkChatbotSwitchLang = 1 Then
 		Switch GUICtrlRead($g_hCmbLang)
 		        Case "FR"
 			ChangeLanguageToFRA()
@@ -497,9 +497,9 @@ Func ChatbotMessage() ; run the chatbot
 		SetLog("Chatbot: Sending chats to global", $COLOR_GREEN)
 		; assemble a message
 		Global $message[2]
-		$message[0] = $g_iGlobalMessages1[Random(0, UBound($g_iGlobalMessages1) - 1, 1)]
-		$message[1] = $g_iGlobalMessages2[Random(0, UBound($g_iGlobalMessages2) - 1, 1)]
-		If $g_iChatbotScrambleGlobal Then
+		$message[0] = $g_iChkGlobalMessages1[Random(0, UBound($g_iChkGlobalMessages1) - 1, 1)]
+		$message[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
+		If $g_iChkChatbotScrambleGlobal Then
 			_ArrayShuffle($message)
 		EndIf
 		; Send the message
@@ -509,7 +509,7 @@ Func ChatbotMessage() ; run the chatbot
 		If Not ChatbotChatSendGlobal() Then Return
 		If Not ChatbotChatClose() Then Return
 ;==================kychera modified===============================================
-		If $g_iChatbotSwitchLang = 1 Then
+		If $g_iChkChatbotSwitchLang = 1 Then
 			ChangeLanguageToEN()
 			  _Sleep(3000)
 			waitMainScreen()
@@ -518,7 +518,7 @@ Func ChatbotMessage() ; run the chatbot
 ;=================================================================================
 	EndIf
 
-	If $g_iChatbotChatClan Then
+	If $g_iChkChatbotChatClan Then
 		If Not ChatbotChatOpen() Then Return
 		SetLog("Chatbot: Sending chats to clan", $COLOR_GREEN)
 		If Not ChatbotSelectClanChat() Then Return
@@ -567,18 +567,18 @@ Func ChatbotMessage() ; run the chatbot
 			Local $SentMessage = False
 			
 			If $ChatMsg = "" Or $ChatMsg = " " Then
-				If $g_iChatbotClanAlwaysMsg Then
+				If $g_iChkChatbotClanAlwaysMsg Then
 					If Not ChatbotChatClanInput() Then Return
-					If Not ChatbotChatInput($g_iClanMessages[Random(0, UBound($g_iClanMessages) - 1, 1)]) Then Return
+					If Not ChatbotChatInput($g_iChkClanMessages[Random(0, UBound($g_iChkClanMessages) - 1, 1)]) Then Return
 					If Not ChatbotChatSendClan() Then Return
 					$SentMessage = True
 				EndIf
 			EndIf
 
-			If $g_iChatbotClanUseResponses And Not $SentMessage Then
-				For $a = 0 To UBound($g_iClanResponses) - 1
-					If StringInStr($ChatMsg, $g_iClanResponses[$a][0]) Then
-						Local $Response = $g_iClanResponses[$a][1]
+			If $g_iChkChatbotClanUseResponses And Not $SentMessage Then
+				For $a = 0 To UBound($g_iChkClanResponses) - 1
+					If StringInStr($ChatMsg, $g_iChkClanResponses[$a][0]) Then
+						Local $Response = $g_iChkClanResponses[$a][1]
 						SetLog("Sending response: " & $Response, $COLOR_GREEN)
 						If Not ChatbotChatClanInput() Then Return
 						If Not ChatbotChatInput($Response) Then Return
@@ -590,29 +590,29 @@ Func ChatbotMessage() ; run the chatbot
 			EndIf
 
 			If Not $SentMessage Then
-				If $g_iChatbotClanAlwaysMsg Then
+				If $g_iChkChatbotClanAlwaysMsg Then
 					If Not ChatbotChatClanInput() Then Return
-					If Not ChatbotChatInput($g_iClanMessages[Random(0, UBound($g_iClanMessages) - 1, 1)]) Then Return
+					If Not ChatbotChatInput($g_iChkClanMessages[Random(0, UBound($g_iChkClanMessages) - 1, 1)]) Then Return
 					If Not ChatbotChatSendClan() Then Return
 				EndIf
 			EndIf
 
 			; send it via Notify if it's new
 			; putting the code here makes sure the (cleverbot, specifically) response is sent as well :P
-			If $g_iChatbotUseNotify And $g_iChatbotPbSendNew Then
+			If $g_iChkChatbotUseNotify And $g_iChkChatbotPbSendNew Then
 				If Not $SentClanChat Then ChatbotNotifySendChat()
 			EndIf
-		ElseIf $g_iChatbotClanAlwaysMsg Then
+		ElseIf $g_iChkChatbotClanAlwaysMsg Then
 			If Not ChatbotChatClanInput() Then Return
-			If Not ChatbotChatInput($g_iClanMessages[Random(0, UBound($g_iClanMessages) - 1, 1)]) Then Return
+			If Not ChatbotChatInput($g_iChkClanMessages[Random(0, UBound($g_iChkClanMessages) - 1, 1)]) Then Return
 			If Not ChatbotChatSendClan() Then Return
 		EndIf
 
 		If Not ChatbotChatClose() Then Return
 	EndIf
-	If $g_iChatbotChatGlobal Then
+	If $g_iChkChatbotChatGlobal Then
 		SetLog("Chatbot: Done chatting", $COLOR_GREEN)
-	ElseIf $g_iChatbotChatClan Then
+	ElseIf $g_iChkChatbotChatClan Then
 		SetLog("Chatbot: Done chatting", $COLOR_GREEN)
 	EndIf
 EndFunc   ;==>ChatbotMessage

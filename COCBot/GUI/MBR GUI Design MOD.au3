@@ -54,7 +54,7 @@ Global $g_ahumanMessage[2] = ["", ""]
 Global $g_hCmblang = 0
 Global $g_hChkGlobalChat = 0, $g_hChkGlobalScramble = 0, $g_hChkSwitchLang = 0, $g_hChkClanChat = 0
 Global $g_hChkUseResponses = 0, $g_hChkUseGeneric = 0, $g_hChkChatNotify = 0, $g_hChkPbSendNewChats = 0, $g_hChkRusLang = 0
-Global $editGlobalMessages1 = "", $editGlobalMessages2 = ""
+Global $g_hTxtEditGlobalMessages1 = "", $g_hTxtEditGlobalMessages2 = ""
 Global $editResponses = 0, $editGeneric = 0, $ChatbotQueuedChats[0], $ChatbotReadQueued = False, $ChatbotReadInterval = 0, $ChatbotIsOnInterval = False, $TmpResp
 Global $g_alblAinGlobal, $g_alblSGchats, $g_alblSwitchlang, $g_alblChatclan, $g_alblUsecustomresp, $g_alblUsegenchats, $g_alblNotifyclanchat, $g_alblSwitchlang,$g_alblUseremotechat
 
@@ -338,11 +338,11 @@ Func TabItem3()
    GUICtrlSetState(-1, $GUI_UNCHECKED)
    GUICtrlSetOnEvent(-1, "chkRusLang")
    
-   $editGlobalMessages1 = GUICtrlCreateEdit(_ArrayToString($g_iGlobalMessages1, @CRLF), 24 - $x, 261 - $y, 420, 49)
+   $g_hTxtEditGlobalMessages1 = GUICtrlCreateEdit(_ArrayToString($g_iChkGlobalMessages1, @CRLF), 24 - $x, 261 - $y, 420, 49)
    _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "editGlobalMessages1_01", "Take one item randomly from this list (one per line) and add it to create a message to send to global"))
    GUICtrlSetOnEvent(-1, "ChatGuiEditUpdate")
    
-   $editGlobalMessages2 = GUICtrlCreateEdit(_ArrayToString($g_iGlobalMessages2, @CRLF), 24 - $x, 312 - $y, 420, 49)
+   $g_hTxtEditGlobalMessages2 = GUICtrlCreateEdit(_ArrayToString($g_iChkGlobalMessages2, @CRLF), 24 - $x, 312 - $y, 420, 49)
    _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "editGlobalMessages2_01", "Take one item randomly from this list (one per line) and add it to create a message to send to global"))
    GUICtrlSetOnEvent(-1, "ChatGuiEditUpdate")
    
@@ -379,11 +379,11 @@ Func TabItem3()
    GUICtrlSetOnEvent(-1, "chkPbSendNewChats")   
    
 
-   $editResponses = GUICtrlCreateEdit(_ArrayToString($g_iClanResponses, ":", -1, -1, @CRLF), 220 - $x, 380 - $y, 217, 81)
+   $g_hTxtEditResponses = GUICtrlCreateEdit(_ArrayToString($g_iChkClanResponses, ":", -1, -1, @CRLF), 220 - $x, 380 - $y, 217, 81)
    _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "editResponses_01", "Look for the specified keywords in clan messages and respond with the responses. One item per line, in the format keyword:response"))
    GUICtrlSetOnEvent(-1, "ChatGuiEditUpdate")
    
-   $editGeneric = GUICtrlCreateEdit(_ArrayToString($g_iClanMessages, @CRLF), 220 - $x, 470 - $y, 217, 81)
+   $g_hTxtEditGeneric = GUICtrlCreateEdit(_ArrayToString($g_iChkClanMessages, @CRLF), 220 - $x, 470 - $y, 217, 81)
    _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "editGeneric_01", "Generic messages to send, one per line"))
    GUICtrlSetOnEvent(-1, "ChatGuiEditUpdate")
       

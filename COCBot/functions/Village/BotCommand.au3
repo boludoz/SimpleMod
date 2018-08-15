@@ -101,8 +101,8 @@ Func BotCommand()
 		If $g_bMeetCondStop Then
 			Switch $iCmbBotCommand
 				Case 0
-				    If $g_iChatbotChatGlobal = True Or $g_iChatbotChatClan = True Then ;ChatBot by RK MOD
-					ChatbotMessage()
+				    If $g_iChkChatbotChatGlobal = True Or $g_iChkChatbotChatClan = True Then ;ChatBot by RK MOD
+					    ChatbotMessage()
 					EndIf
 					If $g_bDonationEnabled = False Then
 						SetLog("Halt Attack, Stay Online/Collect...", $COLOR_INFO)
