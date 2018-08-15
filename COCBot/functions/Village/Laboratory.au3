@@ -68,8 +68,18 @@ Func Laboratory()
 
 	If $g_iCmbLaboratory = 0 Then
 		SetLog("Laboratory enabled, but no troop upgrade selected", $COLOR_WARNING)
-		Return False ; Nothing selected to upgrade
+		EnableGuiControls()
+		$g_iCmbLaboratory += 1
+		_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
+		SaveConfig()
+		DisableGuiControls()
 	EndIf
+	
+	If $g_iCmbLaboratory = 30 Then
+		$g_iCmbLaboratory = 1
+		SetLog("All troops upgrade, starting from the top again", $COLOR_WARNING)
+	EndIf
+	
 	If $g_aiLaboratoryPos[0] = 0 Or $g_aiLaboratoryPos[1] = 0 Then
 		SetLog("Laboratory Location not found!", $COLOR_WARNING)
 		LocateLab() ; Lab location unknown, so find it.
@@ -291,9 +301,12 @@ Func Laboratory()
 
 	; Upgrade max level already
 	If $aUpgradeValue[$g_iCmbLaboratory] = -1 Then
-		SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " already max level, select another troop", $COLOR_WARNING)
-		ClickP($aAway, 2, $DELAYLABORATORY4, "#0353")
-		Return False
+		SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " already max level, selecting another troop", $COLOR_ERROR)
+		EnableGuiControls()
+		$g_iCmbLaboratory += 1
+		_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
+		SaveConfig()
+		DisableGuiControls()
 	EndIf
 
 	; Upgrade not available
@@ -302,10 +315,20 @@ Func Laboratory()
 		If _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0], $g_avLabTroops[$g_iCmbLaboratory][1] + 20, True), $sColorLabUgReq, 25) = True Or _
 		   _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 93, $g_avLabTroops[$g_iCmbLaboratory][1] + 20, True), $sColorLabUgReq, 25) = True Then
 			SetLog("Lab upgrade required for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", select another troop", $COLOR_WARNING)
+			EnableGuiControls()
+			$g_iCmbLaboratory += 1
+			_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
+			SaveConfig()
+			DisableGuiControls()
 			If _Sleep($DELAYLABUPGRADE2) Then Return
 		; Check if troop not unlocked, look for beige pixel in center just below top edge
 		ElseIf _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 47, $g_avLabTroops[$g_iCmbLaboratory][1] + 1, True), $sColorNA, 20) = True Then
 			SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " not unlocked yet, try later or select another troop", $COLOR_WARNING)
+			EnableGuiControls()
+			$g_iCmbLaboratory += 1
+			_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
+			SaveConfig()
+			DisableGuiControls()
 		; OCR read error, reset read flag and quit
 		Else
 			SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " value read error, close bot and try again!", $COLOR_ERROR)
@@ -359,6 +382,11 @@ Func LabUpgrade()
 		Case _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 47, $g_avLabTroops[$g_iCmbLaboratory][1] + 1, True), $sColorNA, 20) = True
 			; check for beige pixel in center just below edge for troop not unlocked
 			SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " not unlocked yet, select another troop", $COLOR_WARNING)
+			EnableGuiControls()
+			$g_iCmbLaboratory += 1
+			_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
+			SaveConfig()
+			DisableGuiControls()
 			If _Sleep($DELAYLABUPGRADE2) Then Return
 
 		Case _PixelSearch($g_avLabTroops[$g_iCmbLaboratory][0] + 67, $g_avLabTroops[$g_iCmbLaboratory][1] + 79, $g_avLabTroops[$g_iCmbLaboratory][0] + 69, $g_avLabTroops[$g_iCmbLaboratory][0] + 84, $sColorNoLoot, 20) <> 0
@@ -370,11 +398,21 @@ Func LabUpgrade()
 		Case _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 22, $g_avLabTroops[$g_iCmbLaboratory][1] + 60, True), Hex(0xFFC360, 6), 20) = True
 			; Look for Golden pixel inside level indicator for max troops
 			SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " already max level, select another troop", $COLOR_ERROR)
+			EnableGuiControls()
+			$g_iCmbLaboratory += 1
+			_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
+			SaveConfig()
+			DisableGuiControls()
 			If _Sleep($DELAYLABUPGRADE2) Then Return
 
 		Case _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 3, $g_avLabTroops[$g_iCmbLaboratory][1] + 19, True), Hex(0xB7B7B7, 6), 20) = True
 			; Look for Gray pixel inside left border if Lab upgrade required or if we missed that upgrade is in process
 			SetLog("Laboratory upgrade not available now for " & $g_avLabTroops[$g_iCmbLaboratory][3] & "...", $COLOR_ERROR)
+			EnableGuiControls()
+			$g_iCmbLaboratory += 1
+			_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
+			SaveConfig()
+			DisableGuiControls()
 			If _Sleep($DELAYLABUPGRADE2) Then Return
 
 		Case Else
@@ -386,6 +424,11 @@ Func LabUpgrade()
 			; double check if maxed?
 			If _ColorCheck(_GetPixelColor(258, 192, True), Hex(0xFF1919, 6), 20) And _ColorCheck(_GetPixelColor(272, 194, True), Hex(0xFF1919, 6), 20) Then
 				SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " Previously maxxed, select another troop", $COLOR_ERROR) ; oops, we found the red warning message
+				EnableGuiControls()
+				$g_iCmbLaboratory += 1
+				_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
+				SaveConfig()
+				DisableGuiControls()
 				If _Sleep($DELAYLABUPGRADE2) Then Return
 				ClickP($aAway, 2, $DELAYLABUPGRADE3, "#0201")
 				Return False
@@ -468,11 +511,14 @@ Func LabUpgrade()
 					ClickP($aAway, 2, $DELAYLABUPGRADE3, "#0360")
 					Return False
 				EndIf
-				SetLog("Upgrade " & $g_avLabTroops[$g_iCmbLaboratory][3] & " in your laboratory started with success...", $COLOR_SUCCESS)
+				SetLog("Upgrade " & $g_avLabTroops[$g_iCmbLaboratory][3] & " in your laboratory started successfully...", $COLOR_SUCCESS)
 				PushMsg("LabSuccess")
+				EnableGuiControls()
+				$g_iCmbLaboratory += 1
+				_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
+				SaveConfig()
+				DisableGuiControls()
 				If _Sleep($DELAYLABUPGRADE2) Then Return
-				$g_bAutoLabUpgradeEnable = False ;reset enable lab upgrade flag
-				GUICtrlSetState($g_hChkAutoLabUpgrades, $GUI_UNCHECKED) ; reset enable lab upgrade check box
 
 				ClickP($aAway, 2, 0, "#0204")
 
