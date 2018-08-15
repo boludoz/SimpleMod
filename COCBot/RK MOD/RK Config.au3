@@ -144,7 +144,7 @@ Func ReadConfig_RKMod()
 	IniReadS($g_iChkChatbotChatClan, $g_sProfileConfigPath, "Chat", "chkClanChat", $g_iChkChatbotChatClan, "Int")
 	IniReadS($g_iChkChatbotClanUseResponses, $g_sProfileConfigPath, "Chat", "chkUseResponses", $g_iChkChatbotClanUseResponses, "Int")
 	IniReadS($g_iChkChatbotClanAlwaysMsg, $g_sProfileConfigPath, "Chat", "chkUseGeneric", $g_iChkChatbotClanAlwaysMsg, "Int")
-	IniReadS($g_iChatbotUseNotify, $g_sProfileConfigPath, "Chat", "chkChatNotify", $g_iChatbotUseNotify, "Int")
+	IniReadS($g_iChkChatbotUseNotify, $g_sProfileConfigPath, "Chat", "chkChatNotify", $g_iChkChatbotUseNotify, "Int")
 	IniReadS($g_iChkChatbotPbSendNew, $g_sProfileConfigPath, "Chat", "chkPbSendNewChats", $g_iChkChatbotPbSendNew, "Int")
 	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chat", "ChkRusLang", $g_iChkRusLang, "Int")
 
