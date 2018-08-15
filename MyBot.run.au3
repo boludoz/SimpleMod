@@ -906,7 +906,7 @@ Func _Idle() ;Sequence that runs until Full Army
 		NotifyPendingActions()
 		If _Sleep($DELAYIDLE1) Then Return
 		If $g_iCommandStop = -1 Then SetLog("====== Waiting for full army ======", $COLOR_SUCCESS)
-		If $g_iChkChatbotChatGlobal = True Or $g_iChkChatbotChatClan = True Then
+		If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
 			ChatbotMessage()
 		EndIf
 		Local $hTimer = __TimerInit()
@@ -1070,7 +1070,7 @@ Func AttackMain() ;Main control for attack functions
 				;SetLog("BullyMode: " & $g_abAttackTypeEnable[$TB] & ", Bully Hero: " & BitAND($g_aiAttackUseHeroes[$g_iAtkTBMode], $g_aiSearchHeroWaitEnable[$g_iAtkTBMode], $g_iHeroAvailable) & "|" & $g_aiSearchHeroWaitEnable[$g_iAtkTBMode] & "|" & $g_iHeroAvailable, $COLOR_DEBUG)
 			EndIf
 			_ClanGames()
-			If $g_iChkChatbotChatGlobal = True Or $g_iChkChatbotChatClan = True Then
+			If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
 				ChatbotMessage()
 			EndIf
 			ClickP($aAway, 1, 0, "#0000") ;Click Away to prevent any pages on top
@@ -1194,7 +1194,7 @@ Func _RunFunction($action)
 				If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			EndIf
 		Case "SendChat"
-			If $g_iChkChatbotChatGlobal = True Or $g_iChkChatbotChatClan = True Then
+			If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
 				ChatbotMessage()
 			EndIf
 		Case "DonateCC,Train"
