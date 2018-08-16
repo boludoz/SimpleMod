@@ -137,16 +137,16 @@ Func ReadConfig_RKMod()
 
 	; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
-	IniReadS($ChatbotChatGlobal, $g_sProfileConfigPath, "Chatbot", "chkGlobalChat", $ChatbotChatGlobal, "Int")
-	IniReadS($ChatbotScrambleGlobal, $g_sProfileConfigPath, "Chatbot", "chkGlobalScramble", $ChatbotScrambleGlobal, "Int")
-	IniReadS($ChatbotSwitchLang, $g_sProfileConfigPath, "Chatbot", "chkSwitchLang", $ChatbotSwitchLang, "Int")
-	IniReadS($icmbLang, $g_sProfileConfigPath, "Chatbot", "cmbLang", 8, "int")
-	IniReadS($ChatbotChatClan, $g_sProfileConfigPath, "Chatbot", "chkClanChat", $ChatbotChatClan, "Int")
-	IniReadS($ChatbotClanUseResponses, $g_sProfileConfigPath, "Chatbot", "chkUseResponses", $ChatbotClanUseResponses, "Int")
-	IniReadS($ChatbotClanAlwaysMsg, $g_sProfileConfigPath, "Chatbot", "chkUseGeneric", $ChatbotClanAlwaysMsg, "Int")
-	IniReadS($ChatbotUseNotify, $g_sProfileConfigPath, "Chatbot", "chkChatNotify", $ChatbotUseNotify, "Int")
-	IniReadS($ChatbotPbSendNew, $g_sProfileConfigPath, "Chatbot", "chkPbSendNewChats", $ChatbotPbSendNew, "Int")
-	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "Int")
+	IniReadS($g_iChkChatGlobal, $g_sProfileConfigPath, "Chat", "chkGlobalChat", $g_iChkChatGlobal, "Int")
+	IniReadS($g_iChkScrambleGlobal, $g_sProfileConfigPath, "Chat", "chkGlobalScramble", $g_iChkScrambleGlobal, "Int")
+	IniReadS($g_iChkSwitchLang, $g_sProfileConfigPath, "Chat", "chkSwitchLang", $g_iChkSwitchLang, "Int")
+	IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chat", "cmbLang", 8, "int")
+	IniReadS($g_iChkChatClan, $g_sProfileConfigPath, "Chat", "chkClanChat", $g_iChkChatClan, "Int")
+	IniReadS($g_iChkClanUseResponses, $g_sProfileConfigPath, "Chat", "chkUseResponses", $g_iChkClanUseResponses, "Int")
+	IniReadS($g_iChkClanAlwaysMsg, $g_sProfileConfigPath, "Chat", "chkUseGeneric", $g_iChkClanAlwaysMsg, "Int")
+	IniReadS($g_iChkUseNotify, $g_sProfileConfigPath, "Chat", "chkChatNotify", $g_iChkUseNotify, "Int")
+	IniReadS($g_iChkPbSendNew, $g_sProfileConfigPath, "Chat", "chkPbSendNewChats", $g_iChkPbSendNew, "Int")
+	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chat", "ChkRusLang", $g_iChkRusLang, "Int")
 
 
 	; ================================================== Max logout time by RK MOD ================================= ;
@@ -297,21 +297,21 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 
 	; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
-	_Ini_Add("Chatbot", "chkGlobalChat", $ChatbotChatGlobal)
-	_Ini_Add("Chatbot", "chkGlobalScramble", $ChatbotScrambleGlobal)
-    _Ini_Add("Chatbot", "chkSwitchLang", $ChatbotSwitchLang)
-	_Ini_Add("Chatbot", "cmbLang", _GUICtrlComboBox_GetCurSel($cmbLang))
-	_Ini_Add("Chatbot", "chkClanChat", $ChatbotChatClan)
-	_Ini_Add("Chatbot", "chkUseResponses", $ChatbotClanUseResponses)
-	_Ini_Add("Chatbot", "chkUseGeneric", $ChatbotClanAlwaysMsg)
-	_Ini_Add("Chatbot", "chkChatNotify", $ChatbotUseNotify)
-	_Ini_Add("Chatbot", "chkPbSendNewChats", $ChatbotPbSendNew)
-    _Ini_Add("Chatbot", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
+	_Ini_Add("Chat", "ChkChatGlobal", $g_iChkChatGlobal ? 1 : 0)
+	_Ini_Add("Chat", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)
+    _Ini_Add("Chat", "ChkSwitchLang", $g_iChkSwitchLang ? 1 : 0)
+	_Ini_Add("Chat", "CmbLang", _GUICtrlComboBox_GetCurSel($g_iCmbLang))
+	_Ini_Add("Chat", "ChkChatbotChatClan", $g_iChkChatClan ? 1 : 0)
+	_Ini_Add("Chat", "ChkUseResponses", $g_iChkClanUseResponses ? 1 : 0)
+	_Ini_Add("Chat", "ChkUseGeneric", $g_iChkClanAlwaysMsg ? 1 : 0)
+	_Ini_Add("Chat", "ChkChatNotify", $g_iChkUseNotify ? 1 : 0)
+	_Ini_Add("Chat", "ChkPbSendNewChats", $g_iChkPbSendNew ? 1 : 0)
+    _Ini_Add("Chat", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
 
-    _Ini_Add("Chatbot", "globalMsg1", $glb1)
-	_Ini_Add("Chatbot", "globalMsg2", $glb2)
-	_Ini_Add("Chatbot", "genericMsgClan", $cGeneric)
-	_Ini_Add("Chatbot", "responseMsgClan", $cResp)
+    _Ini_Add("Chat", "globalMsg1", $glb1)
+	_Ini_Add("Chat", "globalMsg2", $glb2)
+	_Ini_Add("Chat", "genericMsgClan", $cGeneric)
+	_Ini_Add("Chat", "responseMsgClan", $cResp)
 
 	; ================================================== Max logout time - by RK MOD ================================= ;
 
@@ -465,15 +465,15 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
-			$ChatbotChatGlobal = GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED ? 1 : 0
-			$ChatbotScrambleGlobal = GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED ? 1 : 0
-			$ChatbotSwitchLang = GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED ? 1 : 0
-			$icmbLang = _GUICtrlComboBox_GetCurSel($cmbLang)
-			$ChatbotChatClan = GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED ? 1 : 0
-			$ChatbotClanUseResponses = GUICtrlRead($g_hChkUseResponses) = $GUI_CHECKED ? 1 : 0
-			$ChatbotClanAlwaysMsg = GUICtrlRead($g_hChkUseGeneric) = $GUI_CHECKED ? 1 : 0
-			$ChatbotUseNotify = GUICtrlRead($g_hChkChatNotify) = $GUI_CHECKED ? 1 : 0
-			$ChatbotPbSendNew = GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED ? 1 : 0
+			$g_iChkChatGlobal = GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED ? 1 : 0
+			$g_iChkScrambleGlobal = GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED ? 1 : 0
+			$g_iChkSwitchLang = GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbLang = _GUICtrlComboBox_GetCurSel($g_hCmbLang)
+			$g_iChkChatClan = GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED ? 1 : 0
+			$g_iChkClanUseResponses = GUICtrlRead($g_hChkUseResponses) = $GUI_CHECKED ? 1 : 0
+			$g_iChkClanAlwaysMsg = GUICtrlRead($g_hChkUseGeneric) = $GUI_CHECKED ? 1 : 0
+			$g_iChkUseNotify = GUICtrlRead($g_hChkChatNotify) = $GUI_CHECKED ? 1 : 0
+			$g_iChkPbSendNew = GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED ? 1 : 0
             $g_iChkRusLang = GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED ? 1 : 0
 
 
@@ -633,15 +633,15 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			; ================================================== NEW ChatBot - by RK MOD ======================================== ;
 
-			GUICtrlSetState($g_hChkGlobalChat, $ChatbotChatGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkGlobalScramble, $ChatbotScrambleGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkSwitchLang, $ChatbotSwitchLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($cmbLang, $icmbLang)
-			GUICtrlSetState($g_hChkClanChat, $ChatbotChatClan = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkUseResponses, $ChatbotClanUseResponses = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkUseGeneric, $ChatbotClanAlwaysMsg = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkChatNotify, $ChatbotUseNotify = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkPbSendNewChats, $ChatbotPbSendNew = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkGlobalChat, $g_iChkChatGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkGlobalScramble, $g_iChkScrambleGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkSwitchLang, $g_iChkSwitchLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbLang, $g_iCmbLang)
+			GUICtrlSetState($g_hChkClanChat, $g_iChkChatClan = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkUseResponses, $g_iChkClanUseResponses = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkUseGeneric, $g_iChkClanAlwaysMsg = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkChatNotify, $g_iChkUseNotify = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkPbSendNewChats, $g_iChkPbSendNew = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkRusLang, $g_iChkRusLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
    		    chkRusLang()
 			chkGlobalChat()

@@ -137,20 +137,21 @@ Global $ichkTrophySwitchMax, $itxtMaxTrophyAmount, $icmbTrophyMaxProfile, $ichkT
 Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; flag if AttackBar is dragged or not
 
 ; ================================================ NEW ChatBot - by RK MOD ======================================== ;
-Global $ChatbotChatGlobal = 0
-Global $ChatbotScrambleGlobal = 0
-Global $ChatbotSwitchLang = 0
-Global $ChatbotChatClan = 0
-Global $ChatbotClanUseResponses = 0
-Global $ChatbotClanAlwaysMsg = 0
-Global $ChatbotUseNotify = 0
-Global $ChatbotPbSendNew = 0
+Global $g_iChkChatGlobal = 0
+Global $g_iChkScrambleGlobal = 0
+Global $g_iChkSwitchLang = 0
+Global $g_iChkChatClan = 0
+Global $g_iChkClanUseResponses = 0
+Global $g_iChkClanAlwaysMsg = 0
+Global $g_iChkUseNotify = 0
+Global $g_iChkPbSendNew = 0
 Global $g_iChkRusLang = 0
-Global $ClanMessages = ""
-Global $ClanResponses = ""
-Global $ClanResponses0
-Global $GlobalMessages1 = ""
-Global $GlobalMessages2 = ""
+Global $g_iCmbLang = 8
+Global $g_iChkClanMessages = ""
+Global $g_iChkClanResponses = ""
+Global $g_iChkClanResponses0
+Global $g_iChkGlobalMessages1 = ""
+Global $g_iChkGlobalMessages2 = ""
 Global $glb1 
 Global $glb2
 Global $cResp
@@ -214,9 +215,13 @@ Global $g_hTxtClanID, $g_sTxtClanID, $g_iTxtCyclesGTFO
 Global $g_bChkGTFOClanHop = False, $g_bChkGTFOReturnClan = False
 Global $g_iCycle = 0
 
-; ================================================== Wall/Building Upgrading Priority by RK MOD	======================================== ;
+; ================================================== Wall/Building Upgrading Priority/Management by RK MOD	======================================== ;
 
 Global $g_iChkUpgrPriority = 0, $g_iCmbUpgrdPriority = 0
+Global Const $g_iLimitBreakGE [12] = [2250, 6300, 90000, 450000, 900000, 1800000, 3600000, 5400000, 7200000, 7650000, 9000000, 10800000];Gold And Elixir Town Hall Level max resource storages at 90%
+Global Const $g_iLimitBreakDE [12] = [0, 0, 0, 0, 0, 0, 18000, 72000, 171000, 180000, 180000, 216000];Dark Elixir Town Hall Level max resource storage at 90%
+Global $g_iBuildingsNeedGold = 0
+Global $g_iBuildingsNeedElixir = 0
 
 ; ================================================== SmartTrain - RK MOD (Demen) ======================================== ;
 
