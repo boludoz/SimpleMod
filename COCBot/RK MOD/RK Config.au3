@@ -148,15 +148,6 @@ Func ReadConfig_RKMod()
 	IniReadS($g_iChkPbSendNew, $g_sProfileConfigPath, "Chat", "chkPbSendNewChats", $g_iChkPbSendNew, "Int")
 	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chat", "ChkRusLang", $g_iChkRusLang, "Int")
 
-	; ================================================== Boost for Magic Spell by RK MOD ================================= ;
-
-	IniReadS($g_iChkBoostBMagic, $g_sProfileConfigPath, "boost", "chkBoostBMagic", $g_iChkBoostBMagic, "Int")
-	IniReadS($g_iCmbBoostBrMagic, $g_sProfileConfigPath, "boost", "CmbBoostBrMagic", 1, "int")
-    IniReadS($g_iChkBoostCMagic, $g_sProfileConfigPath, "boost", "chkBoostCMagic", $g_iChkBoostCMagic, "Int")
-	IniReadS($g_iCmbBoostClMagic, $g_sProfileConfigPath, "boost", "CmbBoostClMagic", 1, "int")
-	For $i = 0 To 2
-		IniReadS($g_iLastTime[$i], $g_sProfileBuildingPath, "other", "LastTimeCollectors" & $i, 0, "int")
-	Next
 
 	; ==================================================  Upgrade Management - Added by RK MOD ==================== ;
 
@@ -294,7 +285,7 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	_Ini_Add("Chat", "ChkChatGlobal", $g_iChkChatGlobal ? 1 : 0)
 	_Ini_Add("Chat", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)
     _Ini_Add("Chat", "ChkSwitchLang", $g_iChkSwitchLang ? 1 : 0)
-	_Ini_Add("Chat", "CmbLang", _GUICtrlComboBox_GetCurSel($g_iCmbLang))
+	_Ini_Add("Chat", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmblang))
 	_Ini_Add("Chat", "ChkChatbotChatClan", $g_iChkChatClan ? 1 : 0)
 	_Ini_Add("Chat", "ChkUseResponses", $g_iChkClanUseResponses ? 1 : 0)
 	_Ini_Add("Chat", "ChkUseGeneric", $g_iChkClanAlwaysMsg ? 1 : 0)
@@ -306,16 +297,6 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	_Ini_Add("Chat", "globalMsg2", $glb2)
 	_Ini_Add("Chat", "genericMsgClan", $cGeneric)
 	_Ini_Add("Chat", "responseMsgClan", $cResp)
-
-	; ================================================== Boost for Magic Spell by RK MOD ================================= ;
-
-	_Ini_Add("boost", "chkBoostBMagic", $g_iChkBoostBMagic ? 1 : 0)
-	_Ini_Add("boost", "cmbBoostBrMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic))
-	_Ini_Add("boost", "chkBoostCMagic", $g_iChkBoostCMagic ? 1 : 0)
-	_Ini_Add("boost", "cmbBoostClMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic))
-	For $i = 0 To 2
-			_Ini_Add("boost", "LastTimeCollectors" & $i, $g_iLastTime[0])
-	Next
 
 	; ================================================== Upgrade Management - Added by RK MOD ================================== ;
 
@@ -463,14 +444,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$g_iChkUseNotify = GUICtrlRead($g_hChkChatNotify) = $GUI_CHECKED ? 1 : 0
 			$g_iChkPbSendNew = GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED ? 1 : 0
             $g_iChkRusLang = GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED ? 1 : 0
-
-
-			; ================================================== Boost for Magic Spell by RK MOD ================================= ;
-
-			$g_iChkBoostBMagic = GUICtrlRead($g_hChkBoostBMagic) = $GUI_CHECKED ? 1 : 0
-			$g_iCmbBoostBrMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic)
-			$g_iChkBoostCMagic = GUICtrlRead($g_hChkBoostCMagic) = $GUI_CHECKED ? 1 : 0
-			$g_iCmbBoostClMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic)
 
 			; ================================================== Upgrade Management - Added by RK MOD ============================= ;
 
@@ -636,18 +609,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			chkChatNotify()
 			chkPbSendNewChats()
 			ChatGuiEditUpdate()
-
-	
-			; ================================================== Boost for Magic Spell by RK MOD ================================= ;
-
-			GUICtrlSetState($g_hChkBoostBMagic, $g_iChkBoostBMagic = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbBoostBrMagic, $g_iCmbBoostBrMagic)
-			chkBoostBMagic()
-			BoostBrMagic()
-			GUICtrlSetState($g_hChkBoostCMagic, $g_iChkBoostCMagic = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbBoostClMagic, $g_iCmbBoostClMagic)
-			chkBoostCMagic()
-			BoostClMagic()
 
 			; ==================================================  Upgrade Management - Added by RK MOD ======================================== ;
 

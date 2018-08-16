@@ -603,6 +603,17 @@ Func SaveConfig_600_22()
 		$string &= ($g_abBoostBarracksHours[$i] ? "1" : "0") & "|"
 	Next
 	_Ini_Add("planned", "BoostBarracksHours", $string)
+	; ================================================== Boost for Magic Spell by RK MOD ================================= ;
+
+	_Ini_Add("boost", "chkBoostBMagic", $g_iChkBoostBMagic ? 1 : 0)
+	_Ini_Add("boost", "cmbBoostBrMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic))
+	_Ini_Add("boost", "chkBoostCMagic", $g_iChkBoostCMagic ? 1 : 0)
+	_Ini_Add("boost", "cmbBoostClMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic))
+	For $i = 0 To 2
+			_Ini_Add("boost", "LastTimeCollectors" & $i, $g_iLastTime[0])
+	Next
+
+	
 EndFunc   ;==>SaveConfig_600_22
 
 Func SaveConfig_600_26()
