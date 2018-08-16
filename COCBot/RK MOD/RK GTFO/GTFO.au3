@@ -237,7 +237,7 @@ Func DonateGTFO()
 		While 1
 		
 		$g_iLoop +=1 
-		If $g_iLoop >= 5 Then ExitLoop
+		If $g_iLoop >= 10 Then ExitLoop
 		
 			$_bReturnT = False
 			$_bReturnS = False
@@ -294,8 +294,8 @@ Func DonateGTFO()
 			ClanHop() ; Hop!!!
 			$firstrun = True
 			$g_iLoop = 0
-			Else
-			ClickAwayChat()
+			ElseIf $g_iLoop >= 10
+			ClickAwayChat(250)
 			$g_iLoop = 0
 			EndIf
 		EndIf
@@ -308,7 +308,7 @@ Func DonateGTFO()
 EndFunc   ;==>DonateGTFO
 
 Func ClanHop()
-	;If not $g_bChkGTFOReturnClan Then Return
+	If not $g_bChkGTFOReturnClan Then Return
 	SetLog("Start Clan Hopping", $COLOR_INFO)
 	Local $sTimeStartedHopping = _NowCalc()
 
@@ -443,7 +443,8 @@ Func ClanHop()
 EndFunc   ;==>CallHop
 
 
-Func ClickAwayChat()
+Func ClickAwayChat($iSleep = 10)
+			_Sleep($iSleep)
 			Local $ix = Random(90, 129, 1)
 			Local $iy = Random(687, 724, 1) 
 	
@@ -679,9 +680,13 @@ Func ApplyGTFO()
 		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_ENABLE)
 		
-		GUICtrlSetState($g_hTxtCyclesGTFO, $GUI_ENABLE)
-		GUICtrlSetState($g_hTxtClanID, $GUI_ENABLE)
-		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_ENABLE)
+		GUICtrlSetState($g_hTxtCyclesGTFO, $GUI_DISABLE)      ;disabled beta
+		GUICtrlSetState($g_hTxtClanID, $GUI_DISABLE)          ;disabled beta
+		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_DISABLE)  ;disabled beta
+                                                              ;disabled beta
+		;GUICtrlSetState($g_hTxtCyclesGTFO, $GUI_ENABLE)      ;disabled beta
+		;GUICtrlSetState($g_hTxtClanID, $GUI_ENABLE)          ;disabled beta
+		;GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_ENABLE)  ;disabled beta
 		GUICtrlSetState($g_hChkGTFOClanHop, $GUI_ENABLE)
 
 	Else
