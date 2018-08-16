@@ -15,22 +15,35 @@
 
 Func UpgradeWall()
 
+	Local $MinWallGold = Number($g_aiCurrentLoot[$eLootGold] - $g_iWallCost) > Number($g_iUpgradeWallMinGold) ; Check if enough Gold
+	Local $MinWallElixir = Number($g_aiCurrentLoot[$eLootElixir] - $g_iWallCost) > Number($g_iUpgradeWallMinElixir) ; Check if enough Elixir
+	Local $iElixierPriority = ($g_bAutoLabUpgradeEnable = False Or ((($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0) Or $g_sLabUpgradeTime <> "")) And (($g_iCmbUpgrdPriority = 0 Or (($g_iFreeBuilderCount = 1 And $g_iCmbUpgrdPriority = 1)) Or ($g_iChkAutoUpgrade = 0 Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1))))
+	Local $iGoldPriority = (($g_iCmbUpgrdPriority = 0 Or ($g_iFreeBuilderCount = 1 And $g_iCmbUpgrdPriority = 1)) Or ($g_iChkAutoUpgrade = 0 Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[0] = 1)))
+	Local $iBuildingsNeedGold = 0
+	Local $iBuildingsNeedElixir = 0
+			
 	If $g_bAutoUpgradeWallsEnable = True Then
 		SetLog("Checking Upgrade Walls", $COLOR_INFO)
 		If SkipWallUpgrade() Then Return
 		If $g_iCmbUpgrdPriority = 1 And Not $g_iFreeBuilderCount = 1 Then Return
+		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1 ; internal check if builder still available, if loop index upgrade slot is enabled, and if upgrade is not in progress
+			If $g_abBuildingUpgradeEnable[$iz] = True And $g_avBuildingUpgrades[$iz][7] = "" Then
+				Switch $g_avBuildingUpgrades[$iz][3]
+					Case "Gold"
+						$iBuildingsNeedGold += Number($g_avBuildingUpgrades[$iz][2]) ; sum gold required for enabled upgrade
+					Case "Elixir"
+						$iBuildingsNeedElixir += Number($g_avBuildingUpgrades[$iz][2]) ; sum elixir required for enabled upgrade
+				EndSwitch
+			EndIf
+		Next
 		If $g_iFreeBuilderCount > 0 Then
 			ClickP($aAway, 1, 0, "#0313") ; click away
-			Local $MinWallGold = Number($g_aiCurrentLoot[$eLootGold] - $g_iWallCost) > Number($g_iUpgradeWallMinGold) ; Check if enough Gold
-			Local $MinWallElixir = Number($g_aiCurrentLoot[$eLootElixir] - $g_iWallCost) > Number($g_iUpgradeWallMinElixir) ; Check if enough Elixir
-			Local $iElixierPriority = ($g_bAutoLabUpgradeEnable = False Or ((($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0) Or $g_sLabUpgradeTime <> "")) And (($g_iCmbUpgrdPriority = 0 Or (($g_iFreeBuilderCount = 1 And $g_iCmbUpgrdPriority = 1)) Or ($g_iChkAutoUpgrade = 0 Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1))))
-			Local $iGoldPriority = (($g_iCmbUpgrdPriority = 0 Or ($g_iFreeBuilderCount = 1 And $g_iCmbUpgrdPriority = 1)) Or ($g_iChkAutoUpgrade = 0 Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[0] = 1)))
 			
 			While ($g_iUpgradeWallLootType = 0 And ($MinWallGold And $iGoldPriority)) Or ($g_iUpgradeWallLootType = 1 And ($MinWallElixir And $iElixierPriority)) Or ($g_iUpgradeWallLootType = 2 And (($MinWallGold And $iGoldPriority) Or ($MinWallElixir And $iElixierPriority)))
 
 				Switch $g_iUpgradeWallLootType
 					Case 0
-						If $MinWallGold And $iGoldPriority Then
+						If $MinWallGold And ($iGoldPriority And ($iBuildingsNeedGold = 0 Or $g_iFreeBuilderCount = 1))Then
 							SetLog("Upgrading Wall using Gold", $COLOR_SUCCESS)
 							If imglocCheckWall() Then
 								If Not UpgradeWallGold() Then
@@ -46,7 +59,7 @@ Func UpgradeWall()
 							SetLog("Gold is below minimum, Skipping Upgrade", $COLOR_ERROR)
 						EndIf
 					Case 1
-						If $MinWallElixir And $iElixierPriority Then
+						If $MinWallElixir And ($iElixierPriority And ($iBuildingsNeedElixir = 0 Or $g_iFreeBuilderCount = 1)) Then
 							SetLog("Upgrading Wall using Elixir", $COLOR_SUCCESS)
 							If imglocCheckWall() Then
 								If Not UpgradeWallElixir() Then
@@ -62,7 +75,7 @@ Func UpgradeWall()
 							SetLog("Elixir is below minimum, Skipping Upgrade", $COLOR_ERROR)
 						EndIf
 					Case 2
-						If $MinWallElixir And $iElixierPriority Then
+						If $MinWallElixir And ($iElixierPriority And ($iBuildingsNeedElixir = 0 Or $g_iFreeBuilderCount = 1)) Then
 							SetLog("Upgrading Wall using Elixir", $COLOR_SUCCESS)
 							If imglocCheckWall() Then
 								If Not UpgradeWallElixir() Then
@@ -79,7 +92,7 @@ Func UpgradeWall()
 							EndIf
 						Else
 							SetLog("Elixir is below minimum, attempt to upgrade using Gold", $COLOR_ERROR)
-							If $MinWallGold And $iGoldPriority Then
+							If $MinWallGold And ($iGoldPriority And ($iBuildingsNeedGold = 0 Or $g_iFreeBuilderCount = 1)) Then
 								If imglocCheckWall() Then
 									If Not UpgradeWallGold() Then
 										SetLog("Upgrade with Gold failed, skipping...", $COLOR_ERROR)
