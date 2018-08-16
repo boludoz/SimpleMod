@@ -711,7 +711,7 @@ Func ReadConfig_600_17()
 	IniReadS($g_iCmbUpgradeWallsLevel, $g_sProfileConfigPath, "upgrade", "walllvl", 6, "int")
 	; ================================================== Wall/Building Upgrading Priority by RK MOD	========================;
 	IniReadS($g_iChkUpgrPriority, $g_sProfileConfigPath, "Priority upgrade", "chkUpgrPriority", $g_iChkUpgrPriority, "Int")
-	IniReadS($g_hCmbUpgrdPriority, $g_sProfileConfigPath, "Priority upgrade", "CmbUpgrdPriority", 0, "int")
+	IniReadS($g_iCmbUpgrdPriority, $g_sProfileConfigPath, "Priority upgrade", "CmbUpgrdPriority", 0, "int")
 	For $i = 4 To 13
 		IniReadS($g_aiWallsCurrentCount[$i], $g_sProfileConfigPath, "Walls", "Wall" & StringFormat("%02d", $i), 0, "int")
 	Next
