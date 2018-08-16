@@ -840,7 +840,7 @@ Func SaveConfig_600_29_DB_Standard()
 	_Ini_Add("attack", "DBSmartAttackDarkElixirDrill", $g_abAttackStdSmartNearCollectors[$DB][2] ? 1 : 0)
 	; ================================================== Multi Finger - Added by RK MOD ======================================== ;
 
-	_Ini_Add("MultiFinger", "Select", _GUICtrlComboBox_GetCurSel($g_hcmbDBMultiFinger))
+	_Ini_Add("MultiFinger", "Select", _GUICtrlComboBox_GetCurSel($g_hCmbDBMultiFinger))
 
 	; ================================================== Unit/Wave Factor - Added by RK MOD ======================================== ;
 
