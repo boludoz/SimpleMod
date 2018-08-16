@@ -525,20 +525,20 @@ Func NotifyRemoteControlProc()
 						local $FoundChatMessage = 1
 						local $chatMessage = StringRight($TGActionMSG, StringLen($TGActionMSG) - StringLen("SENDCHAT "))
 							$chatMessage = StringLower($chatMessage)
-							ChatbotPushbulletQueueChat($chatMessage)
+							ChatbotNotifyQueueChat($chatMessage)
 							NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Chat queued, will send on next idle")
 						ElseIf StringInStr($TGActionMSG, "GETCHATS") Then
 							$FoundChatMessage = 1
 							$Interval = StringRight($TGActionMSG, StringLen($TGActionMSG) - StringLen("GETCHATS ")
 							If $Interval = "STOP" Then
-								ChatbotPushbulletStopChatRead()
+								ChatbotNotifyStopChatRead()
 								NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Stopping interval sending")
 							ElseIf $Interval = "NOW" Then
-								ChatbotPushbulletQueueChatRead()
+								ChatbotNotifySendChat()
 								NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Command queued, will send clan chat image on next idle")
 							Else
 								If Number($Interval) <> 0 Then
-									ChatbotPushbulletIntervalChatRead(Number($Interval))
+									ChatbotNotifyIntervalChatRead(Number($Interval))
 									NotifyPushToTelegram($g_sNotifyOrigint & " | " &  "Command queued, will send clan chat image on interval")
 								Else
 									SetLog("Telegram: received command syntax wrong, command ignored.", $COLOR_RED)

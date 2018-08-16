@@ -5,7 +5,7 @@
 ; Parameters ....: ---
 ; Return values .: ---
 ; Author ........: ProMac
-; Modified ......: 06/2017, Boludoz (10/06/2018|11/08/18)
+; Modified ......: 06/2017 , MHK2012(05/2018)
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2018
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......: ---
@@ -18,10 +18,11 @@ Global $g_iSpellsNumber = 0
 Global $g_iClanlevel = 8
 Global $g_OutOfTroops = False
 Global $g_bSetDoubleArmy = False
+Global $g_iLoop = 0
 
 ; Make a Main Loop , replacing the Original Main Loop / Necessary Functions : Train - Donate - CheckResourcesValues
 Func MainGTFO()
-
+	ApplyGTFO()
 	If Not $g_bChkUseGTFO Then Return
 
 	If $g_aiCurrentLoot[$eLootElixir] <> 0 And $g_aiCurrentLoot[$eLootElixir] < $g_iTxtMinSaveGTFO_Elixir Then
@@ -41,7 +42,7 @@ Func MainGTFO()
 
 	; GTFO Main Loop
 	While 1
-		SetLogCentered(" GTFO v0.4 ", Default, Default, True)
+		SetLogCentered(" GTFO v0.2 ", Default, Default, True)
 		; Just a user log
 		$_diffTimer = (TimerDiff($_timer) / 1000) / 60
 		If Not $_bFirstLoop Then
@@ -112,64 +113,68 @@ EndFunc   ;==>MainGTFO
 
 ; Train Troops / Train Spells / Necessary Remain Train Time
 Func TrainGTFO()
-
+Local $RemainTrainSpace = 0
 	; Check Resources values
 	StartGainCost()
 
-	; Is necessary to be Custom Train Troops to be accurate
 	If Not OpenArmyOverview(True, "TrainGTFO()") Then Return
 
-	If _Sleep(250) Then Return
-
-	CheckArmyCamp(False, False, False, True)
+	If _Sleep(200) Then Return
 
 	If Not $g_bRunState Then Return
-	Local $rWhatToTrain = WhatToTrain(True, False) ; r in First means Result! Result of What To Train Function
-	Local $rRemoveExtraTroops = RemoveExtraTroops($rWhatToTrain)
+	
+	; TrainArch
+    Local $aTempResult[3] = [0, 0, 0]
+	Local $aResult[3] = [0, 0, 0]
+	OpenTrainTab("Train Troops Tab", True)
+	If _Sleep(200) Then Return
+	$aResult[0] = getOcrAndCapture("coc-NewCapacity", 48, 160, 67, 14, True)
 
-	If $rRemoveExtraTroops = 1 Or $rRemoveExtraTroops = 2 Then
-		CheckArmyCamp(False, False, False, True)
-		If $g_bFullArmy Then
-			SetLog("- Your Army is Full , let's Donate", $COLOR_INFO)
-			If $g_bFirstStart Then $g_bFirstStart = False
-			Return
-		EndIf
-	EndIf
-
-	If Not $g_bRunState Then Return
-
-	If $rRemoveExtraTroops = 2 Then
-		$rWhatToTrain = WhatToTrain(False, False)
-		TrainUsingWhatToTrain($rWhatToTrain)
-	EndIf
-	If _Sleep($DELAYRESPOND) Then Return
-
-	If IsQueueEmpty("Troops") Then
-		If Not $g_bRunState Then Return
-		If Not OpenArmyTab(True, "TrainGTFO()") Then Return
-
-		$rWhatToTrain = WhatToTrain(False, False)
-		TrainUsingWhatToTrain($rWhatToTrain)
+	If StringInStr($aResult[0], "#") Then
+		Local $aTempResult = StringSplit($aResult[0], "#", $STR_NOCOUNT)
+		$aResult[1] = Number($aTempResult[0])
+		$aResult[2] = Number($aTempResult[1])
+			$aResult[2] -= $aResult[1]
+			;Top Off any remianing space with archers
+			$RemainTrainSpace = $aResult[2]
+			While not $RemainTrainSpace = 0 
+				Local $howMuch = $RemainTrainSpace
+				TrainIt($eTroopArcher, $howMuch, $g_iTrainClickDelay)
+				SetLog(" - Trained " & $howMuch & " archer(s)!", $COLOR_ACTION)
+				$aResult[2] = 0
+				$RemainTrainSpace = 0
+				ExitLoop
+			Wend
 	Else
-		If Not $g_bRunState Then Return
-		If Not OpenArmyTab(True, "TrainGTFO()") Then Return
+		SetLog("DEBUG | ERROR on GetCurrentArmy", $COLOR_ERROR)
 	EndIf
-	If _Sleep($DELAYRESPOND) Then Return
+	
+	; TrainSpell
+    Local $aTempResult[3] = [0, 0, 0]
+	Local $aResult[3] = [0, 0, 0]
+	OpenTrainTab("Brew Spells Tab", True)
+	If _Sleep(200) Then Return
+	$aResult[0] = getOcrAndCapture("coc-NewCapacity", 48, 160, 67, 14, True)
 
-	$rWhatToTrain = WhatToTrain(False, False)
-	If DoWhatToTrainContainSpell($rWhatToTrain) Then
-		If IsQueueEmpty("Spells") Then
-			TrainUsingWhatToTrain($rWhatToTrain, True)
-		Else
-			If Not OpenArmyTab(True, "TrainGTFO()") Then Return
-		EndIf
+	If StringInStr($aResult[0], "#") Then
+		Local $aTempResult = StringSplit($aResult[0], "#", $STR_NOCOUNT)
+		$aResult[1] = Number($aTempResult[0])
+		$aResult[2] = Number($aTempResult[1])
+			$aResult[2] -= $aResult[1]
+			;Top Off any remianing space with archers
+			$RemainTrainSpace = $aResult[2]
+			While not $RemainTrainSpace = 0 
+				Local $howMuch = $RemainTrainSpace
+				TrainIt($ePSpell, $howMuch, $g_iTrainClickDelay)
+				SetLog(" - Trained " & $howMuch & " Poison!", $COLOR_ACTION)
+				$aResult[2] = 0
+				$RemainTrainSpace = 0
+				ExitLoop
+			Wend
+	Else
+		SetLog("DEBUG | ERROR on GetCurrentArmy", $COLOR_ERROR)
 	EndIf
-
-	If Not OpenArmyTab(True, "TrainGTFO()") Then Return
-
-	; After the train ...get the remain times
-	CheckArmyCamp(False, False, False, True)
-
+	
 	If _Sleep(250) Then Return
 	If Not $g_bRunState Then Return
 	ClickP($aAway, 2, 0, "#0346") ;Click Away
@@ -198,8 +203,8 @@ Func DonateGTFO()
 
 	If _Sleep($DELAYRUNBOT3) Then Return
 
-	; Scroll Up
-	;ScrollUp()
+;~ 	; Scroll Up
+;~ 	ScrollUp()
 
 	; +++++++++++++++++++++++++++++
 	; MAIN DONATE LOOP ON CLAN CHAT
@@ -230,6 +235,10 @@ Func DonateGTFO()
 		; DONATE IT - WHEN EXIST REQUESTS
 		; +++++++++++++++++++++++++
 		While 1
+		
+		$g_iLoop +=1 
+		If $g_iLoop >= 10 Then ExitLoop
+		
 			$_bReturnT = False
 			$_bReturnS = False
 			$firstrun = False
@@ -245,17 +254,22 @@ Func DonateGTFO()
 				; Donate It : Troops & Spells [slot 2] is the Third slot from the left : [0 ,1 ,2 ,3 ,4 ]
 				If DonateIT(0) Then $_bReturnT = True ; Donated troops, lets Train it
 				If $g_OutOfTroops Then
-					ClickP($aAway, 1, 0, "0")
+					ClickAwayChat()
 					CloseClanChat()
 					Return
 				EndIf
 				If DonateIT(10) Then $_bReturnS = True ; Donated Spells , lets Train it
 
 				; Close Donate Window - Return to Chat
-				ChatRandomWait()
-			Else
+				ClickAwayChat()
+				Else
 				; Doesn't exist Requests lets exits from this loop
-				ChatRandomWait()
+;~ 				ClickP($aAway, 1, 0)
+				If ScrollDown() Then
+					$y = 200
+				Else
+					$firstrun = True
+				EndIf
 				ExitLoop
 			EndIf
 
@@ -272,8 +286,19 @@ Func DonateGTFO()
 			EndIf
 		WEnd
 
+		Local $bHop = True
 		; A click just to mantain the 'Game active'
-		ChatRandomWait()
+		Setlog("Loop")
+		If $g_iLoop >= 5 Then 
+			If 	$bHop Then
+			ClanHop() ; Hop!!!
+			$firstrun = True
+			$g_iLoop = 0
+			ElseIf $g_iLoop >= 10
+			ClickAwayChat(250)
+			$g_iLoop = 0
+			EndIf
+		EndIf
 	WEnd
 
 	AutoItSetOption("MouseClickDelay", 10)
@@ -282,23 +307,149 @@ Func DonateGTFO()
 
 EndFunc   ;==>DonateGTFO
 
-Func ChatRandomWait()
-	Local $i = 0
-	Local $h = Random(1, 32, 1)
+Func ClanHop()
+	If not $g_bChkGTFOReturnClan Then Return
+	SetLog("Start Clan Hopping", $COLOR_INFO)
+	Local $sTimeStartedHopping = _NowCalc()
 
-			While $i <= $h
-					If _Sleep(Random(1, 753, 1)) Then Return
-					$i = $i + 1
-					Sleep(50) ; CPU
+	Local $iPosJoinedClans = 0, $iScrolls = 0, $iHopLoops = 0, $iErrors = 0
+
+	Local $aJoinClanBtn[4] = [157, 510, 0x6CBB1F, 20] ; Green Join Button on Chat Tab when you are not in a Clan
+	Local $aClanPage[4] = [768, 398, 0xCE0D0E, 20] ; Red Leave Clan Button on Clan Page
+	Local $aClanPageJoin[4] = [768, 398, 0x74BD2F, 20] ; Green Join Clan Button on Clan Page
+	Local $aJoinClanPage[4] = [720, 310, 0xEBCC80, 20] ; Trophy Amount of Clan Background of first Clan
+	Local $aClanChat[4] = [105, 650, 0x86C808, 40] ; *Your Name* joined the Clan Message Check to verify loaded Clan Chat
+	Local $aChatTab[4] = [189, 24, 0x706C50, 20] ; Clan Chat Tab on Top, check if right one is selected
+	Local $aGlobalTab[4] = [189, 24, 0x383828, 20] ; Global Chat Tab on Top, check if right one is selected
+	Local $aClanBadgeNoClan[4] = [151, 307, 0xF05838, 20]; Orange Tile of Clan Logo on Chat Tab if you are not in a Clan
+
+	Local $aClanNameBtn[2] = [89, 63] ; Button to open Clan Page from Chat Tab
+
+	$g_iCommandStop = 0 ; Halt Attacking
+
+	While 1
+		If $iErrors >= 10 Then
+			Local $y = 0
+			SetLog("Too Many Errors occured in current ClanHop Loop. Leaving ClanHopping!", $COLOR_ERROR)
+			While 1
+				If _Sleep(50) Then Return
+				If _ColorCheck(_GetPixelColor($aCloseChat[0], $aCloseChat[1], True), Hex($aCloseChat[2], 6), $aCloseChat[3]) Then
+					; Clicks chat Button
+					Click($aCloseChat[0], $aCloseChat[1], 1, 0, "#0173") ;Clicks chat close button
+					ExitLoop
+				Else
+					If _Sleep(100) Then Return
+					$y += 1
+					If $y > 30 Then
+						SetLog("Error finding Clan Tab to close.", $COLOR_ERROR)
+						AndroidPageError("ClanHop")
+						ExitLoop
+					EndIf
+				EndIf
 			WEnd
-				Local $x = Random(0, 93, 1)
-				Local $y = Random(85, 673, 1)
+			Return
+		EndIf
 
-			ClickDrag($x + Random(0, 20, 1), $y + Random(1, 60, 1), $x, $y)
-			If _sleep(100) Then Return
-			Sleep(50) ; CPU
+		If $iScrolls >= 8 Then
+			CloseCoc(True) ; Restarting to get some new Clans
+			$iScrolls = 0
+			$iPosJoinedClans = 0
+		EndIf
+
+		ForceCaptureRegion()
+
+		Local $iCount = 0
+		While 1
+			;If Clan tab is selected.
+			If _CheckPixel($aChatTab, $g_bCapturePixel) Then ; color med gray
+				ExitLoop
+			EndIf
+			;If Global tab is selected.
+			If _CheckPixel($aGlobalTab, $g_bCapturePixel) Then ; Darker gray
+				If _Sleep($DELAYDONATECC1) Then Return ;small delay to allow tab to completely open
+				ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
+				If _Sleep(500) Then Return ; Delay to wait till Clan Page is fully up and visible so the next Color Check won't fail ;)
+				ExitLoop
+			EndIf
+			;counter for time approx 3 sec max allowed for tab to open
+			$iCount += 1
+			If $iCount >= 15 Then ; allows for up to a sleep of 3000
+				SetLog("Clan Chat Did Not Open - Abandon ClanHop")
+				AndroidPageError("ClanHop")
+				Return
+			EndIf
+		WEnd
+
+		If Not _CheckPixel($aClanBadgeNoClan, $g_bCapturePixel) Then ; If Still in Clan
+			SetLog("Still in a Clan! Leaving the Clan now")
+			ClickP($aClanNameBtn)
+			If _WaitForCheckPixel($aClanPage, $g_bCapturePixel, Default, "Wait for Clan Page:") Then
+				ClickP($aClanPage)
+				If Not ClickOkay("ClanHop") Then
+					SetLog("Okay Button not found! Starting over again", $COLOR_ERROR)
+					$iErrors += 1
+					ContinueLoop
+				Else
+					SetLog("Successfully left Clan", $COLOR_SUCCESS)
+					If _Sleep(400) Then Return
+				EndIf
+			Else
+				SetLog("Clan Page did not open! Starting over again", $COLOR_ERROR)
+				$iErrors += 1
+				ContinueLoop
+			EndIf
+		EndIf
+
+		If _CheckPixel($aJoinClanBtn, $g_bCapturePixel) Then ; Click on Green Join Button on Donate Window
+			SetLog("Opening Join Clan Page", $COLOR_INFO)
+			ClickP($aJoinClanBtn)
+		Else
+			SetLog("Join Clan Button not visible! Starting over again", $COLOR_ERROR)
+			$iErrors += 1
+			ContinueLoop
+		EndIf
+
+		If Not _WaitForCheckPixel($aJoinClanPage, $g_bCapturePixel, Default, "Wait For Join Clan Page:") Then ; Wait For The golden Trophy Background of the First Clan in list
+			SetLog("Joinable Clans did not show.. Starting over again", $COLOR_ERROR)
+			$iErrors += 1
+			ContinueLoop
+		EndIf
+
+		;Go through all Clans of the list 1 by 1
+		If $iPosJoinedClans >= 7 Then
+			ClickDrag(333, 668, 333, 286, 300)
+			$iScrolls += 1
+			$iPosJoinedClans = 0
+		EndIf
+
+		Click(161, 286 + ($iPosJoinedClans * 55)) ; Open specific Clans Page
+		$iPosJoinedClans += 1
+		If _Sleep(300) Then Return
+		If Not _WaitForCheckPixel($aClanPageJoin, $g_bCapturePixel, Default, "Wait For Clan Page:") Then ; Check if Clan Page itself opened up
+			SetLog("Clan Page did not open. Starting over again", $COLOR_ERROR)
+			$iErrors += 1
+			ContinueLoop
+		EndIf
+
+		ClickP($aClanPageJoin) ; Join Clan
+
+		If Not _WaitForCheckPixel($aClanChat, $g_bCapturePixel, Default, "Wait For Clan Chat:") Then ; Check for your "joined the Clan" Message to verify that Chat loaded successfully
+			SetLog("Could not verify loaded Clan Chat. Starting over again", $COLOR_ERROR)
+			$iErrors += 1
+			ContinueLoop
+		EndIf
+		Return
+	Wend
+EndFunc   ;==>CallHop
+
+
+Func ClickAwayChat($iSleep = 10)
+			_Sleep($iSleep)
+			Local $ix = Random(90, 129, 1)
+			Local $iy = Random(687, 724, 1) 
+	
+			Click($ix , $iy, 1, 0)
 EndFunc
-
 Func OpenClanChat()
 
 	; OPEN CLAN CHAT and verbose in log
@@ -383,8 +534,9 @@ Func ScrollDown()
 		Click($Scroll[0], $Scroll[1], 1, 0, "#0172")
 		If _Sleep($DELAYDONATECC2) Then Return
 		Return True
+	Else
+		Return False
 	EndIf
-	Return False
 EndFunc   ;==>ScrollDown
 
 Func DonateIT($Slot)
@@ -399,23 +551,16 @@ Func DonateIT($Slot)
 		;         after that check if exist the next slot ... True click 8x
 		;         than check if the slot 1 is empty return to train troops
 
-		; dadad5 Out of troops on Slot 0
-		;If not _ColorCheck(_GetPixelColor(385 + ($Slot * 68), $g_iDonationWindowY + 70 + $YComp, True), Hex(0xDADAD5, 6), 5) Then
-
-		Click(385 + ($Slot * 68), $g_iDonationWindowY + 70 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
-		;SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
-		;EndIf
+		Click(395 + ($Slot * 68), $g_iDonationWindowY + 57 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
+		SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
 
 		$Slot += 1
 		$iTroopIndex = $Slot
 
-		;If not _ColorCheck(_GetPixelColor(385 + ($Slot * 68), $g_iDonationWindowY + 70 + $YComp, True), Hex(0xDADAD5, 6), 5) Then
+		Click(395 + ($Slot * 68), $g_iDonationWindowY + 57 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
+		SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
 
-		Click(385 + ($Slot * 68), $g_iDonationWindowY + 70 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
-		;SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
-		;EndIf
-
-	; dadad5 Out of troops on Slot 0
+		; dadad5 Out of troops on Slot 0
 		If _ColorCheck(_GetPixelColor(350, $g_iDonationWindowY + 105 + $YComp, True), Hex(0xDADAD5, 6), 5) Then
 			SetLog("No More troops let's train!", $COLOR_INFO)
 			$g_OutOfTroops = True
@@ -441,6 +586,7 @@ Func DonateIT($Slot)
 		SetLog(" - Donated 1 Spell on Slot " & $Slot + 1, $COLOR_INFO)
 		$g_aiDonateStatsSpells[$iTroopIndex][0] += 1
 		$g_iSpellsNumber += 1
+		SetLog(" - Spells Empty or Filled!", $COLOR_ERROR)
 		Return True
 	EndIf
 
@@ -533,9 +679,24 @@ Func ApplyGTFO()
 	If $g_bChkUseGTFO = True Then
 		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_ENABLE)
+		
+		GUICtrlSetState($g_hTxtCyclesGTFO, $GUI_DISABLE)      ;disabled beta
+		GUICtrlSetState($g_hTxtClanID, $GUI_DISABLE)          ;disabled beta
+		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_DISABLE)  ;disabled beta
+                                                              ;disabled beta
+		;GUICtrlSetState($g_hTxtCyclesGTFO, $GUI_ENABLE)      ;disabled beta
+		;GUICtrlSetState($g_hTxtClanID, $GUI_ENABLE)          ;disabled beta
+		;GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_ENABLE)  ;disabled beta
+		GUICtrlSetState($g_hChkGTFOClanHop, $GUI_ENABLE)
+
 	Else
 		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_DISABLE)
+		
+		GUICtrlSetState($g_hTxtCyclesGTFO, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtClanID, $GUI_DISABLE)
+		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_DISABLE)
+		GUICtrlSetState($g_hChkGTFOClanHop, $GUI_DISABLE)		
 	EndIf
 EndFunc   ;==>ApplyGTFO
 
@@ -545,6 +706,10 @@ EndFunc   ;==>ApplyElixirGTFO
 
 Func ApplyDarkElixirGTFO()
 	$g_iTxtMinSaveGTFO_DE = Number(GUICtrlRead($g_hTxtMinSaveGTFO_DE))
+EndFunc   ;==>ApplyDarkElixirGTFO
+
+Func ApplyCyclesGTFO()
+	$g_iTxtCyclesGTFO = Number(GUICtrlRead($g_hTxtCyclesGTFO))
 EndFunc   ;==>ApplyDarkElixirGTFO
 
 Func ApplyClanReturnGTFO()
@@ -621,9 +786,17 @@ Func ApplyKickLimits()
 EndFunc   ;==>ApplyKickLimits
 
 Func chkGTFOClanHop()
-	$g_bGTFOClanHop = (GUICtrlRead($g_hGTFOClanHop) = $GUI_CHECKED)
+	$g_bChkGTFOClanHop = (GUICtrlRead($g_hChkGTFOClanHop) = $GUI_CHECKED)
+	If $g_bChkUseGTFO and $g_bChkGTFOClanHop = True Then
+		GUICtrlSetState($g_hTxtClanID, $GUI_ENABLE)
+		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_ENABLE)
+		
+	Else
+		GUICtrlSetState($g_hTxtClanID, $GUI_DISABLE)
+		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_DISABLE)
+	EndIf
 EndFunc   ;==>chkGTFOClanHop
 
 Func chkGTFOReturnClan()
-	$g_bGTFOReturnClan = (GUICtrlRead($g_hGTFOReturnClan) = $GUI_CHECKED)
+	$g_bChkGTFOReturnClan = (GUICtrlRead($g_hChkGTFOReturnClan) = $GUI_CHECKED)
 EndFunc   ;==>chkGTFOReturnClan

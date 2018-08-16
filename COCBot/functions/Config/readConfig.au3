@@ -646,12 +646,16 @@ Func ReadConfig_600_13()
 	$g_iDonateSkipNearFullPercent = Int(IniRead($g_sProfileConfigPath, "donate", "SkipDonateNearFulLTroopsPercentual", 90))
 	$g_bDonateSkipNearFullEnable = (IniRead($g_sProfileConfigPath, "donate", "SkipDonateNearFulLTroopsEnable", "1") = "1")
 	; ==================================================  GTFO - Added by RK MOD ================================================ ;
-	IniReadS($g_bGTFOClanHop, $g_sProfileConfigPath, "GTFO", "GTFOClanHop", $g_bGTFOClanHop, "Bool")
-	IniReadS($g_bGTFOReturnClan, $g_sProfileConfigPath, "GTFO", "GTFOReturnClan", $g_bGTFOReturnClan, "Bool")
-
-	IniReadS($g_sTxtClanID, $g_sProfileConfigPath, "GTFO", "txtClanID", $g_sTxtClanID)
+	IniReadS($g_bChkGTFOClanHop, $g_sProfileConfigPath, "GTFO", "chkGTFOClanHop", $g_bChkGTFOClanHop, "Bool")
+	IniReadS($g_bChkGTFOReturnClan, $g_sProfileConfigPath, "GTFO", "chkGTFOReturnClan", $g_bChkGTFOReturnClan, "Bool")
+	
 	IniReadS($g_bChkUseGTFO, $g_sProfileConfigPath, "GTFO", "chkUseGTFO", $g_bChkUseGTFO, "Bool")
-	IniReadS($g_iTxtMinSaveGTFO_Elixir, $g_sProfileConfigPath, "GTFO", "txtMinSaveGTFO_Elixir", $g_iTxtMinSaveGTFO_Elixir, "Int")
+	
+	IniReadS($g_sTxtClanID, $g_sProfileConfigPath, "GTFO", "txtClanID", $g_sTxtClanID)
+	IniReadS($g_iTxtCyclesGTFO, $g_sProfileConfigPath, "GTFO", "txtClanID", $g_iTxtCyclesGTFO)
+
+	IniReadS($g_iTxtMinSaveGTFO_Elixir, $g_sProfileConfigPath, "GTFO", "ApplyCyclesGTFO", $g_iTxtMinSaveGTFO_Elixir, "Int")
+	IniReadS($g_iTxtCyclesGTFO, $g_sProfileConfigPath, "GTFO", "txtCyclesGTFO", $g_iTxtCyclesGTFO, "Int")
 	IniReadS($g_iTxtMinSaveGTFO_DE, $g_sProfileConfigPath, "GTFO", "txtMinSaveGTFO_DE", $g_iTxtMinSaveGTFO_DE, "Int")
 	IniReadS($g_bChkUseKickOut, $g_sProfileConfigPath, "GTFO", "chkUseKickOut", $g_bChkUseKickOut, "Bool")
 	IniReadS($g_iTxtDonatedCap, $g_sProfileConfigPath, "GTFO", "txtDonatedCap", $g_iTxtDonatedCap, "Int")
@@ -707,7 +711,7 @@ Func ReadConfig_600_17()
 	IniReadS($g_iCmbUpgradeWallsLevel, $g_sProfileConfigPath, "upgrade", "walllvl", 6, "int")
 	; ================================================== Wall/Building Upgrading Priority by RK MOD	========================;
 	IniReadS($g_iChkUpgrPriority, $g_sProfileConfigPath, "Priority upgrade", "chkUpgrPriority", $g_iChkUpgrPriority, "Int")
-	IniReadS($g_hCmbUpgrdPriority, $g_sProfileConfigPath, "Priority upgrade", "CmbUpgrdPriority", 0, "int")
+	IniReadS($g_iCmbUpgrdPriority, $g_sProfileConfigPath, "Priority upgrade", "CmbUpgrdPriority", 0, "int")
 	For $i = 4 To 13
 		IniReadS($g_aiWallsCurrentCount[$i], $g_sProfileConfigPath, "Walls", "Wall" & StringFormat("%02d", $i), 0, "int")
 	Next
@@ -764,6 +768,15 @@ Func ReadConfig_600_22()
 	Next
 	; Note: These global variables are not stored to the ini file, to prevent automatic boosting (and spending of gems) when the bot is started:
 	; $g_iCmbBoostBarracks, $g_iCmbBoostSpellFactory, $g_iCmbBoostBarbarianKing, $g_iCmbBoostArcherQueen, $g_iCmbBoostWarden
+	; ================================================== Boost for Magic Spell by RK MOD ================================= ;
+
+	IniReadS($g_iChkBoostBMagic, $g_sProfileConfigPath, "boost", "chkBoostBMagic", $g_iChkBoostBMagic, "Int")
+	IniReadS($g_iCmbBoostBrMagic, $g_sProfileConfigPath, "boost", "CmbBoostBrMagic", 0, "int")
+    IniReadS($g_iChkBoostCMagic, $g_sProfileConfigPath, "boost", "chkBoostCMagic", $g_iChkBoostCMagic, "Int")
+	IniReadS($g_iCmbBoostClMagic, $g_sProfileConfigPath, "boost", "CmbBoostClMagic", 0, "int")
+	For $i = 0 To 2
+		IniReadS($g_iLastTime[$i], $g_sProfileBuildingPath, "other", "LastTimeCollectors" & $i, 0, "int")
+	Next
 EndFunc   ;==>ReadConfig_600_22
 
 Func ReadConfig_600_26()
@@ -1418,6 +1431,12 @@ Func ReadConfig_641_1()
 	IniReadS($g_bCloseRandomTime, $g_sProfileConfigPath, "other", "btnCloseWaitRandom", True, "Bool")
 	IniReadS($g_iCloseRandomTimePercent, $g_sProfileConfigPath, "other", "CloseWaitRdmPercent", 10, "int")
 	IniReadS($g_iCloseMinimumTime, $g_sProfileConfigPath, "other", "MinimumTimeToClose", 2, "int")
+	
+	; ================================================== Max logout time by RK MOD ================================= ;
+
+	IniReadS($g_bTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime, "Bool")
+	IniReadS($g_iTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime, "int")
+	
 	IniReadS($g_iTrainClickDelay, $g_sProfileConfigPath, "other", "TrainITDelay", 100, "int")
 	IniReadS($g_bTrainAddRandomDelayEnable, $g_sProfileConfigPath, "other", "chkAddIdleTime", $g_bTrainAddRandomDelayEnable, "Bool")
 	IniReadS($g_iTrainAddRandomDelayMin, $g_sProfileConfigPath, "other", "txtAddDelayIdlePhaseTimeMin", $g_iTrainAddRandomDelayMin, "Int")

@@ -1746,3 +1746,7 @@ Global $g_sBonusGold = Null
 Global $g_sBonusElixir = Null
 Global $g_sBonusDE = Null
 Global $g_sPercentagesResources = Null
+
+; Builder Status - Add RK MOD
+Global $g_sNextBuilderReadyTime = ""
+Global $g_asNextBuilderReadyTime[8] = ["", "", "", "", "", "", "", ""]

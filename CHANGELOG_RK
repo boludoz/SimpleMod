@@ -89,11 +89,12 @@ Update to v 7.6.1
 
 **Added**
 
+-- Builder time status.
+
 
 
 **IMPROVED AND FIXED**
 
--- Queen drop for CSV.
 -- Request CC First.
 -- Farming Schedule.
 -- Check Warden Mode.
@@ -102,3 +103,13 @@ Update to v 7.6.1
 -- Unit/Wave Factor.
 -- Classic Four Finger.
 -- Smart Train.
+-- Switch Profiles.
+-- ChatBot.
+-- GTFO.
+-- Wall/Building Upgrading Priority.
+-- Max logout time.
+-- Boost for Magic Spell.
+
+** Removed **
+
+-- Double train army.
