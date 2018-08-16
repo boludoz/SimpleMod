@@ -905,6 +905,17 @@ Func ApplyConfig_600_22($TypeReadSave)
 			For $i = 0 To 23
 				GUICtrlSetState($g_hChkBoostBarracksHours[$i], $g_abBoostBarracksHours[$i] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			Next
+			; ================================================== Boost for Magic Spell by RK MOD ================================= ;
+
+			GUICtrlSetState($g_hChkBoostBMagic, $g_iChkBoostBMagic = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbBoostBrMagic, $g_iCmbBoostBrMagic)
+			chkBoostBMagic()
+			BoostBrMagic()
+			GUICtrlSetState($g_hChkBoostCMagic, $g_iChkBoostCMagic = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbBoostClMagic, $g_iCmbBoostClMagic)
+			chkBoostCMagic()
+			BoostClMagic()
+			
 		Case "Save"
 			$g_iCmbBoostBarracks = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBarracks)
 			$g_iCmbBoostSpellFactory = _GUICtrlComboBox_GetCurSel($g_hCmbBoostSpellFactory)
@@ -914,6 +925,12 @@ Func ApplyConfig_600_22($TypeReadSave)
 			For $i = 0 To 23
 				$g_abBoostBarracksHours[$i] = (GUICtrlRead($g_hChkBoostBarracksHours[$i]) = $GUI_CHECKED)
 			Next
+			; ================================================== Boost for Magic Spell by RK MOD ================================= ;
+
+			$g_iChkBoostBMagic = GUICtrlRead($g_hChkBoostBMagic) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbBoostBrMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic)
+			$g_iChkBoostCMagic = GUICtrlRead($g_hChkBoostCMagic) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbBoostClMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic)
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_22
 
@@ -2418,7 +2435,6 @@ Func ApplyConfig_641_1($TypeReadSave)
 				GUICtrlSetState($g_hLblWaitingInMinutes, $GUI_ENABLE)
 				; Max logout time - RK MOD
 				GUICtrlSetState($g_hChkTrainLogoutMaxTime, $GUI_ENABLE)
-				chkTrainLogoutMaxTime()
 			Else
 				GUICtrlSetState($g_hChkCloseWhileTraining, $GUI_UNCHECKED)
 				_GUI_Value_STATE("DISABLE", $groupCloseWhileTraining)
@@ -2445,6 +2461,11 @@ Func ApplyConfig_641_1($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbCloseWaitRdmPercent, $g_iCloseRandomTimePercent)
 			btnCloseWaitRandom()
 			GUICtrlSetData($g_hCmbMinimumTimeClose, $g_iCloseMinimumTime)
+			; ================================================== Max logout time - by RK MOD ======================================== ;
+
+			GUICtrlSetState($g_hChkTrainLogoutMaxTime, $g_bTrainLogoutMaxTime = True ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtTrainLogoutMaxTime, $g_iTrainLogoutMaxTime)
+			
 			; Train click timing
 			GUICtrlSetData($g_hSldTrainITDelay, $g_iTrainClickDelay)
 			sldTrainITDelay()
@@ -2459,6 +2480,7 @@ Func ApplyConfig_641_1($TypeReadSave)
 			GUICtrlSetState($g_hChkCheckWardenMode, $g_bCheckWardenMode ? $GUI_CHECKED : $GUI_UNCHECKED)
 			chkCheckWardenMode()
 			_GUICtrlComboBox_SetCurSel($g_hCmbCheckWardenMode, $g_iCheckWardenMode)
+			
 		Case "Save"
 			; Training idle time
 			$g_bCloseWhileTrainingEnable = (GUICtrlRead($g_hChkCloseWhileTraining) = $GUI_CHECKED)
@@ -2470,6 +2492,10 @@ Func ApplyConfig_641_1($TypeReadSave)
 			$g_bCloseRandomTime = (GUICtrlRead($g_hRdoCloseWaitRandom) = $GUI_CHECKED)
 			$g_iCloseRandomTimePercent = _GUICtrlComboBox_GetCurSel($g_hCmbCloseWaitRdmPercent)
 			$g_iCloseMinimumTime = GUICtrlRead($g_hCmbMinimumTimeClose)
+			; ================================================== Max logout time - by RK MOD ======================================== ;
+			$g_bTrainLogoutMaxTime = (GUICtrlRead($g_hChkTrainLogoutMaxTime) = $GUI_CHECKED)
+			$g_iTrainLogoutMaxTime = GUICtrlRead($g_hTxtTrainLogoutMaxTime)
+			
 			; Train click timing
 			$g_iTrainClickDelay = GUICtrlRead($g_hSldTrainITDelay)
 			; Training add random delay
@@ -2480,6 +2506,7 @@ Func ApplyConfig_641_1($TypeReadSave)
 
 			$g_bCheckWardenMode = (GUICtrlRead($g_hChkCheckWardenMode) = $GUI_CHECKED)
 			$g_iCheckWardenMode = _GUICtrlComboBox_GetCurSel($g_hCmbCheckWardenMode)
+			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_641_1
 

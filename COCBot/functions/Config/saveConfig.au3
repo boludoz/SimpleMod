@@ -603,6 +603,17 @@ Func SaveConfig_600_22()
 		$string &= ($g_abBoostBarracksHours[$i] ? "1" : "0") & "|"
 	Next
 	_Ini_Add("planned", "BoostBarracksHours", $string)
+	; ================================================== Boost for Magic Spell by RK MOD ================================= ;
+
+	_Ini_Add("boost", "chkBoostBMagic", $g_iChkBoostBMagic ? 1 : 0)
+	_Ini_Add("boost", "cmbBoostBrMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic))
+	_Ini_Add("boost", "chkBoostCMagic", $g_iChkBoostCMagic ? 1 : 0)
+	_Ini_Add("boost", "cmbBoostClMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic))
+	For $i = 0 To 2
+			_Ini_Add("boost", "LastTimeCollectors" & $i, $g_iLastTime[0])
+	Next
+
+	
 EndFunc   ;==>SaveConfig_600_22
 
 Func SaveConfig_600_26()
@@ -840,7 +851,7 @@ Func SaveConfig_600_29_DB_Standard()
 	_Ini_Add("attack", "DBSmartAttackDarkElixirDrill", $g_abAttackStdSmartNearCollectors[$DB][2] ? 1 : 0)
 	; ================================================== Multi Finger - Added by RK MOD ======================================== ;
 
-	_Ini_Add("MultiFinger", "Select", _GUICtrlComboBox_GetCurSel($g_hcmbDBMultiFinger))
+	_Ini_Add("MultiFinger", "Select", _GUICtrlComboBox_GetCurSel($g_hCmbDBMultiFinger))
 
 	; ================================================== Unit/Wave Factor - Added by RK MOD ======================================== ;
 
@@ -1284,6 +1295,11 @@ Func SaveConfig_641_1()
 	_Ini_Add("other", "btnCloseWaitRandom", $g_bCloseRandomTime ? 1 : 0)
 	_Ini_Add("other", "CloseWaitRdmPercent", $g_iCloseRandomTimePercent)
 	_Ini_Add("other", "MinimumTimeToClose", $g_iCloseMinimumTime)
+	; ================================================== Max logout time - by RK MOD ================================= ;
+
+	_Ini_Add("TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime)
+	_Ini_Add("TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime)
+	
 	; Train click timing
 	_Ini_Add("other", "TrainITDelay", $g_iTrainClickDelay)
 	; Training add random delay
