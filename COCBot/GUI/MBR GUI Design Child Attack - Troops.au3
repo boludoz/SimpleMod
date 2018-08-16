@@ -1177,6 +1177,7 @@ Func CreateOptionsSubTab()
 			_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetLimit(-1, 2)
 		$g_hLblTrainLogoutMaxTime = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "TrainLogoutMaxTime_Info_02", "min."), $x + 105, $y + 4, -1, -1)
+		GUICtrlSetOnEvent(-1, "chkTrainLogoutMaxTime")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	$y += 53

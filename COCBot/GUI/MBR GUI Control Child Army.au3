@@ -347,11 +347,11 @@ Func chkCloseWaitEnable()
 	If GUICtrlRead($g_hChkCloseWhileTraining) = $GUI_CHECKED Then
 		$g_bCloseWhileTrainingEnable = True
 		_GUI_Value_STATE("ENABLE", $groupCloseWhileTraining)
-		_GUI_Value_STATE("ENABLE", $g_hLblCloseWaitingTroops & "#" & $g_hCmbMinimumTimeClose & "#" & $g_hLblSymbolWaiting & "#" & $g_hLblWaitingInMinutes)
+		_GUI_Value_STATE("ENABLE", $g_hLblCloseWaitingTroops & "#" & $g_hCmbMinimumTimeClose & "#" & $g_hLblSymbolWaiting & "#" & $g_hLblWaitingInMinutes  & "#" & $g_hChkTrainLogoutMaxTime & "#" & $g_hTxtTrainLogoutMaxTime & "#" &  $g_hLblTrainLogoutMaxTime)
 	Else
 		$g_bCloseWhileTrainingEnable = False
 		_GUI_Value_STATE("DISABLE", $groupCloseWhileTraining)
-		_GUI_Value_STATE("DISABLE", $g_hLblCloseWaitingTroops & "#" & $g_hCmbMinimumTimeClose & "#" & $g_hLblSymbolWaiting & "#" & $g_hLblWaitingInMinutes)
+		_GUI_Value_STATE("DISABLE", $g_hLblCloseWaitingTroops & "#" & $g_hCmbMinimumTimeClose & "#" & $g_hLblSymbolWaiting & "#" & $g_hLblWaitingInMinutes & "#" & $g_hChkTrainLogoutMaxTime & "#" & $g_hTxtTrainLogoutMaxTime & "#" &  $g_hLblTrainLogoutMaxTime)
 	EndIf
 	If GUICtrlRead($g_hChkRandomClose) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hChkCloseEmulator, BitOR($GUI_DISABLE, $GUI_UNCHECKED))
@@ -363,16 +363,6 @@ Func chkCloseWaitEnable()
 		EndIf
 	EndIf
 EndFunc   ;==>chkCloseWaitEnable
-
-; Max logout time - RK MOD
-Func chkTrainLogoutMaxTime()
-	If GUICtrlRead($g_hChkTrainLogoutMaxTime) = $GUI_CHECKED Then
-		_GUI_Value_STATE("ENABLE", $g_hTxtTrainLogoutMaxTime & "#" & $g_hLblTrainLogoutMaxTime)
-	Else
-		_GUI_Value_STATE("DISABLE", $g_hTxtTrainLogoutMaxTime & "#" & $g_hLblTrainLogoutMaxTime)
-	EndIf
-EndFunc   ;==>chkTrainLogoutMaxTime
-
 
 Func chkCloseWaitTrain()
 	$g_bCloseWithoutShield = (GUICtrlRead($g_hChkCloseWithoutShield) = $GUI_CHECKED)

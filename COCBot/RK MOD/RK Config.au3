@@ -148,12 +148,6 @@ Func ReadConfig_RKMod()
 	IniReadS($g_iChkPbSendNew, $g_sProfileConfigPath, "Chat", "chkPbSendNewChats", $g_iChkPbSendNew, "Int")
 	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chat", "ChkRusLang", $g_iChkRusLang, "Int")
 
-
-	; ================================================== Max logout time by RK MOD ================================= ;
-
-	IniReadS($g_bTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime, "Bool")
-	IniReadS($g_iTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime, "int")
-
 	; ================================================== Boost for Magic Spell by RK MOD ================================= ;
 
 	IniReadS($g_iChkBoostBMagic, $g_sProfileConfigPath, "boost", "chkBoostBMagic", $g_iChkBoostBMagic, "Int")
@@ -313,12 +307,6 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	_Ini_Add("Chat", "genericMsgClan", $cGeneric)
 	_Ini_Add("Chat", "responseMsgClan", $cResp)
 
-	; ================================================== Max logout time - by RK MOD ================================= ;
-
-	_Ini_Add("TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime)
-	_Ini_Add("TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime)
-
-
 	; ================================================== Boost for Magic Spell by RK MOD ================================= ;
 
 	_Ini_Add("boost", "chkBoostBMagic", $g_iChkBoostBMagic ? 1 : 0)
@@ -476,11 +464,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$g_iChkPbSendNew = GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED ? 1 : 0
             $g_iChkRusLang = GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED ? 1 : 0
 
-
-			; ================================================== Max logout time - by RK MOD ================================= ;
-
-			$g_bTrainLogoutMaxTime = (GUICtrlRead($g_hChkTrainLogoutMaxTime) = $GUI_CHECKED)
-			$g_iTrainLogoutMaxTime = GUICtrlRead($g_hTxtTrainLogoutMaxTime)
 
 			; ================================================== Boost for Magic Spell by RK MOD ================================= ;
 
@@ -654,12 +637,7 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			chkPbSendNewChats()
 			ChatGuiEditUpdate()
 
-			; ================================================== Max logout time - by RK MOD ======================================== ;
-
-			GUICtrlSetState($g_hChkTrainLogoutMaxTime, $g_bTrainLogoutMaxTime = True ? $GUI_CHECKED : $GUI_UNCHECKED)
-			chkTrainLogoutMaxTime()
-			GUICtrlSetData($g_hTxtTrainLogoutMaxTime, $g_iTrainLogoutMaxTime)
-
+	
 			; ================================================== Boost for Magic Spell by RK MOD ================================= ;
 
 			GUICtrlSetState($g_hChkBoostBMagic, $g_iChkBoostBMagic = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
