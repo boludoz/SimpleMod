@@ -602,15 +602,16 @@ Func ApplyConfig_600_13($TypeReadSave)
 			chkBalanceDR()
 			; ================================================== GTFO - Added by RK MOD ======================================== ;
 			
-			GUICtrlSetState($g_hGTFOClanHop, $g_bGTFOClanHop = False ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hGTFOReturnClan, $g_bGTFOReturnClan = False ? $GUI_CHECKED : $GUI_UNCHECKED)
-			
+			GUICtrlSetState($g_hChkGTFOClanHop, $g_bChkGTFOClanHop = True ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkGTFOReturnClan, $g_bChkGTFOReturnClan = True ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtCyclesGTFO, $g_iTxtCyclesGTFO)
 			GUICtrlSetState($g_hChkUseGTFO, $g_bChkUseGTFO = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtMinSaveGTFO_Elixir, $g_iTxtMinSaveGTFO_Elixir)
 			GUICtrlSetData($g_hTxtMinSaveGTFO_DE, $g_iTxtMinSaveGTFO_DE)
 			GUICtrlSetData($g_hTxtClanID, $g_sTxtClanID)
 			ApplyGTFO()
-
+			chkGTFOClanHop()
+			
 			GUICtrlSetState($g_hChkUseKickOut, $g_bChkUseKickOut = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
 			GUICtrlSetData($g_hTxtReceivedCap, $g_iTxtReceivedCap)
@@ -630,13 +631,15 @@ Func ApplyConfig_600_13($TypeReadSave)
 			$g_iCCDonated = _GUICtrlComboBox_GetCurSel($g_hCmbCCDonated) + 1
 			$g_iCCReceived = _GUICtrlComboBox_GetCurSel($g_hCmbCCReceived) + 1
 			; ================================================== GTFO - Added by RK MOD =========================================== ;
-			$g_bGTFOClanHop = (GUICtrlRead($g_hGTFOClanHop) = $GUI_CHECKED)
-			$g_bGTFOReturnClan = (GUICtrlRead($g_hGTFOReturnClan) = $GUI_CHECKED)
+			$g_bChkGTFOClanHop = (GUICtrlRead($g_hChkGTFOClanHop) = $GUI_CHECKED)
+			$g_bChkGTFOReturnClan = (GUICtrlRead($g_hChkGTFOReturnClan) = $GUI_CHECKED)
 			
+			$g_iTxtCyclesGTFO = Number(GUICtrlRead($g_hTxtCyclesGTFO))
+			$g_sTxtClanID = GUICtrlRead($g_hTxtClanID)
+
 			$g_bChkUseGTFO = (GUICtrlRead($g_hChkUseGTFO) = $GUI_CHECKED)
 			$g_iTxtMinSaveGTFO_Elixir = Number(GUICtrlRead($g_hTxtMinSaveGTFO_Elixir))
 			$g_iTxtMinSaveGTFO_DE = Number( GUICtrlRead($g_hTxtMinSaveGTFO_DE))
-			$g_sTxtClanID = GUICtrlRead($g_hTxtClanID)
 
 			$g_bChkUseKickOut = (GUICtrlRead($g_hChkUseKickOut) = $GUI_CHECKED)
 			$g_iTxtDonatedCap = Number(GUICtrlRead($g_hTxtDonatedCap))

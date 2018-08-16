@@ -211,8 +211,9 @@ Global $g_bChkUseGTFO = False, $g_bChkUseKickOut = False, $g_bChkKickOutSpammers
 Global $g_iTxtMinSaveGTFO_Elixir = 200000, $g_iTxtMinSaveGTFO_DE = 2000, _
 	$g_iTxtDonatedCap = 8, $g_iTxtReceivedCap = 35, _
 	$g_iTxtKickLimit = 6
-Global $g_hTxtClanID, $g_sTxtClanID
-Global $g_hGTFOClanHop = False, $g_hGTFOReturnClan = False
+Global $g_hTxtClanID, $g_sTxtClanID, $g_iTxtCyclesGTFO
+Global $g_bChkGTFOClanHop = False, $g_bChkGTFOReturnClan = False
+Global $g_iCycle = 0
 
 ; ================================================== Wall/Building Upgrading Priority/Management by RK MOD	======================================== ;
 
