@@ -19,12 +19,20 @@ Global $g_iClanlevel = 8
 Global $g_OutOfTroops = False
 Global $g_bSetDoubleArmy = False
 Global $g_iLoop = 0
+Global $g_iLoop2 = 0
 
 ; Make a Main Loop , replacing the Original Main Loop / Necessary Functions : Train - Donate - CheckResourcesValues
 Func MainGTFO()
-	ApplyGTFO()
-	If Not $g_bChkUseGTFO Then Return
-
+	; Donate Loop on Clan Chat
+		If $g_iLoop2 > $g_iTxtCyclesGTFO Then
+		Setlog("Finished GTFO " & $g_iLoop2 & " Loop(s)", $COLOR_INFO)
+		Return
+	EndIf
+		
+	If $g_bChkUseGTFO = False Then
+		SetLog("GTFO Skipped...!", $COLOR_INFO)
+		EndIf
+	
 	If $g_aiCurrentLoot[$eLootElixir] <> 0 And $g_aiCurrentLoot[$eLootElixir] < $g_iTxtMinSaveGTFO_Elixir Then
 		SetLog("Elixir Limits Reached!! Let's farm!", $COLOR_INFO)
 		Return
@@ -42,7 +50,7 @@ Func MainGTFO()
 
 	; GTFO Main Loop
 	While 1
-		SetLogCentered(" GTFO v0.2 ", Default, Default, True)
+		SetLogCentered(" GTFO v1.0 ", Default, Default, True)
 		; Just a user log
 		$_diffTimer = (TimerDiff($_timer) / 1000) / 60
 		If Not $_bFirstLoop Then
@@ -98,9 +106,14 @@ Func MainGTFO()
 			SetLog("Dark Elixir Limits Reached!! Let's farm!", $COLOR_INFO)
 			ExitLoop
 		EndIf
+		
 		; Donate Loop on Clan Chat
-		DonateGTFO()
-
+		Local $bDonate = DonateGTFO()
+			If not $bDonate Then 
+			Setlog("Finished GTFO", $COLOR_INFO)
+			Return
+		EndIf
+		
 		; Update the Resources values , compare with a Limit to stop The GTFO and return to Farm
 		If Not IfIsToStayInGTFO() Then
 			; TurnOFF the GTFO
@@ -108,7 +121,6 @@ Func MainGTFO()
 			Return
 		EndIf
 	WEnd
-
 EndFunc   ;==>MainGTFO
 
 ; Train Troops / Train Spells / Necessary Remain Train Time
@@ -165,8 +177,8 @@ Local $RemainTrainSpace = 0
 			$RemainTrainSpace = $aResult[2]
 			While not $RemainTrainSpace = 0 
 				Local $howMuch = $RemainTrainSpace
-				TrainIt($ePSpell, $howMuch, $g_iTrainClickDelay)
-				SetLog(" - Trained " & $howMuch & " Poison!", $COLOR_ACTION)
+				TrainIt($eESpell, $howMuch, $g_iTrainClickDelay)
+				SetLog(" - Trained " & $howMuch & " Spell!", $COLOR_ACTION)
 				$aResult[2] = 0
 				$RemainTrainSpace = 0
 				ExitLoop
@@ -225,20 +237,23 @@ Func DonateGTFO()
 		EndIf
 
 		; Verify if the remain train time is zero
-		$_diffTimer = (TimerDiff($_timer) / 1000) / 60
-		If $g_aiTimeTrain[0] <> 0 Then $iTime2Exit = $g_aiTimeTrain[0]
-		If $g_aiTimeTrain[1] <> 0 And $g_aiTimeTrain[1] < $g_aiTimeTrain[0] Then $iTime2Exit = $g_aiTimeTrain[1]
-
-		If $_diffTimer > $iTime2Exit Then ExitLoop
+		;$_diffTimer = (TimerDiff($_timer) / 1000) / 60
+		;If $g_aiTimeTrain[0] <> 0 Then $iTime2Exit = $g_aiTimeTrain[0]
+		;If $g_aiTimeTrain[1] <> 0 And $g_aiTimeTrain[1] < $g_aiTimeTrain[0] Then $iTime2Exit = $g_aiTimeTrain[1]
+        ;
+		;If $_diffTimer > $iTime2Exit Then ExitLoop
+		
+		If $g_iLoop2 > $g_iTxtCyclesGTFO Then ExitLoop
 
 		; +++++++++++++++++++++++++
 		; DONATE IT - WHEN EXIST REQUESTS
 		; +++++++++++++++++++++++++
 		While 1
-		
 		$g_iLoop +=1 
+		$g_iLoop2 +=1
+		If $g_iLoop2 > $g_iTxtCyclesGTFO Then ExitLoop
 		If $g_iLoop >= 10 Then ExitLoop
-		
+
 			$_bReturnT = False
 			$_bReturnS = False
 			$firstrun = False
@@ -286,16 +301,16 @@ Func DonateGTFO()
 			EndIf
 		WEnd
 
-		Local $bHop = True
 		; A click just to mantain the 'Game active'
-		Setlog("Loop")
 		If $g_iLoop >= 5 Then 
-			If 	$bHop Then
-			ClanHop() ; Hop!!!
-			$firstrun = True
-			$g_iLoop = 0
-			ElseIf $g_iLoop >= 10
-			ClickAwayChat(250)
+		If $g_bChkGTFOClanHop = True Then
+				ClanHop() ; Hop!!!
+				$firstrun = True
+				$g_iLoop = 0
+			EndIf
+		Else
+		If $g_iLoop >= 10 Then
+		ClickAwayChat(250)
 			$g_iLoop = 0
 			EndIf
 		EndIf
@@ -304,11 +319,11 @@ Func DonateGTFO()
 	AutoItSetOption("MouseClickDelay", 10)
 	AutoItSetOption("MouseClickDownDelay", 10)
 	CloseClanChat()
-
+	
+		If $g_iLoop2 > $g_iTxtCyclesGTFO Then Return False
 EndFunc   ;==>DonateGTFO
 
 Func ClanHop()
-	If not $g_bChkGTFOReturnClan Then Return
 	SetLog("Start Clan Hopping", $COLOR_INFO)
 	Local $sTimeStartedHopping = _NowCalc()
 
@@ -376,7 +391,10 @@ Func ClanHop()
 			If $iCount >= 15 Then ; allows for up to a sleep of 3000
 				SetLog("Clan Chat Did Not Open - Abandon ClanHop")
 				AndroidPageError("ClanHop")
-				Return
+				OpenClanChat()
+				$iScrolls = 0
+				$iPosJoinedClans = 0
+				ExitLoop
 			EndIf
 		WEnd
 
@@ -463,9 +481,9 @@ Func OpenClanChat()
 	While 1
 		;If Clan tab is selected.
 		If _ColorCheck(_GetPixelColor(189, 24, True), Hex(0x706C50, 6), 20) Then ; color med gray
-			;If _Sleep(200) Then Return ;small delay to allow tab to completely open
+			If _Sleep(200) Then Return ;small delay to allow tab to completely open
 			;Clan tab already Selected no click needed
-			;ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
+			ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
 			ExitLoop
 		EndIf
 		;If Global tab is selected.
@@ -479,7 +497,13 @@ Func OpenClanChat()
 		If $iLoopCount >= 15 Then ; allows for up to a sleep of 3000
 			SetLog("Clan Chat Did Not Open - Abandon Donate")
 			AndroidPageError("DonateCC")
-			Return
+			CloseCoc(True) ; Restarting to get some new Clans
+			WaitMainScreenMini()
+			_Sleep(100)
+			ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
+			_Sleep(100)
+			$iLoopCount = 0
+			ExitLoop
 		EndIf
 		If _Sleep($DELAYDONATECC1) Then Return ; delay Allow 15x
 	WEnd
@@ -551,13 +575,13 @@ Func DonateIT($Slot)
 		;         after that check if exist the next slot ... True click 8x
 		;         than check if the slot 1 is empty return to train troops
 
-		Click(395 + ($Slot * 68), $g_iDonationWindowY + 57 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
+		Click(395 + ($Slot * 68), $g_iDonationWindowY + 65 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
 		SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
 
 		$Slot += 1
 		$iTroopIndex = $Slot
 
-		Click(395 + ($Slot * 68), $g_iDonationWindowY + 57 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
+		Click(395 + ($Slot * 68), $g_iDonationWindowY + 65 + $YComp, $NumberClick, $DELAYDONATECC3, "#0175")
 		SetLog(" - Donated Troops on Slot " & $Slot + 1, $COLOR_INFO)
 
 		; dadad5 Out of troops on Slot 0
@@ -679,25 +703,17 @@ Func ApplyGTFO()
 	If $g_bChkUseGTFO = True Then
 		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_ENABLE)
-		
-		GUICtrlSetState($g_hTxtCyclesGTFO, $GUI_DISABLE)      ;disabled beta
-		GUICtrlSetState($g_hTxtClanID, $GUI_DISABLE)          ;disabled beta
-		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_DISABLE)  ;disabled beta
-                                                              ;disabled beta
-		;GUICtrlSetState($g_hTxtCyclesGTFO, $GUI_ENABLE)      ;disabled beta
-		;GUICtrlSetState($g_hTxtClanID, $GUI_ENABLE)          ;disabled beta
-		;GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_ENABLE)  ;disabled beta
 		GUICtrlSetState($g_hChkGTFOClanHop, $GUI_ENABLE)
 
 	Else
 		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_DISABLE)
-		
-		GUICtrlSetState($g_hTxtCyclesGTFO, $GUI_DISABLE)
-		GUICtrlSetState($g_hTxtClanID, $GUI_DISABLE)
-		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkGTFOClanHop, $GUI_DISABLE)		
 	EndIf
+	chkGTFOClanHop()
+	ApplyCyclesGTFO()
+	chkGTFOReturnClan()
+	ApplyClanReturnGTFO()
 EndFunc   ;==>ApplyGTFO
 
 Func ApplyElixirGTFO()
@@ -710,6 +726,7 @@ EndFunc   ;==>ApplyDarkElixirGTFO
 
 Func ApplyCyclesGTFO()
 	$g_iTxtCyclesGTFO = Number(GUICtrlRead($g_hTxtCyclesGTFO))
+	$g_iTxtCyclesGTFO -= 1
 EndFunc   ;==>ApplyDarkElixirGTFO
 
 Func ApplyClanReturnGTFO()
@@ -739,7 +756,6 @@ Func ApplyDonatedCap()
 		$g_iTxtDonatedCap = 0
 		GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
 	EndIf
-
 	If $g_iTxtDonatedCap > 8 Then
 		$g_iTxtDonatedCap = 8
 		GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
@@ -787,10 +803,9 @@ EndFunc   ;==>ApplyKickLimits
 
 Func chkGTFOClanHop()
 	$g_bChkGTFOClanHop = (GUICtrlRead($g_hChkGTFOClanHop) = $GUI_CHECKED)
-	If $g_bChkUseGTFO and $g_bChkGTFOClanHop = True Then
+	If $g_bChkGTFOClanHop = True Then
 		GUICtrlSetState($g_hTxtClanID, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_ENABLE)
-		
 	Else
 		GUICtrlSetState($g_hTxtClanID, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkGTFOReturnClan, $GUI_DISABLE)
