@@ -1288,12 +1288,12 @@ Func _RunFunction($action)
 EndFunc   ;==>_RunFunction
 
 Func FirstCheck()
-     
-	If ProfileSwitchAccountEnabled() And $g_abDonateOnly[$g_iCurAccount] Then Return
-	
+
 	MainGTFO()
 	MainKickout()
-			
+
+	If ProfileSwitchAccountEnabled() And $g_abDonateOnly[$g_iCurAccount] Then Return
+				
 	VillageReport()
 	CheckFarmSchedule()
 	

@@ -323,10 +323,10 @@ Func DonateGTFO()
 		If $g_iLoop2 > $g_iTxtCyclesGTFO Then Return False
 EndFunc   ;==>DonateGTFO
 
-Func ClanHop()
+Func ClanHop($sClanJoin = 0)
 	SetLog("Start Clan Hopping", $COLOR_INFO)
 	Local $sTimeStartedHopping = _NowCalc()
-
+	Local $bFirstHop = True
 	Local $iPosJoinedClans = 0, $iScrolls = 0, $iHopLoops = 0, $iErrors = 0
 
 	Local $aJoinClanBtn[4] = [157, 510, 0x6CBB1F, 20] ; Green Join Button on Chat Tab when you are not in a Clan
@@ -337,6 +337,9 @@ Func ClanHop()
 	Local $aChatTab[4] = [189, 24, 0x706C50, 20] ; Clan Chat Tab on Top, check if right one is selected
 	Local $aGlobalTab[4] = [189, 24, 0x383828, 20] ; Global Chat Tab on Top, check if right one is selected
 	Local $aClanBadgeNoClan[4] = [151, 307, 0xF05838, 20]; Orange Tile of Clan Logo on Chat Tab if you are not in a Clan
+;;;;;;;;;;;;
+	Local $aShare[4] = [541, 178, 0xFFFFFF, 20]
+	Local $aCopy[4] = [598, 176, 0xD7F37F, 20]
 
 	Local $aClanNameBtn[2] = [89, 63] ; Button to open Clan Page from Chat Tab
 
@@ -373,34 +376,30 @@ Func ClanHop()
 
 		ForceCaptureRegion()
 
-		Local $iCount = 0
-		While 1
-			;If Clan tab is selected.
-			If _CheckPixel($aChatTab, $g_bCapturePixel) Then ; color med gray
-				ExitLoop
-			EndIf
-			;If Global tab is selected.
-			If _CheckPixel($aGlobalTab, $g_bCapturePixel) Then ; Darker gray
-				If _Sleep($DELAYDONATECC1) Then Return ;small delay to allow tab to completely open
-				ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
-				If _Sleep(500) Then Return ; Delay to wait till Clan Page is fully up and visible so the next Color Check won't fail ;)
-				ExitLoop
-			EndIf
-			;counter for time approx 3 sec max allowed for tab to open
-			$iCount += 1
-			If $iCount >= 15 Then ; allows for up to a sleep of 3000
-				SetLog("Clan Chat Did Not Open - Abandon ClanHop")
-				AndroidPageError("ClanHop")
-				OpenClanChat()
-				$iScrolls = 0
-				$iPosJoinedClans = 0
-				ExitLoop
-			EndIf
-		WEnd
+		OpenClanChat()
 
 		If Not _CheckPixel($aClanBadgeNoClan, $g_bCapturePixel) Then ; If Still in Clan
 			SetLog("Still in a Clan! Leaving the Clan now")
 			ClickP($aClanNameBtn)
+			If $bFirstHop and _WaitForCheckPixel($aShare, $g_bCapturePixel, Default, "Wait for Share") Then
+				ClickP($aShare)
+					If _WaitForCheckPixel($aCopy, $g_bCapturePixel, Default, "Wait for Share") Then
+						ClickP($aCopy)
+						Local $sData = ClipGet()
+						GUICtrlSetData($g_hTxtClanID, $sData)
+						$g_iTxtClanID = $sData
+						$bFirstHop = False
+					Else
+						SetLog("No Copy Button", $COLOR_ERROR)
+						$iErrors += 1
+						ContinueLoop
+					EndIf
+				Else
+				SetLog("No Share Button", $COLOR_ERROR)
+				$iErrors += 1
+				ContinueLoop
+			EndIf
+			
 			If _WaitForCheckPixel($aClanPage, $g_bCapturePixel, Default, "Wait for Clan Page:") Then
 				ClickP($aClanPage)
 				If Not ClickOkay("ClanHop") Then
