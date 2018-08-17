@@ -1729,6 +1729,45 @@ Func SetTime($bForceUpdate = False)
 		EndIf
 	EndIf
 	$DisplayLoop += 1
+	; Builder Status - RK MOD
+    Local $sBuilderTime = ""
+	If _DateIsValid($g_sNextBuilderReadyTime) Then
+		_TicksToDay(Int(_DateDiff("s", _NowCalc(), $g_sNextBuilderReadyTime) * 1000), $day, $hour, $min, $sec)
+		$sBuilderTime = $day > 0 ? StringFormat("%id %ih", $day, $hour) : ($hour > 0 ? StringFormat("%ih %i'", $hour, $min) : StringFormat("%im %i""", $min, $sec))
+	EndIf
+
+	Local $asTime[8] = ["", "", "", "", "", "", "", ""]
+	If ProfileSwitchAccountEnabled() Then
+		For $i = 0 To $g_iTotalAcc
+			If _DateIsValid($g_asNextBuilderReadyTime[$i]) Then
+				_TicksToDay(Int(_DateDiff("s", _NowCalc(), $g_asNextBuilderReadyTime[$i]) * 1000), $day, $hour, $min, $sec)
+				$asTime[$i] = $day > 0 ? StringFormat("%id%ih", $day, $hour) : ($hour > 0 ? StringFormat("%ih%i'", $hour, $min) : StringFormat("%im%i""", $min, $sec))
+			EndIf
+		Next
+	EndIf
+
+    Local Static $DisplayLoop2 = 0, $bCurrentDisplayStatus = True
+    If $DisplayLoop2 > 5 Then
+		If $bCurrentDisplayStatus Then
+			If $sBuilderTime <> "" Then GUICtrlSetData($g_hLblResultBuilderNow, $sBuilderTime)
+			If GUICtrlRead($g_hGUI_STATS_TAB, 1) = $g_hGUI_STATS_TAB_ITEM5 Then
+				For $i = 0 To $g_iTotalAcc ; Update builder time for all Accounts
+					If $asTime[$i] <> "" Then GUICtrlSetData($g_ahLblResultBuilderNowAcc[$i], $asTime[$i])
+				Next
+			EndIf
+			$bCurrentDisplayStatus = False
+		Else
+			If $sBuilderTime <> "" Then GUICtrlSetData($g_hLblResultBuilderNow, $g_iFreeBuilderCount & "/" & $g_iTotalBuilderCount)
+			If GUICtrlRead($g_hGUI_STATS_TAB, 1) = $g_hGUI_STATS_TAB_ITEM5 Then
+				For $i = 0 To $g_iTotalAcc
+					If $asTime[$i] <> "" Then GUICtrlSetData($g_ahLblResultBuilderNowAcc[$i], $g_aiFreeBuilderCountAcc[$i] & "/" & $g_aiTotalBuilderCountAcc[$i])
+				Next
+			EndIf
+			$bCurrentDisplayStatus = True
+		EndIf
+		$DisplayLoop2 = 0
+    EndIf
+	$DisplayLoop2 += 1
 EndFunc   ;==>SetTime
 
 Func tabMain()
