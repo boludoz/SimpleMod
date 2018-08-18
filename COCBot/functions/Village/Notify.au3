@@ -522,14 +522,15 @@ Func NotifyRemoteControlProc()
                         NotifyPushToTelegram(GetTranslatedFileIni("MBR Func_Notify", "ELSE_Info_01", "Sorry Chief!, ") & $TGActionMSG & _
 											 GetTranslatedFileIni("MBR Func_Notify", "ELSE_Info_02", " is not a valid command."))
 						If StringInStr($TGActionMSG, "SENDCHAT") Then
-						local $FoundChatMessage = 1
-						local $chatMessage = StringRight($TGActionMSG, StringLen($TGActionMSG) - StringLen("SENDCHAT "))
+						Local $FoundChatMessage = 1
+						Local $chatMessage = StringRight($TGActionMSG, StringLen($TGActionMSG) - StringLen("SENDCHAT "))
 							$chatMessage = StringLower($chatMessage)
 							ChatbotNotifyQueueChat($chatMessage)
 							NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Chat queued, will send on next idle")
 						ElseIf StringInStr($TGActionMSG, "GETCHATS") Then
 							$FoundChatMessage = 1
-							$Interval = StringRight($TGActionMSG, StringLen($TGActionMSG) - StringLen("GETCHATS ")
+							Local $Interval = 1
+							$Interval = StringRight($TGActionMSG, StringLen($TGActionMSG) - StringLen("GETCHATS "))
 							If $Interval = "STOP" Then
 								ChatbotNotifyStopChatRead()
 								NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Stopping interval sending")
