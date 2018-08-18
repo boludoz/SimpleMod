@@ -610,7 +610,6 @@ Func ApplyConfig_600_13($TypeReadSave)
 			GUICtrlSetData($g_hTxtMinSaveGTFO_DE, $g_iTxtMinSaveGTFO_DE)
 			GUICtrlSetData($g_hTxtClanID, $g_sTxtClanID)
 			ApplyGTFO()
-			chkGTFOClanHop()
 			
 			GUICtrlSetState($g_hChkUseKickOut, $g_bChkUseKickOut = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)

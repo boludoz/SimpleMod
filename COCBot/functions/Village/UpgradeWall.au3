@@ -286,7 +286,7 @@ Func SkipWallUpgrade() ; Dynamic Upgrades
 				Case 2 ; Using gold and elixir
 					If ($g_aiCurrentLoot[$eLootGold] - ($iBuildingsNeedGold + $g_iWallCost + Number($g_iUpgradeWallMinGold)) < 0) Then
 						SetLog("Wall upgrade: insufficient gold for selected upgrades", $COLOR_WARNING)
-						If ($g_aiCurrentLoot[$eLootElixir] - ($iBuildingsNeedElixir + $g_iWallCost + Number($g_iUpgradeWallMinElixir)) >= 0) Then
+						If ($g_aiCurrentLoot[$eLootElixir] - ($iBuildingsNeedElixir + $g_iWallCost + Number($g_iUpgradeWallMinElixir)) >= 0) And ($g_iCmbUpgrdPriority = 0 Or ($g_iCmbUpgrdPriority = 1 And ($g_iFreeBuilderCount = 1 Or $iBuildingsNeedElixir <= 0))) Then
 							SetLog("Using Elixir only for wall Upgrade", $COLOR_SUCCESS1)
 							$g_iUpgradeWallLootType = 1
 						Else
@@ -296,7 +296,7 @@ Func SkipWallUpgrade() ; Dynamic Upgrades
 					EndIf
 					If ($g_aiCurrentLoot[$eLootElixir] - ($iBuildingsNeedElixir + $g_iWallCost + Number($g_iUpgradeWallMinElixir) < 0)) Then
 						SetLog("Wall upgrade: insufficient elixir for selected upgrades", $COLOR_WARNING)
-						If ($g_aiCurrentLoot[$eLootGold] - ($iBuildingsNeedGold + $g_iWallCost + Number($g_iUpgradeWallMinGold) >= 0)) Then
+						If ($g_aiCurrentLoot[$eLootGold] - ($iBuildingsNeedGold + $g_iWallCost + Number($g_iUpgradeWallMinGold) >= 0)) And ($g_iCmbUpgrdPriority = 0 Or ($g_iCmbUpgrdPriority = 1 And ($g_iFreeBuilderCount = 1 Or $iBuildingsNeedGold <= 0))) Then
 							SetLog("Using Gold only for Wall Upgrade", $COLOR_SUCCESS1)
 							$g_iUpgradeWallLootType = 0
 						Else

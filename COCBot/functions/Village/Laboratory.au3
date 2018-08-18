@@ -75,7 +75,7 @@ Func Laboratory()
 		DisableGuiControls()
 	EndIf
 	
-	If $g_iCmbLaboratory = 30 Then
+	If $g_iCmbLaboratory = 33 Then
 		$g_iCmbLaboratory = 1
 		SetLog("All troops upgrade, starting from the top again", $COLOR_WARNING)
 	EndIf
