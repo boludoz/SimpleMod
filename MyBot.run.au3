@@ -700,10 +700,7 @@ Func runBot() ;Bot that runs everything in order
 		chkShieldStatus()
 		If Not $g_bRunState Then Return
 		If $g_bRestart = True Then ContinueLoop
-		
-		MainGTFO()
-		MainKickout()
-		
+				
 		checkObstacles() ; trap common error messages also check for reconnecting animation
 		If $g_bRestart = True Then ContinueLoop
 
@@ -721,6 +718,10 @@ Func runBot() ;Bot that runs everything in order
 			checkMainScreen(False)
 			If $g_bRestart = True Then ContinueLoop
 			If _Sleep($DELAYRUNBOT3) Then Return
+			
+			MainGTFO()
+			MainKickout()
+
 			VillageReport()
 			ProfileSwitch()
 			CheckFarmSchedule()
@@ -1287,9 +1288,12 @@ Func _RunFunction($action)
 EndFunc   ;==>_RunFunction
 
 Func FirstCheck()
-     
-	If ProfileSwitchAccountEnabled() And $g_abDonateOnly[$g_iCurAccount] Then Return
 
+	MainGTFO()
+	MainKickout()
+
+	If ProfileSwitchAccountEnabled() And $g_abDonateOnly[$g_iCurAccount] Then Return
+				
 	VillageReport()
 	CheckFarmSchedule()
 	
