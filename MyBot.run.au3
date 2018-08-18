@@ -719,9 +719,12 @@ Func runBot() ;Bot that runs everything in order
 			If $g_bRestart = True Then ContinueLoop
 			If _Sleep($DELAYRUNBOT3) Then Return
 			
-			MainGTFO()
-			MainKickout()
-
+			If $g_bChkUseGTFO = True Then
+	            MainGTFO()
+            EndIf
+			If $g_bChkUseKickOut = True Then
+                MainKickout()
+			EndIf
 			VillageReport()
 			ProfileSwitch()
 			CheckFarmSchedule()
@@ -1288,10 +1291,14 @@ Func _RunFunction($action)
 EndFunc   ;==>_RunFunction
 
 Func FirstCheck()
-
-	MainGTFO()
-	MainKickout()
-
+   
+   If $g_bChkUseGTFO = True Then
+	   MainGTFO()
+   EndIf
+   If $g_bChkUseKickOut = True Then
+       MainKickout()
+   EndIf
+   
 	If ProfileSwitchAccountEnabled() And $g_abDonateOnly[$g_iCurAccount] Then Return
 				
 	VillageReport()
