@@ -56,7 +56,7 @@ Func MainGTFO()
 
 	; GTFO Main Loop
 	While 1
-		SetLogCentered(" GTFO v1.2 ", Default, Default, True)
+		SetLogCentered(" GTFO v1.4 ", Default, Default, True)
 		; Just a user log
 		$_diffTimer = (TimerDiff($_timer) / 1000) / 60
 		If Not $_bFirstLoop Then
@@ -431,14 +431,14 @@ Func ClanHop($sClanJoin = False)
 			If _WaitForCheckPixel($aClanPageJoin, $g_bCapturePixel, Default, "Wait Clan join") Then
 			ClickP($aClanPageJoin)
 				If _Sleep(100) Then Return
-					If _WaitForCheckPixel($aClanPageJoin, $g_bCapturePixel, Default, "Wait Clan join") Then ClickP($aSendRequest)
-					If _Sleep(100) Then Return
+					If _WaitForCheckPixel($aClanPageJoin, $g_bCapturePixel, Default, "Wait Clan join") Then 
+						ClickP($aSendRequest)
+						If _Sleep(100) Then Return
 					Else
-					Setlog("Clan closed...")
-					Return
+						Setlog("Clan closed...")
 					EndIf
-					CloseClanChat()
-					Return
+				CloseClanChat()
+				Return
 			Else
 			$iErrors += 1
 		 	ContinueLoop
