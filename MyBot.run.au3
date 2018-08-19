@@ -1289,6 +1289,7 @@ EndFunc   ;==>_RunFunction
 
 Func FirstCheck()
 
+   
 	If $g_bChkUseGTFO = True Then MainGTFO()
 	If $g_bChkUseKickOut = True Then MainKickout()
 
