@@ -427,22 +427,17 @@ Func ClanHop($sClanJoin = False)
 			Setlog("Wait")
 		 	If _Sleep(5500) Then Return
 			$sClanJoin = False
-					
-			If _WaitForCheckPixel($aClanPageJoin, $g_bCapturePixel, Default, "Wait Clan join") Then
+			
+			If _Sleep(100) Then Return
 			ClickP($aClanPageJoin)
-				If _Sleep(100) Then Return
-					If _WaitForCheckPixel($aClanPageJoin, $g_bCapturePixel, Default, "Wait Clan join") Then 
-						ClickP($aSendRequest)
-						If _Sleep(100) Then Return
-					Else
-						Setlog("Clan closed...")
-					EndIf
-				CloseClanChat()
-				Return
-			Else
-			$iErrors += 1
-		 	ContinueLoop
-		Endif
+			If _Sleep(100) Then Return
+			ClickP($aSendRequest)
+			If _Sleep(100) Then Return
+
+			CloseClanChat()
+			Return
+
+			Endif
 		
 	If Not _CheckPixel($aClanBadgeNoClan, $g_bCapturePixel) Then ; If Still in Clan
 		SetLog("Still in a Clan! Leaving the Clan now")
