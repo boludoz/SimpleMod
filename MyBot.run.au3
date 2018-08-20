@@ -1279,7 +1279,7 @@ Func _RunFunction($action)
 		Case "CollectFreeMagicItems"
 			CollectFreeMagicItems()
 		Case "HeroT"
-			Checkheroboost()
+			CheckHeroBoost()
 		Case ""
 			SetDebugLog("Function call doesn't support empty string, please review array size", $COLOR_ERROR)
 		Case Else
