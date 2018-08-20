@@ -21,6 +21,7 @@ Global $g_hChkAttackNow = 0, $g_hCmbAttackNowDelay = 0, $g_hChkRestartSearchLimi
 
 Global $g_hLblVSDelay = 0, $g_hLblTextVSDelay = 0, $g_hLblMaxVSDelay = 0, $g_hLblTextMaxVSDelay = 0, $g_hLblAttackNow = 0, $g_hLblAttackNowSec = 0
 Global $g_hChkRestartSearchGrabHero = 0 ; GrabHealedHeroes - RK MOD
+Global $g_hChkReturnTimerEnable = 0, $g_hTxtReturnTimer = 0 ; Return Home by Time - by RK MOD
 
 Func CreateAttackSearchOptionsSearch()
 
@@ -138,7 +139,7 @@ Func CreateAttackSearchOptionsSearch()
 
 	$x = 253
 	$y = 45
-	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "Group_03", "Search Options"), $x - 20, $y - 20, 189, 165)
+	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "Group_03", "Search Options"), $x - 20, $y - 20, 189, 190)
 	$x -= 5
 		$g_hChkAttackNow = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAttackNow", "Attack Now! option."), $x - 5, $y - 4, -1, -1)
 			$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAttackNow_Info_01", "Check this if you want the option to have an 'Attack Now!' button next to") & @CRLF & _
@@ -175,10 +176,21 @@ Func CreateAttackSearchOptionsSearch()
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAlertSearch_Info_01", "Check this if you want an Audio alarm & a Balloon Tip when a Base to attack is found."))
 			GUICtrlSetState(-1, $GUI_CHECKED)
 			
-	 ; Grab Healed Heroes - RK MOD
+	    ; Grab Healed Heroes - RK MOD(Demen)
 		$g_hChkRestartSearchGrabHero = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkRestartSearchGrabHero_01", "Return home to grab healed hero"), $x - 5, $y + 25, -1, -1)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkRestartSearchGrabHero_02", "Return to base when a hero is healed and ready to join the attack"))
             GUICtrlSetState(-1, $GUI_UNCHECKED)
+			
+	    ;Return Home by Time - RK MOD
+		$y += 25
+		$g_hChkReturnTimerEnable = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkReturnTimer_01", "Return Home by Time"), $x - 5, $y + 25, -1, -1)
+		    $sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "TxtReturnTimer_02", "Set the time you need, after expiration his bot will return home")
+		    GUICtrlSetState(-1, $GUI_UNCHECKED)
+			_GUICtrlSetTip(-1, $sTxtTip)
+		    GUICtrlSetOnEvent(-1, "chkReturnTimer")
+		$g_hTxtReturnTimer = GUICtrlCreateInput("15", $x + 118, $y + 27, 25, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "Label_15", "min.", -1), $x + 147, $y + 29, -1, -1)
+		GUICtrlSetLimit(-1, 3)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 EndFunc   ;==>CreateAttackSearchOptionsSearch
