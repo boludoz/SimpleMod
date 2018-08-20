@@ -88,4 +88,6 @@
 
 #include "RK UpgradesMgmt.au3"
 
+#include "RK CheckHeroBoost.au3"
+
 #include "RK Config.au3"

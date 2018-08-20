@@ -52,6 +52,7 @@
 ![Ii]mages/Resources/Obstacles/*.png
 ![Ii]mages/Resources/Tombs/*.png
 ![Ii]mages/Resources/GemBox/*.png
+![Ii]mages/Resources/Boosted1/*.png
 ![Ii]mages/Stats/*.jpg
 ![Ii]mages/WeakBase/Eagle/*.png
 ![Ii]mages/WeakBase/Infernos/*.png
@@ -120,6 +121,7 @@
 ![Ii]mgxml/Boost/*/*.png
 ![Ii]mgxml/Boost/*.png
 ![Ii]mgxml/BuilderTime/*.png
+![Ii]mgxml/HeroTime/*.png
 
 ![C]OCBot/Forecast/*/*.exe
 # ignore test strategies
