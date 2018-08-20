@@ -11,8 +11,8 @@
 ; ===============================================================================================================================
 
 Local $HeroTime[8][3] = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]]
-Local $CurrHeroTime[3] = ["", "", ""]
-Local $Position[3] = [$g_aiKingAltarPos, $g_aiQueenAltarPos, $g_aiWardenAltarPos]
+Local $CurrHeroBTime[3] = ["", "", ""]
+;Local $Position[3] = [$g_aiKingAltarPos, $g_aiQueenAltarPos, $g_aiWardenAltarPos]
 Local $CTime[3] = ["", "", ""]
 
 Func CheckHeroBoost()
@@ -21,28 +21,36 @@ Func CheckHeroBoost()
 	If IsMainPage() Then
 		For $index = 0 To 2
 			If ProfileSwitchAccountEnabled() Then
-				$CurrHeroTime[$index] = $HeroTime[$g_iCurAccount][$index]
+				$CurrHeroBTime[$index] = $HeroTime[$g_iCurAccount][$index]
 			EndIf
 
-			SetLog("Position[0] = " & ($Position[$index])[0], $COLOR_INFO)
-			SetLog("g_aiKingAltarPos[0] = " & $g_aiKingAltarPos[0], $COLOR_INFO)
-			SetLog("g_aiQueenAltarPos[0] = " & $g_aiQueenAltarPos[0], $COLOR_INFO)
-			SetLog("g_aiWardenAltarPos[0] = " & $g_aiWardenAltarPos[0], $COLOR_INFO)
-
-			If ($Position[$index])[0] = "" Or ($Position[$index])[0] = -1 Then
-				If $index == 0 Then LocateKingAltar()
-				If $index == 1 Then LocateQueenAltar()
-				If $index == 2 Then LocateWardenAltar()
-				SaveConfig()
-				If _Sleep($DELAYBOOSTHEROES4) Then Return
+			If $index = 0 Then
+				If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
+					LocateKingAltar()
+					SaveConfig()
+					If _Sleep($DELAYBOOSTHEROES4) Then Return
+				EndIf
+			ElseIf $index = 1 Then
+				If $g_aiQueenAltarPos[0] = "" Or $g_aiQueenAltarPos[0] = -1 Then
+					LocateQueenAltar()
+					SaveConfig()
+					If _Sleep($DELAYBOOSTHEROES4) Then Return
+				EndIf
+			ElseIf $index = 2 Then
+				If $g_aiWardenAltarPos[0] = "" Or $g_aiWardenAltarPos[0] = -1 Then
+					LocateWardenAltar()
+					SaveConfig()
+					If _Sleep($DELAYBOOSTHEROES4) Then Return
+				EndIf
 			EndIf
 
-			If _DateIsValid($CurrHeroTime[$index]) Then
+			If _DateIsValid($CurrHeroBTime[$index]) Then
 
 			EndIf
 			
-			;_ArrayDisplay(($Position[$index]))
-			BuildingClickP(($Position[$index]), "#0462")
+			If $index = 0 Then BuildingClickP($g_aiKingAltarPos, "#0462")
+			If $index = 1 Then BuildingClickP($g_aiQueenAltarPos, "#0462")
+			If $index = 2 Then BuildingClickP($g_aiWardenAltarPos, "#0462")
 
 			If $index = 0 Or $index = 1 Then
 				SetLog("In Index == 0 and 1", $COLOR_INFO)
@@ -54,12 +62,12 @@ Func CheckHeroBoost()
 
 			If $sHeroTime <> "none" Then
 				$CTime[$index] = _NowCalc()
-				$CurrHeroTime[$index] = ConvertOCRLongTime("Hero Time", $sHeroTime, False)
-				SetDebugLog("$sResult QuickMIS OCR: " & $sHeroTime & " (" & Round($CurrHeroTime[$index], 2) & " minutes)")
+				$CurrHeroBTime[$index] = ConvertOCRLongTime("Hero Time", $sHeroTime, False)
+				SetDebugLog("$sResult QuickMIS OCR: " & $sHeroTime & " (" & Round($CurrHeroBTime[$index], 2) & " minutes)")
 			EndIf
 
 			If ProfileSwitchAccountEnabled() Then
-				$HeroTime[$g_iCurAccount][$index] = $CurrHeroTime[$index]
+				$HeroTime[$g_iCurAccount][$index] = $CurrHeroBTime[$index]
 			EndIf
 			Sleep(1000)
 		Next
@@ -68,14 +76,14 @@ Func CheckHeroBoost()
 EndFunc   ;==>CheckHeroBoost
 
 Func HeroBoostTime($aResultHeroes, $i)
-	Local $Time
-	SetLog("$CurrHeroTime = " & $CurrHeroTime[$i], $COLOR_INFO)
-	If $CurrHeroTime[$i] <> "" Or $CurrHeroTime[$i] <> 0 Then
-		If $CurrHeroTime[$i]-(_DateDiff("n", $CTime[$i], _NowCalc())) > 0 Then
-			$Time /= 4
+	SetLog("$CurrHeroBTime = " & $CurrHeroBTime[$i], $COLOR_INFO)
+	If $CurrHeroBTime[$i] <> "" Or $CurrHeroBTime[$i] <> 0 Then
+		If $CurrHeroBTime[$i] - (_DateDiff("n", $CTime[$i], _NowCalc())) > 0 Then
+			$aResultHeroes /= 4
 		EndIf
-		Return $Time
+		Return $aResultHeroes
 	Else
-		Return $Time
+		Return $aResultHeroes
 	EndIf
 EndFunc   ;==>HeroBoostTime
+
