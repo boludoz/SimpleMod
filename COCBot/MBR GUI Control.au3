@@ -612,6 +612,10 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 			Setlog("Queued Troops Test")
 			CheckQueueTroops()
 			$g_bRunState = $RuntimeA
+		Case $g_hBtnTestHeroBoostOCR
+			CheckHeroBoost()
+		Case $g_hBtnTestBuilderTimeOCR
+			getBuilderTime()
 	EndSwitch
 
 	If $lParam = $g_hCmbGUILanguage Then
@@ -2027,7 +2031,7 @@ Func tabDONATE()
 				GUICtrlSetState($g_hLblScheduleDisabled, $GUI_SHOW)
 			EndIf
 			GUICtrlSetPos($g_hChkDonate, $tabdonx[2] - 15, $tabdonx[3] - 15)
-			
+
         Case $tabidx = 3 ; GTFOMOD
 		    GUISetState(@SW_SHOWNOACTIVATE,$g_hGUI_GTFOMOD)
 			GUISetState(@SW_HIDE, $g_hGUI_RequestCC)
