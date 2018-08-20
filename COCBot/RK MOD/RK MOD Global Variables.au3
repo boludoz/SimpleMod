@@ -228,3 +228,7 @@ Global $g_iBuildingsNeedElixir = 0
 Global $g_bChkSmartTrain = False, $g_bChkPreciseArmyCamp = False, $g_bChkFillArcher = False, $g_bChkFillEQ = False, $g_iTxtFillArcher = 5
 Global Enum $g_eFull, $g_eRemained, $g_eNoTrain
 Global $g_bWrongTroop, $g_bWrongSpell, $g_sSmartTrainError = ""
+
+; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
+
+Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 15
