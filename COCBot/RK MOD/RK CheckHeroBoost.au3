@@ -2,7 +2,7 @@
 ; Name ..........: Check Hero Time Boost
 ; Description ...: Check Hero Time Boost
 ; Author ........: Ahsan Iqbal
-; Modified ......:
+; Modified ......: mmajid
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2018
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:
@@ -18,6 +18,9 @@ Local $sHeroTime[3] = ["", "", ""]
 Func CheckHeroBoost()
 
 	SetLog("Checking Hero Boost Time", $COLOR_INFO)
+
+	Local $bIsBoostedImg = @ScriptDir & "\imgxml\boost\BoostC\BoostCCheck"
+	Local $bHeroTimeOCRImgs = @ScriptDir & "\imgxml\HeroTime"
 
 	checkMainScreen()
 	For $index = 0 To 2
@@ -53,21 +56,36 @@ Func CheckHeroBoost()
 		If $index = 1 Then BuildingClickP($g_aiQueenAltarPos, "#0462")
 		If $index = 2 Then BuildingClickP($g_aiWardenAltarPos, "#0462")
 
+		_Sleep($DELAYBOOSTHEROES5); Delay for 1300ms Atleast So OCR can take picture of the screen correctly otherwise it will fail
+
 		If $index = 0 Or $index = 1 Then
 			SetLog("In Index " & $index, $COLOR_INFO)
-			$sHeroTime[$index] = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 297, 675, 297 + 77, 675 + 18, True)
-			If $sHeroTime[$index] = "none" Then
-				SetLog("In Index ("&$index&") After First OCR Failed", $COLOR_ERROR)
-				$sHeroTime[$index] = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 344, 675, 344 + 78, 675 + 18, True)
+
+			If QuickMis("BC1", $bIsBoostedImg, 365, 640, 365 + 40, 640 + 38) Then ;When King OR Queen Has 4 Buttons Check if boosted then Do OCR
+				$sHeroTime[$index] = QuickMIS("OCR", $bHeroTimeOCRImgs, 350, 675, 350 + 65, 675 + 18, True)
+			ElseIf QuickMis("BC1", $bIsBoostedImg, 320, 640, 320 + 40, 640 + 38) Then ;When King OR Queen Has 5 Buttons(When Has Boost Spell) Check if boosted then Do OCR
+				$sHeroTime[$index] = QuickMIS("OCR", $bHeroTimeOCRImgs, 300, 675, 300 + 70, 675 + 18, True)
+			ElseIf QuickMis("BC1", $bIsBoostedImg, 415, 640, 415 + 40, 640 + 38) Then ;When King OR Queen Has 3 Buttons(When Hero Are Maxed) Check if boosted then Do OCR
+				$sHeroTime[$index] = QuickMIS("OCR", $bHeroTimeOCRImgs, 395, 675, 395 + 70, 675 + 18, True)
+			Else
+				$sHeroTime[$index] = "none" ;Means King OR Queen is not boosted
 			EndIf
+
+
 		EndIf
 		If $index = 2 Then
 			SetLog("In Index " & $index, $COLOR_INFO)
-			$sHeroTime[$index] = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 250, 675, 250 + 77, 675 + 18, True)
-			If $sHeroTime[$index] = "none" Then
-				SetLog("In Index ("&$index&") After First OCR Failed", $COLOR_ERROR)
-				$sHeroTime[$index] = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 297, 675, 297 + 78, 675 + 18, True)
+
+			If QuickMis("BC1", $bIsBoostedImg, 320, 640, 320 + 40, 640 + 38) Then ;When Warden Has 5 Buttons Check if boosted then Do OCR
+				$sHeroTime[$index] = QuickMIS("OCR", $bHeroTimeOCRImgs, 300, 675, 300 + 70, 675 + 18, True)
+			ElseIf QuickMis("BC1", $bIsBoostedImg, 270, 640, 270 + 40, 640 + 38) Then ;When Warden Has 6 Buttons(When Has Boost Spell) Check if boosted then Do OCR
+				$sHeroTime[$index] = QuickMIS("OCR", $bHeroTimeOCRImgs, 250, 675, 250 + 70, 675 + 18, True)
+			ElseIf QuickMis("BC1", $bIsBoostedImg, 365, 640, 365 + 40, 640 + 38) Then ;When Warden Has 4 Buttons(Warden Is Maxed) Check if boosted then Do OCR
+				$sHeroTime[$index] = QuickMIS("OCR", $bHeroTimeOCRImgs, 350, 675, 350 + 65, 675 + 18, True)
+			Else
+				$sHeroTime[$index] = "none" ;Means Warden is not boosted
 			EndIf
+
 		EndIf
 
 
@@ -92,7 +110,7 @@ Func CheckHeroBoost()
 		EndIf
 
 		SetLog("-------------------------------------------", $COLOR_INFO)
-		_Sleep($DELAYBOOSTHEROES1)
+
 	Next
 	ClickP($aAway, 2, 0, "#0000") ;Click Away
 EndFunc   ;==>CheckHeroBoost
