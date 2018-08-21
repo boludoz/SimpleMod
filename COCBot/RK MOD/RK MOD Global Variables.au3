@@ -231,4 +231,4 @@ Global $g_bWrongTroop, $g_bWrongSpell, $g_sSmartTrainError = ""
 
 ; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 
-Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 15
+Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 5

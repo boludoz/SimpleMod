@@ -804,7 +804,7 @@ Func ReadConfig_600_28()
 	IniReadS($g_bSearchAlertMe, $g_sProfileConfigPath, "general", "AlertSearch", False, "Bool")
 	; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 	IniReadS($g_bReturnTimerEnable, $g_sProfileConfigPath, "search", "ChkReturnTimerEnable", "Bool")
-	IniReadS($g_iTxtReturnTimer, $g_sProfileConfigPath, "search", "ReturnTimer", 15, "int")
+	IniReadS($g_iTxtReturnTimer, $g_sProfileConfigPath, "search", "ReturnTimer", 5, "int")
 EndFunc   ;==>ReadConfig_600_28
 
 Func ReadConfig_600_28_DB()

@@ -88,8 +88,10 @@ Func WaitForClouds()
 			;Return Home by Time - by RK MOD
 			If $g_bReturnTimerEnable = True Then
 				If $iSearchTime > $g_iTxtReturnTimer Then
-				    SetLog("Return home by time", $COLOR_BLUE)
+				    SetLog("Return home by time due to the long wait in the cloud", $COLOR_INFO)
 					Click(70, 680) ; Return Home
+					$g_bIsClientSyncError = True ; disable fast OOS restart if not simple error and restarting CoC
+					$g_bRestart = True
 					Return
 				EndIf
 			EndIf
