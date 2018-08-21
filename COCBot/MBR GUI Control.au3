@@ -612,10 +612,6 @@ Func GUIControl_WM_COMMAND($hWind, $iMsg, $wParam, $lParam)
 			Setlog("Queued Troops Test")
 			CheckQueueTroops()
 			$g_bRunState = $RuntimeA
-		Case $g_hBtnTestHeroBoostOCR
-			CheckHeroBoost()
-		Case $g_hBtnTestBuilderTimeOCR
-			getBuilderTime()
 	EndSwitch
 
 	If $lParam = $g_hCmbGUILanguage Then

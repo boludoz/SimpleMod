@@ -659,15 +659,14 @@ Func TabItem8()
 EndFunc   ;==>TabItem8
 
 Func TabItem9()
-	Local $x = 25, $y = 45
-	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "Group_01", "RK Debug"), $x - 20, $y - 20, $g_iSizeWGrpTab2, $g_iSizeHGrpTab2)
-
+	Local $x = 5, $y = 25 ;For Border
+	Local $yNext = 30
+		GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "Group_01", "RK Debug"), $x , $y , $g_iSizeWGrpTab2, $g_iSizeHGrpTab2)
 	$x = 300
 	$y = 40
-
-	Local $yNext = 30
 		$g_hBtnTestHeroBoostOCR = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestHeroBoostOCR", "Check Hero Boost OCR"), $x, $y, 140, 25)
-
+		GUICtrlSetOnEvent(-1, "btnTestHeroBoostOCR")
 	$y += $yNext
 		$g_hBtnTestBuilderTimeOCR = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestBuilderTimeOCR", "Check Builder Time OCR"), $x, $y, 140, 25)
+		GUICtrlSetOnEvent(-1, "btnTestBuilderTimeOCR")
 EndFunc   ;==>TabItem9
