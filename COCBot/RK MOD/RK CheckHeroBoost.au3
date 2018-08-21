@@ -10,12 +10,11 @@
 ; Example .......: No
 ; ===============================================================================================================================
 
-Local $HeroTime[8][3] = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]]
-Local $CurrHeroBTime[3] = ["", "", ""]
-Local $CTime[3] = ["", "", ""]
-Local $sHeroTime
-
 Func CheckHeroBoost()
+	Local $HeroTime[8][3] = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]]
+	Local $CurrHeroBTime[3] = ["", "", ""]
+	Local $CTime[3] = ["", "", ""]
+	Local $sHeroTime[3] = ["", "", ""]
 	SetLog("Checking Hero Boost Time", $COLOR_INFO)
 
 	checkMainScreen()
@@ -47,44 +46,53 @@ Func CheckHeroBoost()
 		If _DateIsValid($CurrHeroBTime[$index]) Then
 
 		EndIf
-		
+
 		If $index = 0 Then BuildingClickP($g_aiKingAltarPos, "#0462")
 		If $index = 1 Then BuildingClickP($g_aiQueenAltarPos, "#0462")
 		If $index = 2 Then BuildingClickP($g_aiWardenAltarPos, "#0462")
 
 		If $index = 0 Or $index = 1 Then
 			SetLog("In Index " & $index, $COLOR_INFO)
-			$sHeroTime = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 297, 675, 297 + 77, 675 + 18, True)
-			If $sHeroTime = "none" Then
-				$sHeroTime = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 344, 675, 344 + 78, 675 + 18, True)
+			$sHeroTime[$index] = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 297, 675, 297 + 77, 675 + 18, True)
+			If $sHeroTime[$index] = "none" Then
+				SetLog("In Index ("&$index&") After First OCR Failed", $COLOR_ERROR)
+				$sHeroTime[$index] = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 344, 675, 344 + 78, 675 + 18, True)
 			EndIf
 		EndIf
 		If $index = 2 Then
 			SetLog("In Index " & $index, $COLOR_INFO)
-			$sHeroTime = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 250, 675, 250 + 77, 675 + 18, True)
-			If $sHeroTime = "none" Then
-				$sHeroTime = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 297, 675, 297 + 78, 675 + 18, True)
+			$sHeroTime[$index] = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 250, 675, 250 + 77, 675 + 18, True)
+			If $sHeroTime[$index] = "none" Then
+				SetLog("In Index ("&$index&") After First OCR Failed", $COLOR_ERROR)
+				$sHeroTime[$index] = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 297, 675, 297 + 78, 675 + 18, True)
 			EndIf
 		EndIf
 
-		SetLog("sHeroTime = " & $sHeroTime, $COLOR_INFO)
 
-		If $sHeroTime <> "none" Then
+
+		If $sHeroTime[$index] <> "none" Then
+			setLog("inside ConvertOCRLongTime : "&$sHeroTime[$index], $COLOR_INFO)
 			$CTime[$index] = _NowCalc()
-			$CurrHeroBTime[$index] = ConvertOCRLongTime("Hero Time", $sHeroTime, False)
-			SetDebugLog("$sResult QuickMIS OCR: " & $sHeroTime & " (" & Round($CurrHeroBTime[$index], 2) & " minutes)")
-		Else
-			Sleep(1000)
+			$CurrHeroBTime[$index] = ConvertOCRLongTime("Hero Time", $sHeroTime[$index], False)
+			SetDebugLog("$sResult QuickMIS OCR: " & $sHeroTime[$index] & " (" & Round($CurrHeroBTime[$index], 2) & " minutes)")
 		EndIf
+
+		If $index = 0 Then SetLog("King Boost Time OCR = " & $sHeroTime[$index], $COLOR_INFO)
+		If $index = 1 Then SetLog("Queen Boost Time OCR = " & $sHeroTime[$index], $COLOR_INFO)
+		If $index = 2 Then SetLog("Warden Boost Time OCR = " & $sHeroTime[$index], $COLOR_INFO)
+
+		SetLog("$CTime["&$index&"] = " & $CTime[$index], $COLOR_INFO)
+		SetLog("$CurrHeroBTime["&$index&"] = " & $CurrHeroBTime[$index], $COLOR_INFO)
 
 		If ProfileSwitchAccountEnabled() Then
 			$HeroTime[$g_iCurAccount][$index] = $CurrHeroBTime[$index]
+			SetLog("$HeroTime["&$g_iCurAccount&"]["&$index&"] =  " & $HeroTime[$g_iCurAccount][$index], $COLOR_INFO)
 		EndIf
-		SetLog("$CTime[$index] = " & $CTime[$index], $COLOR_INFO)
-		SetLog("$CurrHeroBTime[$index] = " & $CurrHeroBTime[$index], $COLOR_INFO)
-		SetLog("$HeroTime[$g_iCurAccount][$index] =  " & $HeroTime[$g_iCurAccount][$index], $COLOR_INFO)
-	Next
 
+		SetLog("-------------------------------------------", $COLOR_INFO)
+		_Sleep($DELAYBOOSTHEROES1)
+	Next
+	ClickP($aAway, 2, 0, "#0000") ;Click Away
 EndFunc   ;==>CheckHeroBoost
 
 Func HeroBoostTime($aResultHeroes, $i)
