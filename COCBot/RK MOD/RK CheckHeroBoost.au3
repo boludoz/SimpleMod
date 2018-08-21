@@ -13,6 +13,7 @@
 Local $HeroTime[8][3] = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]]
 Local $CurrHeroBTime[3] = ["", "", ""]
 Local $CTime[3] = ["", "", ""]
+Local $sHeroTime
 
 Func CheckHeroBoost()
 	SetLog("Checking Hero Boost Time", $COLOR_INFO)
@@ -52,19 +53,19 @@ Func CheckHeroBoost()
 		If $index = 2 Then BuildingClickP($g_aiWardenAltarPos, "#0462")
 
 		If $index = 0 Or $index = 1 Then
-			SetLog("In Index == 0 and 1", $COLOR_INFO)
-			Local $sHeroTime = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 297, 675, 297 + 77, 675 + 18, True)
+			SetLog("In Index " & $index, $COLOR_INFO)
+			$sHeroTime = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 297, 675, 297 + 77, 675 + 18, True)
 			If $sHeroTime = "none" Then
-				Local $sHeroTime = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 344, 674, 344 + 78, 674 + 20, True)
+				$sHeroTime = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 344, 675, 344 + 78, 675 + 18, True)
 			EndIf
 		EndIf
 		If $index = 2 Then
-			Local $sHeroTime = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 250, 675, 250 + 77, 675 + 18, True)
+			SetLog("In Index " & $index, $COLOR_INFO)
+			$sHeroTime = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 250, 675, 250 + 77, 675 + 18, True)
 			If $sHeroTime = "none" Then
-				Local $sHeroTime = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 297, 674, 297 + 78, 674 + 20, True)
+				$sHeroTime = QuickMIS("OCR", @ScriptDir & "\imgxml\HeroTime", 297, 675, 297 + 78, 675 + 18, True)
 			EndIf
 		EndIf
-
 
 		SetLog("sHeroTime = " & $sHeroTime, $COLOR_INFO)
 
@@ -79,6 +80,9 @@ Func CheckHeroBoost()
 		If ProfileSwitchAccountEnabled() Then
 			$HeroTime[$g_iCurAccount][$index] = $CurrHeroBTime[$index]
 		EndIf
+		SetLog("$CTime[$index] = " & $CTime[$index], $COLOR_INFO)
+		SetLog("$CurrHeroBTime[$index] = " & $CurrHeroBTime[$index], $COLOR_INFO)
+		SetLog("$HeroTime[$g_iCurAccount][$index] =  " & $HeroTime[$g_iCurAccount][$index], $COLOR_INFO)
 	Next
 
 EndFunc   ;==>CheckHeroBoost
@@ -95,4 +99,5 @@ Func HeroBoostTime($aResultHeroes, $i)
 		Return $aResultHeroes
 	EndIf
 EndFunc   ;==>HeroBoostTime
+
 
