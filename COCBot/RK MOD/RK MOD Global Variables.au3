@@ -199,7 +199,7 @@ Global $g_bCheckWardenMode = False, $g_iCheckWardenMode = 0
 
 ; ================================================== Upgrade Management - Added by RK MOD ================================== ;
 
-Global $g_ibUpdateNewUpgradesOnly = False
+Global $g_iChkUpdateNewUpgradesOnly = 0
 Global Const $UP = True, $DOWN = False, $TILL_END = True
 
 ; ================================================== Fill - Added by RK MOD ================================== ;

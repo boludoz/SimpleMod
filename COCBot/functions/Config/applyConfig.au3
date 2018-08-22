@@ -721,7 +721,14 @@ Func ApplyConfig_600_16($TypeReadSave)
 			Next
 			GUICtrlSetData($g_hTxtUpgrMinGold, $g_iUpgradeMinGold)
 			GUICtrlSetData($g_hTxtUpgrMinElixir, $g_iUpgradeMinElixir)
-			GUICtrlSetData($g_hTxtUpgrMinDark, $g_iUpgradeMinDark)
+			GUICtrlSetData($g_hTxtUpgrMinDark, $g_iUpgradeMinDark)			
+			; ==================================================  Upgrade Management - Added by RK MOD ======================================== ;
+
+			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_iChkUpdateNewUpgradesOnly = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			chkUpgradeAllOrNone()
+			chkUpgradeRepeatAllOrNone()
+			chkUpdateNewUpgradesOnly()
+			
 		Case "Save"
 			For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1 ; Apply the buildings upgrade variable to GUI
 				$g_abBuildingUpgradeEnable[$iz] = (GUICtrlRead($g_hChkUpgrade[$iz]) = $GUI_CHECKED)
@@ -730,6 +737,11 @@ Func ApplyConfig_600_16($TypeReadSave)
 			$g_iUpgradeMinGold = Number(GUICtrlRead($g_hTxtUpgrMinGold))
 			$g_iUpgradeMinElixir = Number(GUICtrlRead($g_hTxtUpgrMinElixir))
 			$g_iUpgradeMinDark = Number(GUICtrlRead($g_hTxtUpgrMinDark))
+			
+			; ================================================== Upgrade Management - Added by RK MOD ============================= ;
+
+			$g_iChkUpdateNewUpgradesOnly = GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED ? 1 : 0
+			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_16
 

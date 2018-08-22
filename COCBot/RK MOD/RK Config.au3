@@ -148,11 +148,6 @@ Func ReadConfig_RKMod()
 	IniReadS($g_iChkPbSendNew, $g_sProfileConfigPath, "Chat", "chkPbSendNewChats", $g_iChkPbSendNew, "Int")
 	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chat", "ChkRusLang", $g_iChkRusLang, "Int")
 
-
-	; ==================================================  Upgrade Management - Added by RK MOD ==================== ;
-
-	$g_ibUpdateNewUpgradesOnly = (IniRead($g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", 0) = 1)
-
 EndFunc   ;==>ReadConfig_RKMod
 
 Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
@@ -298,11 +293,6 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	_Ini_Add("Chat", "genericMsgClan", $cGeneric)
 	_Ini_Add("Chat", "responseMsgClan", $cResp)
 
-	; ================================================== Upgrade Management - Added by RK MOD ================================== ;
-
-	_Ini_Add("upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly ? 1 : 0)
-	
-
 EndFunc   ;==>SaveConfig_RKMod
 
 Func ApplyConfig_RKMod($TypeReadSave)
@@ -444,10 +434,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$g_iChkUseNotify = GUICtrlRead($g_hChkChatNotify) = $GUI_CHECKED ? 1 : 0
 			$g_iChkPbSendNew = GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED ? 1 : 0
             $g_iChkRusLang = GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED ? 1 : 0
-
-			; ================================================== Upgrade Management - Added by RK MOD ============================= ;
-
-			$g_ibUpdateNewUpgradesOnly = (GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED)
 			
 		Case "Read"
 
@@ -609,10 +595,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			chkChatNotify()
 			chkPbSendNewChats()
 			ChatGuiEditUpdate()
-
-			; ==================================================  Upgrade Management - Added by RK MOD ======================================== ;
-
-			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly ? $GUI_CHECKED : $GUI_UNCHECKED)
 			
 	EndSwitch
 

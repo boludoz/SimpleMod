@@ -125,9 +125,9 @@ EndFunc   ;==>chkUpgradeRepeatAllOrNone
 
 Func chkUpdateNewUpgradesOnly()
 	If GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED Then
-		$g_ibUpdateNewUpgradesOnly = True
+		$g_iChkUpdateNewUpgradesOnly = 1
 	Else
-		$g_ibUpdateNewUpgradesOnly = False
+		$g_iChkUpdateNewUpgradesOnly = 0
 	EndIf
 EndFunc   ;==>chkUpdateNewUpgradesOnly
 

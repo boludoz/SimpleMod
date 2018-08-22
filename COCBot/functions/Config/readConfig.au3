@@ -137,6 +137,10 @@ Func ReadBuildingConfig()
 			$g_abUpgradeRepeatEnable[$iz] = False
 		EndIf
 	Next
+	; ==================================================  Upgrade Management - Added by RK MOD ==================== ;
+
+	IniReadS($g_iChkUpdateNewUpgradesOnly, $g_sProfileConfigPath, "upgrade", "ChkUpdateNewUpgradesOnly", $g_iChkUpdateNewUpgradesOnly, "Int")
+	
 EndFunc   ;==>ReadBuildingConfig
 
 Func ReadRegularConfig()
