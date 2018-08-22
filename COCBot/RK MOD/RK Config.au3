@@ -137,16 +137,16 @@ Func ReadConfig_RKMod()
 
 	; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
-	IniReadS($g_iChkChatGlobal, $g_sProfileConfigPath, "Chat", "chkGlobalChat", $g_iChkChatGlobal, "Int")
-	IniReadS($g_iChkScrambleGlobal, $g_sProfileConfigPath, "Chat", "chkGlobalScramble", $g_iChkScrambleGlobal, "Int")
-	IniReadS($g_iChkSwitchLang, $g_sProfileConfigPath, "Chat", "chkSwitchLang", $g_iChkSwitchLang, "Int")
-	IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chat", "cmbLang", 8, "int")
-	IniReadS($g_iChkChatClan, $g_sProfileConfigPath, "Chat", "chkClanChat", $g_iChkChatClan, "Int")
-	IniReadS($g_iChkClanUseResponses, $g_sProfileConfigPath, "Chat", "chkUseResponses", $g_iChkClanUseResponses, "Int")
-	IniReadS($g_iChkClanAlwaysMsg, $g_sProfileConfigPath, "Chat", "chkUseGeneric", $g_iChkClanAlwaysMsg, "Int")
-	IniReadS($g_iChkUseNotify, $g_sProfileConfigPath, "Chat", "chkChatNotify", $g_iChkUseNotify, "Int")
-	IniReadS($g_iChkPbSendNew, $g_sProfileConfigPath, "Chat", "chkPbSendNewChats", $g_iChkPbSendNew, "Int")
-	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chat", "ChkRusLang", $g_iChkRusLang, "Int")
+	IniReadS($g_iChkChatGlobal, $g_sProfileConfigPath, "Chatbot", "chkGlobalChat", $g_iChkChatGlobal, "int")
+	IniReadS($g_iChkScrambleGlobal, $g_sProfileConfigPath, "Chatbot", "chkGlobalScramble", $g_iChkScrambleGlobal, "int")
+	IniReadS($g_iChkSwitchLang, $g_sProfileConfigPath, "Chatbot", "chkSwitchLang", $g_iChkSwitchLang, "int")
+	IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chatbot", "cmbLang", 9, "int")
+	IniReadS($g_iChkChatClan, $g_sProfileConfigPath, "Chatbot", "chkClanChat", $g_iChkChatClan, "int")
+	IniReadS($g_iChkClanUseResponses, $g_sProfileConfigPath, "Chatbot", "chkUseResponses", $g_iChkClanUseResponses, "int")
+	IniReadS($g_iChkClanAlwaysMsg, $g_sProfileConfigPath, "Chatbot", "chkUseGeneric", $g_iChkClanAlwaysMsg, "int")
+	IniReadS($g_iChkUseNotify, $g_sProfileConfigPath, "Chatbot", "chkChatNotify", $g_iChkUseNotify, "int")
+	IniReadS($g_iChkPbSendNew, $g_sProfileConfigPath, "Chatbot", "chkPbSendNewChats", $g_iChkPbSendNew, "int")
+	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "int")
 
 EndFunc   ;==>ReadConfig_RKMod
 
@@ -277,21 +277,21 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 
 	; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
-	_Ini_Add("Chat", "ChkChatGlobal", $g_iChkChatGlobal ? 1 : 0)
-	_Ini_Add("Chat", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)
-    _Ini_Add("Chat", "ChkSwitchLang", $g_iChkSwitchLang ? 1 : 0)
-	_Ini_Add("Chat", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmblang))
-	_Ini_Add("Chat", "ChkChatbotChatClan", $g_iChkChatClan ? 1 : 0)
-	_Ini_Add("Chat", "ChkUseResponses", $g_iChkClanUseResponses ? 1 : 0)
-	_Ini_Add("Chat", "ChkUseGeneric", $g_iChkClanAlwaysMsg ? 1 : 0)
-	_Ini_Add("Chat", "ChkChatNotify", $g_iChkUseNotify ? 1 : 0)
-	_Ini_Add("Chat", "ChkPbSendNewChats", $g_iChkPbSendNew ? 1 : 0)
-    _Ini_Add("Chat", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkChatGlobal", $g_iChkChatGlobal ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)
+    _Ini_Add("Chatbot", "ChkSwitchLang", $g_iChkSwitchLang ? 1 : 0)
+	_Ini_Add("Chatbot", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmbLang))
+	_Ini_Add("Chatbot", "ChkChatbotChatClan", $g_iChkChatClan ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkUseResponses", $g_iChkClanUseResponses ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkUseGeneric", $g_iChkClanAlwaysMsg ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkChatNotify", $g_iChkUseNotify ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkPbSendNewChats", $g_iChkPbSendNew ? 1 : 0)
+    _Ini_Add("Chatbot", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
 
-    _Ini_Add("Chat", "globalMsg1", $glb1)
-	_Ini_Add("Chat", "globalMsg2", $glb2)
-	_Ini_Add("Chat", "genericMsgClan", $cGeneric)
-	_Ini_Add("Chat", "responseMsgClan", $cResp)
+    _Ini_Add("Chatbot", "globalMsg1", $glb1)
+	_Ini_Add("Chatbot", "globalMsg2", $glb2)
+	_Ini_Add("Chatbot", "genericMsgClan", $cGeneric)
+	_Ini_Add("Chatbot", "responseMsgClan", $cResp)
 
 EndFunc   ;==>SaveConfig_RKMod
 
