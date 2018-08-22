@@ -987,10 +987,16 @@ Func ApplyConfig_600_28($TypeReadSave)
 			GUICtrlSetData($g_hTxtRestartSearchlimit, $g_iSearchRestartLimit)
 			ChkRestartSearchLimit()
 			GUICtrlSetState($g_hChkAlertSearch, $g_bSearchAlertMe ? $GUI_CHECKED : $GUI_UNCHECKED)
+			
+			; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
+
+			GUICtrlSetState($g_hChkRestartSearchGrabHero, $g_bRestartSearchGrabHero ? $GUI_CHECKED : $GUI_UNCHECKED)
+			
 			; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 			GUICtrlSetState($g_hChkReturnTimerEnable, $g_bReturnTimerEnable ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtReturnTimer, $g_iTxtReturnTimer)
 			chkReturnTimer()
+			
 		Case "Save"
 			$g_bSearchReductionEnable = (GUICtrlRead($g_hChkSearchReduction) = $GUI_CHECKED)
 			$g_iSearchReductionCount = GUICtrlRead($g_hTxtSearchReduceCount)
@@ -1006,6 +1012,11 @@ Func ApplyConfig_600_28($TypeReadSave)
 			$g_bSearchRestartEnable = (GUICtrlRead($g_hChkRestartSearchLimit) = $GUI_CHECKED)
 			$g_iSearchRestartLimit = GUICtrlRead($g_hTxtRestartSearchlimit)
 			$g_bSearchAlertMe = (GUICtrlRead($g_hChkAlertSearch) = $GUI_CHECKED)
+			
+			; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
+
+			$g_bRestartSearchGrabHero = (GUICtrlRead($g_hChkRestartSearchGrabHero) = $GUI_CHECKED)
+			
 			; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 			$g_bReturnTimerEnable = (GUICtrlRead($g_hChkReturnTimerEnable) = $GUI_CHECKED)
 			$g_iTxtReturnTimer = GUICtrlRead($g_hTxtReturnTimer)

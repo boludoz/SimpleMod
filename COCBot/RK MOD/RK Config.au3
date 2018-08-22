@@ -100,11 +100,6 @@ Func ReadConfig_RKMod()
 	IniReadS($g_icmbMaxActionsNumber, $g_sProfileConfigPath, "Bot Humanization", "cmbMaxActionsNumber", $g_icmbMaxActionsNumber, "int")
 	IniReadS($g_ichallengeMessage, $g_sProfileConfigPath, "Bot Humanization", "challengeMessage", $g_ichallengeMessage)
 
-	;================================================== Grab Healed Heroes - Added by RK MOD ==================== ;
-
-	IniReadS($g_bRestartSearchGrabHero, $g_sProfileConfigPath, "search", "GrabHealHero", False, "Bool")
-
-
 	;================================================== ; Switch Profile - Added by RK MOD ==================== ;
 
 	IniReadS($g_iChkGoldSwitchMax, $g_sProfileConfigPath, "profiles", "chkGoldSwitchMax", 0, "int")
@@ -240,10 +235,6 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	Next
 	_Ini_Add("Bot Humanization", "cmbMaxActionsNumber", _GUICtrlComboBox_GetCurSel($g_cmbMaxActionsNumber))
 	_Ini_Add("Bot Humanization", "challengeMessage", GUICtrlRead($g_challengeMessage))
-
-	; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
-
-	_Ini_Add("search", "GrabHealHero", $g_bRestartSearchGrabHero ? 1 : 0)
 
 	; ================================================ Switch Profile - Added by RK MOD ======================================== ;
 
@@ -387,10 +378,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			Next
 			$g_icmbMaxActionsNumber = _GUICtrlComboBox_GetCurSel($g_icmbMaxActionsNumber)
 			$g_ichallengeMessage = GUICtrlRead($g_challengeMessage)
-
-			; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
-
-			$g_bRestartSearchGrabHero = (GUICtrlRead($g_hChkRestartSearchGrabHero) = $GUI_CHECKED)
 
 			; ================================================ Switch Profile - Added by RK MOD ======================================== ;
 
@@ -538,10 +525,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			GUICtrlSetData($g_challengeMessage, $g_ichallengeMessage)
 			cmbStandardReplay()
 			cmbWarReplay()
-
-			; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
-
-			GUICtrlSetState($g_hChkRestartSearchGrabHero, $g_bRestartSearchGrabHero ? $GUI_CHECKED : $GUI_UNCHECKED)
 
 			; ================================================  Switch Profile - Added by RK MOD ======================================== ;
 
