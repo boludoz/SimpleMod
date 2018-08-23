@@ -89,8 +89,9 @@ Update to v 7.6.1
 
 **Added**
 
--- Builder time status.
-
+-- Builder Time Status.
+-- Check Hero Time Boost.
+-- Return Home by Time.
 
 
 **IMPROVED AND FIXED**
@@ -105,10 +106,12 @@ Update to v 7.6.1
 -- Smart Train.
 -- Switch Profiles.
 -- ChatBot.
--- GTFO.
+-- GTFO v1.4
 -- Wall/Building Upgrading Priority.
 -- Max logout time.
 -- Boost for Magic Spell.
+-- Check Stop For War.
+-- Upgrade Management.
 
 ** Removed **
 

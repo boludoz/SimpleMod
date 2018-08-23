@@ -100,58 +100,53 @@ Func ReadConfig_RKMod()
 	IniReadS($g_icmbMaxActionsNumber, $g_sProfileConfigPath, "Bot Humanization", "cmbMaxActionsNumber", $g_icmbMaxActionsNumber, "int")
 	IniReadS($g_ichallengeMessage, $g_sProfileConfigPath, "Bot Humanization", "challengeMessage", $g_ichallengeMessage)
 
-	;================================================== Grab Healed Heroes - Added by RK MOD ==================== ;
-
-	IniReadS($g_bRestartSearchGrabHero, $g_sProfileConfigPath, "search", "GrabHealHero", False, "Bool")
-
-
 	;================================================== ; Switch Profile - Added by RK MOD ==================== ;
 
-	IniReadS($ichkGoldSwitchMax, $g_sProfileConfigPath, "profiles", "chkGoldSwitchMax", 0, "int")
-	IniReadS($icmbGoldMaxProfile, $g_sProfileConfigPath, "profiles", "cmbGoldMaxProfile", 0, "int")
-	IniReadS($itxtMaxGoldAmount, $g_sProfileConfigPath, "profiles", "txtMaxGoldAmount", 12000000, "int")
-	IniReadS($ichkGoldSwitchMin, $g_sProfileConfigPath, "profiles", "chkGoldSwitchMin", 0, "int")
-	IniReadS($icmbGoldMinProfile, $g_sProfileConfigPath, "profiles", "cmbGoldMinProfile", 0, "int")
-	IniReadS($itxtMinGoldAmount, $g_sProfileConfigPath, "profiles", "txtMinGoldAmount", 10000000, "int")
+	IniReadS($g_iChkGoldSwitchMax, $g_sProfileConfigPath, "profiles", "chkGoldSwitchMax", 0, "int")
+	IniReadS($g_iCmbGoldMaxProfile, $g_sProfileConfigPath, "profiles", "cmbGoldMaxProfile", 0, "int")
+	IniReadS($g_iTxtMaxGoldAmount, $g_sProfileConfigPath, "profiles", "txtMaxGoldAmount", 12000000, "int")
+	IniReadS($g_iChkGoldSwitchMin, $g_sProfileConfigPath, "profiles", "chkGoldSwitchMin", 0, "int")
+	IniReadS($g_iCmbGoldMinProfile, $g_sProfileConfigPath, "profiles", "cmbGoldMinProfile", 0, "int")
+	IniReadS($g_iTxtMinGoldAmount, $g_sProfileConfigPath, "profiles", "txtMinGoldAmount", 10000000, "int")
 
-	IniReadS($ichkElixirSwitchMax, $g_sProfileConfigPath, "profiles", "chkElixirSwitchMax", 0, "int")
-	IniReadS($icmbElixirMaxProfile, $g_sProfileConfigPath, "profiles", "cmbElixirMaxProfile", 0, "int")
-	IniReadS($itxtMaxElixirAmount, $g_sProfileConfigPath, "profiles", "txtMaxElixirAmount", 10000000, "int")
-	IniReadS($ichkElixirSwitchMin, $g_sProfileConfigPath, "profiles", "chkElixirSwitchMin", 0, "int")
-	IniReadS($icmbElixirMinProfile, $g_sProfileConfigPath, "profiles", "cmbElixirMinProfile", 0, "int")
-	IniReadS($itxtMinElixirAmount, $g_sProfileConfigPath, "profiles", "txtMinElixirAmount", 10000000, "int")
+	IniReadS($g_iChkElixirSwitchMax, $g_sProfileConfigPath, "profiles", "chkElixirSwitchMax", 0, "int")
+	IniReadS($g_iCmbElixirMaxProfile, $g_sProfileConfigPath, "profiles", "cmbElixirMaxProfile", 0, "int")
+	IniReadS($g_iTxtMaxElixirAmount, $g_sProfileConfigPath, "profiles", "txtMaxElixirAmount", 10000000, "int")
+	IniReadS($g_iChkElixirSwitchMin, $g_sProfileConfigPath, "profiles", "chkElixirSwitchMin", 0, "int")
+	IniReadS($g_iCmbElixirMinProfile, $g_sProfileConfigPath, "profiles", "cmbElixirMinProfile", 0, "int")
+	IniReadS($g_iTxtMinElixirAmount, $g_sProfileConfigPath, "profiles", "txtMinElixirAmount", 10000000, "int")
 
-	IniReadS($ichkDESwitchMax, $g_sProfileConfigPath, "profiles", "chkDESwitchMax", 0, "int")
-	IniReadS($icmbDEMaxProfile, $g_sProfileConfigPath, "profiles", "cmbDEMaxProfile", 0, "int")
-	IniReadS($itxtMaxDEAmount, $g_sProfileConfigPath, "profiles", "txtMaxDEAmount", 200000, "int")
-	IniReadS($ichkDESwitchMin, $g_sProfileConfigPath, "profiles", "chkDESwitchMin", 0, "int")
-	IniReadS($icmbDEMinProfile, $g_sProfileConfigPath, "profiles", "cmbDEMinProfile", 0, "int")
-	IniReadS($itxtMinDEAmount, $g_sProfileConfigPath, "profiles", "txtMinDEAmount", 10000, "int")
+	IniReadS($g_iChkDESwitchMax, $g_sProfileConfigPath, "profiles", "chkDESwitchMax", 0, "int")
+	IniReadS($g_iCmbDEMaxProfile, $g_sProfileConfigPath, "profiles", "cmbDEMaxProfile", 0, "int")
+	IniReadS($g_iTxtMaxDEAmount, $g_sProfileConfigPath, "profiles", "txtMaxDEAmount", 200000, "int")
+	IniReadS($g_iChkDESwitchMin, $g_sProfileConfigPath, "profiles", "chkDESwitchMin", 0, "int")
+	IniReadS($g_iCmbDEMinProfile, $g_sProfileConfigPath, "profiles", "cmbDEMinProfile", 0, "int")
+	IniReadS($g_iTxtMinDEAmount, $g_sProfileConfigPath, "profiles", "txtMinDEAmount", 10000, "int")
 
-	IniReadS($ichkTrophySwitchMax, $g_sProfileConfigPath, "profiles", "chkTrophySwitchMax", 0, "int")
-	IniReadS($icmbTrophyMaxProfile, $g_sProfileConfigPath, "profiles", "cmbTrophyMaxProfile", 0, "int")
-	IniReadS($itxtMaxTrophyAmount, $g_sProfileConfigPath, "profiles", "txtMaxTrophyAmount", 3000, "int")
-	IniReadS($ichkTrophySwitchMin, $g_sProfileConfigPath, "profiles", "chkTrophySwitchMin", 0, "int")
-	IniReadS($icmbTrophyMinProfile, $g_sProfileConfigPath, "profiles", "cmbTrophyMinProfile", 0, "int")
-	IniReadS($itxtMinTrophyAmount, $g_sProfileConfigPath, "profiles", "txtMinTrophyAmount", 1000, "int")
+	IniReadS($g_iChkTrophySwitchMax, $g_sProfileConfigPath, "profiles", "chkTrophySwitchMax", 0, "int")
+	IniReadS($g_iCmbTrophyMaxProfile, $g_sProfileConfigPath, "profiles", "cmbTrophyMaxProfile", 0, "int")
+	IniReadS($g_iTxtMaxTrophyAmount, $g_sProfileConfigPath, "profiles", "txtMaxTrophyAmount", 3000, "int")
+	IniReadS($g_iChkTrophySwitchMin, $g_sProfileConfigPath, "profiles", "chkTrophySwitchMin", 0, "int")
+	IniReadS($g_iCmbTrophyMinProfile, $g_sProfileConfigPath, "profiles", "cmbTrophyMinProfile", 0, "int")
+	IniReadS($g_iTxtMinTrophyAmount, $g_sProfileConfigPath, "profiles", "txtMinTrophyAmount", 1000, "int")
 
 	; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
-	IniReadS($g_iChkChatGlobal, $g_sProfileConfigPath, "Chat", "chkGlobalChat", $g_iChkChatGlobal, "Int")
-	IniReadS($g_iChkScrambleGlobal, $g_sProfileConfigPath, "Chat", "chkGlobalScramble", $g_iChkScrambleGlobal, "Int")
-	IniReadS($g_iChkSwitchLang, $g_sProfileConfigPath, "Chat", "chkSwitchLang", $g_iChkSwitchLang, "Int")
-	IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chat", "cmbLang", 8, "int")
-	IniReadS($g_iChkChatClan, $g_sProfileConfigPath, "Chat", "chkClanChat", $g_iChkChatClan, "Int")
-	IniReadS($g_iChkClanUseResponses, $g_sProfileConfigPath, "Chat", "chkUseResponses", $g_iChkClanUseResponses, "Int")
-	IniReadS($g_iChkClanAlwaysMsg, $g_sProfileConfigPath, "Chat", "chkUseGeneric", $g_iChkClanAlwaysMsg, "Int")
-	IniReadS($g_iChkUseNotify, $g_sProfileConfigPath, "Chat", "chkChatNotify", $g_iChkUseNotify, "Int")
-	IniReadS($g_iChkPbSendNew, $g_sProfileConfigPath, "Chat", "chkPbSendNewChats", $g_iChkPbSendNew, "Int")
-	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chat", "ChkRusLang", $g_iChkRusLang, "Int")
+	IniReadS($g_iChkChatGlobal, $g_sProfileConfigPath, "Chatbot", "chkGlobalChat", $g_iChkChatGlobal, "int")
+	IniReadS($g_iChkScrambleGlobal, $g_sProfileConfigPath, "Chatbot", "chkGlobalScramble", $g_iChkScrambleGlobal, "int")
+	IniReadS($g_iChkSwitchLang, $g_sProfileConfigPath, "Chatbot", "chkSwitchLang", $g_iChkSwitchLang, "int")
+	IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chatbot", "cmbLang", 9, "int")
+	IniReadS($g_iChkChatClan, $g_sProfileConfigPath, "Chatbot", "chkClanChat", $g_iChkChatClan, "int")
+	IniReadS($g_iChkClanUseResponses, $g_sProfileConfigPath, "Chatbot", "chkUseResponses", $g_iChkClanUseResponses, "int")
+	IniReadS($g_iChkClanAlwaysMsg, $g_sProfileConfigPath, "Chatbot", "chkUseGeneric", $g_iChkClanAlwaysMsg, "int")
+	IniReadS($g_iChkUseNotify, $g_sProfileConfigPath, "Chatbot", "chkChatNotify", $g_iChkUseNotify, "int")
+	IniReadS($g_iChkPbSendNew, $g_sProfileConfigPath, "Chatbot", "chkPbSendNewChats", $g_iChkPbSendNew, "int")
+	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "int")
 
 
 	; ==================================================  Upgrade Management - Added by RK MOD ==================== ;
 
-	$g_ibUpdateNewUpgradesOnly = (IniRead($g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", 0) = 1)
+	IniReadS($g_ibUpdateNewUpgradesOnly, $g_sProfileConfigPath, "upgrade", "ChkUpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly, "int")
 
 EndFunc   ;==>ReadConfig_RKMod
 
@@ -246,57 +241,53 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	_Ini_Add("Bot Humanization", "cmbMaxActionsNumber", _GUICtrlComboBox_GetCurSel($g_cmbMaxActionsNumber))
 	_Ini_Add("Bot Humanization", "challengeMessage", GUICtrlRead($g_challengeMessage))
 
-	; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
-
-	_Ini_Add("search", "GrabHealHero", $g_bRestartSearchGrabHero ? 1 : 0)
-
 	; ================================================ Switch Profile - Added by RK MOD ======================================== ;
 
-	_Ini_Add("profiles", "chkGoldSwitchMax", $ichkGoldSwitchMax ? 1 : 0)
-	_Ini_Add("profiles", "cmbGoldMaxProfile", $icmbGoldMaxProfile)
-	_Ini_Add("profiles", "txtMaxGoldAmount", $itxtMaxGoldAmount)
-	_Ini_Add("profiles", "chkGoldSwitchMin", $ichkGoldSwitchMin ? 1 : 0)
-	_Ini_Add("profiles", "cmbGoldMinProfile", $icmbGoldMinProfile)
-	_Ini_Add("profiles", "txtMinGoldAmount", $itxtMinGoldAmount)
+	_Ini_Add("profiles", "chkGoldSwitchMax", $g_iChkGoldSwitchMax ? 1 : 0)
+	_Ini_Add("profiles", "cmbGoldMaxProfile", $g_iCmbGoldMaxProfile)
+	_Ini_Add("profiles", "txtMaxGoldAmount", $g_iTxtMaxGoldAmount)
+	_Ini_Add("profiles", "chkGoldSwitchMin", $g_iChkGoldSwitchMin ? 1 : 0)
+	_Ini_Add("profiles", "cmbGoldMinProfile", $g_iCmbGoldMinProfile)
+	_Ini_Add("profiles", "txtMinGoldAmount", $g_iTxtMinGoldAmount)
 
-	_Ini_Add("profiles", "chkElixirSwitchMax", $ichkElixirSwitchMax ? 1 : 0)
-	_Ini_Add("profiles", "cmbElixirMaxProfile", $icmbElixirMaxProfile)
-	_Ini_Add("profiles", "txtMaxElixirAmount", $itxtMaxElixirAmount)
-	_Ini_Add("profiles", "chkElixirSwitchMin", $ichkElixirSwitchMin ? 1 : 0)
-	_Ini_Add("profiles", "cmbElixirMinProfile", $icmbElixirMinProfile)
-	_Ini_Add("profiles", "txtMinElixirAmount", $itxtMinElixirAmount)
+	_Ini_Add("profiles", "chkElixirSwitchMax", $g_iChkElixirSwitchMax ? 1 : 0)
+	_Ini_Add("profiles", "cmbElixirMaxProfile", $g_iCmbElixirMaxProfile)
+	_Ini_Add("profiles", "txtMaxElixirAmount", $g_iTxtMaxElixirAmount)
+	_Ini_Add("profiles", "chkElixirSwitchMin", $g_iChkElixirSwitchMin ? 1 : 0)
+	_Ini_Add("profiles", "cmbElixirMinProfile", $g_iCmbElixirMinProfile)
+	_Ini_Add("profiles", "txtMinElixirAmount", $g_iTxtMinElixirAmount)
 
-	_Ini_Add("profiles", "chkDESwitchMax", $ichkDESwitchMax ? 1 : 0)
-	_Ini_Add("profiles", "cmbDEMaxProfile", $icmbDEMaxProfile)
-	_Ini_Add("profiles", "txtMaxDEAmount", $itxtMaxDEAmount)
-	_Ini_Add("profiles", "chkDESwitchMin", $ichkDESwitchMin ? 1 : 0)
-	_Ini_Add("profiles", "cmbDEMinProfile", $icmbDEMinProfile)
-	_Ini_Add("profiles", "txtMinDEAmount", $itxtMinDEAmount)
+	_Ini_Add("profiles", "chkDESwitchMax", $g_iChkDESwitchMax ? 1 : 0)
+	_Ini_Add("profiles", "cmbDEMaxProfile", $g_iCmbDEMaxProfile)
+	_Ini_Add("profiles", "txtMaxDEAmount", $g_iTxtMaxDEAmount)
+	_Ini_Add("profiles", "chkDESwitchMin", $g_iChkDESwitchMin ? 1 : 0)
+	_Ini_Add("profiles", "cmbDEMinProfile", $g_iCmbDEMinProfile)
+	_Ini_Add("profiles", "txtMinDEAmount", $g_iTxtMinDEAmount)
 
-	_Ini_Add("profiles", "chkTrophySwitchMax", $ichkTrophySwitchMax ? 1 : 0)
-	_Ini_Add("profiles", "cmbTrophyMaxProfile", $icmbTrophyMaxProfile)
-	_Ini_Add("profiles", "txtMaxTrophyAmount", $itxtMaxTrophyAmount)
-	_Ini_Add("profiles", "chkTrophySwitchMin", $ichkTrophySwitchMin ? 1 : 0)
-	_Ini_Add("profiles", "cmbTrophyMinProfile", $icmbTrophyMinProfile)
-	_Ini_Add("profiles", "txtMinTrophyAmount", $itxtMinTrophyAmount)
+	_Ini_Add("profiles", "chkTrophySwitchMax", $g_iChkTrophySwitchMax ? 1 : 0)
+	_Ini_Add("profiles", "cmbTrophyMaxProfile", $g_iCmbTrophyMaxProfile)
+	_Ini_Add("profiles", "txtMaxTrophyAmount", $g_iTxtMaxTrophyAmount)
+	_Ini_Add("profiles", "chkTrophySwitchMin", $g_iChkTrophySwitchMin ? 1 : 0)
+	_Ini_Add("profiles", "cmbTrophyMinProfile", $g_iCmbTrophyMinProfile)
+	_Ini_Add("profiles", "txtMinTrophyAmount", $g_iTxtMinTrophyAmount)
 
 	; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
-	_Ini_Add("Chat", "ChkChatGlobal", $g_iChkChatGlobal ? 1 : 0)
-	_Ini_Add("Chat", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)
-    _Ini_Add("Chat", "ChkSwitchLang", $g_iChkSwitchLang ? 1 : 0)
-	_Ini_Add("Chat", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmblang))
-	_Ini_Add("Chat", "ChkChatbotChatClan", $g_iChkChatClan ? 1 : 0)
-	_Ini_Add("Chat", "ChkUseResponses", $g_iChkClanUseResponses ? 1 : 0)
-	_Ini_Add("Chat", "ChkUseGeneric", $g_iChkClanAlwaysMsg ? 1 : 0)
-	_Ini_Add("Chat", "ChkChatNotify", $g_iChkUseNotify ? 1 : 0)
-	_Ini_Add("Chat", "ChkPbSendNewChats", $g_iChkPbSendNew ? 1 : 0)
-    _Ini_Add("Chat", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkChatGlobal", $g_iChkChatGlobal ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)
+    _Ini_Add("Chatbot", "ChkSwitchLang", $g_iChkSwitchLang ? 1 : 0)
+	_Ini_Add("Chatbot", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmbLang))
+	_Ini_Add("Chatbot", "ChkChatbotChatClan", $g_iChkChatClan ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkUseResponses", $g_iChkClanUseResponses ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkUseGeneric", $g_iChkClanAlwaysMsg ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkChatNotify", $g_iChkUseNotify ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkPbSendNewChats", $g_iChkPbSendNew ? 1 : 0)
+    _Ini_Add("Chatbot", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
 
-    _Ini_Add("Chat", "globalMsg1", $glb1)
-	_Ini_Add("Chat", "globalMsg2", $glb2)
-	_Ini_Add("Chat", "genericMsgClan", $cGeneric)
-	_Ini_Add("Chat", "responseMsgClan", $cResp)
+    _Ini_Add("Chatbot", "globalMsg1", $glb1)
+	_Ini_Add("Chatbot", "globalMsg2", $glb2)
+	_Ini_Add("Chatbot", "genericMsgClan", $cGeneric)
+	_Ini_Add("Chatbot", "responseMsgClan", $cResp)
 
 	; ================================================== Upgrade Management - Added by RK MOD ================================== ;
 
@@ -398,39 +389,35 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$g_icmbMaxActionsNumber = _GUICtrlComboBox_GetCurSel($g_icmbMaxActionsNumber)
 			$g_ichallengeMessage = GUICtrlRead($g_challengeMessage)
 
-			; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
-
-			$g_bRestartSearchGrabHero = (GUICtrlRead($g_hChkRestartSearchGrabHero) = $GUI_CHECKED)
-
 			; ================================================ Switch Profile - Added by RK MOD ======================================== ;
 
-			$ichkGoldSwitchMax = GUICtrlRead($g_hChkGoldSwitchMax) = $GUI_CHECKED ? 1 : 0
-			$icmbGoldMaxProfile = _GUICtrlComboBox_GetCurSel($g_hCmbGoldMaxProfile)
-			$itxtMaxGoldAmount = GUICtrlRead($g_hTxtMaxGoldAmount)
-			$ichkGoldSwitchMin = GUICtrlRead($g_hChkGoldSwitchMin) = $GUI_CHECKED ? 1 : 0
-			$icmbGoldMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbGoldMinProfile)
-			$itxtMinGoldAmount = GUICtrlRead($g_hTxtMinGoldAmount)
+			$g_iChkGoldSwitchMax = GUICtrlRead($g_hChkGoldSwitchMax) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbGoldMaxProfile = _GUICtrlComboBox_GetCurSel($g_hCmbGoldMaxProfile)
+			$g_iTxtMaxGoldAmount = GUICtrlRead($g_hTxtMaxGoldAmount)
+			$g_iChkGoldSwitchMin = GUICtrlRead($g_hChkGoldSwitchMin) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbGoldMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbGoldMinProfile)
+			$g_iTxtMinGoldAmount = GUICtrlRead($g_hTxtMinGoldAmount)
 
-			$ichkElixirSwitchMax = GUICtrlRead($g_hChkElixirSwitchMax) = $GUI_CHECKED ? 1 : 0
-			$icmbElixirMaxProfile = _GUICtrlComboBox_GetCurSel($g_hCmbElixirMaxProfile)
-			$itxtMaxElixirAmount = GUICtrlRead($g_hTxtMaxElixirAmount)
-			$ichkElixirSwitchMin = GUICtrlRead($g_hChkElixirSwitchMin) = $GUI_CHECKED ? 1 : 0
-			$icmbElixirMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbElixirMinProfile)
-			$itxtMinElixirAmount = GUICtrlRead($g_hTxtMinElixirAmount)
+			$g_iChkElixirSwitchMax = GUICtrlRead($g_hChkElixirSwitchMax) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbElixirMaxProfile = _GUICtrlComboBox_GetCurSel($g_hCmbElixirMaxProfile)
+			$g_iTxtMaxElixirAmount = GUICtrlRead($g_hTxtMaxElixirAmount)
+			$g_iChkElixirSwitchMin = GUICtrlRead($g_hChkElixirSwitchMin) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbElixirMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbElixirMinProfile)
+			$g_iTxtMinElixirAmount = GUICtrlRead($g_hTxtMinElixirAmount)
 
-			$ichkDESwitchMax = GUICtrlRead($g_hChkDESwitchMax) = $GUI_CHECKED ? 1 : 0
-			$icmbDEMaxProfile = _GUICtrlComboBox_GetCurSel($g_hCmbDEMaxProfile)
-			$itxtMaxDEAmount = GUICtrlRead($g_hTxtMaxDEAmount)
-			$ichkDESwitchMin = GUICtrlRead($g_hChkDESwitchMin) = $GUI_CHECKED ? 1 : 0
-			$icmbDEMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbDEMinProfile)
-			$itxtMinDEAmount = GUICtrlRead($g_hTxtMinDEAmount)
+			$g_iChkDESwitchMax = GUICtrlRead($g_hChkDESwitchMax) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbDEMaxProfile = _GUICtrlComboBox_GetCurSel($g_hCmbDEMaxProfile)
+			$g_iTxtMaxDEAmount = GUICtrlRead($g_hTxtMaxDEAmount)
+			$g_iChkDESwitchMin = GUICtrlRead($g_hChkDESwitchMin) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbDEMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbDEMinProfile)
+			$g_iTxtMinDEAmount = GUICtrlRead($g_hTxtMinDEAmount)
 
-			$ichkTrophySwitchMax = GUICtrlRead($g_hChkTrophySwitchMax) = $GUI_CHECKED ? 1 : 0
-			$icmbTrophyMaxProfile = _GUICtrlComboBox_GetCurSel($g_hCmbTrophyMaxProfile)
-			$itxtMaxTrophyAmount = GUICtrlRead($g_hTxtMaxTrophyAmount)
-			$ichkTrophySwitchMin = GUICtrlRead($g_hChkTrophySwitchMin) = $GUI_CHECKED ? 1 : 0
-			$icmbTrophyMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbTrophyMinProfile)
-			$itxtMinTrophyAmount = GUICtrlRead($g_hTxtMinTrophyAmount)
+			$g_iChkTrophySwitchMax = GUICtrlRead($g_hChkTrophySwitchMax) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbTrophyMaxProfile = _GUICtrlComboBox_GetCurSel($g_hCmbTrophyMaxProfile)
+			$g_iTxtMaxTrophyAmount = GUICtrlRead($g_hTxtMaxTrophyAmount)
+			$g_iChkTrophySwitchMin = GUICtrlRead($g_hChkTrophySwitchMin) = $GUI_CHECKED ? 1 : 0
+			$g_iCmbTrophyMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbTrophyMinProfile)
+			$g_iTxtMinTrophyAmount = GUICtrlRead($g_hTxtMinTrophyAmount)
 
 			; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
@@ -447,7 +434,7 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			; ================================================== Upgrade Management - Added by RK MOD ============================= ;
 
-			$g_ibUpdateNewUpgradesOnly = (GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED)
+			$g_ibUpdateNewUpgradesOnly = GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED ? 1 : 0
 			
 		Case "Read"
 
@@ -553,39 +540,35 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			cmbStandardReplay()
 			cmbWarReplay()
 
-			; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
-
-			GUICtrlSetState($g_hChkRestartSearchGrabHero, $g_bRestartSearchGrabHero ? $GUI_CHECKED : $GUI_UNCHECKED)
-
 			; ================================================  Switch Profile - Added by RK MOD ======================================== ;
 
-			GUICtrlSetState($g_hChkGoldSwitchMax, $ichkGoldSwitchMax = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbGoldMaxProfile, $icmbGoldMaxProfile)
-			GUICtrlSetData($g_hTxtMaxGoldAmount, $itxtMaxGoldAmount)
-			GUICtrlSetState($g_hChkGoldSwitchMin, $ichkGoldSwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbGoldMinProfile, $icmbGoldMinProfile)
-			GUICtrlSetData($g_hTxtMinGoldAmount, $itxtMinGoldAmount)
+			GUICtrlSetState($g_hChkGoldSwitchMax, $g_iChkGoldSwitchMax = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbGoldMaxProfile, $g_iCmbGoldMaxProfile)
+			GUICtrlSetData($g_hTxtMaxGoldAmount, $g_iTxtMaxGoldAmount)
+			GUICtrlSetState($g_hChkGoldSwitchMin, $g_iChkGoldSwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbGoldMinProfile, $g_iCmbGoldMinProfile)
+			GUICtrlSetData($g_hTxtMinGoldAmount, $g_iTxtMinGoldAmount)
 
-			GUICtrlSetState($g_hChkElixirSwitchMax, $ichkElixirSwitchMax = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbElixirMaxProfile, $icmbElixirMaxProfile)
-			GUICtrlSetData($g_hTxtMaxElixirAmount, $itxtMaxElixirAmount)
-			GUICtrlSetState($g_hChkElixirSwitchMin, $ichkElixirSwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbElixirMinProfile, $icmbElixirMinProfile)
-			GUICtrlSetData($g_hTxtMinElixirAmount, $itxtMinElixirAmount)
+			GUICtrlSetState($g_hChkElixirSwitchMax, $g_iChkElixirSwitchMax = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbElixirMaxProfile, $g_iCmbElixirMaxProfile)
+			GUICtrlSetData($g_hTxtMaxElixirAmount, $g_iTxtMaxElixirAmount)
+			GUICtrlSetState($g_hChkElixirSwitchMin, $g_iChkElixirSwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbElixirMinProfile, $g_iCmbElixirMinProfile)
+			GUICtrlSetData($g_hTxtMinElixirAmount, $g_iTxtMinElixirAmount)
 
-			GUICtrlSetState($g_hChkDESwitchMax, $ichkDESwitchMax = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbDEMaxProfile, $icmbDEMaxProfile)
-			GUICtrlSetData($g_hTxtMaxDEAmount, $itxtMaxDEAmount)
-			GUICtrlSetState($g_hChkDESwitchMin, $ichkDESwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbDEMinProfile, $icmbDEMinProfile)
-			GUICtrlSetData($g_hTxtMinDEAmount, $itxtMinDEAmount)
+			GUICtrlSetState($g_hChkDESwitchMax, $g_iChkDESwitchMax = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbDEMaxProfile, $g_iCmbDEMaxProfile)
+			GUICtrlSetData($g_hTxtMaxDEAmount, $g_iTxtMaxDEAmount)
+			GUICtrlSetState($g_hChkDESwitchMin, $g_iChkDESwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbDEMinProfile, $g_iCmbDEMinProfile)
+			GUICtrlSetData($g_hTxtMinDEAmount, $g_iTxtMinDEAmount)
 
-			GUICtrlSetState($g_hChkTrophySwitchMax, $ichkTrophySwitchMax = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbTrophyMaxProfile, $icmbTrophyMaxProfile)
-			GUICtrlSetData($g_hTxtMaxTrophyAmount, $itxtMaxTrophyAmount)
-			GUICtrlSetState($g_hChkTrophySwitchMin, $ichkTrophySwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbTrophyMinProfile, $icmbTrophyMinProfile)
-			GUICtrlSetData($g_hTxtMinTrophyAmount, $itxtMinTrophyAmount)
+			GUICtrlSetState($g_hChkTrophySwitchMax, $g_iChkTrophySwitchMax = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbTrophyMaxProfile, $g_iCmbTrophyMaxProfile)
+			GUICtrlSetData($g_hTxtMaxTrophyAmount, $g_iTxtMaxTrophyAmount)
+			GUICtrlSetState($g_hChkTrophySwitchMin, $g_iChkTrophySwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbTrophyMinProfile, $g_iCmbTrophyMinProfile)
+			GUICtrlSetData($g_hTxtMinTrophyAmount, $g_iTxtMinTrophyAmount)
 
 			; ================================================== NEW ChatBot - by RK MOD ======================================== ;
 
@@ -612,7 +595,8 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			; ==================================================  Upgrade Management - Added by RK MOD ======================================== ;
 
-			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+            chkUpdateNewUpgradesOnly()
 			
 	EndSwitch
 

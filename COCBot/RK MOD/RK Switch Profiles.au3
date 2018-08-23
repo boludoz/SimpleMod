@@ -14,69 +14,69 @@
 ; Example .......:  =====================================================================================================================
 
 Func ProfileSwitch()
-	If $ichkGoldSwitchMax = 1 Or $ichkGoldSwitchMin = 1 Or $ichkElixirSwitchMax = 1 Or $ichkElixirSwitchMin = 1 Or _
-			$ichkDESwitchMax = 1 Or $ichkDESwitchMin = 1 Or $ichkTrophySwitchMax = 1 Or $ichkTrophySwitchMin = 1 Then
+	If $g_iChkGoldSwitchMax = 1 Or $g_iChkGoldSwitchMin = 1 Or $g_iChkElixirSwitchMax = 1 Or $g_iChkElixirSwitchMin = 1 Or _
+			$g_iChkDESwitchMax = 1 Or $g_iChkDESwitchMin = 1 Or $g_iChkTrophySwitchMax = 1 Or $g_iChkTrophySwitchMin = 1 Then
 		Local $SwitchtoProfile = ""
 		While True
-			If $ichkGoldSwitchMax = 1 Then
-				If Number($g_aiCurrentLoot[$eLootGold]) >= Number($itxtMaxGoldAmount) Then
-					$SwitchtoProfile = $icmbGoldMaxProfile
+			If $g_iChkGoldSwitchMax = 1 Then
+				If Number($g_aiCurrentLoot[$eLootGold]) >= Number($g_iTxtMaxGoldAmount) Then
+					$SwitchtoProfile = $g_iCmbGoldMaxProfile
 					SetLog("Village Gold detected Above Gold Profile Switch Conditions")
 					SetLog("It's time to switch profile")
 					ExitLoop
 				EndIf
 			EndIf
-			If $ichkGoldSwitchMin = 1 Then
-				If Number($g_aiCurrentLoot[$eLootGold]) < Number($itxtMinGoldAmount) And Number($g_aiCurrentLoot[$eLootGold]) > 1 Then
-					$SwitchtoProfile = $icmbGoldMinProfile
+			If $g_iChkGoldSwitchMin = 1 Then
+				If Number($g_aiCurrentLoot[$eLootGold]) < Number($g_iTxtMinGoldAmount) And Number($g_aiCurrentLoot[$eLootGold]) > 1 Then
+					$SwitchtoProfile = $g_iCmbGoldMinProfile
 					Setlog("Village Gold detected Below Gold Profile Switch Conditions")
 					Setlog("It's time to switch profile")
 					ExitLoop
 				EndIf
 			EndIf
-			If $ichkElixirSwitchMax = 1 Then
-				If Number($g_aiCurrentLoot[$eLootElixir]) >= Number($itxtMaxElixirAmount) Then
-					$SwitchtoProfile = $icmbElixirMaxProfile
+			If $g_iChkElixirSwitchMax = 1 Then
+				If Number($g_aiCurrentLoot[$eLootElixir]) >= Number($g_iTxtMaxElixirAmount) Then
+					$SwitchtoProfile = $g_iCmbElixirMaxProfile
 					SetLog("Village Gold detected Above Elixir Profile Switch Conditions")
 					SetLog("It's time to switch profile")
 					ExitLoop
 				EndIf
 			EndIf
-			If $ichkElixirSwitchMin = 1 Then
-				If Number($g_aiCurrentLoot[$eLootElixir]) < Number($itxtMinElixirAmount) And Number($g_aiCurrentLoot[$eLootElixir]) > 1 Then
-					$SwitchtoProfile = $icmbElixirMinProfile
+			If $g_iChkElixirSwitchMin = 1 Then
+				If Number($g_aiCurrentLoot[$eLootElixir]) < Number($g_iTxtMinElixirAmount) And Number($g_aiCurrentLoot[$eLootElixir]) > 1 Then
+					$SwitchtoProfile = $g_iCmbElixirMinProfile
 					SetLog("Village Gold detected Below Elixir Switch Conditions")
 					SetLog("It's time to switch profile")
 					ExitLoop
 				EndIf
 			EndIf
-			If $ichkDESwitchMax = 1 Then
-				If Number($g_aiCurrentLoot[$eLootDarkElixir]) >= Number($itxtMaxDEAmount) Then
-					$SwitchtoProfile = $icmbDEMaxProfile
+			If $g_iChkDESwitchMax = 1 Then
+				If Number($g_aiCurrentLoot[$eLootDarkElixir]) >= Number($g_iTxtMaxDEAmount) Then
+					$SwitchtoProfile = $g_iCmbDEMaxProfile
 					SetLog("Village Dark Elixir detected Above Dark Elixir Profile Switch Conditions")
 					SetLog("It's time to switch profile")
 					ExitLoop
 				EndIf
 			EndIf
-			If $ichkDESwitchMin = 1 Then
-				If Number($g_aiCurrentLoot[$eLootDarkElixir]) < Number($itxtMinDEAmount) And Number($g_aiCurrentLoot[$eLootDarkElixir]) > 1 Then
-					$SwitchtoProfile = $icmbDEMinProfile
+			If $g_iChkDESwitchMin = 1 Then
+				If Number($g_aiCurrentLoot[$eLootDarkElixir]) < Number($g_iTxtMinDEAmount) And Number($g_aiCurrentLoot[$eLootDarkElixir]) > 1 Then
+					$SwitchtoProfile = $g_iCmbDEMinProfile
 					SetLog("Village Dark Elixir detected Below Dark Elixir Profile Switch Conditions")
 					SetLog("It's time to switch profile")
 					ExitLoop
 				EndIf
 			EndIf
-			If $ichkTrophySwitchMax = 1 Then
-				If Number($g_aiCurrentLoot[$eLootTrophy]) >= Number($itxtMaxTrophyAmount) Then
-					$SwitchtoProfile = $icmbTrophyMaxProfile
+			If $g_iChkTrophySwitchMax = 1 Then
+				If Number($g_aiCurrentLoot[$eLootTrophy]) >= Number($g_iTxtMaxTrophyAmount) Then
+					$SwitchtoProfile = $g_iCmbTrophyMaxProfile
 					SetLog("Village Trophies detected Above Throphy Profile Switch Conditions")
 					SetLog("It's time to switch profile")
 					ExitLoop
 				EndIf
 			EndIf
-			If $ichkTrophySwitchMin = 1 Then
-				If Number($g_aiCurrentLoot[$eLootTrophy]) < Number($itxtMinTrophyAmount) And Number($g_aiCurrentLoot[$eLootTrophy]) > 1 Then
-					$SwitchtoProfile = $icmbTrophyMinProfile
+			If $g_iChkTrophySwitchMin = 1 Then
+				If Number($g_aiCurrentLoot[$eLootTrophy]) < Number($g_iTxtMinTrophyAmount) And Number($g_aiCurrentLoot[$eLootTrophy]) > 1 Then
+					$SwitchtoProfile = $g_iCmbTrophyMinProfile
 					SetLog("Village Trophies detected Below Trophy Profile Switch Conditions")
 					SetLog("It's time to switch profile")
 					ExitLoop
