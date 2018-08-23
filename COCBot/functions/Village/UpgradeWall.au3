@@ -17,80 +17,23 @@ Func UpgradeWall()
 
 	Local $MinWallGold = Number($g_aiCurrentLoot[$eLootGold] - $g_iWallCost) > Number($g_iUpgradeWallMinGold) ; Check if enough Gold
 	Local $MinWallElixir = Number($g_aiCurrentLoot[$eLootElixir] - $g_iWallCost) > Number($g_iUpgradeWallMinElixir) ; Check if enough Elixir
-	Local $iElixirPriority = $g_iCmbUpgrdPriority = 0 Or ($g_iCmbUpgrdPriority = 1 And ($g_bAutoLabUpgradeEnable = False Or ((($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0) Or $g_sLabUpgradeTime <> "")) And ($g_iChkAutoUpgrade = 0 Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[0] = 1)) And ($g_iBuildingsNeedElixir <= 0 Or ($g_iBuildingsNeedElixir > 0 And $g_iFreeBuilderCount = 1)));Lab, Auto Upgrade and Building Upgrade criteria toggling for Elixier Upgrades
-	Local $iGoldPriority = $g_iCmbUpgrdPriority = 0 Or ($g_iCmbUpgrdPriority = 1 And (($g_iChkAutoUpgrade = 0 Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[0] = 1)) And ($g_iBuildingsNeedGold <= 0 Or ($g_iBuildingsNeedGold > 0 And $g_iFreeBuilderCount = 1))));Auto Upgrade and Building Upgrade criteria toggling for Gold Upgrades
-			
+				
 	If $g_bAutoUpgradeWallsEnable = True Then
 		SetLog("Checking Upgrade Walls", $COLOR_INFO)
-		If SkipWallUpgrade() Then Return
-		If $g_iCmbUpgrdPriority = 1 And Not $g_iFreeBuilderCount = 1 Then Return
-		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1 ; internal check if builder still available, if loop index upgrade slot is enabled, and if upgrade is not in progress
-			If $g_abBuildingUpgradeEnable[$iz] = True And $g_avBuildingUpgrades[$iz][7] = "" Then
-				Switch $g_avBuildingUpgrades[$iz][3]
-					Case "Gold"
-						$g_iBuildingsNeedGold += Number($g_avBuildingUpgrades[$iz][2]) ; sum gold required for enabled upgrade
-					Case "Elixir"
-						$g_iBuildingsNeedElixir += Number($g_avBuildingUpgrades[$iz][2]) ; sum elixir required for enabled upgrade
-				EndSwitch
-			EndIf
-		Next
-		If $g_iFreeBuilderCount > 0 Then
-			ClickP($aAway, 1, 0, "#0313") ; click away
-			
-			While ($g_iUpgradeWallLootType = 0 And ($MinWallGold)) Or ($g_iUpgradeWallLootType = 1 And ($MinWallElixir)) Or ($g_iUpgradeWallLootType = 2 And ($MinWallGold Or $MinWallElixir))
+		If $g_iCmbUpgrdPriority = 0 Then
+			SetLog("Wall Priority Set.", $COLOR_INFO)
+		ElseIf $g_iCmbUpgrdPriority = 1
+			SetLog("Building Priority Set.", $COLOR_INFO)
+			If SkipWallUpgrade() Then Return	
+			If $g_iFreeBuilderCount > 0 Then
+				ClickP($aAway, 1, 0, "#0313") ; click away
+				
+				While ($g_iUpgradeWallLootType = 0 And ($MinWallGold)) Or ($g_iUpgradeWallLootType = 1 And ($MinWallElixir)) Or ($g_iUpgradeWallLootType = 2 And ($MinWallGold Or $MinWallElixir))
 
-				Switch $g_iUpgradeWallLootType
-					Case 0
-						If $MinWallGold And $iGoldPriority Then
-							SetLog("Upgrading Wall using Gold", $COLOR_SUCCESS)
-							If imglocCheckWall() Then
-								If Not UpgradeWallGold() Then
-									SetLog("Upgrade with Gold failed, skipping...", $COLOR_ERROR)
-									Return
-								EndIf
-							ElseIf SwitchToNextWallLevel() Then
-								SetLog("No more walls of current level, switching to next", $COLOR_ACTION)
-							Else
-								Return
-							EndIf
-						Else
-							SetLog("Gold is below minimum, Skipping Upgrade", $COLOR_ERROR)
-						EndIf
-					Case 1
-						If $MinWallElixir And $iElixirPriority Then
-							SetLog("Upgrading Wall using Elixir", $COLOR_SUCCESS)
-							If imglocCheckWall() Then
-								If Not UpgradeWallElixir() Then
-									SetLog("Upgrade with Elixier failed, skipping...", $COLOR_ERROR)
-									Return
-								EndIf
-							ElseIf SwitchToNextWallLevel() Then
-								SetLog("No more walls of current level, switching to next", $COLOR_ACTION)
-							Else
-								Return
-							EndIf
-						Else
-							SetLog("Elixir is below minimum, Skipping Upgrade", $COLOR_ERROR)
-						EndIf
-					Case 2
-						If $MinWallElixir And $iElixirPriority Then
-							SetLog("Upgrading Wall using Elixir", $COLOR_SUCCESS)
-							If imglocCheckWall() Then
-								If Not UpgradeWallElixir() Then
-									SetLog("Upgrade with Elixir failed, attempt to upgrade using Gold", $COLOR_ERROR)
-									If Not UpgradeWallGold() Then
-										SetLog("Upgrade with Gold failed, skipping...", $COLOR_ERROR)
-										Return
-									EndIf
-								EndIf
-							ElseIf SwitchToNextWallLevel() Then
-								SetLog("No more walls of current level, switching to next", $COLOR_ACTION)
-							Else
-								Return
-							EndIf
-						Else
-							SetLog("Elixir is below minimum, attempt to upgrade using Gold", $COLOR_ERROR)
-							If $MinWallGold And $iGoldPriority Then
+					Switch $g_iUpgradeWallLootType
+						Case 0
+							If $MinWallGold Then
+								SetLog("Upgrading Wall using Gold", $COLOR_SUCCESS)
 								If imglocCheckWall() Then
 									If Not UpgradeWallGold() Then
 										SetLog("Upgrade with Gold failed, skipping...", $COLOR_ERROR)
@@ -104,22 +47,71 @@ Func UpgradeWall()
 							Else
 								SetLog("Gold is below minimum, Skipping Upgrade", $COLOR_ERROR)
 							EndIf
-						EndIf
-				EndSwitch
+						Case 1
+							If $MinWallElixir Then
+								SetLog("Upgrading Wall using Elixir", $COLOR_SUCCESS)
+								If imglocCheckWall() Then
+									If Not UpgradeWallElixir() Then
+										SetLog("Upgrade with Elixier failed, skipping...", $COLOR_ERROR)
+										Return
+									EndIf
+								ElseIf SwitchToNextWallLevel() Then
+									SetLog("No more walls of current level, switching to next", $COLOR_ACTION)
+								Else
+									Return
+								EndIf
+							Else
+								SetLog("Elixir is below minimum, Skipping Upgrade", $COLOR_ERROR)
+							EndIf
+						Case 2
+							If $MinWallElixir Then
+								SetLog("Upgrading Wall using Elixir", $COLOR_SUCCESS)
+								If imglocCheckWall() Then
+									If Not UpgradeWallElixir() Then
+										SetLog("Upgrade with Elixir failed, attempt to upgrade using Gold", $COLOR_ERROR)
+										If Not UpgradeWallGold() Then
+											SetLog("Upgrade with Gold failed, skipping...", $COLOR_ERROR)
+											Return
+										EndIf
+									EndIf
+								ElseIf SwitchToNextWallLevel() Then
+									SetLog("No more walls of current level, switching to next", $COLOR_ACTION)
+								Else
+									Return
+								EndIf
+							Else
+								SetLog("Elixir is below minimum, attempt to upgrade using Gold", $COLOR_ERROR)
+								If $MinWallGold Then
+									If imglocCheckWall() Then
+										If Not UpgradeWallGold() Then
+											SetLog("Upgrade with Gold failed, skipping...", $COLOR_ERROR)
+											Return
+										EndIf
+									ElseIf SwitchToNextWallLevel() Then
+										SetLog("No more walls of current level, switching to next", $COLOR_ACTION)
+									Else
+										Return
+									EndIf
+								Else
+									SetLog("Gold is below minimum, Skipping Upgrade", $COLOR_ERROR)
+								EndIf
+							EndIf
+					EndSwitch
 
-				; Check Builder/Shop if open by accident
-				If _CheckPixel($g_aShopWindowOpen, $g_bCapturePixel, Default, "ChkShopOpen", $COLOR_DEBUG) = True Then
-					Click(820, 40, 1, 0, "#0315") ; Close it
-				EndIf
+					; Check Builder/Shop if open by accident
+					If _CheckPixel($g_aShopWindowOpen, $g_bCapturePixel, Default, "ChkShopOpen", $COLOR_DEBUG) = True Then
+						Click(820, 40, 1, 0, "#0315") ; Close it
+					EndIf
 
-				ClickP($aAway, 1, 0, "#0314") ; click away
-				VillageReport(True, True)
-				$MinWallGold = Number($g_aiCurrentLoot[$eLootGold] - $g_iWallCost) > Number($g_iUpgradeWallMinGold) ; Check if enough Gold
-				$MinWallElixir = Number($g_aiCurrentLoot[$eLootElixir] - $g_iWallCost) > Number($g_iUpgradeWallMinElixir) ; Check if enough Elixir
+					ClickP($aAway, 1, 0, "#0314") ; click away
+					VillageReport(True, True)
+					$MinWallGold = Number($g_aiCurrentLoot[$eLootGold] - $g_iWallCost) > Number($g_iUpgradeWallMinGold) ; Check if enough Gold
+					$MinWallElixir = Number($g_aiCurrentLoot[$eLootElixir] - $g_iWallCost) > Number($g_iUpgradeWallMinElixir) ; Check if enough Elixir
 
-			WEnd
-		Else
-			SetLog("No free builder, Upgrade Walls skipped..", $COLOR_ERROR)
+				WEnd
+			Else
+				SetLog("No free builder, Upgrade Walls skipped..", $COLOR_ERROR)
+			EndIf
 		EndIf
 	EndIf
 	If _Sleep($DELAYUPGRADEWALL1) Then Return
@@ -132,6 +124,12 @@ Func UpgradeWallGold()
 
 	;Click($WallxLOC, $WallyLOC)
 	If _Sleep($DELAYRESPOND) Then Return
+	
+	If GoldPriority Then
+		SetLog("Gold Priority Verified", $COLOR_INFO)
+		Else
+			Return False
+	Endif
 
 	Local $offColors[3][3] = [[0xD6714B, 47, 37], [0xF0E850, 70, 0], [0xF4F8F2, 79, 0]] ; 2nd pixel brown hammer, 3rd pixel gold, 4th pixel edge of button
 	Local $ButtonPixel = _MultiPixelSearch(240, 563 + $g_iBottomOffsetY, 670, 650 + $g_iBottomOffsetY, 1, 1, Hex(0xF3F3F1, 6), $offColors, 30) ; first gray/white pixel of button
@@ -181,6 +179,12 @@ Func UpgradeWallElixir()
 
 	;Click($WallxLOC, $WallyLOC)
 	If _Sleep($DELAYRESPOND) Then Return
+	
+	If ElixirPriority Then
+		SetLog("Gold Priority Verified", $COLOR_INFO)
+		Else
+			Return False
+	Endif
 
 	Local $offColors[3][3] = [[0xBC5B31, 38, 32], [0xF84CF9, 72, 0], [0xF5F9F2, 79, 0]] ; 2nd pixel brown hammer, 3rd pixel gold, 4th pixel edge of button
 	Local $ButtonPixel = _MultiPixelSearch(240, 563 + $g_iBottomOffsetY, 670, 650 + $g_iBottomOffsetY, 1, 1, Hex(0xF4F7F2, 6), $offColors, 30) ; first gray/white pixel of button
@@ -252,7 +256,9 @@ Func SkipWallUpgrade() ; Dynamic Upgrades
 	$iAvailBuilderCount = $g_iFreeBuilderCount ; capture local copy of free builders
 
 	;;;;; Check building upgrade resouce needs .vs. available resources for walls
-	For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1 ; loop through all upgrades to see if any are enabled.
+	
+	
+For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1 ; loop through all upgrades to see if any are enabled.
 		If $g_abBuildingUpgradeEnable[$iz] = True Then $iUpgradeAction += 1 ; count number enabled
 	Next
 
@@ -369,3 +375,94 @@ Func SwitchToNextWallLevel() ; switches wall level to upgrade to next level
 	Return False
 EndFunc   ;==>SwitchToNextWallLevel
 
+Func GoldPriority()
+
+	Local $iBuildingsNeedGold = 0
+	Local $iGoldBuildings = 0
+	Local $iUpgradeAction = 0
+	
+	If $g_iCmbUpgrdPriority = 1 Then
+		SetLog("Gold Priority is enabled, checking buildings now.", $COLOR_INFO)
+		Else
+			SetLog("Gold Priority is disabled.", $COLOR_INFO)
+			Return True
+		
+		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
+			If $g_abBuildingUpgradeEnable[$iz] = True Then $iUpgradeAction += 1
+		Next
+				
+		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
+			If $iUpgradeAction > 0 And $g_abBuildingUpgradeEnable[$iz] = True And $g_avBuildingUpgrades[$iz][7] = "" Then
+				Switch $g_avBuildingUpgrades[$iz][3]
+					Case "Gold"
+						$iBuildingsNeedGold += Number($g_avBuildingUpgrades[$iz][2]) 
+						$iGoldBuildings += 1
+				EndSwitch
+			EndIf
+		Next
+		
+		
+		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[0] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = 1) Then
+			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
+			Else
+				SetLog("Auto Upgrade: Priority Fail.", $COLOR_WARNING)
+				Return False
+		EndIf
+		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings > 0 And $g_bUpgradeWallSaveBuilder = 1) Then
+			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)	
+			Else	
+				SetLog("Building: Priority Fail.", $COLOR_WARNING)
+				Return False
+		EndIf
+	EndIf
+	Return True
+EndFunc   ;==>GoldPriority
+
+Func ElixirPriority()
+
+	Local $iBuildingsNeedElixir = 0
+	Local $iElixirBuildings = 0
+	Local $iUpgradeAction = 0
+	
+	If $g_iCmbUpgrdPriority = 1 Then
+		SetLog("Elixir Priority is enabled, checking buildings now.", $COLOR_INFO)
+		Else
+			SetLog("Elixir Priority is disabled.", $COLOR_INFO)
+			Return True
+		
+		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
+			If $g_abBuildingUpgradeEnable[$iz] = True Then $iUpgradeAction += 1
+		Next
+				
+		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
+			If $iUpgradeAction > 0 And $g_abBuildingUpgradeEnable[$iz] = True And $g_avBuildingUpgrades[$iz][7] = "" Then
+				Switch $g_avBuildingUpgrades[$iz][3]
+					Case "Elixir"
+						$iBuildingsNeedElixir += Number($g_avBuildingUpgrades[$iz][2]) 
+						$iElixirBuildings += 1
+				EndSwitch
+			EndIf
+		Next
+		
+		
+		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = 1) Then
+			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
+			Else
+				SetLog("Auto Upgrade: Priority Fail.", $COLOR_WARNING)
+				Return False
+		EndIf
+		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings > 0 And $g_bUpgradeWallSaveBuilder = 1) Then
+			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)	
+			Else	
+				SetLog("Building: Priority Fail.", $COLOR_WARNING)
+				Return False
+		EndIf
+		If ($g_bAutoLabUpgradeEnable = False) Or ($g_bAutoLabUpgradeEnable = True And (($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0)) Or ($g_sLabUpgradeTime <> "") Then
+			SetLog("Laboratory: Priority Pass.", $COLOR_SUCCESS)
+			Else
+				SetLog(("Laboratory: Priority Fail.", $COLOR_WARNING)
+				Return False
+		EndIf
+	EndIf
+	Return True
+EndFunc   ;==>ElixirPriority
