@@ -22,7 +22,7 @@ Func UpgradeWall()
 		SetLog("Checking Upgrade Walls", $COLOR_INFO)
 		If $g_iCmbUpgrdPriority = 0 Then
 			SetLog("Wall Priority Set.", $COLOR_INFO)
-		ElseIf $g_iCmbUpgrdPriority = 1
+		ElseIf $g_iCmbUpgrdPriority = 1 Then
 			SetLog("Building Priority Set.", $COLOR_INFO)
 			If SkipWallUpgrade() Then Return	
 			If $g_iFreeBuilderCount > 0 Then
