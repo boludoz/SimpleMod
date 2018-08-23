@@ -647,7 +647,7 @@ Func SaveConfig_600_28()
 	_Ini_Add("search", "GrabHealHero", $g_bRestartSearchGrabHero ? 1 : 0)
 	
 	; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
-	_Ini_Add("search", "ChkReturnTimer", $g_bReturnTimerEnable)
+	_Ini_Add("search", "ChkReturnTimerEnable", $g_bReturnTimerEnable)
 	_Ini_Add("search", "ReturnTimer", $g_iTxtReturnTimer)
 EndFunc   ;==>SaveConfig_600_28
 

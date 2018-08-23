@@ -146,7 +146,7 @@ Func ReadConfig_RKMod()
 
 	; ==================================================  Upgrade Management - Added by RK MOD ==================== ;
 
-	$g_ibUpdateNewUpgradesOnly = (IniRead($g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", 0) = 1)
+	IniReadS($g_ibUpdateNewUpgradesOnly, $g_sProfileConfigPath, "upgrade", "ChkUpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly, "int")
 
 EndFunc   ;==>ReadConfig_RKMod
 
@@ -434,7 +434,7 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			; ================================================== Upgrade Management - Added by RK MOD ============================= ;
 
-			$g_ibUpdateNewUpgradesOnly = (GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED)
+			$g_ibUpdateNewUpgradesOnly = GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED ? 1 : 0
 			
 		Case "Read"
 
@@ -595,7 +595,8 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			; ==================================================  Upgrade Management - Added by RK MOD ======================================== ;
 
-			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+            chkUpdateNewUpgradesOnly()
 			
 	EndSwitch
 
