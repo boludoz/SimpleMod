@@ -73,20 +73,25 @@ Func getArmyHeroTime($iHeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = F
 		$sResult = getRemainTHero($aHeroRemainData[$index][0], $aHeroRemainData[$index][1]) ;Get Hero training time via OCR.
 
 		If $sResult <> "" Then
-			Local $bBoosted = False
-			If QuickMIS("BC1", @ScriptDir & "\imgxml\Resources\Boosted", 435, 300, 500, 337) or QuickMIS("BC1", @ScriptDir & "\imgxml\Resources\Boosted", 435, 155, 500, 190) Then ; search for treasury button
-				$bBoosted = True
-			EndIf
+			;Local $bBoosted1 = False
 
-			$aResultHeroes[$index] = ConvertOCRTime($aHeroRemainData[$index][2] & " recover", $sResult, False) ; update global array
-			If _DateDiff("h", $g_aiHeroBoost[$index], _NowCalc()) < 1 Then
-				$aResultHeroes[$index] /= 4 ; Check if Bot boosted Heroes and boost is still active and if it is then reduce heal time ;)
-				$bBoosted = False
-			EndIf
+			;If QuickMIS("BC1", @ScriptDir & "\imgxml\Resources\Boosted1", 304, 119, 320, 135) And QuickMIS("BC1", @ScriptDir & "\imgxml\Resources\Boosted1", 462, 119, 478, 134) Then
+			;	$bBoosted1 = True
+			;	If $g_bDebugSetlogTrain Or $g_bDebugSetlog Then SetLog("Both Troops and Spells Boosted", $COLOR_INFO)
+			;EndIf
 
-			If $bBoosted Then
-				$aResultHeroes[$index] /= 4
-			EndIf
+			$aResultHeroes[$index] = ConvertOCRLongTime($aHeroRemainData[$index][2] & " recover", $sResult, False) ; update global array
+
+			;If _DateDiff("h", $g_aiHeroBoost[$index], _NowCalc()) < 1 Then
+			;	$aResultHeroes[$index] /= 4 ; Check if Bot boosted Heroes and boost is still active and if it is then reduce heal time ;)
+			;	$bBoosted1 = False
+			;EndIf
+
+			$aResultHeroes[$index] = HeroBoostTimeDiv($aResultHeroes[$index], $index)
+
+			;If $bBoosted1 Then ; Temp will remove after HeroBoostTime
+			;	$aResultHeroes[$index] /= 4
+			;EndIf
 
 			SetLog("Remaining " & $aHeroRemainData[$index][2] & " recover time: " & StringFormat("%.2f", $aResultHeroes[$index]), $COLOR_INFO)
 
@@ -130,3 +135,4 @@ Func getArmyHeroTime($iHeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = F
 	EndIf
 
 EndFunc   ;==>getArmyHeroTime
+
