@@ -116,7 +116,7 @@ Func CheckHeroBoost()
 	ClickP($aAway, 2, 0, "#0000") ;Click Away
 EndFunc   ;==>CheckHeroBoost
 
-Func HeroBoostTime($aResultHeroes, $i)
+Func HeroBoostTimeDiv($aResultHeroes, $i)
 	Local $iheroTime = ($CurrHeroBTime[$i] - (_DateDiff("n", $CTime[$i], _NowCalc())))
 
 	If $g_bDebugSetlog Then
