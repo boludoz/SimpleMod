@@ -177,7 +177,7 @@ Func UpgradeWallElixir()
 	If _Sleep($DELAYRESPOND) Then Return
 	
 	If ElixirPriority() Then
-		SetLog("Gold Priority Verified", $COLOR_INFO)
+		SetLog("Elixir Priority Verified", $COLOR_INFO)
 		Else
 			Return False
 	Endif
