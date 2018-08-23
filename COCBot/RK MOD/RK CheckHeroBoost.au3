@@ -128,12 +128,12 @@ Func HeroBoostTimeDiv($aResultHeroes, $i)
 		EndIf
 
 		If $iheroTime > 0 Then
-			If ($aResultHeroes - $iheroTime) < 0 Then
+			If ($aResultHeroes - ($iheroTime * 4)) < 0 Then
 				If $g_bDebugSetlog Then SetLog("$aResultHeroes /= 4", $COLOR_INFO)
 				$aResultHeroes /= 4
-			ElseIf ($aResultHeroes - $iheroTime) > 0 Then
+			ElseIf ($aResultHeroes - ($iheroTime * 4)) > 0 Then
 				If $g_bDebugSetlog Then SetLog("$aResultHeroes = $aResultHeroes - ($iheroTime * 4)", $COLOR_INFO)
-				$aResultHeroes = $aResultHeroes - ($iheroTime * 4)
+				$aResultHeroes = ($aResultHeroes - ($iheroTime * 4))+ ($aResultHeroes / 4)
 			EndIf
 		EndIf
 		Return $aResultHeroes
