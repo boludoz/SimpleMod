@@ -132,11 +132,7 @@ Func SaveBuildingConfig()
 		_Ini_Add("upgrade", "upgraderepeat" & $iz, $g_abUpgradeRepeatEnable[$iz] ? 1 : 0)
 		_Ini_Add("upgrade", "upgradestatusicon" & $iz, $g_aiPicUpgradeStatus[$iz])
 	Next
-    
-	; ================================================== Upgrade Management - Added by RK MOD ================================== ;
-	
-	_Ini_Add("upgrade", "ChkUpdateNewUpgradesOnly", $g_iChkUpdateNewUpgradesOnly ? 1 : 0)
-	
+
 	_Ini_Save($g_sProfileBuildingPath)
 EndFunc   ;==>SaveBuildingConfig
 

@@ -78,8 +78,8 @@ EndFunc   ;==>CheckAutoCamp
 
 Func chkAutoCamp()
     If GUICtrlRead($g_hChkAutoCamp) = $GUI_CHECKED Then
-        $g_iChkAutoCamp = 1
+    $g_iChkAutoCamp = 1
     Else
-        $g_iChkAutoCamp = 0
+    $g_iChkAutoCamp = 0
     EndIf
 EndFunc ;==>chkAutoCamp
