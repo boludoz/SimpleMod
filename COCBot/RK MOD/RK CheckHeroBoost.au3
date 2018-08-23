@@ -119,12 +119,14 @@ EndFunc   ;==>CheckHeroBoost
 Func HeroBoostTimeDiv($aResultHeroes, $i)
 	Local $iheroTime = ($CurrHeroBTime[$i] - (_DateDiff("n", $CTime[$i], _NowCalc())))
 
-	If $g_bDebugSetlog Then
-		SetLog("$CurrHeroBTime = " & $CurrHeroBTime[$i], $COLOR_INFO)
-		SetLog("Time Diff HeroTime = " & $iheroTime, $COLOR_INFO)
-	EndIf
-
 	If $CurrHeroBTime[$i] <> "" Or $CurrHeroBTime[$i] <> 0 Then
+		
+		If $g_bDebugSetlog Then
+			SetLog("$CurrHeroBTime = " & $CurrHeroBTime[$i], $COLOR_INFO)
+			SetLog("$CTime[$i] = " & $CTime[$i], $COLOR_INFO)
+			SetLog("Time Diff HeroTime = " & $iheroTime, $COLOR_INFO)
+		EndIf
+
 		If $iheroTime > 0 Then
 			If ($aResultHeroes - $iheroTime) < 0 Then
 				If $g_bDebugSetlog Then SetLog("$aResultHeroes /= 4", $COLOR_INFO)
@@ -138,6 +140,6 @@ Func HeroBoostTimeDiv($aResultHeroes, $i)
 	Else
 		Return $aResultHeroes
 	EndIf
-EndFunc   ;==>HeroBoostTime
+EndFunc   ;==>HeroBoostTimeDiv
 
 
