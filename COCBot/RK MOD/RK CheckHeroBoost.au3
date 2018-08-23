@@ -95,13 +95,13 @@ Func CheckHeroBoost()
 			$CTime[$index] = _NowCalc()
 			$CurrHeroBTime[$index] = ConvertOCRLongTime("Hero Time", $sHeroTime[$index], False)
 			SetDebugLog("$sResult QuickMIS OCR: " & $sHeroTime[$index] & " (" & Round($CurrHeroBTime[$index], 2) & " minutes)")
-			If $index = 0 Then SetLog("King Boost Time Left = " & $sHeroTime[$index], $COLOR_INFO)
-			If $index = 1 Then SetLog("Queen Boost Time Left = " & $sHeroTime[$index], $COLOR_INFO)
-			If $index = 2 Then SetLog("Warden Boost Time Left = " & $sHeroTime[$index], $COLOR_INFO)
+			If $index = 0 Then SetLog("King Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
+			If $index = 1 Then SetLog("Queen Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
+			If $index = 2 Then SetLog("Warden Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
 		Else
-			If $index = 0 Then SetLog("King Not Boosted", $COLOR_INFO)
-			If $index = 1 Then SetLog("Queen Not Boosted", $COLOR_INFO)
-			If $index = 2 Then SetLog("Warden Not Boosted", $COLOR_INFO)
+			If $index = 0 Then SetLog("King Not Boosted", $COLOR_ERROR)
+			If $index = 1 Then SetLog("Queen Not Boosted", $COLOR_ERROR)
+			If $index = 2 Then SetLog("Warden Not Boosted", $COLOR_ERROR)
 		EndIf
 
 		If $g_bDebugSetlog Then
