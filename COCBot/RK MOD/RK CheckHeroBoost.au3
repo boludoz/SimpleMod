@@ -56,10 +56,10 @@ Func CheckHeroBoost()
 		If $index = 1 Then BuildingClickP($g_aiQueenAltarPos, "#0462")
 		If $index = 2 Then BuildingClickP($g_aiWardenAltarPos, "#0462")
 
-		_Sleep($DELAYBOOSTHEROES5); Delay for 1300ms Atleast So OCR can take picture of the screen correctly otherwise it will fail
+		_Sleep($DELAYBOOSTHEROES5) ; Delay for 1300ms Atleast So OCR can take picture of the screen correctly otherwise it will fail
 
 		If $index = 0 Or $index = 1 Then
-			SetLog("In Index " & $index, $COLOR_INFO)
+			If $g_bDebugSetlog Then SetLog("In Index " & $index, $COLOR_INFO)
 
 			If QuickMis("BC1", $bIsBoostedImg, 365, 640, 365 + 40, 640 + 38) Then ;When King OR Queen Has 4 Buttons Check if boosted then Do OCR
 				$sHeroTime[$index] = QuickMIS("OCR", $bHeroTimeOCRImgs, 350, 675, 350 + 65, 675 + 18, True)
@@ -74,7 +74,7 @@ Func CheckHeroBoost()
 
 		EndIf
 		If $index = 2 Then
-			SetLog("In Index " & $index, $COLOR_INFO)
+			If $g_bDebugSetlog Then SetLog("In Index " & $index, $COLOR_INFO)
 
 			If QuickMis("BC1", $bIsBoostedImg, 320, 640, 320 + 40, 640 + 38) Then ;When Warden Has 5 Buttons Check if boosted then Do OCR
 				$sHeroTime[$index] = QuickMIS("OCR", $bHeroTimeOCRImgs, 300, 675, 300 + 70, 675 + 18, True)
@@ -91,36 +91,48 @@ Func CheckHeroBoost()
 
 
 		If $sHeroTime[$index] <> "none" Then
-			setLog("inside ConvertOCRLongTime : "&$sHeroTime[$index], $COLOR_INFO)
+			If $g_bDebugSetlog Then setLog("inside ConvertOCRLongTime : " & $sHeroTime[$index], $COLOR_INFO)
 			$CTime[$index] = _NowCalc()
 			$CurrHeroBTime[$index] = ConvertOCRLongTime("Hero Time", $sHeroTime[$index], False)
 			SetDebugLog("$sResult QuickMIS OCR: " & $sHeroTime[$index] & " (" & Round($CurrHeroBTime[$index], 2) & " minutes)")
 		EndIf
 
-		If $index = 0 Then SetLog("King Boost Time OCR = " & $sHeroTime[$index], $COLOR_INFO)
-		If $index = 1 Then SetLog("Queen Boost Time OCR = " & $sHeroTime[$index], $COLOR_INFO)
-		If $index = 2 Then SetLog("Warden Boost Time OCR = " & $sHeroTime[$index], $COLOR_INFO)
-
-		SetLog("$CTime["&$index&"] = " & $CTime[$index], $COLOR_INFO)
-		SetLog("$CurrHeroBTime["&$index&"] = " & $CurrHeroBTime[$index], $COLOR_INFO)
+		If $g_bDebugSetlog Then
+			If $index = 0 Then SetLog("King Boost Time OCR = " & $sHeroTime[$index], $COLOR_INFO)
+			If $index = 1 Then SetLog("Queen Boost Time OCR = " & $sHeroTime[$index], $COLOR_INFO)
+			If $index = 2 Then SetLog("Warden Boost Time OCR = " & $sHeroTime[$index], $COLOR_INFO)
+			SetLog("$CTime[" & $index & "] = " & $CTime[$index], $COLOR_INFO)
+			SetLog("$CurrHeroBTime[" & $index & "] = " & $CurrHeroBTime[$index], $COLOR_INFO)
+		EndIf
 
 		If ProfileSwitchAccountEnabled() Then
 			$HeroTime[$g_iCurAccount][$index] = $CurrHeroBTime[$index]
-			SetLog("$HeroTime["&$g_iCurAccount&"]["&$index&"] =  " & $HeroTime[$g_iCurAccount][$index], $COLOR_INFO)
+			SetLog("$HeroTime[" & $g_iCurAccount & "][" & $index & "] =  " & $HeroTime[$g_iCurAccount][$index], $COLOR_INFO)
 		EndIf
 
-		SetLog("-------------------------------------------", $COLOR_INFO)
+		If $g_bDebugSetlog Then SetLog("-------------------------------------------", $COLOR_INFO)
 
 	Next
 	ClickP($aAway, 2, 0, "#0000") ;Click Away
 EndFunc   ;==>CheckHeroBoost
 
 Func HeroBoostTime($aResultHeroes, $i)
-	SetLog("$CurrHeroBTime = " & $CurrHeroBTime[$i], $COLOR_INFO)
-	SetLog("Time Diff HeroTime = " & (_DateDiff("n", $CTime[$i], _NowCalc())), $COLOR_INFO)
+	Local $iheroTime = ($CurrHeroBTime[$i] - (_DateDiff("n", $CTime[$i], _NowCalc())))
+
+	If $g_bDebugSetlog Then
+		SetLog("$CurrHeroBTime = " & $CurrHeroBTime[$i], $COLOR_INFO)
+		SetLog("Time Diff HeroTime = " & $iheroTime, $COLOR_INFO)
+	EndIf
+
 	If $CurrHeroBTime[$i] <> "" Or $CurrHeroBTime[$i] <> 0 Then
-		If $CurrHeroBTime[$i] - (_DateDiff("n", $CTime[$i], _NowCalc())) > 0 Then
-			$aResultHeroes /= 4
+		If $iheroTime > 0 Then
+			If ($aResultHeroes - $iheroTime) < 0 Then
+				If $g_bDebugSetlog Then SetLog("$aResultHeroes /= 4", $COLOR_INFO)
+				$aResultHeroes /= 4
+			ElseIf ($aResultHeroes - $iheroTime) > 0 Then
+				If $g_bDebugSetlog Then SetLog("$aResultHeroes = $aResultHeroes - ($iheroTime * 4)", $COLOR_INFO)
+				$aResultHeroes = $aResultHeroes - ($iheroTime * 4)
+			EndIf
 		EndIf
 		Return $aResultHeroes
 	Else
