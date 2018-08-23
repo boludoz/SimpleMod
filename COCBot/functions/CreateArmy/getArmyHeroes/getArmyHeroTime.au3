@@ -87,7 +87,7 @@ Func getArmyHeroTime($iHeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = F
 			;	$bBoosted1 = False
 			;EndIf
 
-			$aResultHeroes[$index] = HeroBoostTime($aResultHeroes[$index], $index)
+			$aResultHeroes[$index] = HeroBoostTimeDiv($aResultHeroes[$index], $index)
 
 			;If $bBoosted1 Then ; Temp will remove after HeroBoostTime
 			;	$aResultHeroes[$index] /= 4
