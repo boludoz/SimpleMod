@@ -125,7 +125,7 @@ Func UpgradeWallGold()
 	;Click($WallxLOC, $WallyLOC)
 	If _Sleep($DELAYRESPOND) Then Return
 	
-	If GoldPriority Then
+	If GoldPriority() Then
 		SetLog("Gold Priority Verified", $COLOR_INFO)
 		Else
 			Return False
@@ -180,7 +180,7 @@ Func UpgradeWallElixir()
 	;Click($WallxLOC, $WallyLOC)
 	If _Sleep($DELAYRESPOND) Then Return
 	
-	If ElixirPriority Then
+	If ElixirPriority() Then
 		SetLog("Gold Priority Verified", $COLOR_INFO)
 		Else
 			Return False
