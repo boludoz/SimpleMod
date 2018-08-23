@@ -19,8 +19,8 @@
 #include <EditConstants.au3>
 
 Func ChatbotReadSettings()	
-	$g_iChkClanMessages = StringSplit(IniRead($g_sProfileConfigPath, "Chat", "genericMsgClan", "Testing on Chat|Hey all"), "|", 2)
-	$g_iChkClanResponses0 = StringSplit(IniRead($g_sProfileConfigPath, "Chat", "responseMsgClan", "keyword:Response|hello:Hi, Welcome to the clan|hey:Hey, how's it going?"), "|", 2)
+	$g_iChkClanMessages = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "genericMsgClan", "Testing on Chat|Hey all"), "|", 2)
+	$g_iChkClanResponses0 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "responseMsgClan", "keyword:Response|hello:Hi, Welcome to the clan|hey:Hey, how's it going?"), "|", 2)
 	Global $g_iChkClanResponses1[UBound($g_iChkClanResponses0)][2] ;
 	For $a = 0 To UBound($g_iChkClanResponses0) - 1
 		$TmpResp = StringSplit($g_iChkClanResponses0[$a], ":", 2)
@@ -38,8 +38,8 @@ Func ChatbotReadSettings()
 
 	$g_iChkClanResponses = $g_iChkClanResponses1
 
-	$g_iChkGlobalMessages1 = StringSplit(IniRead($g_sProfileConfigPath, "Chat", "globalMsg1", "War Clan Recruiting|Active War Clan accepting applications"), "|", 2)
-	$g_iChkGlobalMessages2 = StringSplit(IniRead($g_sProfileConfigPath, "Chat", "globalMsg2", "Join now|Apply now"), "|", 2)
+	$g_iChkGlobalMessages1 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "globalMsg1", "War Clan Recruiting|Active War Clan accepting applications"), "|", 2)
+	$g_iChkGlobalMessages2 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "globalMsg2", "Join now|Apply now"), "|", 2)
 EndFunc   ;==>ChatbotReadSettings
 
 
@@ -303,7 +303,7 @@ Func ChatbotNotifyQueueChatRead()
 EndFunc
 
 Func ChatbotNotifyStopChatRead()
-   If Not $g_iChkChatbotUseNotify Then Return
+   If Not $g_iChkUseNotify Then Return
    $ChatbotReadInterval = 0
    $ChatbotIsOnInterval = False
 EndFunc

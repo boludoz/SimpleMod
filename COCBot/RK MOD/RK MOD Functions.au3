@@ -71,7 +71,7 @@
 
 #include "RK Check Warden Mode.au3"
 
-;Wall/Building Upgrading Priority 
+;Wall/Building Upgrading Priority
 #include "RK Upgrading Priority.au3"
 
 #include "RK AreCollectorsOutside.au3"
@@ -87,5 +87,9 @@
 
 
 #include "RK UpgradesMgmt.au3"
+
+#include "RK CheckHeroBoost.au3"
+
+#include "RK Debug GUI Control.au3"
 
 #include "RK Config.au3"

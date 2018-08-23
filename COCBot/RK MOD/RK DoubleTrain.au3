@@ -49,13 +49,6 @@ Func DoubleTrain($bQuickTrain = False)
 			SetLog("Incorrect Troop combo: " & $g_iTotalCampSpace & " vs Total camp: " & $TroopCamp[1] & @CRLF & "                 Double train may not work well", $COLOR_DEBUG)
 
 		If $TroopCamp[0] < $TroopCamp[1] Then ; <280/280
-			If (ProfileSwitchAccountEnabled() And $g_abAccountNo[$g_iCurAccount] And $g_abDonateOnly[$g_iCurAccount]) Or $g_iCommandStop = 0 Then
-				Setlog("Not full camp. Trying to top-up for donating", $COLOR_ACTION)
-				FillTroopCamp($TroopCamp[2])
-				$bDoubleTrainTroop = TrainFullQueue(False, $bSetlog)
-				If $bDebug Then SetLog($Step & ". FillTroopCamp() then TrainFullQueue(). $bDoubleTrainTroop: " & $bDoubleTrainTroop, $COLOR_DEBUG)
-				ExitLoop
-			EndIf
 			If Not IsQueueEmpty("Troops", False, False) Then DeleteQueued("Troops")
 			$bNeedReCheckTroopTab = True
 			If $bDebug Then SetLog($Step & ". DeleteQueued('Troops'). $bNeedReCheckTroopTab: " & $bNeedReCheckTroopTab, $COLOR_DEBUG)
@@ -102,13 +95,6 @@ Func DoubleTrain($bQuickTrain = False)
 			EndIf ;
 
 			If $SpellCamp[0] < $SpellCamp[1] Then ; 0-10/11
-				If (ProfileSwitchAccountEnabled() And $g_abAccountNo[$g_iCurAccount] And $g_abDonateOnly[$g_iCurAccount]) Or $g_iCommandStop = 0 Or $g_bForceBrewSpells Then
-					Setlog("Not full spell camp. Trying to top-up for donating", $COLOR_ACTION)
-					FillSpellCamp($SpellCamp[2])
-					$bDoubleTrainSpell = TrainFullQueue(True, $bSetlog)
-					If $bDebug Then SetLog($Step & ". FillSpellCamp() then TrainFullQueue(True). $bDoubleTrainSpell: " & $bDoubleTrainSpell, $COLOR_DEBUG)
-					ExitLoop
-				EndIf
 				If Not IsQueueEmpty("Spells", False, False) Then DeleteQueued("Spells")
 				$bNeedReCheckSpellTab = True
 				If $bDebug Then SetLog($Step & ". DeleteQueued('Spells'). $bNeedReCheckSpellTab: " & $bNeedReCheckSpellTab, $COLOR_DEBUG)

@@ -621,8 +621,8 @@ Func MainLoop($bCheckPrerequisitesOK = True)
 	EndIf
 
 	Local $hStarttime = _Timer_Init()
-   
-    ; Check the Supported Emulator versions
+
+	; Check the Supported Emulator versions
 	CheckEmuNewVersions()
 	
 	;Reset Telegram message
@@ -673,7 +673,6 @@ Func runBot() ;Bot that runs everything in order
 		SetLog("Rematching Account [" & $g_iNextAccount + 1 & "] with Profile [" & GUICtrlRead($g_ahCmbProfile[$g_iNextAccount]) & "]")
 		SwitchCoCAcc($g_iNextAccount)
 	EndIf
-
 	FirstCheck()
 
 	While 1
@@ -700,7 +699,7 @@ Func runBot() ;Bot that runs everything in order
 		chkShieldStatus()
 		If Not $g_bRunState Then Return
 		If $g_bRestart = True Then ContinueLoop
-				
+		
 		checkObstacles() ; trap common error messages also check for reconnecting animation
 		If $g_bRestart = True Then ContinueLoop
 
@@ -784,7 +783,22 @@ Func runBot() ;Bot that runs everything in order
 				$currentForecast = readCurrentForecast()
 			EndIf
 			If IsSearchAttackEnabled() Then ; if attack is disabled skip reporting, requesting, donating, training, and boosting
-				Local $aRndFuncList = ['ReplayShare', 'NotifyReport', 'DonateCC,Train', 'BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'BoostAll', 'RequestCC', 'CollectFreeMagicItems']
+				Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'BoostAll']
+				While 1
+					If $g_bRunState = False Then Return
+					If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
+					If UBound($aRndFuncList) > 1 Then
+						Local $Index = Random(0, UBound($aRndFuncList), 1)
+						If $Index > UBound($aRndFuncList) - 1 Then $Index = UBound($aRndFuncList) - 1
+						_RunFunction($aRndFuncList[$Index])
+						_ArrayDelete($aRndFuncList, $Index)
+					Else
+						_RunFunction($aRndFuncList[0])
+						ExitLoop
+					EndIf
+					If CheckAndroidReboot() = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
+				WEnd
+				Local $aRndFuncList = ['ReplayShare', 'NotifyReport', 'DonateCC,Train', 'RequestCC', 'CollectFreeMagicItems', 'HeroT']
 				While 1
 					If $g_bRunState = False Then Return
 					If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
@@ -1279,6 +1293,8 @@ Func _RunFunction($action)
 			_Sleep($DELAYRUNBOT3)
 		Case "CollectFreeMagicItems"
 			CollectFreeMagicItems()
+		Case "HeroT"
+			CheckHeroBoost()
 		Case ""
 			SetDebugLog("Function call doesn't support empty string, please review array size", $COLOR_ERROR)
 		Case Else
@@ -1289,12 +1305,12 @@ EndFunc   ;==>_RunFunction
 
 Func FirstCheck()
 
-   
+
 	If $g_bChkUseGTFO = True Then MainGTFO()
 	If $g_bChkUseKickOut = True Then MainKickout()
 
 	If ProfileSwitchAccountEnabled() And $g_abDonateOnly[$g_iCurAccount] Then Return
-				
+	
 	VillageReport()
 	CheckFarmSchedule()
 	
@@ -1325,6 +1341,9 @@ Func FirstCheck()
 		SetDebugLog("-- FirstCheck on Train --")
 		BoostAllWithMagicSpell()
 		TrainSystem()
+		If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
+			ChatbotMessage()
+		EndIf
 		If Not $g_bRunState Then Return
 		SetDebugLog("Are you ready? " & String($g_bIsFullArmywithHeroesAndSpells))
 		If $g_bIsFullArmywithHeroesAndSpells Then

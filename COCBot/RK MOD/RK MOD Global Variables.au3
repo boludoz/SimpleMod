@@ -127,10 +127,10 @@ Global $g_asHeroHealTime[3] = ["", "", ""]
 ; ================================================ Switch Profile - Added by RK MOD ======================================== ;
 
 Global $profileString = ""
-Global $ichkGoldSwitchMax, $itxtMaxGoldAmount, $icmbGoldMaxProfile, $ichkGoldSwitchMin, $itxtMinGoldAmount, $icmbGoldMinProfile
-Global $ichkElixirSwitchMax, $itxtMaxElixirAmount, $icmbElixirMaxProfile, $ichkElixirSwitchMin, $itxtMinElixirAmount, $icmbElixirMinProfile
-Global $ichkDESwitchMax, $itxtMaxDEAmount, $icmbDEMaxProfile, $ichkDESwitchMin, $itxtMinDEAmount, $icmbDEMinProfile
-Global $ichkTrophySwitchMax, $itxtMaxTrophyAmount, $icmbTrophyMaxProfile, $ichkTrophySwitchMin, $itxtMinTrophyAmount, $icmbTrophyMinProfile
+Global $g_iChkGoldSwitchMax, $g_iTxtMaxGoldAmount, $g_iCmbGoldMaxProfile, $g_iChkGoldSwitchMin, $g_iTxtMinGoldAmount, $g_iCmbGoldMinProfile
+Global $g_iChkElixirSwitchMax, $g_iTxtMaxElixirAmount, $g_iCmbElixirMaxProfile, $g_iChkElixirSwitchMin, $g_iTxtMinElixirAmount, $g_iCmbElixirMinProfile
+Global $g_iChkDESwitchMax, $g_iTxtMaxDEAmount, $g_iCmbDEMaxProfile, $g_iChkDESwitchMin, $g_iTxtMinDEAmount, $g_iCmbDEMinProfile
+Global $g_iChkTrophySwitchMax, $g_iTxtMaxTrophyAmount, $g_iCmbTrophyMaxProfile, $g_iChkTrophySwitchMin, $g_iTxtMinTrophyAmount, $g_iCmbTrophyMinProfile
 
 ; ========================= Slot11 - Added by RK MOD (ID193-) =============================================================================================;
 
@@ -146,7 +146,7 @@ Global $g_iChkClanAlwaysMsg = 0
 Global $g_iChkUseNotify = 0
 Global $g_iChkPbSendNew = 0
 Global $g_iChkRusLang = 0
-Global $g_iCmbLang = 8
+Global $g_iCmbLang = 9
 Global $g_iChkClanMessages = ""
 Global $g_iChkClanResponses = ""
 Global $g_iChkClanResponses0
@@ -199,7 +199,7 @@ Global $g_bCheckWardenMode = False, $g_iCheckWardenMode = 0
 
 ; ================================================== Upgrade Management - Added by RK MOD ================================== ;
 
-Global $g_ibUpdateNewUpgradesOnly = False
+Global $g_ibUpdateNewUpgradesOnly = 0
 Global Const $UP = True, $DOWN = False, $TILL_END = True
 
 ; ================================================== Fill - Added by RK MOD ================================== ;
@@ -228,3 +228,7 @@ Global $g_iBuildingsNeedElixir = 0
 Global $g_bChkSmartTrain = False, $g_bChkPreciseArmyCamp = False, $g_bChkFillArcher = False, $g_bChkFillEQ = False, $g_iTxtFillArcher = 5
 Global Enum $g_eFull, $g_eRemained, $g_eNoTrain
 Global $g_bWrongTroop, $g_bWrongSpell, $g_sSmartTrainError = ""
+
+; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
+
+Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 5

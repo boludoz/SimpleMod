@@ -88,6 +88,7 @@ Func SmartTrain()
 			Else
 				SetLog("Full queue, skip Quick Train", $COLOR_INFO)
 			EndIf
+			SmartTrainSiege($bDebug)
 			SetLog("Smart Train accomplished")
 		EndIf
 
@@ -253,3 +254,32 @@ Func DefineWhatToTrain($sText = "Troops", $TrainMethod = $g_eFull, $bTrainQueue 
 	Return $rWTT
 
 EndFunc   ;==>DefineWhatToTrain
+
+Func SmartTrainSiege($bDebug)
+	Local $iSiege = $eSiegeWallWrecker
+	If $g_iTotalTrainSpaceSiege < 1 Then Return; train no siege
+	If $g_aiArmyCompSiegeMachine[$eSiegeWallWrecker] > 0 And $g_aiArmyCompSiegeMachine[$eSiegeBattleBlimp] > 0 Then ; train both types of siege
+		If $bDebug Then SetLog("Army has both types of siege. Smart Train siege might cause unbalance.", $COLOR_DEBUG)
+	Else
+		If $g_aiArmyCompSiegeMachine[$eSiegeBattleBlimp] > 0 Then $iSiege = $eSiegeBattleBlimp
+
+		If Not OpenSiegeMachinesTab(True, "SmartTrainSiege()") Then Return
+		If _Sleep(500) Then Return
+		Local $checkPixel[4] = [58 + $iSiege * 171, 556, 0x47717E, 10] ; WallW = 58, BlimpB = 58 + 171 = 229
+		If _CheckPixel($checkPixel, True, Default, $g_asSiegeMachineNames[$iSiege]) Then
+			; refilling 1st Army just in case 1st Train failed or siege is donated
+			If $g_aiCurrentSiegeMachines[$iSiege] < $g_aiArmyCompSiegeMachine[$iSiege] Then
+				Local $HowMany = $g_aiArmyCompSiegeMachine[$iSiege] - $g_aiCurrentSiegeMachines[$iSiege]
+				PureClick($checkPixel[0], $checkPixel[1], $HowMany, $g_iTrainClickDelay)
+				Setlog("Build " & $HowMany & " " & $g_asSiegeMachineNames[$iSiege] & ($HowMany >= 2 ? "s" : ""), $COLOR_SUCCESS)
+				If _Sleep(250) Then Return
+			EndIf
+
+			; train 2nd Army
+			PureClick($checkPixel[0], $checkPixel[1], $g_aiArmyCompSiegeMachine[$iSiege], $g_iTrainClickDelay)
+			Setlog("Build " & $g_aiArmyCompSiegeMachine[$iSiege] & " " & $g_asSiegeMachineNames[$iSiege] & ($g_aiArmyCompSiegeMachine[$iSiege] >= 2 ? "s" : ""), $COLOR_SUCCESS)
+		EndIf
+
+		If _Sleep(250) Then Return
+	EndIf
+EndFunc   ;==>SmartTrainSiege
