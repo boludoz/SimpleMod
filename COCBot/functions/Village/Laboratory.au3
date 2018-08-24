@@ -344,7 +344,7 @@ Func Laboratory()
 			ContinueCase
 		Case 31 To 32
 			If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakGE[$g_iTownHallLevel] Then
-				If $iAvailElixir < ($aUpgradeValue[$g_iCmbLaboratory])
+				If $iAvailElixir < ($aUpgradeValue[$g_iCmbLaboratory]) Then
 				SetLog("Insufficent Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " available: " & $iAvailElixir, $COLOR_INFO)
 					ClickP($aAway, 2, $DELAYLABORATORY4, "#0355")
 					Return False
@@ -364,7 +364,7 @@ Func Laboratory()
 
 		Case 20 To 30; Dark Elixir
 			If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakDE[$g_iTownHallLevel] Then
-				If $iAvailDark < ($aUpgradeValue[$g_iCmbLaboratory])
+				If $iAvailDark < ($aUpgradeValue[$g_iCmbLaboratory]) Then
 					SetLog("Insufficent Dark Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " available: " & $iAvailDark, $COLOR_INFO)
 					ClickP($aAway, 2, $DELAYLABORATORY4, "#0357")	
 					Return False
