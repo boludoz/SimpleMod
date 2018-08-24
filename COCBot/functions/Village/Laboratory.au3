@@ -343,45 +343,55 @@ Func Laboratory()
 		Case 1 To 19 ; regular elixir
 			ContinueCase
 		Case 31 To 32
-			If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
-				If $iAvailElixir < ($aUpgradeValue[$g_iCmbLaboratory]) Then
-				SetLog("Insufficent Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " available: " & $iAvailElixir, $COLOR_INFO)
-					ClickP($aAway, 2, $DELAYLABORATORY4, "#0355")
-					Return False
+			If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel > 13 Then
+				If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
+					If $iAvailElixir < ($aUpgradeValue[$g_iCmbLaboratory]) Then
+					SetLog("Insufficent Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " available: " & $iAvailElixir, $COLOR_INFO)
+						ClickP($aAway, 2, $DELAYLABORATORY4, "#0355")
+						Return False
+					EndIf
+				ElseIf $aUpgradeValue[$g_iCmbLaboratory] < $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
+					If $iAvailElixir < ($aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinElixir) Then
+						SetLog("Insufficent Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinElixir & " user reserve, available: " & $iAvailElixir, $COLOR_INFO)
+						ClickP($aAway, 2, $DELAYLABORATORY4, "#0355")
+						Return False
+					EndIf
 				EndIf
-			ElseIf $aUpgradeValue[$g_iCmbLaboratory] < $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
-				If $iAvailElixir < ($aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinElixir) Then
-					SetLog("Insufficent Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinElixir & " user reserve, available: " & $iAvailElixir, $COLOR_INFO)
-					ClickP($aAway, 2, $DELAYLABORATORY4, "#0355")
-					Return False
+				If LabUpgrade() = True Then
+					SetLog("Elixir used = " & $aUpgradeValue[$g_iCmbLaboratory], $COLOR_INFO)
+					ClickP($aAway, 2, $DELAYLABORATORY4, "#0356")
+					Return True
 				EndIf
+			Else
+				Return False
+				SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
 			EndIf
-			If LabUpgrade() = True Then
-				SetLog("Elixir used = " & $aUpgradeValue[$g_iCmbLaboratory], $COLOR_INFO)
-				ClickP($aAway, 2, $DELAYLABORATORY4, "#0356")
-				Return True
-			EndIf
-
+			
 		Case 20 To 30; Dark Elixir
-			If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakDE[$g_iTownHallLevel - 1] Then
-				If $iAvailDark < ($aUpgradeValue[$g_iCmbLaboratory]) Then
-					SetLog("Insufficent Dark Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " available: " & $iAvailDark, $COLOR_INFO)
-					ClickP($aAway, 2, $DELAYLABORATORY4, "#0357")	
-					Return False
+			If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel > 13 Then
+				If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakDE[$g_iTownHallLevel - 1] Then
+					If $iAvailDark < ($aUpgradeValue[$g_iCmbLaboratory]) Then
+						SetLog("Insufficent Dark Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " available: " & $iAvailDark, $COLOR_INFO)
+						ClickP($aAway, 2, $DELAYLABORATORY4, "#0357")	
+						Return False
+					EndIf
+				ElseIf $aUpgradeValue[$g_iCmbLaboratory] < $g_iLimitBreakDE[$g_iTownHallLevel - 1] Then
+					If $iAvailDark < ($aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinDark) Then 
+						SetLog("Insufficent Dark Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinDark & " user reserve, available: " & $iAvailDark, $COLOR_INFO)
+						ClickP($aAway, 2, $DELAYLABORATORY4, "#0357")
+						Return False
+					EndIf
 				EndIf
-			ElseIf $aUpgradeValue[$g_iCmbLaboratory] < $g_iLimitBreakDE[$g_iTownHallLevel - 1] Then
-				If $iAvailDark < ($aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinDark) Then 
-					SetLog("Insufficent Dark Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinDark & " user reserve, available: " & $iAvailDark, $COLOR_INFO)
-					ClickP($aAway, 2, $DELAYLABORATORY4, "#0357")
-					Return False
+				If LabUpgrade() = True Then
+					SetLog("Dark Elixir used = " & $aUpgradeValue[$g_iCmbLaboratory], $COLOR_INFO)
+					ClickP($aAway, 2, $DELAYLABORATORY4, "#0358")
+					Return True
 				EndIf
+			Else
+				Return False
+				SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
 			EndIf
-			If LabUpgrade() = True Then
-				SetLog("Dark Elixir used = " & $aUpgradeValue[$g_iCmbLaboratory], $COLOR_INFO)
-				ClickP($aAway, 2, $DELAYLABORATORY4, "#0358")
-				Return True
-			EndIf
-
+			
 		Case Else
 			SetLog("Something went wrong with loot value on Lab upgrade on #" & $g_avLabTroops[$g_iCmbLaboratory][3], $COLOR_ERROR)
 			Return False
