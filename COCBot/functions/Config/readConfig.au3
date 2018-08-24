@@ -268,9 +268,9 @@ Func ReadRegularConfig()
 	; <<< nothing here >>>
 
 	; <><><><> Bot / Stats <><><><>
-	
+
 	ReadConfig_RKMod()
-	
+
 	; <<< nothing here >>>
 EndFunc   ;==>ReadRegularConfig
 
@@ -447,15 +447,15 @@ Func ReadConfig_600_11()
 	For $i = 0 To 23
 		$g_abRequestCCHours[$i] = ($g_abRequestCCHours[$i] = "1")
 	Next
-	
+
 	$g_bRequestTroopsEnableDefense = (IniRead($g_sProfileConfigPath, "RequestDefense", "RequestDefenseEnable", "0") = "1")
 	$g_sRequestTroopsTextDefense = IniRead($g_sProfileConfigPath, "RequestDefense", "txtRequestDefense", "")
 	$g_iRequestDefenseEarly = Int(IniRead($g_sProfileConfigPath, "RequestDefense", "RequestDefenseEarly", "0"))
-	
+
 	; ================================================== Russian Request - by RK MOD ================================= ;
 
 	IniReadS($g_iChkRusLang2, $g_sProfileConfigPath, "Lang", "ChkRusLang2", $g_iChkRusLang2, "Int")
-	
+
 EndFunc   ;==>ReadConfig_600_11
 
 Func ReadConfig_600_12()
@@ -648,11 +648,11 @@ Func ReadConfig_600_13()
 	; ==================================================  GTFO - Added by RK MOD ================================================ ;
 	IniReadS($g_bChkGTFOClanHop, $g_sProfileConfigPath, "GTFO", "chkGTFOClanHop", $g_bChkGTFOClanHop, "Bool")
 	IniReadS($g_bChkGTFOReturnClan, $g_sProfileConfigPath, "GTFO", "chkGTFOReturnClan", $g_bChkGTFOReturnClan, "Bool")
-	
+
 	IniReadS($g_bChkUseGTFO, $g_sProfileConfigPath, "GTFO", "chkUseGTFO", $g_bChkUseGTFO, "Bool")
-	
+
 	IniReadS($g_sTxtClanID, $g_sProfileConfigPath, "GTFO", "txtClanID", $g_sTxtClanID)
-	
+
 	IniReadS($g_iTxtMinSaveGTFO_Elixir, $g_sProfileConfigPath, "GTFO", "TxtMinSaveGTFO_Elixir", $g_iTxtMinSaveGTFO_Elixir, "Int")
 	IniReadS($g_iTxtCyclesGTFO, $g_sProfileConfigPath, "GTFO", "txtCyclesGTFO", $g_iTxtCyclesGTFO, "Int")
 	IniReadS($g_iTxtMinSaveGTFO_DE, $g_sProfileConfigPath, "GTFO", "TxtMinSaveGTFO_DE", $g_iTxtMinSaveGTFO_DE, "Int")
@@ -710,7 +710,7 @@ Func ReadConfig_600_17()
 	IniReadS($g_iCmbUpgradeWallsLevel, $g_sProfileConfigPath, "upgrade", "walllvl", 6, "int")
 	; ================================================== Wall/Building Upgrading Priority by RK MOD	========================;
 	IniReadS($g_iChkUpgrPriority, $g_sProfileConfigPath, "Priority upgrade", "chkUpgrPriority", $g_iChkUpgrPriority, "Int")
-	IniReadS($g_iCmbUpgrdPriority, $g_sProfileConfigPath, "Priority upgrade", "CmbUpgrdPriority", 0, "int")
+	IniReadS($g_iCmbUpgrdPriority, $g_sProfileConfigPath, "Priority upgrade", "cmbUpgrdPriority", 0, "int")
 	For $i = 4 To 13
 		IniReadS($g_aiWallsCurrentCount[$i], $g_sProfileConfigPath, "Walls", "Wall" & StringFormat("%02d", $i), 0, "int")
 	Next
@@ -805,7 +805,7 @@ Func ReadConfig_600_28()
 	;================================================== Grab Healed Heroes - Added by RK MOD ==================== ;
 
 	IniReadS($g_bRestartSearchGrabHero, $g_sProfileConfigPath, "search", "GrabHealHero", False, "Bool")
-	
+
 	; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 	IniReadS($g_bReturnTimerEnable, $g_sProfileConfigPath, "search", "ChkReturnTimerEnable", "Bool")
 	IniReadS($g_iTxtReturnTimer, $g_sProfileConfigPath, "search", "ReturnTimer", 5, "int")
@@ -1198,7 +1198,7 @@ Func ReadConfig_600_31()
 	IniReadS($g_iCollectorMatchesMin, $g_sProfileConfigPath, "collectors", "minmatches", $g_iCollectorMatchesMin) ; 1-6 collectors
 	If $g_iCollectorMatchesMin < 1 Or $g_iCollectorMatchesMin > 6 Then $g_iCollectorMatchesMin = 3
 	IniReadS($g_iCollectorToleranceOffset, $g_sProfileConfigPath, "collectors", "tolerance", 0, "int")
-	
+
 	; Check Collector Outside - RK MOD
 	IniReadS($g_bDBMeetCollOutside, $g_sProfileConfigPath, "search", "DBMeetCollOutside", $g_bDBMeetCollOutside, "Bool")
 	IniReadS($g_iTxtDBMinCollOutsidePercent, $g_sProfileConfigPath, "search", "TxtDBMinCollOutsidePercent", $g_iTxtDBMinCollOutsidePercent, "int")
@@ -1210,7 +1210,7 @@ Func ReadConfig_600_31()
 	IniReadS($g_iTxtSkipCollectorDark, $g_sProfileConfigPath, "search", "TxtSkipCollectorDark", $g_iTxtSkipCollectorDark, "int")
 	IniReadS($g_bSkipCollectorCheckTH, $g_sProfileConfigPath, "search", "SkipCollectorCheckTH", $g_bSkipCollectorCheckTH, "int")
 	IniReadS($g_iCmbSkipCollectorCheckTH, $g_sProfileConfigPath, "search", "CmbSkipCollectorCheckTH", $g_iCmbSkipCollectorCheckTH, "int")
-	
+
 EndFunc   ;==>ReadConfig_600_31
 
 Func ReadConfig_600_32()
@@ -1269,7 +1269,7 @@ Func ReadConfig_600_35_1()
 
 	IniReadS($g_bOnlySCIDAccounts, $g_sProfileConfigPath, "ProfileSCID", "OnlySCIDAccounts", True, "Bool")
 	$g_iWhatSCIDAccount2Use = Int(IniRead($g_sProfileConfigPath, "ProfileSCID", "WhatSCIDAccount2Use", 0))
-	
+
 	IniReadS($g_iChkLabCheck, $g_sProfileConfigPath, "other", "ChkLabCheck", $g_iChkLabCheck, "Int")
 EndFunc   ;==>ReadConfig_600_35_1
 
@@ -1387,7 +1387,7 @@ Func ReadConfig_600_52_2()
 	$g_bForceBrewSpells = (IniRead($g_sProfileConfigPath, "other", "ChkForceBrewBeforeAttack", "0") = "1")
 	IniReadS($g_iTotalSpellValue, $g_sProfileConfigPath, "Spells", "SpellFactory", 0, "int")
 	$g_iTotalSpellValue = Int($g_iTotalSpellValue)
-	
+
     ; DoubleTrain - Demen
     $g_bDoubleTrain = (IniRead($g_sProfileConfigPath, "troop", "DoubleTrain", "0") = "1")
 	;SmartTrain - RK MOD (Demen)
@@ -1396,7 +1396,7 @@ Func ReadConfig_600_52_2()
 	IniReadS($g_bChkFillArcher, $g_sProfileConfigPath, "SmartTrain", "ChkFillArcher", False, "Bool")
 	IniReadS($g_iTxtFillArcher, $g_sProfileConfigPath, "SmartTrain", "TxtFillArcher", 5, "int")
 	IniReadS($g_bChkFillEQ, $g_sProfileConfigPath, "SmartTrain", "ChkFillEQ", False, "Bool")
-	
+
 EndFunc   ;==>ReadConfig_600_52_2
 
 Func ReadConfig_600_54()
@@ -1437,22 +1437,22 @@ Func ReadConfig_641_1()
 	IniReadS($g_bCloseRandomTime, $g_sProfileConfigPath, "other", "btnCloseWaitRandom", True, "Bool")
 	IniReadS($g_iCloseRandomTimePercent, $g_sProfileConfigPath, "other", "CloseWaitRdmPercent", 10, "int")
 	IniReadS($g_iCloseMinimumTime, $g_sProfileConfigPath, "other", "MinimumTimeToClose", 2, "int")
-	
+
 	; ================================================== Max logout time by RK MOD ================================= ;
 
 	IniReadS($g_bTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime, "Bool")
 	IniReadS($g_iTrainLogoutMaxTime, $g_sProfileConfigPath, "TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime, "int")
-	
+
 	IniReadS($g_iTrainClickDelay, $g_sProfileConfigPath, "other", "TrainITDelay", 100, "int")
 	IniReadS($g_bTrainAddRandomDelayEnable, $g_sProfileConfigPath, "other", "chkAddIdleTime", $g_bTrainAddRandomDelayEnable, "Bool")
 	IniReadS($g_iTrainAddRandomDelayMin, $g_sProfileConfigPath, "other", "txtAddDelayIdlePhaseTimeMin", $g_iTrainAddRandomDelayMin, "Int")
 	IniReadS($g_iTrainAddRandomDelayMax, $g_sProfileConfigPath, "other", "txtAddDelayIdlePhaseTimeMax", $g_iTrainAddRandomDelayMax, "Int")
-	
+
 	; ================================================== Check Grand Warden Mode - Added by RK MOD ==================== ;
 
 	IniReadS($g_bCheckWardenMode, $g_sProfileConfigPath, "other", "chkCheckWardenMode", False, "Bool")
 	IniReadS($g_iCheckWardenMode, $g_sProfileConfigPath, "other", "cmbCheckWardenMode", 0, "int")
-	
+
 EndFunc   ;==>ReadConfig_641_1
 
 Func IniReadS(ByRef $variable, $PrimaryInputFile, $section, $key, $defaultvalue, $valueType = Default)
