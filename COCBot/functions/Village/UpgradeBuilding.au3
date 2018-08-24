@@ -120,10 +120,17 @@ Func UpgradeBuilding()
 
 		Switch $g_avBuildingUpgrades[$iz][3] ;Change action based on upgrade type!
 			Case "Gold"
-				If (($iAvailGold < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinGold) Or (($iAvailGold < $g_avBuildingUpgrades[$iz][2]) And ($g_avBuildingUpgrades[$iz][2] > $g_iLimitBreakGE [$g_iTownHallLevel]))) Then ; Do we have enough Gold?
-					SetLog("Insufficent Gold for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinGold, $COLOR_INFO)
-					ContinueLoop
-				EndIf
+				If $g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakGE[$g_iTownHallLevel] Then
+					If $iAvailGold < $g_avBuildingUpgrades[$iz][2] Then ; Do we have enough Gold?
+						SetLog("Insufficent Gold for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2], $COLOR_INFO)
+						ContinueLoop
+					EndIf
+				ElseIf $g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakGE[$g_iTownHallLevel] Then
+					If $iAvailGold < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinGold Then ; Do we have enough Gold?
+						SetLog("Insufficent Gold for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinGold, $COLOR_INFO)
+						ContinueLoop
+					EndIf
+				EndIf	
 				If UpgradeNormal($iz) = False Then ContinueLoop
 				$iUpgradeAction += 2 ^ ($iz + 1)
 				SetLog("Gold used = " & $g_avBuildingUpgrades[$iz][2], $COLOR_INFO)
@@ -133,10 +140,17 @@ Func UpgradeBuilding()
 				$iAvailGold -= $g_avBuildingUpgrades[$iz][2]
 				$iAvailBldr -= 1
 			Case "Elixir"
-				If (($iAvailElixir < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinElixir) Or (($iAvailElixir < $g_avBuildingUpgrades[$iz][2]) And ($g_avBuildingUpgrades[$iz][2] > $g_iLimitBreakGE [$g_iTownHallLevel]))) Then
-					SetLog("Insufficent Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinElixir, $COLOR_INFO)
-					ContinueLoop
-				EndIf
+				If $g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakGE[$g_iTownHallLevel] Then
+					If $iAvailElixir < $g_avBuildingUpgrades[$iz][2] Then ; Do we have enough Elixir?
+						SetLog("Insufficent Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2], $COLOR_INFO)
+						ContinueLoop
+					EndIf
+				ElseIf $g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakGE[$g_iTownHallLevel] Then
+					If $iAvailElixir < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinElixir Then ; Do we have enough Elixir?
+						SetLog("Insufficent Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinElixir, $COLOR_INFO)
+						ContinueLoop
+					EndIf
+				EndIf	
 				If UpgradeNormal($iz) = False Then ContinueLoop
 				$iUpgradeAction += 2 ^ ($iz + 1)
 				SetLog("Elixir used = " & $g_avBuildingUpgrades[$iz][2], $COLOR_INFO)
@@ -146,10 +160,17 @@ Func UpgradeBuilding()
 				$iAvailElixir -= $g_avBuildingUpgrades[$iz][2]
 				$iAvailBldr -= 1
 			Case "Dark"
-				If (($iAvailDark < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinDark) Or (($iAvailDark < $g_avBuildingUpgrades[$iz][2]) And ($g_avBuildingUpgrades[$iz][2] > $g_iLimitBreakDE [$g_iTownHallLevel]))) Then
-					SetLog("Insufficent Dark for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinDark, $COLOR_INFO)
-					ContinueLoop
-				EndIf
+				If $g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakDE[$g_iTownHallLevel] Then
+					If $iAvailDark < $g_avBuildingUpgrades[$iz][2] Then ; Do we have enough Dark?
+						SetLog("Insufficent Dark Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2], $COLOR_INFO)
+						ContinueLoop
+					EndIf
+				ElseIf $g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakDE[$g_iTownHallLevel] Then
+					If $iAvailDark < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinDark Then ; Do we have enough Dark?
+						SetLog("Insufficent Dark Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinElixir, $COLOR_INFO)
+						ContinueLoop
+					EndIf
+				EndIf	
 				If UpgradeHero($iz) = False Then ContinueLoop
 				$iUpgradeAction += 2 ^ ($iz + 1)
 				SetLog("Dark Elixir used = " & $g_avBuildingUpgrades[$iz][2], $COLOR_INFO)
