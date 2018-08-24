@@ -193,7 +193,7 @@ Func _AutoUpgrade()
 			Case "Elixir"
 				If ($g_aiCurrentLoot[$eLootElixir] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinElixir)) Or (($g_aiCurrentLoot[$eLootElixir] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakGE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
 			Case "Dark Elixir"
-				If (($g_aiCurrentLoot[$eLootDarkElixir] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinDarkElixir))) Or (($g_aiCurrentLoot[$eLootDarkElixir] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakDE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
+				If (($g_aiCurrentLoot[$eLootDarkElixir] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinDark))) Or (($g_aiCurrentLoot[$eLootDarkElixir] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakDE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
 		EndSwitch
 		; if boolean still False, we can't launch upgrade, exiting...
 		If Not $bSufficentResourceToUpgrade Then

@@ -5,7 +5,7 @@
 ; Parameters ....: ---
 ; Return values .: ---
 ; Author ........: by RK MOD
-; Modified ......: 
+; Modified ......:
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2017
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......: ---
@@ -18,7 +18,7 @@
 #include <WinAPIEx.au3>
 #include <EditConstants.au3>
 
-Func ChatbotReadSettings()	
+Func ChatbotReadSettings()
 	$g_iChkClanMessages = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "genericMsgClan", "Testing on Chat|Hey all"), "|", 2)
 	$g_iChkClanResponses0 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "responseMsgClan", "keyword:Response|hello:Hi, Welcome to the clan|hey:Hey, how's it going?"), "|", 2)
 	Global $g_iChkClanResponses1[UBound($g_iChkClanResponses0)][2] ;
@@ -43,8 +43,8 @@ Func ChatbotReadSettings()
 EndFunc   ;==>ChatbotReadSettings
 
 
-Func chkGlobalChat()  
-    $g_iChkChatGlobal = 1  
+Func chkGlobalChat()
+    $g_iChkChatGlobal = 1
     If GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_ENABLE)
@@ -65,7 +65,7 @@ Func chkGlobalChat()
 	    GUICtrlSetState($g_hCmbLang, $GUI_ENABLE)
 	Else
     	GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
-	EndIf	
+	EndIf
 EndFunc ;==>chkGlobalChat
 
 
@@ -75,7 +75,7 @@ Func chkGlobalScramble()
 	Else
 		$g_iChkScrambleGlobal = 0
 	EndIf
-EndFunc   ;==>chkGlobalScramble	 
+EndFunc   ;==>chkGlobalScramble
 
 Func chkSwitchLang()
 	If GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED Then
@@ -87,8 +87,8 @@ Func chkSwitchLang()
 	    GUICtrlSetState($g_hCmbLang, $GUI_ENABLE)
 	Else
    	    GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
-	EndIf	
-EndFunc   ;==>chkSwitchLang	
+	EndIf
+EndFunc   ;==>chkSwitchLang
 
 Func chkClanChat()
     $g_iChkChatClan = 1
@@ -116,7 +116,7 @@ Func chkUseResponses()
 	Else
 		$g_iChkClanUseResponses = 0
 	EndIf
-EndFunc   ;==>chkUseResponses 
+EndFunc   ;==>chkUseResponses
 
 Func chkUseGeneric()
 	If GUICtrlRead($g_hChkUseGeneric) = $GUI_CHECKED Then
@@ -214,7 +214,7 @@ EndFunc   ;==>ChatbotChatGlobalInput
 ;+++++++++++++Kychera Modified +++++++++++++++
 Func ChatbotChatInput($message)
     If _Sleep(1000) Then Return
-	Click(33, 707, 1)	
+	Click(33, 707, 1)
     If $g_iChkRusLang = 1 Then
 	  SetLog("Chat send in russia", $COLOR_BLUE)
 	 AutoItWinSetTitle('MyAutoItTitle')
@@ -274,7 +274,7 @@ EndFunc   ;==>ChatbotIsLastChatNew
 
 Func ChatbotNotifySendChat()
    If Not $g_iChkUseNotify Then Return
-   
+
    Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
    Local $Time = @HOUR & "." & @MIN & "." & @SEC
    _CaptureRegion(0, 0, 320, 675)
@@ -283,8 +283,8 @@ Func ChatbotNotifySendChat()
    _GDIPlus_ImageDispose($g_hBitmap)
    ;push the file
    SetLog("Chatbot: Sent chat image", $COLOR_GREEN)
-   ;========Modified Kychera===========   
-   NotifyPushFileToBoth($ChatFile, "Loots", "image/jpeg", $g_sNotifyOrigin & " | Last Clan Chats" & "\n" & $ChatFile)
+   ;========Modified Kychera===========
+   NotifyPushFileToTelegram($ChatFile, "Loots", "image/jpeg", $g_sNotifyOrigin & " | Last Clan Chats" & "\n" & $ChatFile)
    ;===================
    ;wait a second and then delete the file
    If _Sleep($DELAYPUSHMSG2) Then Return
@@ -487,9 +487,9 @@ Func ChatbotMessage() ; run the chatbot
 		    ChangeLanguageToTR()
 		        Case "RU"
 		    ChangeLanguageToRU()
-			Sleep(3000)  
+			Sleep(3000)
               EndSwitch
-			Sleep(3000) 
+			Sleep(3000)
 			waitMainScreen()
 		EndIf
 ;======================================================================================
@@ -565,7 +565,7 @@ Func ChatbotMessage() ; run the chatbot
 			Local $ChatMsg = StringStripWS($sLastChat, 7)
 			SetLog("Found chat message: " & $ChatMsg, $COLOR_GREEN)
 			Local $SentMessage = False
-			
+
 			If $ChatMsg = "" Or $ChatMsg = " " Then
 				If $g_iChkClanAlwaysMsg Then
 					If Not ChatbotChatClanInput() Then Return

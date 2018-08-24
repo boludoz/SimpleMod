@@ -6249,8 +6249,10 @@ Global $g_iTrainArmyFullTroopPct = 100
 Global $g_bTotalCampForced = False, $g_iTotalCampForcedValue = 200
 Global $g_bForceBrewSpells = False
 Global $g_iTotalSpellValue = 0
-Global $g_bDoubleTrain, $g_bDoubleTrainDone = False, $g_bChkMultiClick
+Global $g_bDoubleTrain, $g_bDoubleTrainDone = False, $g_bChkMultiClick, $g_iMultiClick = 1
 Global $g_abDoubleTrainDone[8] = [False, False, False, False, False, False, False, False]
+Global $g_aiQueueTroops[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+Global $g_aiQueueSpells[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Global $g_iCmbBoostBarracks = 0, $g_iCmbBoostSpellFactory = 0, $g_iCmbBoostBarbarianKing = 0, $g_iCmbBoostArcherQueen = 0, $g_iCmbBoostWarden = 0
 Global $g_abBoostBarracksHours[24] = [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]
 Global Const $g_aiTroopOrderIcon[22] = [ $eIcnOptions, $eIcnBarbarian, $eIcnArcher, $eIcnGiant, $eIcnGoblin, $eIcnWallBreaker, $eIcnBalloon, $eIcnWizard, $eIcnHealer, $eIcnDragon, $eIcnPekka, $eIcnBabyDragon, $eIcnMiner, $eIcnElectroDragon, $eIcnMinion, $eIcnHogRider, $eIcnValkyrie, $eIcnGolem, $eIcnWitch, $eIcnLavaHound, $eIcnBowler]
@@ -19451,14 +19453,14 @@ Global $g_hRadAltuFaltuSCID = 0, $btnScanSCIDAcc = 0
 Func CreateBotProfiles()
 Local $x = 25, $y = 45
 GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "Group_01", "Switch Profiles"), $x - 20, $y - 20, $g_iSizeWGrpTab2, 55)
-$x -= 5
-$g_hCmbProfile = GUICtrlCreateCombo("", $x - 3, $y + 1, 100, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+$x -= 10
+$g_hCmbProfile = GUICtrlCreateCombo("", $x - 3, $y + 1, 115, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "CmbProfile_Info_01", "Use this to switch to a different profile")& @CRLF & GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "CmbProfile_Info_02", "Your profiles can be found in") & ": " & @CRLF & $g_sProfilePath)
 setupProfileComboBox()
 PopulatePresetComboBox()
 GUICtrlSetState(-1, $GUI_SHOW)
 GUICtrlSetOnEvent(-1, "cmbProfile")
-$g_hTxtVillageName = GUICtrlCreateInput(GetTranslatedFileIni("MBR Popups", "MyVillage", "MyVillage"), $x - 3, $y, 130, 22, $ES_AUTOHSCROLL)
+$g_hTxtVillageName = GUICtrlCreateInput(GetTranslatedFileIni("MBR Popups", "MyVillage", "MyVillage"), $x - 3, $y, 115, 22, $ES_AUTOHSCROLL)
 GUICtrlSetLimit(-1, 100, 0)
 GUICtrlSetFont(-1, 9, 400, 1)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "TxtVillageName_Info_01", "Your village/profile's name"))
@@ -19506,12 +19508,12 @@ _GUICtrlButton_SetImageList($g_hBtnAddProfile, $bIconAdd, 4)
 GUICtrlSetOnEvent(-1, "btnAddConfirm")
 GUICtrlSetState(-1, $GUI_SHOW)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnAddProfile_Info_01", "Add New Profile"))
-$g_hBtnConfirmAddProfile = GUICtrlCreateButton("", $x + 150, $y, 24, 24)
+$g_hBtnConfirmAddProfile = GUICtrlCreateButton("", $x + 135, $y, 24, 24)
 _GUICtrlButton_SetImageList($g_hBtnConfirmAddProfile, $bIconConfirm, 4)
 GUICtrlSetOnEvent(-1, "btnAddConfirm")
 GUICtrlSetState(-1, $GUI_HIDE)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnConfirmAddProfile_Info_01", "Confirm"))
-$g_hBtnConfirmRenameProfile = GUICtrlCreateButton("", $x + 150, $y, 24, 24)
+$g_hBtnConfirmRenameProfile = GUICtrlCreateButton("", $x + 135, $y, 24, 24)
 _GUICtrlButton_SetImageList($g_hBtnConfirmRenameProfile, $bIconConfirm, 4)
 GUICtrlSetOnEvent(-1, "btnRenameConfirm")
 GUICtrlSetState(-1, $GUI_HIDE)
@@ -19521,7 +19523,7 @@ _GUICtrlButton_SetImageList($g_hBtnDeleteProfile, $bIconDelete, 4)
 GUICtrlSetOnEvent(-1, "btnDeleteCancel")
 GUICtrlSetState(-1, $GUI_SHOW)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnDeleteProfile_Info_01", "Delete Profile"))
-$g_hBtnCancelProfileChange = GUICtrlCreateButton("", $x + 180, $y, 24, 24)
+$g_hBtnCancelProfileChange = GUICtrlCreateButton("", $x + 164, $y, 24, 24)
 _GUICtrlButton_SetImageList($g_hBtnCancelProfileChange, $bIconCancel, 4)
 GUICtrlSetOnEvent(-1, "btnDeleteCancel")
 GUICtrlSetState(-1, $GUI_HIDE)
@@ -19538,15 +19540,16 @@ $g_hBtnPushSharedPrefs = GUICtrlCreateButton("", $x + 254, $y, 24, 24)
 _GUICtrlButton_SetImageList($g_hBtnPushSharedPrefs, $bIconPush, 4)
 GUICtrlSetOnEvent(-1, "btnPushSharedPrefs")
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnPushSharedPrefs_Info_01", "Push CoC shared_prefs folder"))
-$g_hBtnSaveprofile = GUICtrlCreateButton("", $x + 255, $y, 24, 24)
+$g_hBtnSaveprofile = GUICtrlCreateButton("", $x + 284, $y, 24, 24)
 _GUICtrlButton_SetImageList($g_hBtnSaveprofile, $bIconSave, 4)
 GUICtrlSetOnEvent(-1, "BtnSaveprofile")
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnSaveprofile_Info_01", "Save your current setting."))
-$g_hChkOnlySCIDAccounts = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "ChkOnlySCIDAccounts", "SC_ID"), $x + 285, $y, -1, -1)
+$x += 17
+$g_hChkOnlySCIDAccounts = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "ChkOnlySCIDAccounts", "SC_ID"), $x + 297, $y, -1, -1)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "ChkOnlySCIDAccounts_Info_01", "Are you using SC_ID?"))
 GUICtrlSetOnEvent(-1, "OnlySCIDAccounts")
-$g_hCmbWhatSCIDAccount2Use = GUICtrlCreateCombo("", $x + 290 + 47, $y , 83, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-GUICtrlSetData(-1, "Account nº1|Account nº2|Account nº3|Account nº4|Account nº5", "Account nº1")
+$g_hCmbWhatSCIDAccount2Use = GUICtrlCreateCombo("", $x + 295 + 55, $y , 75, 10, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+GUICtrlSetData(-1, "Account 1|Account 2|Account 3|Account 4|Account 5", "Account 1")
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "WhatSCIDAccount2Use_Info_01", "Select the correct account from Login Window!"))
 GUICtrlSetOnEvent(-1, "WhatSCIDAccount2Use")
 GUICtrlCreateGroup("", -99, -99, 1, 1)
@@ -61836,11 +61839,11 @@ EndIf
 Local $bSufficentResourceToUpgrade = False
 Switch $g_aUpgradeResourceCostDuration[0]
 Case "Gold"
-If($g_aiCurrentLoot[$eLootGold] >=($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinGold)) Or(($g_aiCurrentLoot[$eLootGold] >= g_aUpgradeResourceCostDuration[1]) And($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakGE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
+If($g_aiCurrentLoot[$eLootGold] >=($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinGold)) Or(($g_aiCurrentLoot[$eLootGold] >= $g_aUpgradeResourceCostDuration[1]) And($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakGE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
 Case "Elixir"
 If($g_aiCurrentLoot[$eLootElixir] >=($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinElixir)) Or(($g_aiCurrentLoot[$eLootElixir] >= $g_aUpgradeResourceCostDuration[1]) And($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakGE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
 Case "Dark Elixir"
-If(($g_aiCurrentLoot[$eLootDarkElixir] >=($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinDarkElixir))) Or(($g_aiCurrentLoot[$eLootDarkElixir] >= $g_aUpgradeResourceCostDuration[1]) And($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakDE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
+If(($g_aiCurrentLoot[$eLootDarkElixir] >=($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinDark))) Or(($g_aiCurrentLoot[$eLootDarkElixir] >= $g_aUpgradeResourceCostDuration[1]) And($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakDE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
 EndSwitch
 If Not $bSufficentResourceToUpgrade Then
 SetLog("Unsufficent " & $g_aUpgradeResourceCostDuration[0] & " to launch this upgrade, looking Next...", $COLOR_WARNING)
@@ -62634,7 +62637,7 @@ NotifyPushToTelegram($g_sNotifyOrigin & " | " & "Command queued, will send clan 
 Else
 If Number($Interval) <> 0 Then
 ChatbotNotifyIntervalChatRead(Number($Interval))
-NotifyPushToTelegram($g_sNotifyOrigint & " | " & "Command queued, will send clan chat image on interval")
+NotifyPushToTelegram($g_sNotifyOrigin & " | " & "Command queued, will send clan chat image on interval")
 Else
 SetLog("Telegram: received command syntax wrong, command ignored.", $COLOR_RED)
 NotifyPushToTelegram($g_sNotifyOrigin & " | " & "Command not recognized" & "\n" & "Please push BOT HELP to obtain a complete command list.")
@@ -75939,7 +75942,7 @@ Local $ChatFile = $Date & "__" & $Time & ".jpg"
 _GDIPlus_ImageSaveToFile($g_hBitmap, $g_sProfileLootsPath & $ChatFile)
 _GDIPlus_ImageDispose($g_hBitmap)
 SetLog("Chatbot: Sent chat image", $COLOR_GREEN)
-NotifyPushFileToBoth($ChatFile, "Loots", "image/jpeg", $g_sNotifyOrigin & " | Last Clan Chats" & "\n" & $ChatFile)
+NotifyPushFileToTelegram($ChatFile, "Loots", "image/jpeg", $g_sNotifyOrigin & " | Last Clan Chats" & "\n" & $ChatFile)
 If _Sleep($DELAYPUSHMSG2) Then Return
 Local $iDelete = FileDelete($g_sProfileLootsPath & $ChatFile)
 If Not($iDelete) Then SetLog("Chatbot: Failed to delete temp file", $COLOR_RED)
@@ -78131,7 +78134,7 @@ TrainArmyNumber($g_bQuickTrainArmy, $iMultiClick)
 Else
 SetLog("Full queue, skip Quick Train", $COLOR_INFO)
 EndIf
-SmartTrainSiege($bDebug)
+SmartTrainSiege()
 SetLog("Smart Train accomplished")
 EndIf
 ExitLoop
@@ -78263,11 +78266,11 @@ Next
 EndSwitch
 Return $rWTT
 EndFunc
-Func SmartTrainSiege($bDebug)
+Func SmartTrainSiege()
 Local $iSiege = $eSiegeWallWrecker
 If $g_iTotalTrainSpaceSiege < 1 Then Return
 If $g_aiArmyCompSiegeMachine[$eSiegeWallWrecker] > 0 And $g_aiArmyCompSiegeMachine[$eSiegeBattleBlimp] > 0 Then
-If $bDebug Then SetLog("Army has both types of siege. Smart Train siege might cause unbalance.", $COLOR_DEBUG)
+If $g_bDebugSetlog Then SetLog("Army has both types of siege. Smart Train siege might cause unbalance.", $COLOR_DEBUG)
 Else
 If $g_aiArmyCompSiegeMachine[$eSiegeBattleBlimp] > 0 Then $iSiege = $eSiegeBattleBlimp
 If Not OpenSiegeMachinesTab(True, "SmartTrainSiege()") Then Return
