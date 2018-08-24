@@ -73133,7 +73133,7 @@ ClickDrag(700, 561, 700, 485,2000)
 If _Sleep(2000) Then Return
 While SCIDAccEndScroll() = False
 $NxtAcc = $NxtAcc+1
-ReDim $CrossPosY
+ReDim $CrossPosY[UBound($CrossPosY)+1]
 $CrossPosY = FindAccCrossMark()
 _ArraySort($CrossPosY,1)
 CaptureSCID($CrossPosY[0],$NxtAcc-1)
