@@ -9,7 +9,6 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: getArmyCapacityOnTrainTroops(48, 160), _getArmyCapacityOnTrainTroops(48, 160)
 ; ===============================================================================================================================
-Global $g_bFirstRun = False
 
 Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of troops in army Window
     Local $aTempResult[3] = [0, 0, 0]
@@ -50,23 +49,20 @@ Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of tr
 EndFunc   ;==>_getArmyCapacityOnTrainTroops
 
 Func CheckAutoCamp() ; Only first Run and th5 + (Then every time he does the troops he will do it alone.)
-Sleep(50)
-If $g_bFirstRun = False Then Return
-
 	Local $dbg = 0
 	If $dbg = 1 Then Setlog($g_iTotalSpellValue)
 	Local $iCmpSpell = StringCompare($g_iTotalSpellValue, "0")
         If $iCmpSpell = 0 Then ;And $g_iTownHallLevel >= 5 Then ; Spell camp
-			If Not OpenArmyOverview(True, "CheckAutoCamp()") Then Return
-			If _Sleep(200) Then Return
-			OpenTrainTab("Brew Spells Tab", True)
-            If _Sleep(250) Then return
+            Click(30, 584)
+            If _Sleep(1000) Then Return
+            Click(407, 132)
+            If _Sleep(1000) Then return
 			Local $NewSpellOCR = getArmyCapacityOnTrainTroops(48, 160) ; Check spell camps
-			OpenTrainTab("Train Troops Tab", True)
-            If _Sleep(250) Then Return
+            Click(280, 132)
+            If _Sleep(1000) Then Return
 			Local $NewCampOCR = getArmyCapacityOnTrainTroops(48, 160) ; Check army camps
 				Click(825, 122)
-			If _Sleep(250) Then Return
+			If _Sleep(1000) Then Return
 		Endif
 EndFunc   ;==>CheckAutoCamp
 
