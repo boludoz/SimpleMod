@@ -189,11 +189,11 @@ Func _AutoUpgrade()
 		; if Cost of upgrade + Value set in settings to be kept after upgrade > Current village resource, make boolean True and can continue
 		Switch $g_aUpgradeResourceCostDuration[0]
 			Case "Gold"
-				If ($g_aiCurrentLoot[$eLootGold] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinGold)) Or (($g_aiCurrentLoot[$eLootGold] >= g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakGE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
+				If ($g_aiCurrentLoot[$eLootGold] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinGold)) Or (($g_aiCurrentLoot[$eLootGold] >= g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakGE[$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
 			Case "Elixir"
-				If ($g_aiCurrentLoot[$eLootElixir] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinElixir)) Or (($g_aiCurrentLoot[$eLootElixir] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakGE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
+				If ($g_aiCurrentLoot[$eLootElixir] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinElixir)) Or (($g_aiCurrentLoot[$eLootElixir] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakGE[$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
 			Case "Dark Elixir"
-				If (($g_aiCurrentLoot[$eLootDarkElixir] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinDarkElixir))) Or (($g_aiCurrentLoot[$eLootDarkElixir] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakDE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
+				If (($g_aiCurrentLoot[$eLootDarkElixir] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinDarkElixir))) Or (($g_aiCurrentLoot[$eLootDarkElixir] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakDE[$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
 		EndSwitch
 		; if boolean still False, we can't launch upgrade, exiting...
 		If Not $bSufficentResourceToUpgrade Then
