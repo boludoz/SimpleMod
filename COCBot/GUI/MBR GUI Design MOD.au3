@@ -14,7 +14,7 @@
 ; ===============================================================================================================================
 #include-once
 ; ================================================== RK Debug ================================================== ;
-Global $g_hBtnTestHeroBoostOCR = 0, $g_hBtnTestBuilderTimeOCR = 0
+Global $g_hBtnTestHeroBoostOCR = 0, $g_hBtnTestBuilderTimeOCR = 0, $g_hBtnTestGlobalChatBot = 0, $g_hBtnTestClanChatBot = 0
 
 ; ================================================== War preparation ================================================== ;
 Global $g_hChkStopForWar = 0, $g_hCmbStopTime = 0, $g_CmbStopBeforeBattle = 0, $g_hCmbReturnTime = 0
@@ -674,4 +674,11 @@ Func TabItem9()
 	$y += $yNext
 		$g_hBtnTestBuilderTimeOCR = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestBuilderTimeOCR", "Check Builder Time OCR"), $x, $y, 140, 25)
 		GUICtrlSetOnEvent(-1, "btnTestBuilderTimeOCR")
+	$y += $yNext
+		$g_hBtnTestGlobalChatBot = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestGlobalChatBot", "Test Global Chat Bot"), $x, $y, 140, 25)
+		GUICtrlSetOnEvent(-1, "btnTestGlobalChatBot")
+	$y += $yNext
+		$g_hBtnTestClanChatBot = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestClanChatBot", "Test Clan Chat Bot"), $x, $y, 140, 25)
+		GUICtrlSetOnEvent(-1, "btnTestClanChatBot")
+
 EndFunc   ;==>TabItem9
