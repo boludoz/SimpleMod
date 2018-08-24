@@ -146,7 +146,7 @@ Func ReadConfig_RKMod()
 
 	; ==================================================  Upgrade Management - Added by RK MOD ==================== ;
 
-	IniReadS($g_ibUpdateNewUpgradesOnly, $g_sProfileConfigPath, "upgrade", "ChkUpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly, "int")
+	IniReadS($g_ibUpdateNewUpgradesOnly, $g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly, "int")
 
 EndFunc   ;==>ReadConfig_RKMod
 

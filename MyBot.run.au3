@@ -717,10 +717,11 @@ Func runBot() ;Bot that runs everything in order
 			checkMainScreen(False)
 			If $g_bRestart = True Then ContinueLoop
 			If _Sleep($DELAYRUNBOT3) Then Return
-
+			
+			MainGTFO()
+			MainKickout()
+				
 			If Not $g_bFirstStart Then
-				MainGTFO()
-				MainKickout()
 				VillageReport()
 			EndIf
 			

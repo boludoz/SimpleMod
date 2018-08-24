@@ -27,10 +27,7 @@ Global $g_bLeader = False
 ; Make a Main Loop , replacing the Original Main Loop / Necessary Functions : Train - Donate - CheckResourcesValues
 Func MainGTFO()
 
-	If $g_bChkUseGTFO = False Then
-		SetLog("GTFO Skipped...!", $COLOR_INFO)
-		Return
-	EndIf
+	If $g_bChkUseGTFO = False Then Return
 	
 	; Donate Loop on Clan Chat
 	If $g_iLoop2 > $g_iTxtCyclesGTFO Then

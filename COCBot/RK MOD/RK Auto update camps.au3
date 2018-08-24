@@ -50,15 +50,16 @@ Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of tr
 EndFunc   ;==>_getArmyCapacityOnTrainTroops
 
 Func CheckAutoCamp() ; Only first Run and th5 + (Then every time he does the troops he will do it alone.)
+	Local $dbg = 1
+	If $dbg = 1 Then Setlog("campon")
 Sleep(50)
-If $g_bFirstRun = False Then Return
+If $g_bFirstRun = True Then Return
 
-	Local $dbg = 0
-	If $dbg = 1 Then Setlog($g_iTotalSpellValue)
-	Local $iCmpSpell = StringCompare($g_iTotalSpellValue, "0")
-        If $iCmpSpell = 0 Then ;And $g_iTownHallLevel >= 5 Then ; Spell camp
-			If Not OpenArmyOverview(True, "CheckAutoCamp()") Then Return
-			If _Sleep(200) Then Return
+	;	Local $iCmpSpell = StringCompare($g_iTotalSpellValue, "0")
+    ;   If $iCmpSpell = 0 Then ;And $g_iTownHallLevel >= 5 Then ; Spell camp
+		
+            Click(30, 584)
+            If _Sleep(250) Then Return
 			OpenTrainTab("Brew Spells Tab", True)
             If _Sleep(250) Then return
 			Local $NewSpellOCR = getArmyCapacityOnTrainTroops(48, 160) ; Check spell camps
@@ -67,7 +68,8 @@ If $g_bFirstRun = False Then Return
 			Local $NewCampOCR = getArmyCapacityOnTrainTroops(48, 160) ; Check army camps
 				Click(825, 122)
 			If _Sleep(250) Then Return
-		Endif
+			$g_bFirstRun = True
+	;	Endif
 EndFunc   ;==>CheckAutoCamp
 
 ; INFO ! ======================

@@ -43,7 +43,7 @@ Func ChatbotReadSettings()
 EndFunc   ;==>ChatbotReadSettings
 
 Func ChatbotIsLastChatNew() ; returns true if the last chat was not by you, false otherwise
-		If _MultiPixelSearch(29, 552 + $g_iMidOffsetY, 112, 678 + $g_iMidOffsetY, 1, 1, Hex(0x92EE4D, 6), Hex(0x92EE4D, 6)) Then Return True ; detect you nick
+		If _MultiPixelSearch(29, 552 + $g_iMidOffsetY, 112, 678 + $g_iMidOffsetY, 1, 1, Hex(0x92EE4D, 6), Hex(0x92EE4D), 6) Then Return True ; detect you nick
 	Return False
 EndFunc   ;==>ChatbotIsLastChatNew
 
