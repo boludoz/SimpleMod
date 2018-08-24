@@ -43,12 +43,16 @@ Func ChatbotReadSettings()
 EndFunc   ;==>ChatbotReadSettings
 
 Func ChatbotIsLastChatNew() ; returns true if the last chat was not by you, false otherwise
-		If _MultiPixelSearch(29, 552 + $g_iMidOffsetY, 112, 678 + $g_iMidOffsetY, 1, 1, Hex(0x92EE4D, 6), Hex(0x92EE4D), 20) Then 
-		Return False ; detect you nick
-		Else
-		Return True
-		EndIf
-EndFunc   ;==>ChatbotIsLastChatNew
+   _CaptureRegion()
+	For $y = 551 To 620
+		Sleep(5)
+		For $x = 22 To 110
+			Sleep(5)
+			If _ColorCheck(_GetPixelColor($x, $y), Hex(0x92EE4D, 6), 20) Then Return True
+		Next
+	Next  
+   Return False
+EndFunc
 
 Func chkGlobalChat()
     $g_iChkChatGlobal = 1
@@ -558,7 +562,7 @@ Func ChatbotMessage() ; run the chatbot
 			Return
 		EndIf
 
-		If ChatbotIsLastChatNew() Then
+		If not ChatbotIsLastChatNew() Then
 			; get text of the latest message
 			Local $sLastChat = ReadChat()
 			Local $ChatMsg = StringStripWS($sLastChat, 7)
