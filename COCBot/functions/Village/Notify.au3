@@ -335,7 +335,7 @@ Func NotifyRemoteControlProc()
 						$txtHelp &= "\n" & GetTranslatedFileIni("MBR Func_Notify", "STANDBY", "STANDBY") & " " & GetTranslatedFileIni("MBR Func_Notify", "STANDBY_Info_01", "- Standby host PC")
                         $txtHelp &= "\n" & GetTranslatedFileIni("MBR Func_Notify", "GETCHATS", "GETCHATS") & " " & GetTranslatedFileIni("MBR Func_Notify", "GETCHATS_Info_01", "- GETCHATS <INTERVAL|NOW|STOP> - to get the latest clan chat as an image")
 						$txtHelp &= "\n" & GetTranslatedFileIni("MBR Func_Notify", "SENDCHAT", "SENDCHAT") & " " & GetTranslatedFileIni("MBR Func_Notify", "STANDBY_Info_01", "- SENDCHAT <chat message> - to send a chat to your clan")
-
+						
 						NotifyPushToTelegram($g_sNotifyOrigin & " | " & GetTranslatedFileIni("MBR Func_Notify", "Request-For-Help_Info_02", "Request for Help") & "\n" & $txtHelp)
 						SetLog("Notify Telegram: Your request has been received from " & $g_sNotifyOrigin & ". Help has been sent", $COLOR_SUCCESS)
 					Case GetTranslatedFileIni("MBR Func_Notify", "RESTART", "RESTART"), '\UD83D\UDD01 ' & GetTranslatedFileIni("MBR Func_Notify", "RESTART", "RESTART")
@@ -540,7 +540,7 @@ Func NotifyRemoteControlProc()
 							Else
 								If Number($Interval) <> 0 Then
 									ChatbotNotifyIntervalChatRead(Number($Interval))
-									NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Command queued, will send clan chat image on interval")
+									NotifyPushToTelegram($g_sNotifyOrigint & " | " &  "Command queued, will send clan chat image on interval")
 								Else
 									SetLog("Telegram: received command syntax wrong, command ignored.", $COLOR_RED)
 									NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Command not recognized" & "\n" &  "Please push BOT HELP to obtain a complete command list.")

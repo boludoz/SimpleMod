@@ -538,8 +538,8 @@ Global Enum $eIcnArcher = 1, $eIcnDonArcher, $eIcnBalloon, $eIcnDonBalloon, $eIc
 		$eIcnChat, $eIcnRepeat, $eIcnClan, $eIcnTarget, $eIcnSettings, _
 		$eIcnClanGames, $eIcnFarmingSchedule, $eIcnWarPreparation, $eIcnSwitchAcc, $eIcnSwitchProfile, $eIcnElectroDragon, $eIcnTH12, $eHdV12, $eWall13, $eIcnGrayShield, $eIcnBlueShield, $eIcnGreenShield, $eIcnRedShield, _
 		$eIcnBattleB , $eIcnWallW, $eIcnSiegeCost
-
-
+		
+		
 Global $eIcnDonBlank = $eIcnDonBlacklist
 Global $eIcnOptions = $eIcnDonBlacklist
 Global $eIcnAchievements = $eIcnMain
@@ -948,10 +948,9 @@ Global $g_iTrainArmyFullTroopPct = 100
 Global $g_bTotalCampForced = False, $g_iTotalCampForcedValue = 200
 Global $g_bForceBrewSpells = False
 Global $g_iTotalSpellValue = 0
-Global $g_bDoubleTrain, $g_bDoubleTrainDone = False, $g_bChkMultiClick, $g_iMultiClick = 1 ; DoubleTrain Demen
+Global $g_bDoubleTrain, $g_bDoubleTrainDone = False, $g_bChkMultiClick ; DoubleTrain Demen
 Global $g_abDoubleTrainDone[8] = [False, False, False, False, False, False, False, False]; DoubleTrain Demen
-Global $g_aiQueueTroops[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; DoubleTrain Demen
-Global $g_aiQueueSpells[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; DoubleTrain Demen
+
 
 ; <><><><> Attack Plan / Train Army / Boost <><><><>
 Global $g_iCmbBoostBarracks = 0, $g_iCmbBoostSpellFactory = 0, $g_iCmbBoostBarbarianKing = 0, $g_iCmbBoostArcherQueen = 0, $g_iCmbBoostWarden = 0
@@ -1525,7 +1524,6 @@ Global $g_iActiveDonate = -1 ; -1 means not set yet
 Global $g_aiDonateTroops[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], $g_aiDonateSpells[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], $g_aiDonateSiegeMachines[$eSiegeMachineCount] = [0, 0]
 Global $g_aiCurrentTroops[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], $g_aiCurrentSpells[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], $g_aiCurrentSiegeMachines[$eSiegeMachineCount] = [0, 0]
 Global $g_aiCurrentCCTroops[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], $g_aiCurrentCCSpells[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0], $g_aiCurrentCCSiegeMachines[$eSiegeMachineCount] = [0, 0]
-
 Global $g_bDonationEnabled = True
 Global $g_iTroopsDonated = 0
 Global $g_iTroopsReceived = 0
