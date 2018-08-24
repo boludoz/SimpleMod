@@ -23,7 +23,7 @@ Func UpgradeWall()
 			If SkipWallUpgrade() Then Return
 			If $g_iFreeBuilderCount > 0 Then
 				ClickP($aAway, 1, 0, "#0313") ; click away
-				
+
 				While ($g_iUpgradeWallLootType = 0 And ($MinWallGold)) Or ($g_iUpgradeWallLootType = 1 And ($MinWallElixir)) Or ($g_iUpgradeWallLootType = 2 And ($MinWallGold Or $MinWallElixir))
 
 					Switch $g_iUpgradeWallLootType
@@ -108,7 +108,7 @@ Func UpgradeWall()
 			Else
 				SetLog("No free builder, Upgrade Walls skipped..", $COLOR_ERROR)
 			EndIf
-	
+
 	EndIf
 	If _Sleep($DELAYUPGRADEWALL1) Then Return
 	checkMainScreen(False) ; Check for errors during function
@@ -120,7 +120,7 @@ Func UpgradeWallGold()
 
 	;Click($WallxLOC, $WallyLOC)
 	If _Sleep($DELAYRESPOND) Then Return
-	
+
 	If GoldPriority() Then
 		SetLog("Gold Priority Verified", $COLOR_INFO)
 		Else
@@ -175,7 +175,7 @@ Func UpgradeWallElixir()
 
 	;Click($WallxLOC, $WallyLOC)
 	If _Sleep($DELAYRESPOND) Then Return
-	
+
 	If ElixirPriority() Then
 		SetLog("Elixir Priority Verified", $COLOR_INFO)
 		Else
@@ -223,9 +223,9 @@ Func UpgradeWallElixir()
 EndFunc   ;==>UpgradeWallElixir
 
 Func SkipWallUpgrade() ; Dynamic Upgrades
-	
+
 	If $g_iCmbUpgrdPriority = 0 Then
-	
+
 		IniReadS($g_iUpgradeWallLootType, $g_sProfileConfigPath, "upgrade", "use-storage", "0") ; Reset Variable to User Selection
 
 		Local $iUpgradeAction = 0
@@ -254,8 +254,8 @@ Func SkipWallUpgrade() ; Dynamic Upgrades
 		$iAvailBuilderCount = $g_iFreeBuilderCount ; capture local copy of free builders
 
 		;;;;; Check building upgrade resouce needs .vs. available resources for walls
-		
-		
+
+
 	For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1 ; loop through all upgrades to see if any are enabled.
 			If $g_abBuildingUpgradeEnable[$iz] = True Then $iUpgradeAction += 1 ; count number enabled
 		Next
@@ -356,7 +356,7 @@ Func SkipWallUpgrade() ; Dynamic Upgrades
 		Return False
 	ElseIf $g_iCmbUpgrdPriority = 1 Then
 		Return False
-	EndIf		
+	EndIf
 EndFunc   ;==>SkipWallUpgrade
 
 Func SwitchToNextWallLevel() ; switches wall level to upgrade to next level
@@ -381,18 +381,18 @@ Func GoldPriority()
 	Local $iGoldBuildings = 0
 	Local $iUpgradeAction = 0
 	Local $iDecision = 0
-	
+
 	If $g_iCmbUpgrdPriority = 1 Then
 		SetLog("Gold Priority is enabled.", $COLOR_INFO)
 		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
 			If $g_abBuildingUpgradeEnable[$iz] = True Then $iUpgradeAction += 1
 		Next
-				
+
 		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
 			If $iUpgradeAction > 0 And $g_abBuildingUpgradeEnable[$iz] = True And $g_avBuildingUpgrades[$iz][7] = "" Then
 				Switch $g_avBuildingUpgrades[$iz][3]
 					Case "Gold"
-						$iBuildingsNeedGold += Number($g_avBuildingUpgrades[$iz][2]) 
+						$iBuildingsNeedGold += Number($g_avBuildingUpgrades[$iz][2])
 						$iGoldBuildings += 1
 				EndSwitch
 			EndIf
@@ -407,7 +407,7 @@ Func GoldPriority()
 		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings > 0 And $g_bUpgradeWallSaveBuilder = 1) Then
 			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
-			Else	
+			Else
 				SetLog("Building: Priority Fail.", $COLOR_WARNING)
 				Return False
 		EndIf
@@ -418,7 +418,7 @@ Func GoldPriority()
 		SetLog("Gold Priority is disabled.", $COLOR_INFO)
 		Return True
 	EndIf
-	
+
 EndFunc   ;==>GoldPriority
 
 Func ElixirPriority()
@@ -427,18 +427,18 @@ Func ElixirPriority()
 	Local $iElixirBuildings = 0
 	Local $iUpgradeAction = 0
 	Local $iDecision = 0
-	
+
 	If $g_iCmbUpgrdPriority = 1 Then
 		SetLog("Elixir Priority is enabled.", $COLOR_INFO)
 		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
 			If $g_abBuildingUpgradeEnable[$iz] = True Then $iUpgradeAction += 1
 		Next
-				
+
 		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
 			If $iUpgradeAction > 0 And $g_abBuildingUpgradeEnable[$iz] = True And $g_avBuildingUpgrades[$iz][7] = "" Then
 				Switch $g_avBuildingUpgrades[$iz][3]
 					Case "Elixir"
-						$iBuildingsNeedElixir += Number($g_avBuildingUpgrades[$iz][2]) 
+						$iBuildingsNeedElixir += Number($g_avBuildingUpgrades[$iz][2])
 						$iElixirBuildings += 1
 				EndSwitch
 			EndIf
@@ -453,7 +453,7 @@ Func ElixirPriority()
 		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings > 0 And $g_bUpgradeWallSaveBuilder = 1) Then
 			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
-			Else	
+			Else
 				SetLog("Building: Priority Fail.", $COLOR_WARNING)
 				Return False
 		EndIf
@@ -461,7 +461,7 @@ Func ElixirPriority()
 			SetLog("Laboratory: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
-				SetLog(("Laboratory: Priority Fail.", $COLOR_WARNING)
+				SetLog("Laboratory: Priority Fail.", $COLOR_WARNING)
 				Return False
 		EndIf
 		If $iDecision = 3 Then
@@ -471,5 +471,5 @@ Func ElixirPriority()
 		SetLog("Elixir Priority is disabled.", $COLOR_INFO)
 		Return True
 	EndIf
-	
+
 EndFunc   ;==>ElixirPriority
