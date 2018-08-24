@@ -45,9 +45,7 @@ EndFunc   ;==>ChatbotReadSettings
 Func ChatbotIsLastChatNew() ; returns true if the last chat was not by you, false otherwise
    _CaptureRegion()
 	For $y = 552 To 620
-		Sleep(5)
 		For $x = 33 To 110
-			Sleep(5)
 			If _ColorCheck(_GetPixelColor($x, $y), Hex(0x92EE4D, 6), 20) Then Return True
 		Next
 	Next  
