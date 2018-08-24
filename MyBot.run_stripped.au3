@@ -7247,6 +7247,7 @@ Global $aTextBox[4] = [320, 160 + $g_iMidOffsetY, 0xFFFFFF, 10]
 Global $aButtonVillageOkay[4] = [500, 170 + $g_iMidOffsetY, 0x81CA2D, 20]
 Global $aButtonConnectedSCID[4] = [430, 205 + $g_iMidOffsetY, 0x6EB730, 20]
 Global $aButtonLogOutSCID[4] = [700, 285 + $g_iMidOffsetY, 0x308AFB, 20]
+Global $aButtonConfirmSCID[4] = [460, 410 + $g_iMidOffsetY, 0x328AFB, 20]
 Global $aListAccountSCID[4] = [490, 185 + $g_iMidOffsetY, 0x000000, 10]
 Global $aCloseTabSCID[4] = [732, 145]
 Global $aTrainBarb[4] = [-1, -1, -1, -1]
@@ -7356,9 +7357,6 @@ Global $g_sImgEasyBuildings = @ScriptDir & "\imgxml\easybuildings"
 Global Const $g_sImgLoginWithSupercellID = @ScriptDir & "\imgxml\other\SwitchAccounts\LoginWithSupercellID*"
 Global Const $g_sImgGoogleSelectAccount = @ScriptDir & "\imgxml\other\SwitchAccounts\GoogleSelectAccount*"
 Global Const $g_sImgGoogleSelectEmail = @ScriptDir & "\imgxml\other\SwitchAccounts\GoogleSelectEmail*"
-Global Const $g_sImgLogOutButton = @ScriptDir & "\imgxml\other\SwitchAccounts\LogOutButton"
-Global Const $g_sImgConfirmButton = @ScriptDir & "\imgxml\other\SwitchAccounts\ConfirmButton"
-Global Const $g_sImgListAccounts = @ScriptDir & "\imgxml\other\SwitchAccounts\ListAccounts"
 Global $g_sImgGrandWardenHeal = @ScriptDir & "\imgxml\other\GrandWardenMode\GrandWardenHeal"
 Global $g_sImgGrandWardenMode = @ScriptDir & "\imgxml\other\GrandWardenMode\GrandWardenAir"
 Global Const $g_sImgCaravan = @ScriptDir & "\imgxml\Resources\Clan Games Images\MainLoop\Caravan"
@@ -64821,7 +64819,7 @@ For $i = 0 To 20
 If _ColorCheck(_GetPixelColor($aButtonConnectedSCID[0], $aButtonConnectedSCID[1], True), Hex($aButtonConnectedSCID[2], 6), $aButtonConnectedSCID[3]) Then
 Click($aButtonConnectedSCID[0], $aButtonConnectedSCID[1], 1, 0, "Click Connected SC_ID")
 SetLog("   1. Click Connected Supercell ID")
-If _Sleep(600) Then Return "Exit"
+If _Sleep(2500) Then Return "Exit"
 Return "OK"
 EndIf
 SetDebugLog("Checking Green Connected button x:" & $aButtonConnectedSCID[0] & " y:" & $aButtonConnectedSCID[1] & " : " & _GetPixelColor($aButtonConnectedSCID[0], $aButtonConnectedSCID[1], True))
@@ -64834,19 +64832,19 @@ Next
 Return ""
 EndFunc
 Func SwitchCOCAcc_ConfirmSCID(ByRef $bResult)
-For $i = 0 To 30
-If QuickMIS("BC1", $g_sImgLogOutButton, 620, 246, 693, 308) Then
+For $i = 0 To 20
+If _ColorCheck(_GetPixelColor($aButtonLogOutSCID[0], $aButtonLogOutSCID[1], True), Hex($aButtonLogOutSCID[2], 6), $aButtonLogOutSCID[3]) Then
 SetLog("   2. Click Log Out Supercell ID")
-Click($g_iQuickMISX + 587, $g_iQuickMISY + 268, 2, 500, "Click Log Out SC_ID")
+Click($aButtonLogOutSCID[0], $aButtonLogOutSCID[1], 2, 500, "Click Log Out SC_ID")
 If _Sleep(500) Then Return "Exit"
-For $j = 0 To 20
-If QuickMIS("BC1", $g_sImgConfirmButton, 400, 414, 586, 455) Then
+For $j = 0 To 10
+If _ColorCheck(_GetPixelColor($aButtonConfirmSCID[0], $aButtonConfirmSCID[1], True), Hex($aButtonConfirmSCID[2], 6), $aButtonConfirmSCID[3]) Then
 SetLog("   3. Click Confirm Supercell ID")
-Click($g_iQuickMISX + 370, $g_iQuickMISY + 402, 1, 0, "Click Confirm SC_ID")
+Click($aButtonConfirmSCID[0], $aButtonConfirmSCID[1], 1, 0, "Click Confirm SC_ID")
 If _Sleep(500) Then Return "Exit"
 Return "OK"
 EndIf
-If $j = 20 Then
+If $j = 10 Then
 $bResult = False
 Return "Error"
 EndIf
@@ -64854,7 +64852,7 @@ If _Sleep(900) Then Return "Exit"
 Next
 EndIf
 SetDebugLog("Checking LogOut & Confirm button x:" & $aButtonLogOutSCID[0] & " y:" & $aButtonLogOutSCID[1] & " : " & _GetPixelColor($aButtonLogOutSCID[0], $aButtonLogOutSCID[1], True))
-If $i = 30 Then
+If $i = 20 Then
 $bResult = False
 Return "Error"
 EndIf
@@ -64864,46 +64862,26 @@ Return ""
 EndFunc
 Func SwitchCOCAcc_ClickAccountSCID(ByRef $bResult, $NextAccount, $iStep = 4)
 Local $YCoord = Int(336 + 73.5 * $NextAccount)
-Local $DeltaTotal8Acc = $g_iTotalAcc = 7 ? 14 : 0
 Local $iRetryCloseSCIDTab = 0
 For $i = 0 To 30
 If _ColorCheck(_GetPixelColor($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], True), Hex($aLoginWithSupercellID[2], 6), $aLoginWithSupercellID[3]) And  _ColorCheck(_GetPixelColor($aLoginWithSupercellID2[0], $aLoginWithSupercellID2[1], True), Hex($aLoginWithSupercellID2[2], 6), $aLoginWithSupercellID2[3]) Then
 SetLog("   " & $iStep & ". Click Log in with Supercell ID")
 Click($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], 1, 0, "Click Log in with SC_ID")
-If _Sleep(600) Then Return "Exit"
+If _Sleep(3000) Then Return "Exit"
 For $j = 0 To 20
-If QuickMIS("BC1", $g_sImgListAccounts, 490, 201, 524, 232) Then
-Local $bDragDone = False
+If _ColorCheck(_GetPixelColor($aListAccountSCID[0], $aListAccountSCID[1], True), Hex($aListAccountSCID[2], 6), $aListAccountSCID[3]) Then
 If $NextAccount >= 4 Then
 $YCoord = Int(408 - 73.5 *($g_iTotalAcc - $NextAccount))
-SetLog("     drag for more accounts")
 ClickDrag(700, 590, 700, 172, 2000)
-If _Sleep(250) Then Return "Exit"
-For $x = 0 To 5
-If QuickMIS("N1", $g_sImgListAccounts, 415, 470, 442, 487) = "OR" Then
-$bDragDone = True
-ExitLoop
+If _Sleep(500) Then Return "Exit"
 EndIf
-If _Sleep(250) Then Return "Exit"
-Next
-EndIf
-If $NextAccount < 4 Or $bDragDone Then
-Click(270, $YCoord, 3, 1000)
-If _Sleep(250) Then Return "Exit"
-$bResult = True
-EndIf
-ElseIf QuickMIS("BC1", $g_sImgListAccounts, 470, 190, 497, 297) Then
-$YCoord = Int(359 - 16 *($g_iTotalAcc - 1) + 32 * $NextAccount) + $DeltaTotal8Acc
-Click(300, $YCoord, 3, 1000)
-If _Sleep(250) Then Return "Exit"
-$bResult = True
-EndIf
-If $bResult Then
+Click(270, $YCoord)
 SetLog("   " &($iStep + 1) & ". Click Account [" & $NextAccount + 1 & "] Supercell ID")
+If _Sleep(500) Then Return "Exit"
 SetLog("Please wait for loading CoC...!")
+$bResult = True
 Return "OK"
-EndIf
-If $j = 20 Then
+ElseIf $j = 10 Then
 $iRetryCloseSCIDTab += 1
 If $iRetryCloseSCIDTab <= 3 Then
 SetLog("   " & $iStep & ".5 Click Close Tab Supercell ID")
