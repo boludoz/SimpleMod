@@ -673,6 +673,7 @@ Func runBot() ;Bot that runs everything in order
 		SetLog("Rematching Account [" & $g_iNextAccount + 1 & "] with Profile [" & GUICtrlRead($g_ahCmbProfile[$g_iNextAccount]) & "]")
 		SwitchCoCAcc($g_iNextAccount)
 	EndIf
+
 	FirstCheck()
 
 	While 1
@@ -718,10 +719,12 @@ Func runBot() ;Bot that runs everything in order
 			If $g_bRestart = True Then ContinueLoop
 			If _Sleep($DELAYRUNBOT3) Then Return
 
-			If $g_bChkUseGTFO = True Then MainGTFO()
-			If $g_bChkUseKickOut = True Then MainKickout()
-
-			VillageReport()
+			If Not $g_bFirstStart Then
+				MainGTFO()
+				MainKickout()
+				VillageReport()
+			EndIf
+			
 			ProfileSwitch()
 			CheckFarmSchedule()
 			CheckStopForWar()
@@ -1306,12 +1309,12 @@ EndFunc   ;==>_RunFunction
 Func FirstCheck()
 
 
-	If $g_bChkUseGTFO = True Then MainGTFO()
-	If $g_bChkUseKickOut = True Then MainKickout()
+	MainGTFO()
+	MainKickout()
+	VillageReport()
 
 	If ProfileSwitchAccountEnabled() And $g_abDonateOnly[$g_iCurAccount] Then Return
-	
-	VillageReport()
+
 	CheckFarmSchedule()
 	
 	If $g_bReqCCFirst = 1 Then RequestCC()
