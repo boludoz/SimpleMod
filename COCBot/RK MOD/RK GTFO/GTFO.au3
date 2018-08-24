@@ -26,6 +26,12 @@ Global $g_bLeader = False
 
 ; Make a Main Loop , replacing the Original Main Loop / Necessary Functions : Train - Donate - CheckResourcesValues
 Func MainGTFO()
+
+	If $g_bChkUseGTFO = False Then
+		SetLog("GTFO Skipped...!", $COLOR_INFO)
+		Return
+	EndIf
+	
 	; Donate Loop on Clan Chat
 	If $g_iLoop2 > $g_iTxtCyclesGTFO Then
 		Setlog("Finished GTFO " & $g_iLoop2 & " Loop(s)", $COLOR_INFO)
@@ -35,10 +41,6 @@ Func MainGTFO()
 		EndIf
 	EndIf
 	
-	If $g_bChkUseGTFO = False Then
-		SetLog("GTFO Skipped...!", $COLOR_INFO)
-		Return
-	EndIf
 	
 	If $g_aiCurrentLoot[$eLootElixir] <> 0 And $g_aiCurrentLoot[$eLootElixir] < $g_iTxtMinSaveGTFO_Elixir Then
 		SetLog("Elixir Limits Reached!! Let's farm!", $COLOR_INFO)
