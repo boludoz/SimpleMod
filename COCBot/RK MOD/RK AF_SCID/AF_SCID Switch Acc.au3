@@ -277,7 +277,8 @@ Func ScanSCIDAcc()
 		If _Sleep(2000) Then Return
 		While SCIDAccEndScroll() = False
 			$NxtAcc = $NxtAcc+1
-			ReDim $CrossPosY[UBound($CrossPosY)+1]
+			;ReDim $CrossPosY
+			ReDim $CrossPosY[UBound($CrossPosY)+1] ;Adove code changed to this line NOT TESTED but fixed.
 			$CrossPosY = FindAccCrossMark()
 			_ArraySort($CrossPosY,1)
 			CaptureSCID($CrossPosY[0],$NxtAcc-1)
