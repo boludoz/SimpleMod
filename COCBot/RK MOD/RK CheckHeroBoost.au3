@@ -99,9 +99,9 @@ Func CheckHeroBoost()
 			If $index = 1 Then SetLog("Queen Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
 			If $index = 2 Then SetLog("Warden Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
 		Else
-			If $index = 0 Then SetLog("King Not Boosted", $COLOR_ERROR)
-			If $index = 1 Then SetLog("Queen Not Boosted", $COLOR_ERROR)
-			If $index = 2 Then SetLog("Warden Not Boosted", $COLOR_ERROR)
+			If $index = 0 And $g_bDebugSetlog Then SetLog("King Not Boosted", $COLOR_ERROR)
+			If $index = 1 And $g_bDebugSetlog Then SetLog("Queen Not Boosted", $COLOR_ERROR)
+			If $index = 2 And $g_bDebugSetlog Then SetLog("Warden Not Boosted", $COLOR_ERROR)
 		EndIf
 
 		If $g_bDebugSetlog Then
