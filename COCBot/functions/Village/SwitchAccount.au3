@@ -631,7 +631,7 @@ Func SwitchCOCAcc_ConnectedSCID(ByRef $bResult)
 		If _ColorCheck(_GetPixelColor($aButtonConnectedSCID[0], $aButtonConnectedSCID[1], True), Hex($aButtonConnectedSCID[2], 6), $aButtonConnectedSCID[3]) Then
 			Click($aButtonConnectedSCID[0], $aButtonConnectedSCID[1], 1, 0, "Click Connected SC_ID")
 			SetLog("   1. Click Connected Supercell ID")
-			If _Sleep(2500) Then Return "Exit"
+			If _Sleep(600) Then Return "Exit"
 			;ExitLoop
 			Return "OK"
 		EndIf
@@ -649,21 +649,21 @@ Func SwitchCOCAcc_ConnectedSCID(ByRef $bResult)
 EndFunc   ;==>SwitchCOCAcc_ConnectedSCID
 
 Func SwitchCOCAcc_ConfirmSCID(ByRef $bResult)
-	For $i = 0 To 20 ; Checking LogOut & Confirm button continuously in 20sec
-		If _ColorCheck(_GetPixelColor($aButtonLogOutSCID[0], $aButtonLogOutSCID[1], True), Hex($aButtonLogOutSCID[2], 6), $aButtonLogOutSCID[3]) Then
+	For $i = 0 To 30 ; Checking LogOut & Confirm button continuously in 30sec
+		If QuickMIS("BC1", $g_sImgLogOutButton, 620, 246, 693, 308) Then ; Check Log Out button
 			SetLog("   2. Click Log Out Supercell ID")
-			Click($aButtonLogOutSCID[0], $aButtonLogOutSCID[1], 2, 500, "Click Log Out SC_ID") ; Click LogOut button
+			Click($g_iQuickMISX + 587, $g_iQuickMISY + 268, 2, 500, "Click Log Out SC_ID") ; Click LogOut button
 			If _Sleep(500) Then Return "Exit"
 
-			For $j = 0 To 10 ; Click Confirm button
-				If _ColorCheck(_GetPixelColor($aButtonConfirmSCID[0], $aButtonConfirmSCID[1], True), Hex($aButtonConfirmSCID[2], 6), $aButtonConfirmSCID[3]) Then
+			For $j = 0 To 20
+				If QuickMIS("BC1", $g_sImgConfirmButton, 400, 414, 586, 455) Then ; Check Confirm button
 					SetLog("   3. Click Confirm Supercell ID")
-					Click($aButtonConfirmSCID[0], $aButtonConfirmSCID[1], 1, 0, "Click Confirm SC_ID")
+					Click($g_iQuickMISX + 370, $g_iQuickMISY + 402, 1, 0, "Click Confirm SC_ID") ; Click Confirm button
 					If _Sleep(500) Then Return "Exit"
 					;ExitLoop
 					Return "OK"
 				EndIf
-				If $j = 10 Then
+				If $j = 20 Then
 					$bResult = False
 					;ExitLoop 3
 					Return "Error"
@@ -674,7 +674,7 @@ Func SwitchCOCAcc_ConfirmSCID(ByRef $bResult)
 
 		SetDebugLog("Checking LogOut & Confirm button x:" & $aButtonLogOutSCID[0] & " y:" & $aButtonLogOutSCID[1] & " : " & _GetPixelColor($aButtonLogOutSCID[0], $aButtonLogOutSCID[1], True))
 
-		If $i = 20 Then
+		If $i = 30 Then
 			$bResult = False
 			;ExitLoop 2
 			Return "Error"
@@ -686,28 +686,53 @@ EndFunc   ;==>SwitchCOCAcc_ConfirmSCID
 
 Func SwitchCOCAcc_ClickAccountSCID(ByRef $bResult, $NextAccount, $iStep = 4)
 	Local $YCoord = Int(336 + 73.5 * $NextAccount)
+	Local $DeltaTotal8Acc = $g_iTotalAcc = 7 ? 14 : 0
 	Local $iRetryCloseSCIDTab = 0
 	For $i = 0 To 30 ; Checking "Log in with SuperCell ID" button continuously in 30sec
 		If _ColorCheck(_GetPixelColor($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], True), Hex($aLoginWithSupercellID[2], 6), $aLoginWithSupercellID[3]) And _
 				_ColorCheck(_GetPixelColor($aLoginWithSupercellID2[0], $aLoginWithSupercellID2[1], True), Hex($aLoginWithSupercellID2[2], 6), $aLoginWithSupercellID2[3]) Then
 			SetLog("   " & $iStep & ". Click Log in with Supercell ID")
 			Click($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], 1, 0, "Click Log in with SC_ID")
-			If _Sleep(3000) Then Return "Exit"
+			If _Sleep(600) Then Return "Exit"
 
 			For $j = 0 To 20 ; Checking Account List continuously in 20sec
-				If _ColorCheck(_GetPixelColor($aListAccountSCID[0], $aListAccountSCID[1], True), Hex($aListAccountSCID[2], 6), $aListAccountSCID[3]) Then
+				If QuickMIS("BC1", $g_sImgListAccounts, 490, 201, 524, 232) Then
+					Local $bDragDone = False
 					If $NextAccount >= 4 Then
 						$YCoord = Int(408 - 73.5 * ($g_iTotalAcc - $NextAccount))
+						SetLog("     drag for more accounts")
 						ClickDrag(700, 590, 700, 172, 2000)
-						If _Sleep(500) Then Return "Exit"
+						If _Sleep(250) Then Return "Exit"
+						For $x = 0 To 5
+							If QuickMIS("N1", $g_sImgListAccounts, 415, 470, 442, 487) = "OR" Then
+								$bDragDone =  True
+								ExitLoop
+							EndIf
+							If _Sleep(250) Then Return "Exit" ; wait 1.5 seconds for last account to show up
+						Next
 					EndIf
-					Click(270, $YCoord) ; Click Account
-					SetLog("   " & ($iStep + 1) & ". Click Account [" & $NextAccount + 1 & "] Supercell ID")
-					If _Sleep(500) Then Return "Exit"
-					SetLog("Please wait for loading CoC...!")
+
+					If $NextAccount < 4 Or $bDragDone Then
+						Click(270, $YCoord, 3, 1000) ; Click Account
+						If _Sleep(250) Then Return "Exit"
+						$bResult = True
+					EndIf
+				ElseIf QuickMIS("BC1", $g_sImgListAccounts, 470, 190, 497, 297) Then
+					$YCoord = Int(359 - 16 * ($g_iTotalAcc - 1) + 32 * $NextAccount) + $DeltaTotal8Acc
+					Click(300, $YCoord, 3, 1000) ; Click Account
+					If _Sleep(250) Then Return "Exit"
 					$bResult = True
+				EndIf
+
+				If $bResult Then
+					SetLog("   " & ($iStep + 1) & ". Click Account [" & $NextAccount + 1 & "] Supercell ID")
+									  
+					SetLog("Please wait for loading CoC...!")
+					
 					Return "OK"
-				ElseIf $j = 10 Then
+				EndIf
+
+				If $j = 20 Then
 					$iRetryCloseSCIDTab += 1
 					If $iRetryCloseSCIDTab <= 3 Then
 						SetLog("   " & $iStep & ".5 Click Close Tab Supercell ID")

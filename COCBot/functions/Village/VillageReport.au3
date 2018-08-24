@@ -97,7 +97,7 @@ Func getBuilderTime()
 
 	If $g_iFreeBuilderCount >= $g_iTotalBuilderCount Then Return
 
-	SetLog("Getting builder time", $COLOR_INFO)
+	SetLog("Getting builder time")
 
 	If IsMainPage() Then Click(293, 32) ; click builder's nose for poping out information
 	If _Sleep(1000) Then Return
@@ -111,7 +111,6 @@ Func getBuilderTime()
 	If $iBuilderTime > 0 Then
 		$g_sNextBuilderReadyTime = _DateAdd("n", $iBuilderTime, _NowCalc())
 		$sBuilderTimeLastCheck = _NowCalc()
-		SetLog("Builder will be free in : "&$sBuilderTime&" at "&$g_sNextBuilderReadyTime, $COLOR_SUCCESS)
 	Else
 		$g_sNextBuilderReadyTime = ""
 		$sBuilderTimeLastCheck = ""

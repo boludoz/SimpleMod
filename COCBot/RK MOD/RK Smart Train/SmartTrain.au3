@@ -88,7 +88,7 @@ Func SmartTrain()
 			Else
 				SetLog("Full queue, skip Quick Train", $COLOR_INFO)
 			EndIf
-			SmartTrainSiege()
+			SmartTrainSiege($bDebug)
 			SetLog("Smart Train accomplished")
 		EndIf
 
@@ -255,11 +255,11 @@ Func DefineWhatToTrain($sText = "Troops", $TrainMethod = $g_eFull, $bTrainQueue 
 
 EndFunc   ;==>DefineWhatToTrain
 
-Func SmartTrainSiege()
+Func SmartTrainSiege($bDebug)
 	Local $iSiege = $eSiegeWallWrecker
 	If $g_iTotalTrainSpaceSiege < 1 Then Return; train no siege
 	If $g_aiArmyCompSiegeMachine[$eSiegeWallWrecker] > 0 And $g_aiArmyCompSiegeMachine[$eSiegeBattleBlimp] > 0 Then ; train both types of siege
-		If $g_bDebugSetlog Then SetLog("Army has both types of siege. Smart Train siege might cause unbalance.", $COLOR_DEBUG)
+		If $bDebug Then SetLog("Army has both types of siege. Smart Train siege might cause unbalance.", $COLOR_DEBUG)
 	Else
 		If $g_aiArmyCompSiegeMachine[$eSiegeBattleBlimp] > 0 Then $iSiege = $eSiegeBattleBlimp
 

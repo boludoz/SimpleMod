@@ -26,18 +26,21 @@ Global $g_bLeader = False
 
 ; Make a Main Loop , replacing the Original Main Loop / Necessary Functions : Train - Donate - CheckResourcesValues
 Func MainGTFO()
+
+	If $g_bChkUseGTFO = False Then
+		SetLog("GTFO Skipped...!", $COLOR_INFO)
+		Return
+	EndIf
+	
 	; Donate Loop on Clan Chat
 	If $g_iLoop2 > $g_iTxtCyclesGTFO Then
 		Setlog("Finished GTFO " & $g_iLoop2 & " Loop(s)", $COLOR_INFO)
 		If $g_sClanJoin = True Then
-		ClanHop(True)
-		Return
+			ClanHop(True)
+			Return
 		EndIf
 	EndIf
 	
-	If $g_bChkUseGTFO = False Then
-		SetLog("GTFO Skipped...!", $COLOR_INFO)
-		EndIf
 	
 	If $g_aiCurrentLoot[$eLootElixir] <> 0 And $g_aiCurrentLoot[$eLootElixir] < $g_iTxtMinSaveGTFO_Elixir Then
 		SetLog("Elixir Limits Reached!! Let's farm!", $COLOR_INFO)
@@ -115,13 +118,13 @@ Func MainGTFO()
 		
 		; Donate Loop on Clan Chat
 		Local $bDonate = DonateGTFO()
-			If not $bDonate Then 
+		If Not $bDonate Then
 			Setlog("Finished GTFO", $COLOR_INFO)
-				If $g_sClanJoin = True Then
+			If $g_sClanJoin = True Then
 				ClanHop($g_sClanJoin)
 				$g_sClanJoin = False
 				Return
-				EndIf
+			EndIf
 			Return
 		EndIf
 		
@@ -137,7 +140,7 @@ EndFunc   ;==>MainGTFO
 
 ; Train Troops / Train Spells / Necessary Remain Train Time
 Func TrainGTFO()
-Local $RemainTrainSpace = 0
+	Local $RemainTrainSpace = 0
 	; Check Resources values
 	StartGainCost()
 
@@ -148,7 +151,7 @@ Local $RemainTrainSpace = 0
 	If Not $g_bRunState Then Return
 	
 	; TrainArch
-    Local $aTempResult[3] = [0, 0, 0]
+	Local $aTempResult[3] = [0, 0, 0]
 	Local $aResult[3] = [0, 0, 0]
 	OpenTrainTab("Train Troops Tab", True)
 	If _Sleep(200) Then Return
@@ -158,23 +161,23 @@ Local $RemainTrainSpace = 0
 		Local $aTempResult = StringSplit($aResult[0], "#", $STR_NOCOUNT)
 		$aResult[1] = Number($aTempResult[0])
 		$aResult[2] = Number($aTempResult[1])
-			$aResult[2] -= $aResult[1]
-			;Top Off any remianing space with archers
-			$RemainTrainSpace = $aResult[2]
-			While not $RemainTrainSpace = 0 
-				Local $howMuch = $RemainTrainSpace
-				TrainIt($eTroopArcher, $howMuch, $g_iTrainClickDelay)
-				SetLog(" - Trained " & $howMuch & " archer(s)!", $COLOR_ACTION)
-				$aResult[2] = 0
-				$RemainTrainSpace = 0
-				ExitLoop
-			Wend
+		$aResult[2] -= $aResult[1]
+		;Top Off any remianing space with archers
+		$RemainTrainSpace = $aResult[2]
+		While Not $RemainTrainSpace = 0
+			Local $howMuch = $RemainTrainSpace
+			TrainIt($eTroopArcher, $howMuch, $g_iTrainClickDelay)
+			SetLog(" - Trained " & $howMuch & " archer(s)!", $COLOR_ACTION)
+			$aResult[2] = 0
+			$RemainTrainSpace = 0
+			ExitLoop
+		WEnd
 	Else
 		SetLog("DEBUG | ERROR on GetCurrentArmy", $COLOR_ERROR)
 	EndIf
 	
 	; TrainSpell
-    Local $aTempResult[3] = [0, 0, 0]
+	Local $aTempResult[3] = [0, 0, 0]
 	Local $aResult[3] = [0, 0, 0]
 	OpenTrainTab("Brew Spells Tab", True)
 	If _Sleep(200) Then Return
@@ -184,17 +187,17 @@ Local $RemainTrainSpace = 0
 		Local $aTempResult = StringSplit($aResult[0], "#", $STR_NOCOUNT)
 		$aResult[1] = Number($aTempResult[0])
 		$aResult[2] = Number($aTempResult[1])
-			$aResult[2] -= $aResult[1]
-			;Top Off any remianing space with archers
-			$RemainTrainSpace = $aResult[2]
-			While not $RemainTrainSpace = 0 
-				Local $howMuch = $RemainTrainSpace
-				TrainIt($eESpell, $howMuch, $g_iTrainClickDelay)
-				SetLog(" - Trained " & $howMuch & " Spell!", $COLOR_ACTION)
-				$aResult[2] = 0
-				$RemainTrainSpace = 0
-				ExitLoop
-			Wend
+		$aResult[2] -= $aResult[1]
+		;Top Off any remianing space with archers
+		$RemainTrainSpace = $aResult[2]
+		While Not $RemainTrainSpace = 0
+			Local $howMuch = $RemainTrainSpace
+			TrainIt($eESpell, $howMuch, $g_iTrainClickDelay)
+			SetLog(" - Trained " & $howMuch & " Spell!", $COLOR_ACTION)
+			$aResult[2] = 0
+			$RemainTrainSpace = 0
+			ExitLoop
+		WEnd
 	Else
 		SetLog("DEBUG | ERROR on GetCurrentArmy", $COLOR_ERROR)
 	EndIf
@@ -252,7 +255,7 @@ Func DonateGTFO()
 		;$_diffTimer = (TimerDiff($_timer) / 1000) / 60
 		;If $g_aiTimeTrain[0] <> 0 Then $iTime2Exit = $g_aiTimeTrain[0]
 		;If $g_aiTimeTrain[1] <> 0 And $g_aiTimeTrain[1] < $g_aiTimeTrain[0] Then $iTime2Exit = $g_aiTimeTrain[1]
-        ;
+		;
 		;If $_diffTimer > $iTime2Exit Then ExitLoop
 		
 		If $g_iLoop2 > $g_iTxtCyclesGTFO Then ExitLoop
@@ -261,10 +264,10 @@ Func DonateGTFO()
 		; DONATE IT - WHEN EXIST REQUESTS
 		; +++++++++++++++++++++++++
 		While 1
-		$g_iLoop +=1 
-		$g_iLoop2 +=1
-		If $g_iLoop2 > $g_iTxtCyclesGTFO Then ExitLoop
-		If $g_iLoop >= 10 Then ExitLoop
+			$g_iLoop += 1
+			$g_iLoop2 += 1
+			If $g_iLoop2 > $g_iTxtCyclesGTFO Then ExitLoop
+			If $g_iLoop >= 10 Then ExitLoop
 
 			$_bReturnT = False
 			$_bReturnS = False
@@ -289,7 +292,7 @@ Func DonateGTFO()
 
 				; Close Donate Window - Return to Chat
 				ClickAwayChat()
-				Else
+			Else
 				; Doesn't exist Requests lets exits from this loop
 ;~ 				ClickP($aAway, 1, 0)
 				If ScrollDown() Then
@@ -314,16 +317,16 @@ Func DonateGTFO()
 		WEnd
 
 		; A click just to mantain the 'Game active'
-		If $g_iLoop >= 5 Then 
-		If $g_bChkGTFOClanHop = True Then
+		If $g_iLoop >= 5 Then
+			If $g_bChkGTFOClanHop = True Then
 				ClanHop() ; Hop!!!
 				$firstrun = True
 				$g_iLoop = 0
 			EndIf
 		Else
-		If $g_iLoop >= 10 Then
-		ClickAwayChat(250)
-			$g_iLoop = 0
+			If $g_iLoop >= 10 Then
+				ClickAwayChat(250)
+				$g_iLoop = 0
 			EndIf
 		EndIf
 	WEnd
@@ -348,11 +351,11 @@ Func ClanHop($sClanJoin = False)
 	Local $aClanChat[4] = [105, 650, 0x86C808, 40] ; *Your Name* joined the Clan Message Check to verify loaded Clan Chat
 	Local $aChatTab[4] = [189, 24, 0x706C50, 20] ; Clan Chat Tab on Top, check if right one is selected
 	Local $aGlobalTab[4] = [189, 24, 0x383828, 20] ; Global Chat Tab on Top, check if right one is selected
-	Local $aClanBadgeNoClan[4] = [151, 307, 0xF05838, 20]; Orange Tile of Clan Logo on Chat Tab if you are not in a Clan
+	Local $aClanBadgeNoClan[4] = [151, 307, 0xF05838, 20] ; Orange Tile of Clan Logo on Chat Tab if you are not in a Clan
 	Local $aShare[4] = [541, 178, 0xFFFFFF, 20]
 	Local $aCopy[4] = [598, 176, 0xD7F37F, 20]
 	Local $aClick[2] = [176, 216]
-	Local $aSearchClan[4] = [569, 202, 0xDCF684, 20]				
+	Local $aSearchClan[4] = [569, 202, 0xDCF684, 20]
 	Local $aClanNameBtn[2] = [89, 63] ; Button to open Clan Page from Chat Tab
 	Local $aClanMod[4] = [215, 297, 0xCECDC6, 20]
 	Local $aSendRequest[4] = [528, 213, 0xE2F98A, 20]
@@ -392,32 +395,32 @@ Func ClanHop($sClanJoin = False)
 
 		OpenClanChat()
 
-		If $sClanJoin = True and $g_sClanJoin = True and $g_bChkGTFOClanHop = True Then
-		 	If Not _CheckPixel($aClanBadgeNoClan, $g_bCapturePixel) Then ; If Still in Clan
-		 		SetLog("Still in a Clan! Leaving the Clan now")
-		 		ClickP($aClanNameBtn)
-		 		If _WaitForCheckPixel($aClanPage, $g_bCapturePixel, Default, "Wait for Clan Page:") Then
-		 			ClickP($aClanPage)
-		 			If Not ClickOkay("ClanHop") Then
+		If $sClanJoin = True And $g_sClanJoin = True And $g_bChkGTFOClanHop = True Then
+			If Not _CheckPixel($aClanBadgeNoClan, $g_bCapturePixel) Then ; If Still in Clan
+				SetLog("Still in a Clan! Leaving the Clan now")
+				ClickP($aClanNameBtn)
+				If _WaitForCheckPixel($aClanPage, $g_bCapturePixel, Default, "Wait for Clan Page:") Then
+					ClickP($aClanPage)
+					If Not ClickOkay("ClanHop") Then
 						$g_bLeader = True
-		 				SetLog("Okay Button not found! Starting over again", $COLOR_ERROR)
-		 				$iErrors += 1
-		 				ContinueLoop
-		 			Else
-		 				SetLog("Successfully left Clan", $COLOR_SUCCESS)
-		 				If _Sleep(400) Then Return
+						SetLog("Okay Button not found! Starting over again", $COLOR_ERROR)
+						$iErrors += 1
+						ContinueLoop
+					Else
+						SetLog("Successfully left Clan", $COLOR_SUCCESS)
+						If _Sleep(400) Then Return
 						Return
-		 			EndIf
-		 		Else
-		 			SetLog("Clan Page did not open! Starting over again", $COLOR_ERROR)
-		 			$iErrors += 1
-		 			ContinueLoop
-		 		EndIf
-		 	EndIf				
+					EndIf
+				Else
+					SetLog("Clan Page did not open! Starting over again", $COLOR_ERROR)
+					$iErrors += 1
+					ContinueLoop
+				EndIf
+			EndIf
 
-		 	If _Sleep(400) Then Return
+			If _Sleep(400) Then Return
 			ClickP($aClick)
-		 	If _Sleep(400) Then Return
+			If _Sleep(400) Then Return
 			
 			Local $g_sTxtClanID = GUICtrlRead($g_hTxtClanID)
 			
@@ -425,7 +428,7 @@ Func ClanHop($sClanJoin = False)
 			Setlog("Send : " & $sClaID, $COLOR_INFO)
 			AndroidAdbSendShellCommand("am start -n com.supercell.clashofclans/com.supercell.clashofclans.GameApp -a android.intent.action.VIEW -d 'https://link.clashofclans.com/?action=OpenClanProfile&tag=" & $sClaID & "'", Default)
 			Setlog("Wait")
-		 	If _Sleep(5500) Then Return
+			If _Sleep(5500) Then Return
 			$sClanJoin = False
 			
 			If _Sleep(100) Then Return
@@ -437,34 +440,34 @@ Func ClanHop($sClanJoin = False)
 			CloseClanChat()
 			Return
 
-			Endif
+		EndIf
 		
-	If Not _CheckPixel($aClanBadgeNoClan, $g_bCapturePixel) Then ; If Still in Clan
-		SetLog("Still in a Clan! Leaving the Clan now")
-		ClickP($aClanNameBtn)
-		If $g_bFirstHop = True Then
-			If _WaitForCheckPixel($aShare, $g_bCapturePixel, Default, "Wait for Share") Then
-				ClickP($aShare)
+		If Not _CheckPixel($aClanBadgeNoClan, $g_bCapturePixel) Then ; If Still in Clan
+			SetLog("Still in a Clan! Leaving the Clan now")
+			ClickP($aClanNameBtn)
+			If $g_bFirstHop = True Then
+				If _WaitForCheckPixel($aShare, $g_bCapturePixel, Default, "Wait for Share") Then
+					ClickP($aShare)
 					If _WaitForCheckPixel($aCopy, $g_bCapturePixel, Default, "Wait for Copy") Then
 						Local $sData = 0
 						ClickP($aCopy)
 						Local $sData = ClipGet()
-						If _Sleep(250) Then return
+						If _Sleep(250) Then Return
 						GUICtrlSetData($g_hTxtClanID, $sData)
-						$g_sTxtClanID = $sData 
+						$g_sTxtClanID = $sData
 						$g_bFirstHop = False
 					Else
 						SetLog("No Copy Button", $COLOR_ERROR)
 						$iErrors += 1
 						ContinueLoop
 					EndIf
-			Else
-			SetLog("No Share Button", $COLOR_ERROR)
-			$iErrors += 1
-			ContinueLoop
+				Else
+					SetLog("No Share Button", $COLOR_ERROR)
+					$iErrors += 1
+					ContinueLoop
+				EndIf
 			EndIf
-		EndIf
-					
+			
 			If _WaitForCheckPixel($aClanPage, $g_bCapturePixel, Default, "Wait for Clan Page:") Then
 				ClickP($aClanPage)
 				If Not ClickOkay("ClanHop") Then
@@ -522,17 +525,17 @@ Func ClanHop($sClanJoin = False)
 			ContinueLoop
 		EndIf
 		Return
-	Wend
-EndFunc   ;==>CallHop
+	WEnd
+EndFunc   ;==>ClanHop
 
 
 Func ClickAwayChat($iSleep = 10)
-			_Sleep($iSleep)
-			Local $ix = Random(90, 129, 1)
-			Local $iy = Random(687, 724, 1) 
+	_Sleep($iSleep)
+	Local $ix = Random(90, 129, 1)
+	Local $iy = Random(687, 724, 1)
 	
-			Click($ix , $iy, 1, 0)
-EndFunc
+	Click($ix, $iy, 1, 0)
+EndFunc   ;==>ClickAwayChat
 Func OpenClanChat()
 
 	; OPEN CLAN CHAT and verbose in log
@@ -758,7 +761,7 @@ Func _DonateWindow()
 		Return False
 	EndIf
 
-	If $g_bDebugSetlog  Then SetDebugLog("_DonateWindow Open Exit", $COLOR_DEBUG)
+	If $g_bDebugSetlog Then SetDebugLog("_DonateWindow Open Exit", $COLOR_DEBUG)
 	Return True
 EndFunc   ;==>_DonateWindow
 
@@ -773,7 +776,7 @@ Func ApplyGTFO()
 	Else
 		GUICtrlSetState($g_hTxtMinSaveGTFO_Elixir, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtMinSaveGTFO_DE, $GUI_DISABLE)
-		GUICtrlSetState($g_hChkGTFOClanHop, $GUI_DISABLE)		
+		GUICtrlSetState($g_hChkGTFOClanHop, $GUI_DISABLE)
 	EndIf
 	chkGTFOClanHop()
 	ApplyCyclesGTFO()
@@ -792,7 +795,7 @@ EndFunc   ;==>ApplyDarkElixirGTFO
 Func ApplyCyclesGTFO()
 	$g_iTxtCyclesGTFO = Number(GUICtrlRead($g_hTxtCyclesGTFO))
 	$g_iTxtCyclesGTFO -= 1
-EndFunc   ;==>ApplyDarkElixirGTFO
+EndFunc   ;==>ApplyCyclesGTFO
 
 Func ApplyClanReturnGTFO()
 	$g_sTxtClanID = GUICtrlRead($g_hTxtClanID)
