@@ -577,10 +577,10 @@ Func CreateTroopsSpellsSubTab()
 	;GUICtrlSetBkColor(-1, $COLOR_MONEYGREEN) ;lime, moneygreen
 	GUICtrlSetData(-1, "0|2|4|6|7|8|9|10|11", "0")
 	GUICtrlSetOnEvent(-1, "TotalSpellCountClick")
-
+			
 	; Auto Camp - Bld
-    $g_hChkAutoCamp = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkAutoCamp", "Auto update camps"), $x + 135, $y, -1, 15)
-
+    $g_hChkAutoCamp = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkAutoCamp", "Auto update camps"), $x + 135, $y, -1, 15) 
+		 
 	$y += 13
 	; Lightning
 	Local $sSpellName = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtLightningSpells", "Lightning Spell")
@@ -753,7 +753,7 @@ Func CreateTroopsSpellsSubTab()
 	GUICtrlSetColor(-1, $COLOR_WHITE)
 	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnDark, $x + 146, $y + 14, 16, 16)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
+    
 	;SmartTrain - RK MOD (Demen)
 	$x = 10
 	$y = 363
@@ -848,7 +848,7 @@ Func CreateBoostSubTab()
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlSetOnEvent(-1, "chkUpgradeWarden")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
+	
     ; Boost for Magic Spell by RK MOD
 	$y += 50
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_05", "Boost for Magic Spell"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 50)
@@ -856,17 +856,17 @@ Func CreateBoostSubTab()
 	$g_hChkBoostBMagic = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkBoostBMagic_Info_01", "Boost troops"), $x + 25, $y + 1, -1, -1)
 	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkBoostBMagic_Info_02", "Enable this function to boost for Magic Spell."))
 	GUICtrlSetState(-1, $GUI_UNCHECKED)
-    GUICtrlSetOnEvent(-1, "chkBoostBMagic")
+    GUICtrlSetOnEvent(-1, "chkBoostBMagic") 			
 	$g_hCmbBoostBrMagic = GUICtrlCreateCombo("", $x + 120, $y + 1, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 	GUICtrlSetData(-1, "0|1|2|3|4|5", "0")
 	$y += - 1
-    _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBoostClMagic, $x + 190, $y + 1, 24, 24)
+    _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBoostClMagic, $x + 190, $y + 1, 24, 24)	
 	$g_hChkBoostCMagic = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkBoostCMagic_Info_01", "Boost collectors"), $x + 225, $y + 1, -1, -1)
 	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkBoostCMagic_Info_02", "Enable this function to boost for Magic Spell."))
 	GUICtrlSetState(-1, $GUI_UNCHECKED)
-    GUICtrlSetOnEvent(-1, "chkBoostCMagic")
+    GUICtrlSetOnEvent(-1, "chkBoostCMagic") 			
 	$g_hCmbBoostClMagic = GUICtrlCreateCombo("", $x + 340, $y + 1, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-	GUICtrlSetData(-1, "0|1|2|3|4|5", "0")
+	GUICtrlSetData(-1, "0|1|2|3|4|5", "0")		
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	$y += 65
@@ -1165,19 +1165,19 @@ Func CreateOptionsSubTab()
 	$g_hLblWaitingInMinutes = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "min.", "min."), $x + 84, $y + 3, -1, -1)
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
-	;Max logout time( mandryd) - RK MOD
+	
+	;Max logout time( mandryd) - RK MOD   
 	$y += 28
 		$g_hChkTrainLogoutMaxTime = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "TrainLogoutMaxTime", "Max Logout Time") & ": ", $x - 14, $y, -1, -1)
 			$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "TrainLogoutMaxTime_Info_01", "Only allow logout for a maximum amount of time")
 			_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
-			;GUICtrlSetOnEvent(-1, "chkTrainLogoutMaxTime") TODO By Rulesss
+			GUICtrlSetOnEvent(-1, "chkTrainLogoutMaxTime")
 		$g_hTxtTrainLogoutMaxTime = GUICtrlCreateInput("4", $x + 94, $y + 2, 23, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 			_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetLimit(-1, 2)
 		$g_hLblTrainLogoutMaxTime = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "TrainLogoutMaxTime_Info_02", "min."), $x + 120, $y + 4, -1, -1)
-		;GUICtrlSetOnEvent(-1, "chkTrainLogoutMaxTime") TODO By Rulesss
+		GUICtrlSetOnEvent(-1, "chkTrainLogoutMaxTime")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	$y += 50
@@ -1220,7 +1220,7 @@ Func CreateOptionsSubTab()
 	GUICtrlSetLimit(-1, 999)
 	$g_hLblAddDelayIdlePhaseSec = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "sec.", "sec."), $x + 110, $y, 20, 30)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-
+	
 	; Check Grand Warden Mode - RK MOD
 	$x = 55 + 140
 	$y = 127

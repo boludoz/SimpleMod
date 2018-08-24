@@ -1341,6 +1341,9 @@ Func FirstCheck()
 		SetDebugLog("-- FirstCheck on Train --")
 		BoostAllWithMagicSpell()
 		TrainSystem()
+		If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
+			ChatbotMessage()
+		EndIf
 		If Not $g_bRunState Then Return
 		SetDebugLog("Are you ready? " & String($g_bIsFullArmywithHeroesAndSpells))
 		If $g_bIsFullArmywithHeroesAndSpells Then
