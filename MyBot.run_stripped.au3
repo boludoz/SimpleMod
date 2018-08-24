@@ -61427,16 +61427,21 @@ If $g_bDebugSetlog Then SetDebugLog("-Upgrade location =  " & "(" & $g_avBuildin
 If _Sleep($DELAYUPGRADEBUILDING1) Then Return
 Switch $g_avBuildingUpgrades[$iz][3]
 Case "Gold"
-If $g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakGE[$g_iTownHallLevel] Then
+If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel > 13 Then
+If $g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
 If $iAvailGold < $g_avBuildingUpgrades[$iz][2] Then
 SetLog("Insufficent Gold for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2], $COLOR_INFO)
 ContinueLoop
 EndIf
-ElseIf $g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakGE[$g_iTownHallLevel] Then
+ElseIf $g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
 If $iAvailGold < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinGold Then
 SetLog("Insufficent Gold for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinGold, $COLOR_INFO)
 ContinueLoop
 EndIf
+EndIf
+Else
+Return False
+SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
 EndIf
 If UpgradeNormal($iz) = False Then ContinueLoop
 $iUpgradeAction += 2 ^($iz + 1)
@@ -61447,16 +61452,21 @@ UpdateStats()
 $iAvailGold -= $g_avBuildingUpgrades[$iz][2]
 $iAvailBldr -= 1
 Case "Elixir"
-If $g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakGE[$g_iTownHallLevel] Then
+If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel > 13 Then
+If $g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
 If $iAvailElixir < $g_avBuildingUpgrades[$iz][2] Then
 SetLog("Insufficent Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2], $COLOR_INFO)
 ContinueLoop
 EndIf
-ElseIf $g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakGE[$g_iTownHallLevel] Then
+ElseIf $g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
 If $iAvailElixir < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinElixir Then
 SetLog("Insufficent Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinElixir, $COLOR_INFO)
 ContinueLoop
 EndIf
+EndIf
+Else
+Return False
+SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
 EndIf
 If UpgradeNormal($iz) = False Then ContinueLoop
 $iUpgradeAction += 2 ^($iz + 1)
@@ -61467,16 +61477,21 @@ UpdateStats()
 $iAvailElixir -= $g_avBuildingUpgrades[$iz][2]
 $iAvailBldr -= 1
 Case "Dark"
-If $g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakDE[$g_iTownHallLevel] Then
+If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel > 13 Then
+If $g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakDE[$g_iTownHallLevel - 1] Then
 If $iAvailDark < $g_avBuildingUpgrades[$iz][2] Then
 SetLog("Insufficent Dark Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2], $COLOR_INFO)
 ContinueLoop
 EndIf
-ElseIf $g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakDE[$g_iTownHallLevel] Then
+ElseIf $g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakDE[$g_iTownHallLevel - 1] Then
 If $iAvailDark < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinDark Then
 SetLog("Insufficent Dark Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinElixir, $COLOR_INFO)
 ContinueLoop
 EndIf
+EndIf
+Else
+Return False
+SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
 EndIf
 If UpgradeHero($iz) = False Then ContinueLoop
 $iUpgradeAction += 2 ^($iz + 1)
@@ -61854,14 +61869,19 @@ $g_iNextLineOffset = $g_iCurrentLineOffset
 ContinueLoop
 EndIf
 Local $bSufficentResourceToUpgrade = False
+If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel > 13 Then
 Switch $g_aUpgradeResourceCostDuration[0]
 Case "Gold"
-If($g_aiCurrentLoot[$eLootGold] >=($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinGold)) Or(($g_aiCurrentLoot[$eLootGold] >= $g_aUpgradeResourceCostDuration[1]) And($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakGE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
+If(($g_aiCurrentLoot[$eLootGold] >=($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinGold)) And($g_aUpgradeResourceCostDuration[1] < $g_iLimitBreakGE[$g_iTownHallLevel])) Or(($g_aiCurrentLoot[$eLootGold] >=($g_aUpgradeResourceCostDuration[1])) And($g_aUpgradeResourceCostDuration[1] >= $g_iLimitBreakGE[$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
 Case "Elixir"
-If($g_aiCurrentLoot[$eLootElixir] >=($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinElixir)) Or(($g_aiCurrentLoot[$eLootElixir] >= $g_aUpgradeResourceCostDuration[1]) And($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakGE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
+If(($g_aiCurrentLoot[$eLootElixir] >=($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinElixir)) And($g_aUpgradeResourceCostDuration[1] < $g_iLimitBreakGE[$g_iTownHallLevel])) Or(($g_aiCurrentLoot[$eLootElixir] >=($g_aUpgradeResourceCostDuration[1])) And($g_aUpgradeResourceCostDuration[1] >= $g_iLimitBreakGE[$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
 Case "Dark Elixir"
-If(($g_aiCurrentLoot[$eLootDarkElixir] >=($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinDark))) Or(($g_aiCurrentLoot[$eLootDarkElixir] >= $g_aUpgradeResourceCostDuration[1]) And($g_aUpgradeResourceCostDuration[1] > $g_iLimitBreakDE [$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
+If(($g_aiCurrentLoot[$eLootDarkElixir] >=($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinDark)) And($g_aUpgradeResourceCostDuration[1] < $g_iLimitBreakDE[$g_iTownHallLevel])) Or(($g_aiCurrentLoot[$eLootDarkElixir] >=($g_aUpgradeResourceCostDuration[1])) And($g_aUpgradeResourceCostDuration[1] >= $g_iLimitBreakDE[$g_iTownHallLevel])) Then $bSufficentResourceToUpgrade = True
 EndSwitch
+Else
+$bSufficentResourceToUpgrade = False
+SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
+EndIf
 If Not $bSufficentResourceToUpgrade Then
 SetLog("Unsufficent " & $g_aUpgradeResourceCostDuration[0] & " to launch this upgrade, looking Next...", $COLOR_WARNING)
 $g_iNextLineOffset = $g_iCurrentLineOffset
@@ -63215,13 +63235,14 @@ Switch $g_iCmbLaboratory
 Case 1 To 19
 ContinueCase
 Case 31 To 32
-If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakGE[$g_iTownHallLevel] Then
+If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel > 13 Then
+If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
 If $iAvailElixir <($aUpgradeValue[$g_iCmbLaboratory]) Then
 SetLog("Insufficent Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " available: " & $iAvailElixir, $COLOR_INFO)
 ClickP($aAway, 2, $DELAYLABORATORY4, "#0355")
 Return False
 EndIf
-ElseIf $aUpgradeValue[$g_iCmbLaboratory] < $g_iLimitBreakGE[$g_iTownHallLevel] Then
+ElseIf $aUpgradeValue[$g_iCmbLaboratory] < $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
 If $iAvailElixir <($aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinElixir) Then
 SetLog("Insufficent Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinElixir & " user reserve, available: " & $iAvailElixir, $COLOR_INFO)
 ClickP($aAway, 2, $DELAYLABORATORY4, "#0355")
@@ -63233,14 +63254,19 @@ SetLog("Elixir used = " & $aUpgradeValue[$g_iCmbLaboratory], $COLOR_INFO)
 ClickP($aAway, 2, $DELAYLABORATORY4, "#0356")
 Return True
 EndIf
+Else
+Return False
+SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
+EndIf
 Case 20 To 30
-If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakDE[$g_iTownHallLevel] Then
+If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel > 13 Then
+If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakDE[$g_iTownHallLevel - 1] Then
 If $iAvailDark <($aUpgradeValue[$g_iCmbLaboratory]) Then
 SetLog("Insufficent Dark Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " available: " & $iAvailDark, $COLOR_INFO)
 ClickP($aAway, 2, $DELAYLABORATORY4, "#0357")
 Return False
 EndIf
-ElseIf $aUpgradeValue[$g_iCmbLaboratory] < $g_iLimitBreakDE[$g_iTownHallLevel] Then
+ElseIf $aUpgradeValue[$g_iCmbLaboratory] < $g_iLimitBreakDE[$g_iTownHallLevel - 1] Then
 If $iAvailDark <($aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinDark) Then
 SetLog("Insufficent Dark Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinDark & " user reserve, available: " & $iAvailDark, $COLOR_INFO)
 ClickP($aAway, 2, $DELAYLABORATORY4, "#0357")
@@ -63251,6 +63277,10 @@ If LabUpgrade() = True Then
 SetLog("Dark Elixir used = " & $aUpgradeValue[$g_iCmbLaboratory], $COLOR_INFO)
 ClickP($aAway, 2, $DELAYLABORATORY4, "#0358")
 Return True
+EndIf
+Else
+Return False
+SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
 EndIf
 Case Else
 SetLog("Something went wrong with loot value on Lab upgrade on #" & $g_avLabTroops[$g_iCmbLaboratory][3], $COLOR_ERROR)
@@ -73423,14 +73453,12 @@ EndIf
 Return $aResult[0]
 EndFunc
 Func CheckAutoCamp()
+Local $dbg = 1
+If $dbg = 1 Then Setlog("campon")
 Sleep(50)
-If $g_bFirstRun = False Then Return
-Local $dbg = 0
-If $dbg = 1 Then Setlog($g_iTotalSpellValue)
-Local $iCmpSpell = StringCompare($g_iTotalSpellValue, "0")
-If $iCmpSpell = 0 Then
-If Not OpenArmyOverview(True, "CheckAutoCamp()") Then Return
-If _Sleep(200) Then Return
+If $g_bFirstRun = True Then Return
+Click(30, 584)
+If _Sleep(250) Then Return
 OpenTrainTab("Brew Spells Tab", True)
 If _Sleep(250) Then return
 Local $NewSpellOCR = getArmyCapacityOnTrainTroops(48, 160)
@@ -73439,7 +73467,7 @@ If _Sleep(250) Then Return
 Local $NewCampOCR = getArmyCapacityOnTrainTroops(48, 160)
 Click(825, 122)
 If _Sleep(250) Then Return
-Endif
+$g_bFirstRun = True
 EndFunc
 Func chkAutoCamp()
 If GUICtrlRead($g_hChkAutoCamp) = $GUI_CHECKED Then
@@ -74012,10 +74040,7 @@ Global $g_sClanJoin = True
 Global $g_bFirstHop = True
 Global $g_bLeader = False
 Func MainGTFO()
-If $g_bChkUseGTFO = False Then
-SetLog("GTFO Skipped...!", $COLOR_INFO)
-Return
-EndIf
+If $g_bChkUseGTFO = False Then Return
 If $g_iLoop2 > $g_iTxtCyclesGTFO Then
 Setlog("Finished GTFO " & $g_iLoop2 & " Loop(s)", $COLOR_INFO)
 If $g_sClanJoin = True Then
@@ -75876,7 +75901,7 @@ $g_iChkGlobalMessages1 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "
 $g_iChkGlobalMessages2 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "globalMsg2", "Join now|Apply now"), "|", 2)
 EndFunc
 Func ChatbotIsLastChatNew()
-If _MultiPixelSearch(29, 552 + $g_iMidOffsetY, 112, 678 + $g_iMidOffsetY, 1, 1, Hex(0x92EE4D, 6), Hex(0x92EE4D, 6)) Then Return True
+If _MultiPixelSearch(29, 552 + $g_iMidOffsetY, 112, 678 + $g_iMidOffsetY, 1, 1, Hex(0x92EE4D, 6), Hex(0x92EE4D), 6) Then Return True
 Return False
 EndFunc
 Func chkGlobalChat()
@@ -79011,9 +79036,9 @@ If $index = 0 Then SetLog("King Boost Time Left = " & $sHeroTime[$index], $COLOR
 If $index = 1 Then SetLog("Queen Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
 If $index = 2 Then SetLog("Warden Boost Time Left = " & $sHeroTime[$index], $COLOR_SUCCESS)
 Else
-If $index = 0 Then SetLog("King Not Boosted", $COLOR_ERROR)
-If $index = 1 Then SetLog("Queen Not Boosted", $COLOR_ERROR)
-If $index = 2 Then SetLog("Warden Not Boosted", $COLOR_ERROR)
+If $index = 0 And $g_bDebugSetlog Then SetLog("King Not Boosted", $COLOR_ERROR)
+If $index = 1 And $g_bDebugSetlog Then SetLog("Queen Not Boosted", $COLOR_ERROR)
+If $index = 2 And $g_bDebugSetlog Then SetLog("Warden Not Boosted", $COLOR_ERROR)
 EndIf
 If $g_bDebugSetlog Then
 SetLog("$CTime[" & $index & "] = " & $CTime[$index], $COLOR_INFO)
@@ -79164,7 +79189,7 @@ IniReadS($g_iChkClanAlwaysMsg, $g_sProfileConfigPath, "Chatbot", "ChkUseGeneric"
 IniReadS($g_iChkUseNotify, $g_sProfileConfigPath, "Chatbot", "ChkChatNotify", $g_iChkUseNotify, "int")
 IniReadS($g_iChkPbSendNew, $g_sProfileConfigPath, "Chatbot", "ChkPbSendNewChats", $g_iChkPbSendNew, "int")
 IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "int")
-IniReadS($g_ibUpdateNewUpgradesOnly, $g_sProfileConfigPath, "upgrade", "ChkUpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly, "int")
+IniReadS($g_ibUpdateNewUpgradesOnly, $g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly, "int")
 EndFunc
 Func SaveConfig_RKMod()
 ApplyConfig_RKMod(GetApplyConfigSaveAction())
@@ -81559,9 +81584,9 @@ If _Sleep($DELAYRUNBOT2) Then Return
 checkMainScreen(False)
 If $g_bRestart = True Then ContinueLoop
 If _Sleep($DELAYRUNBOT3) Then Return
-If Not $g_bFirstStart Then
 MainGTFO()
 MainKickout()
+If Not $g_bFirstStart Then
 VillageReport()
 EndIf
 ProfileSwitch()
