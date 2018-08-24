@@ -50,6 +50,11 @@ Func CreateBotAndroid()
 			GUICtrlSetState(-1, (($g_bAndroidCloseWithBot) ? ($GUI_CHECKED) : ($GUI_UNCHECKED)))
 
 	$y += 25
+		$g_hChkAndroidCloseWithBot = GUICtrlCreateCheckbox(GetTranslatedFileIni("Android", "ChkAndroidCloseWithBot", "Close Android with bot"), $x, $y, -1, -1)
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("Android", "ChkAndroidCloseWithBot_Info", "Close also Android Emulator when bot exists."))
+			GUICtrlSetState(-1, (($g_bAndroidCloseWithBot) ? ($GUI_CHECKED) : ($GUI_UNCHECKED)))
+
+	$y += 25
 		GUICtrlCreateLabel(GetTranslatedFileIni("Android", "LblAndroidRebootHours", "Reboot Android in") & ":", $x + 17, $y + 2, -1, -1)
 			$sTxtTip = GetTranslatedFileIni("Android", "LblAndroidRebootHours_Info", "Enter hours when Android will be automatically rebooted after specified run-time.")
 			_GUICtrlSetTip(-1, $sTxtTip)
