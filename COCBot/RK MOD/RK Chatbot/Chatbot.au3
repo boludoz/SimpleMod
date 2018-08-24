@@ -42,10 +42,6 @@ Func ChatbotReadSettings()
 	$g_iChkGlobalMessages2 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "globalMsg2", "Join now|Apply now"), "|", 2)
 EndFunc   ;==>ChatbotReadSettings
 
-Func ChatbotIsLastChatNew() ; returns true if the last chat was not by you, false otherwise
-		If _MultiPixelSearch(29, 552 + $g_iMidOffsetY, 112, 678 + $g_iMidOffsetY, 1, 1, Hex(0x92EE4D, 6), Hex(0x92EE4D, 6)) Then Return True ; detect you nick
-	Return False
-EndFunc   ;==>ChatbotIsLastChatNew
 
 Func chkGlobalChat()
     $g_iChkChatGlobal = 1
@@ -267,6 +263,14 @@ Func ChatbotIsInterval()
 		Return False
 	EndIf
 EndFunc   ;==>ChatbotIsInterval
+
+Func ChatbotIsLastChatNew() ; returns true if the last chat was not by you, false otherwise
+	_CaptureRegion()
+	For $x = 38 To 261
+		If _ColorCheck(_GetPixelColor($x, 129), Hex(0x78BC10, 6), 5) Then Return True ; detect the green menu button
+	Next
+	Return False
+EndFunc   ;==>ChatbotIsLastChatNew
 
 Func ChatbotNotifySendChat()
    If Not $g_iChkUseNotify Then Return
@@ -555,7 +559,7 @@ Func ChatbotMessage() ; run the chatbot
 			Return
 		EndIf
 
-		If ChatbotIsLastChatNew() Then
+		If 1 Then
 			; get text of the latest message
 			Local $sLastChat = ReadChat()
 			Local $ChatMsg = StringStripWS($sLastChat, 7)
