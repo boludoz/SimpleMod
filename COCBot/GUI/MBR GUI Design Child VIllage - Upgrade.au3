@@ -195,7 +195,7 @@ Func CreateHeroesSubTab()
 		$g_hPicChkWardenSleepWait = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnSleepingWarden, $x + 18, $y, 64, 64)
 			_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetState(-1,$GUI_HIDE)
-	
+
 	$x += 95
 		$g_hLblHeroReservedBuilderTop = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Heroes", "LblHeroReservedBuilderTop", "Reserve ") , $x, $y + 15, -1, -1)
 		$g_hCmbHeroReservedBuilder = GUICtrlCreateCombo("", $x + 50, $y + 11, 30, 21, $CBS_DROPDOWNLIST, $WS_EX_RIGHT)
@@ -224,7 +224,7 @@ Func CreateBuildingsSubTab()
 	$x -= 7
 	; table header
 	$y -= 7
-	
+
 	; Upgrade Management RK MOD
 		$g_hChkUpgradeAllOrNone = GUICtrlCreateCheckbox("", $x + 4, $y, 13, 13, BitOR($BS_PUSHLIKE, $BS_ICON))
 			GUICtrlSetImage(-1, $g_sLibIconPath, $eIcnGoldStar, 0)
@@ -237,7 +237,7 @@ Func CreateBuildingsSubTab()
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetOnEvent(-1, "chkUpgradeRepeatAllOrNone")
-			
+
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Buildings", "Table header_01", "Unit Name"), $x + 71, $y, 70, 18)
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Buildings", "Table header_02", "Lvl"), $x + 153, $y, 40, 18)
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Buildings", "Table header_03", "Type"), $x + 173, $y, 50, 18)
@@ -306,7 +306,7 @@ Func CreateBuildingsSubTab()
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Buildings", "TxtUpgrMinDark_Info_01", "Save this amount of Dark Elixir after the upgrade completes.") & @CRLF & _
 							   GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Buildings", "TxtUpgrMinDark_Info_02", "Set this value higher if you want make war troops."))
 			GUICtrlSetLimit(-1, 6)
-			
+
 	; Upgrade Management - RK MOD
 		$g_hChkUpdateNewUpgradesOnly = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Buildings", "ChkUpdateNewUpgradesOnly_Info_01", "New Only"), $x + 141, $y + 15, -1, -1)
 			GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Buildings", "ChkUpdateNewUpgradesOnly_Info_02", "Update NEW upgrades only for speed"))
@@ -381,12 +381,12 @@ Func CreateWallsSubTab()
 			GUICtrlSetState(-1, $GUI_ENABLE)
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			GUICtrlSetOnEvent(-1, "chkSaveWallBldr")
-		;Wall/Building Upgrading Priority by RK MOD	 
+		;Wall/Building Upgrading Priority by RK MOD
 		$g_hChkUpgrPriority = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Walls", "ChkUpgrPriority", "Upgrading Priority") & ": ", $x + 18, $y + 95, -1, -1)
 			GUICtrlSetOnEvent(-1, "chkUpgrPriority")
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Walls", "UpgrPriority_Info_01", "Enable this function to select update priorities"))
 		$g_hCmbUpgrdPriority = GUICtrlCreateCombo("", $x + 135, $y + 95, 64, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-			GUICtrlSetOnEvent(-1, "cmbUpgrdPriority")
+			GUICtrlSetOnEvent(-1, "UpgrdPriority")
 			;GUICtrlSetState(-1, $GUI_DISABLE)
 			GUICtrlSetData(-1, "Walls |Building  ", "Walls ")
 
@@ -418,13 +418,13 @@ Func CreateWallsSubTab()
 							   GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Walls", "LblMin.Elixirtosave_Info_02", "Set this value to save Elixir for other upgrades or troop making."))
 			GUICtrlSetLimit(-1, 7)
 			GUICtrlSetState(-1, $GUI_DISABLE)
-			
-			
+
+
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-    
+
 
 	Local $x = 25, $y = 185
-	
+
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Walls", "Group_02", "Walls counter"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 95)
 		$g_ahWallsCurrentCount[4] = GUICtrlCreateInput("0", $x, $y, 25, 19, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Walls", "WallsCurrentCount_Info_01", "Input number of Walls level") & " 4 " & GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Walls", "WallsCurrentCount_Info_02", "you have."))
