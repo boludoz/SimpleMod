@@ -120,7 +120,7 @@ Func UpgradeBuilding()
 
 		Switch $g_avBuildingUpgrades[$iz][3] ;Change action based on upgrade type!
 			Case "Gold"
-				If (($iAvailGold < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinGold) Or (($iAvailGold < $g_avBuildingUpgrades[$iz][2]) And ($g_avBuildingUpgrades[$iz][2] > $g_iLimitBreakGE[$g_iTownHallLevel]))) Then ; Do we have enough Gold?
+				If $iAvailGold < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinGold Then ; Do we have enough Gold?
 					SetLog("Insufficent Gold for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinGold, $COLOR_INFO)
 					ContinueLoop
 				EndIf
@@ -133,7 +133,7 @@ Func UpgradeBuilding()
 				$iAvailGold -= $g_avBuildingUpgrades[$iz][2]
 				$iAvailBldr -= 1
 			Case "Elixir"
-				If (($iAvailElixir < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinElixir) Or (($iAvailElixir < $g_avBuildingUpgrades[$iz][2]) And ($g_avBuildingUpgrades[$iz][2] > $g_iLimitBreakGE[$g_iTownHallLevel]))) Then
+				If $iAvailElixir < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinElixir Then
 					SetLog("Insufficent Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinElixir, $COLOR_INFO)
 					ContinueLoop
 				EndIf
@@ -146,7 +146,7 @@ Func UpgradeBuilding()
 				$iAvailElixir -= $g_avBuildingUpgrades[$iz][2]
 				$iAvailBldr -= 1
 			Case "Dark"
-				If (($iAvailDark < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinDark) Or (($iAvailDark < $g_avBuildingUpgrades[$iz][2]) And ($g_avBuildingUpgrades[$iz][2] > $g_iLimitBreakDE[$g_iTownHallLevel]))) Then
+				If $iAvailDark < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinDark Then
 					SetLog("Insufficent Dark for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinDark, $COLOR_INFO)
 					ContinueLoop
 				EndIf
