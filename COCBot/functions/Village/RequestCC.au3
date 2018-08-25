@@ -17,27 +17,32 @@ Func RequestCC($ClickPAtEnd = True, $specifyText = "")
 
 	; Request troops for defense Add RK MOD
 	Local $bRequestDefense = False
-	If $g_bRequestTroopsEnableDefense And $g_bCanRequestCC Then
-		Local $bRequestDefenseEarly = False
-		If $g_asShieldStatus[0] = "shield" Then
-			If _DateIsValid($g_asShieldStatus[2]) Then
-				Local $iTimeTillShieldExpireMin = Int(_DateDiff('n', _NowCalc(), $g_asShieldStatus[2])) ; time in minutes
-				SetDebugLog("Shield expires in: " & $iTimeTillShieldExpireMin & " Minutes")
-				$bRequestDefenseEarly = ($iTimeTillShieldExpireMin <= $g_iRequestDefenseEarly)
+    If $g_bRequestCCDefense And $g_bCanRequestCC Then
+		Local $sTime = $g_bRequestCCDefenseWhenPB ? $g_sPBStartTime : $g_asShieldStatus[2]
+
+		If Not $g_bRequestCCDefenseWhenPB And $g_asShieldStatus[0] = "none" Then
+			$bRequestDefense = True
+            SetLog("No shield! Request troops for defense", $COLOR_INFO)
+		ElseIf _DateIsValid($sTime) Then
+			Local $iTime = Int(_DateDiff('n', _NowCalc(), $sTime)) ; time till P.Break or Guard expiry (in minutes)
+			If Not $g_bRequestCCDefenseWhenPB And $g_asShieldStatus[0] = "shield" Then $iTime += 30 ; add 30 minutes guard time
+			SetDebugLog(($g_bRequestCCDefenseWhenPB ? "Personal Break time: " : "Guard time: ") & $sTime & "(" & $iTime & " minutes)")
+			If $iTime <= $g_iRequestDefenseTime Then
+				SetLog(($g_bRequestCCDefenseWhenPB ? "P.Break is about to come!" : "Guard is about to expire!") & " Request troops for defense", $COLOR_INFO)
+				$bRequestDefense = True
 			EndIf
 		EndIf
-		$bRequestDefense = $g_asShieldStatus[0] = "guard" Or $g_asShieldStatus[0] = "none" Or $bRequestDefenseEarly
-		If $bRequestDefense Then
-			SetLog(($bRequestDefenseEarly ? "Shield is about to expire!" : "No shield!") & " Request troops for defense", $COLOR_INFO)
-			$g_sRequestTroopsText = $g_sRequestTroopsTextDefense
-			SetDebugLog("$g_sRequestTroopsText is now: " & $g_sRequestTroopsText)
-		Else
-			$g_sRequestTroopsText = IniRead($g_sProfileConfigPath, "donate", "txtRequest", "")
-			SetDebugLog("Reload $g_sRequestTroopsText: " & $g_sRequestTroopsText)
-		EndIf
-	EndIf
 
-	If (Not $g_bRequestTroopsEnable Or Not $g_bCanRequestCC Or Not $g_bDonationEnabled) And Not $bRequestDefense Then
+        If $bRequestDefense Then
+            $g_sRequestTroopsText = $g_sRequestCCDefenseText
+            SetDebugLog("$g_sRequestTroopsText is now: " & $g_sRequestTroopsText)
+        ElseIf $g_sRequestTroopsText = $g_sRequestCCDefenseText Then
+            $g_sRequestTroopsText = IniRead($g_sProfileConfigPath, "donate", "txtRequest", "")
+            SetDebugLog("Reload $g_sRequestTroopsText: " & $g_sRequestTroopsText)
+        EndIf
+    EndIf
+
+    If (Not $g_bRequestTroopsEnable Or Not $g_bCanRequestCC Or Not $g_bDonationEnabled) And Not $bRequestDefense Then
 		Return
 	EndIf
 

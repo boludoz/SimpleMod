@@ -448,9 +448,11 @@ Func ReadConfig_600_11()
 		$g_abRequestCCHours[$i] = ($g_abRequestCCHours[$i] = "1")
 	Next
 
-	$g_bRequestTroopsEnableDefense = (IniRead($g_sProfileConfigPath, "RequestDefense", "RequestDefenseEnable", "0") = "1")
-	$g_sRequestTroopsTextDefense = IniRead($g_sProfileConfigPath, "RequestDefense", "txtRequestDefense", "")
-	$g_iRequestDefenseEarly = Int(IniRead($g_sProfileConfigPath, "RequestDefense", "RequestDefenseEarly", "0"))
+	; Request defense CC (Demen)
+    $g_bRequestCCDefense = (IniRead($g_sProfileConfigPath, "donate", "RequestDefenseEnable", "0") = "1")
+    $g_sRequestCCDefenseText = IniRead($g_sProfileConfigPath, "donate", "RequestDefenseText", "")
+	$g_bRequestCCDefenseWhenPB = (IniRead($g_sProfileConfigPath, "donate", "RequestDefenseWhenPB", "1") = "1")
+    $g_iRequestDefenseTime = Int(IniRead($g_sProfileConfigPath, "donate", "RequestDefenseTime", "0"))
 
 	; ================================================== Russian Request - by RK MOD ================================= ;
 

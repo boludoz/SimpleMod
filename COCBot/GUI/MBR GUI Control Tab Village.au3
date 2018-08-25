@@ -30,15 +30,15 @@
 
 ; Request troops for defense Add RK MOD
 Func chkRequestDefense()
-	If GUICtrlRead($g_hChkRequestTroopsEnableDefense) = $GUI_CHECKED Then
-		For $i = $g_hTxtRequestCCDefense To $g_hTxtRequestDefenseEarly
-			GUICtrlSetState($i, $GUI_ENABLE)
-		Next
-	Else
-		For $i = $g_hTxtRequestCCDefense To $g_hTxtRequestDefenseEarly
-			GUICtrlSetState($i, $GUI_DISABLE)
-		Next
-	EndIf
+    If GUICtrlRead($g_hChkRequestCCDefense) = $GUI_CHECKED Then
+        For $i = $g_hTxtRequestCCDefense To $g_hTxtRequestCCDefenseTime
+            GUICtrlSetState($i, $GUI_ENABLE)
+        Next
+    Else
+        For $i = $g_hTxtRequestCCDefense To $g_hTxtRequestCCDefenseTime
+            GUICtrlSetState($i, $GUI_DISABLE)
+        Next
+    EndIf
 EndFunc   ;==>chkRequestDefense
 
 Func chkRequestCCHours()
@@ -46,13 +46,13 @@ Func chkRequestCCHours()
 
 	If GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hTxtRequestCC, $GUI_SHOW + $GUI_ENABLE)
-		For $i = $g_hChkReqCCFirst To $g_hLblRequestCCHoursPM 
+		For $i = $g_hChkSkipRequestCC To $g_hLblRequestCCHoursPM ; Skip request CC - Demen
  			GUICtrlSetState($i, $GUI_ENABLE)
  		Next
 		chkSkipRequestCC() ; Skip request CC - Add RK MOD
 	Else
 		GUICtrlSetState($g_hTxtRequestCC, $GUI_SHOW + $GUI_DISABLE)
-		For $i = $g_hChkReqCCFirst To $g_hLblRequestCCHoursPM
+		For $i = $g_hChkSkipRequestCC To $g_hLblRequestCCHoursPM ; Skip request CC - Demen
  			GUICtrlSetState($i, $GUI_DISABLE)
  		Next
 	EndIf
@@ -129,12 +129,10 @@ Func chkDonateHours()
     If GUICtrlRead($g_hChkDonateHoursEnable) = $GUI_CHECKED Then
 		For $i = $g_hLblDonateCChour To $g_hLblDonateHoursPM
 			GUICtrlSetState($i, $GUI_ENABLE)
-			GUICtrlSetState($g_hchkReqCCFirst, $GUI_SHOW + $GUI_ENABLE)
 		Next
 	Else
 		For $i = $g_hLblDonateCChour To $g_hLblDonateHoursPM
 			GUICtrlSetState($i, $GUI_DISABLE)
-			GUICtrlSetState($g_hchkReqCCFirst, $GUI_SHOW + $GUI_DISABLE)
 		Next
 	EndIf
 
@@ -169,7 +167,7 @@ Func chkDonateHoursE2()
 	GUICtrlSetState($g_ahChkDonateHoursE2, $GUI_UNCHECKED)
 EndFunc   ;==>chkDonateHoursE2
 
-; move the Request CC Troops function to the beginning of the run loop
+; Request CC Troops at first - RK MOD
 Func chkReqCCFirst()
 	$g_bReqCCFirst = (GUICtrlRead($g_hChkReqCCFirst) = $GUI_CHECKED)
 EndFunc   ;==>chkReqCCFirst

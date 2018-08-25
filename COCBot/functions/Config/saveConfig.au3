@@ -397,9 +397,11 @@ Func SaveConfig_600_11()
 	Next
 	_Ini_Add("planned", "RequestHours", $string)
 	
-	_Ini_Add("RequestDefense", "RequestDefenseEnable", $g_bRequestTroopsEnableDefense ? 1 : 0)
-	_Ini_Add("RequestDefense", "txtRequestDefense", $g_sRequestTroopsTextDefense)
-	_Ini_Add("RequestDefense", "RequestDefenseEarly", $g_iRequestDefenseEarly)
+	; Request defense CC (Demen)
+    _Ini_Add("donate", "RequestDefenseEnable", $g_bRequestCCDefense ? 1 : 0)
+    _Ini_Add("donate", "RequestDefenseText", $g_sRequestCCDefenseText)
+	_Ini_Add("donate", "RequestDefenseWhenPB", $g_bRequestCCDefenseWhenPB ? 1 : 0)
+    _Ini_Add("donate", "RequestDefenseTime", $g_iRequestDefenseTime)
     
 	; ================================================== Russian Request - by RK MOD ================================= ;
 

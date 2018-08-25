@@ -417,10 +417,12 @@ Func ApplyConfig_600_11($TypeReadSave)
 				GUICtrlSetState($g_ahChkRequestCCHours[$i], $g_abRequestCCHours[$i] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			Next
 			
-			GUICtrlSetState($g_hChkRequestTroopsEnableDefense, $g_bRequestTroopsEnableDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
-			chkRequestDefense()
-			GUICtrlSetData($g_hTxtRequestCCDefense, $g_sRequestTroopsTextDefense)
-			GUICtrlSetData($g_hTxtRequestDefenseEarly, $g_iRequestDefenseEarly)
+			; Request defense CC (Demen)
+            GUICtrlSetState($g_hChkRequestCCDefense, $g_bRequestCCDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
+            chkRequestDefense()
+			GUICtrlSetData($g_hTxtRequestCCDefense, $g_sRequestCCDefenseText)
+			_GUICtrlComboBox_SetCurSel($g_hCmbRequestCCDefenseWhen, $g_bRequestCCDefenseWhenPB ? 0 : 1)
+            GUICtrlSetData($g_hTxtRequestCCDefenseTime, $g_iRequestDefenseTime)
 			
 			; ================================================== Russian Request - by RK MOD ======================================== ;
 
@@ -434,9 +436,11 @@ Func ApplyConfig_600_11($TypeReadSave)
 				$g_abRequestCCHours[$i] = (GUICtrlRead($g_ahChkRequestCCHours[$i]) = $GUI_CHECKED)
 			Next
 			
-			$g_bRequestTroopsEnableDefense = (GUICtrlRead($g_hChkRequestTroopsEnableDefense) = $GUI_CHECKED)
-			$g_sRequestTroopsTextDefense = GUICtrlRead($g_hTxtRequestCCDefense)
-			$g_iRequestDefenseEarly = GUICtrlRead($g_hTxtRequestDefenseEarly)
+			; Request defense CC (Demen)
+            $g_bRequestCCDefense = (GUICtrlRead($g_hChkRequestCCDefense) = $GUI_CHECKED)
+            $g_sRequestCCDefenseText = GUICtrlRead($g_hTxtRequestCCDefense)
+			$g_bRequestCCDefenseWhenPB = (_GUICtrlComboBox_GetCurSel($g_hCmbRequestCCDefenseWhen) = 0)
+            $g_iRequestDefenseTime = GUICtrlRead($g_hTxtRequestCCDefenseTime)
 			
 			; ================================================== Russian Request - by RK MOD ================================= ;
 
