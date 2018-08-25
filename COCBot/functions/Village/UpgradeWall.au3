@@ -396,14 +396,14 @@ Func GoldPriority()
 				EndSwitch
 			EndIf
 		Next
-		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings > 0 And $g_bUpgradeWallSaveBuilder = 1) Then
+		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings > 0  And $g_iFreeBuilderCount = 1) Then
 			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
 				SetLog("Building: Priority Fail.", $COLOR_WARNING)
 				Return False
 		EndIf
-		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = 1) Then
+		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1) Then
 			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
@@ -441,7 +441,7 @@ Func ElixirPriority()
 				EndSwitch
 			EndIf
 		Next
-		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings > 0 And $g_bUpgradeWallSaveBuilder = 1 And $g_iFreeBuilderCount = 1) Then
+		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings > 0 And $g_iFreeBuilderCount = 1) Then
 			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
