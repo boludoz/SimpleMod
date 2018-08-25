@@ -381,13 +381,13 @@ Func GoldPriority()
 	Local $iGoldBuildings = 0
 	Local $iUpgradeAction = 0
 	Local $iDecision = 0
+	Local $MinWallGold = Number($g_aiCurrentLoot[$eLootGold] - $g_iWallCost) > Number($g_iUpgradeWallMinGold) ; Check if enough Gold
 
 	If $g_iCmbUpgrdPriority = 1 Then
 		SetLog("Gold Priority is enabled.", $COLOR_INFO)
 		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
 			If $g_abBuildingUpgradeEnable[$iz] = True Then $iUpgradeAction += 1
 		Next
-
 		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
 			If $iUpgradeAction > 0 And $g_abBuildingUpgradeEnable[$iz] = True And $g_avBuildingUpgrades[$iz][7] = "" Then
 				Switch $g_avBuildingUpgrades[$iz][3]
@@ -397,21 +397,28 @@ Func GoldPriority()
 				EndSwitch
 			EndIf
 		Next
-		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = 1) Then
-			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
-			$iDecision += 1
-			Else
-				SetLog("Auto Upgrade: Priority Fail.", $COLOR_WARNING)
-				Return False
-		EndIf
-		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings > 0 And $g_bUpgradeWallSaveBuilder = 1) Then
+		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings > 0  And $g_iFreeBuilderCount = 1) Then
 			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
-				SetLog("Building: Priority Fail.", $COLOR_WARNING)
+				SetLog("Building: Priority Failure.", $COLOR_ERROR)
 				Return False
 		EndIf
-		If $iDecision = 2 Then
+		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1) Then
+			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
+			$iDecision += 1
+			Else
+				SetLog("Auto Upgrade: Priority Failure.", $COLOR_ERROR)
+				Return False
+		EndIf
+		If $MinWallGold Then
+			SetLog("Enough gold to continue with upgrade.", $COLOR_SUCCESS)
+			$iDecision += 1
+			Else
+				SetLog("Not enough gold to continue with upgrade.", $COLOR_ERROR)
+				Return False
+		EndIf
+		If $iDecision = 3 Then
 		Return True
 		EndIf
 	ElseIf $g_iCmbUpgrdPriority = 0 Then
@@ -427,13 +434,13 @@ Func ElixirPriority()
 	Local $iElixirBuildings = 0
 	Local $iUpgradeAction = 0
 	Local $iDecision = 0
+	Local $MinWallElixir = Number($g_aiCurrentLoot[$eLootElixir] - $g_iWallCost) > Number($g_iUpgradeWallMinElixir) ; Check if enough Elixir
 
 	If $g_iCmbUpgrdPriority = 1 Then
 		SetLog("Elixir Priority is enabled.", $COLOR_INFO)
 		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
 			If $g_abBuildingUpgradeEnable[$iz] = True Then $iUpgradeAction += 1
 		Next
-
 		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
 			If $iUpgradeAction > 0 And $g_abBuildingUpgradeEnable[$iz] = True And $g_avBuildingUpgrades[$iz][7] = "" Then
 				Switch $g_avBuildingUpgrades[$iz][3]
@@ -443,28 +450,35 @@ Func ElixirPriority()
 				EndSwitch
 			EndIf
 		Next
+		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings > 0 And $g_iFreeBuilderCount = 1) Then
+			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
+			$iDecision += 1
+			Else
+				SetLog("Building: Priority Failure.", $COLOR_ERROR)
+				Return False
+		EndIf
 		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = 1) Then
 			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
-				SetLog("Auto Upgrade: Priority Fail.", $COLOR_WARNING)
-				Return False
-		EndIf
-		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings > 0 And $g_bUpgradeWallSaveBuilder = 1) Then
-			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
-			$iDecision += 1
-			Else
-				SetLog("Building: Priority Fail.", $COLOR_WARNING)
+				SetLog("Auto Upgrade: Priority Failure.", $COLOR_ERROR)
 				Return False
 		EndIf
 		If ($g_bAutoLabUpgradeEnable = False) Or ($g_bAutoLabUpgradeEnable = True And (($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0)) Or ($g_sLabUpgradeTime <> "") Then
 			SetLog("Laboratory: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
-				SetLog("Laboratory: Priority Fail.", $COLOR_WARNING)
+				SetLog("Laboratory: Priority Failure.", $COLOR_ERROR)
 				Return False
 		EndIf
-		If $iDecision = 3 Then
+		If $MinWallElixir Then
+			SetLog("Enough elixir to continue with upgrade.", $COLOR_SUCCESS)
+			$iDecision += 1
+			Else
+				SetLog("Not enough elixir to continue with upgrade.", $COLOR_ERROR)
+				Return False
+		EndIf
+		If $iDecision = 4 Then
 		Return True
 		Endif
 	ElseIf $g_iCmbUpgrdPriority = 0 Then
