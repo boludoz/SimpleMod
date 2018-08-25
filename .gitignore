@@ -124,6 +124,7 @@
 ![Ii]mgxml/HeroTime/*.png
 
 ![C]OCBot/Forecast/*/*.exe
+![Ll]ib/*.exe
 # ignore test strategies
 [Ss]trategies/[Tt]est*.ini
 [Ss]trategies/[Ss]trategy 2016*.ini
