@@ -387,7 +387,6 @@ Func GoldPriority()
 		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
 			If $g_abBuildingUpgradeEnable[$iz] = True Then $iUpgradeAction += 1
 		Next
-
 		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
 			If $iUpgradeAction > 0 And $g_abBuildingUpgradeEnable[$iz] = True And $g_avBuildingUpgrades[$iz][7] = "" Then
 				Switch $g_avBuildingUpgrades[$iz][3]
@@ -397,18 +396,18 @@ Func GoldPriority()
 				EndSwitch
 			EndIf
 		Next
-		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = 1) Then
-			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
-			$iDecision += 1
-			Else
-				SetLog("Auto Upgrade: Priority Fail.", $COLOR_WARNING)
-				Return False
-		EndIf
 		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings = 0) Or ($iUpgradeAction > 0 And $iGoldBuildings > 0 And $g_bUpgradeWallSaveBuilder = 1) Then
 			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
 				SetLog("Building: Priority Fail.", $COLOR_WARNING)
+				Return False
+		EndIf
+		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = 1) Then
+			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
+			$iDecision += 1
+			Else
+				SetLog("Auto Upgrade: Priority Fail.", $COLOR_WARNING)
 				Return False
 		EndIf
 		If $iDecision = 2 Then
@@ -433,7 +432,6 @@ Func ElixirPriority()
 		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
 			If $g_abBuildingUpgradeEnable[$iz] = True Then $iUpgradeAction += 1
 		Next
-
 		For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
 			If $iUpgradeAction > 0 And $g_abBuildingUpgradeEnable[$iz] = True And $g_avBuildingUpgrades[$iz][7] = "" Then
 				Switch $g_avBuildingUpgrades[$iz][3]
@@ -443,18 +441,18 @@ Func ElixirPriority()
 				EndSwitch
 			EndIf
 		Next
-		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = 1) Then
-			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
-			$iDecision += 1
-			Else
-				SetLog("Auto Upgrade: Priority Fail.", $COLOR_WARNING)
-				Return False
-		EndIf
 		If ($iUpgradeAction = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings = 0) Or ($iUpgradeAction > 0 And $iElixirBuildings > 0 And $g_bUpgradeWallSaveBuilder = 1) Then
 			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
 				SetLog("Building: Priority Fail.", $COLOR_WARNING)
+				Return False
+		EndIf
+		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = 1) Then
+			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
+			$iDecision += 1
+			Else
+				SetLog("Auto Upgrade: Priority Fail.", $COLOR_WARNING)
 				Return False
 		EndIf
 		If ($g_bAutoLabUpgradeEnable = False) Or ($g_bAutoLabUpgradeEnable = True And (($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0)) Or ($g_sLabUpgradeTime <> "") Then
