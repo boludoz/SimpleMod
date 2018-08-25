@@ -1774,8 +1774,8 @@ Func GetOCRCurrent($x_start, $y_start)
 
 	If StringInStr($iOCRResult, "#") Then
 		Local $aTempResult = StringSplit($iOCRResult, "#", $STR_NOCOUNT)
-		$aResult[0] = Number($aTempResult[0])
-		$aResult[1] = Number($aTempResult[1])
+		$aResult[0] = Number($aTempResult[0] / 2)
+		$aResult[1] = Number($aTempResult[1] / 2)
 		; Case to use this function os Spells will be <= 22 , 11*2
 		If $aResult[1] <= 22 Then
 			If $g_bDebugSetlogTrain Then SetLog("$g_iTotalSpellValue: " & $g_iTotalSpellValue, $COLOR_DEBUG)
