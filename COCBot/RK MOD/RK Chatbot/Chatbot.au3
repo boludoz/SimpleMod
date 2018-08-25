@@ -202,7 +202,8 @@ Func ChatbotSelectGlobalChat() ; select global tab
 EndFunc   ;==>ChatbotSelectGlobalChat
 
 Func ChatbotChatClose() ; close chat area
-	Click(330, 384, 1) ; close chat
+	Click(330, 380) ; close chat
+	randomSleep(1500)
 	waitMainScreen()
 	Return True
 EndFunc   ;==>ChatbotChatClose
@@ -247,9 +248,9 @@ EndFunc   ;==>ChatbotChatInput
 ;=============================================
 
 Func ChatbotChatSendClan() ; click send
-	If _Sleep(1000) Then Return
-	Click(827, 709, 1) ; send
-	If _Sleep(2000) Then Return
+			randomSleep(1000)
+			Click(840, 710) ; click send message
+			randomSleep(2000)
 	Return True
 EndFunc   ;==>ChatbotChatSendClan
 
@@ -589,7 +590,17 @@ Func ChatbotMessage() ; run the chatbot
 					EndIf
 				Next
 			EndIf
-
+			
+			If not $SentMessage Then
+				Local $Response = runHelper($ChatMsg)
+				If Not $Response = False Or not $ChatMsg = "" Or not $ChatMsg = " " Then
+				SetLog("Got cleverbot response: " & $Response, $COLOR_GREEN)
+					If Not ChatbotChatClanInput() Then Return
+					If Not ChatbotChatInput($Response) Then Return
+					If Not ChatbotChatSendClan() Then Return
+					$SentMessage = True
+				EndIf
+			EndIf
 			If Not $SentMessage Then
 				If $g_iChkClanAlwaysMsg Then
 					If Not ChatbotChatClanInput() Then Return
@@ -617,6 +628,37 @@ Func ChatbotMessage() ; run the chatbot
 		SetLog("Chatbot: Done chatting", $COLOR_GREEN)
 	EndIf
 EndFunc   ;==>ChatbotMessage
+
+; Returns the response from cleverbot or simsimi, if any
+Func runHelper($msg) ; run a script to get a response from cleverbot.com or simsimi.com
+ Local $command, $DOS, $HelperStartTime, $Time_Difference
+ Dim $DOS, $Message = ''
+
+   $command = ' /c "phantomjs.exe phantom-cleverbot-helper.js '
+
+   $DOS = Run(@ComSpec & $command & $msg & '"', "", @SW_HIDE, 8)
+   $HelperStartTime = TimerInit()
+   SetLog("Waiting for chatbot helper...")
+   While ProcessExists($DOS)
+	  ProcessWaitClose($DOS, 10)
+	  SetLog("Still waiting for chatbot helper...")
+	  $Time_Difference = TimerDiff($HelperStartTime)
+	  If $Time_Difference > 50000 Then
+		 SetLog("Chatbot helper is taking too long!", $COLOR_RED)
+		 ProcessClose($DOS)
+		 _RunDos("taskkill -f -im phantomjs.exe") ; force kill
+		 Return ""
+	  EndIf
+   WEnd
+   $Message = ''
+   While 1
+	  $Message &= StdoutRead($DOS)
+	  If @error Then
+		 ExitLoop
+	  EndIf
+   WEnd
+   Return StringStripWS($Message, 7)
+EndFunc
 
 ;===========Addied kychera=================
 ; #FUNCTION# ====================================================================================================================
