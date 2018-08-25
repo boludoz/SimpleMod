@@ -381,6 +381,7 @@ Func GoldPriority()
 	Local $iGoldBuildings = 0
 	Local $iUpgradeAction = 0
 	Local $iDecision = 0
+	Local $MinWallGold = Number($g_aiCurrentLoot[$eLootGold] - $g_iWallCost) > Number($g_iUpgradeWallMinGold) ; Check if enough Gold
 
 	If $g_iCmbUpgrdPriority = 1 Then
 		SetLog("Gold Priority is enabled.", $COLOR_INFO)
@@ -410,7 +411,14 @@ Func GoldPriority()
 				SetLog("Auto Upgrade: Priority Failure.", $COLOR_ERROR)
 				Return False
 		EndIf
-		If $iDecision = 2 Then
+		If $MinWallGold Then
+			SetLog("Enough gold to continue with upgrade.", $COLOR_SUCCESS)
+			$iDecision += 1
+			Else
+				SetLog("Not enough gold to continue with upgrade.", $COLOR_ERROR)
+				Return False
+		EndIf
+		If $iDecision = 3 Then
 		Return True
 		EndIf
 	ElseIf $g_iCmbUpgrdPriority = 0 Then
@@ -426,6 +434,7 @@ Func ElixirPriority()
 	Local $iElixirBuildings = 0
 	Local $iUpgradeAction = 0
 	Local $iDecision = 0
+	Local $MinWallElixir = Number($g_aiCurrentLoot[$eLootElixir] - $g_iWallCost) > Number($g_iUpgradeWallMinElixir) ; Check if enough Elixir
 
 	If $g_iCmbUpgrdPriority = 1 Then
 		SetLog("Elixir Priority is enabled.", $COLOR_INFO)
@@ -462,7 +471,14 @@ Func ElixirPriority()
 				SetLog("Laboratory: Priority Failure.", $COLOR_ERROR)
 				Return False
 		EndIf
-		If $iDecision = 3 Then
+		If $MinWallElixir Then
+			SetLog("Enough elixir to continue with upgrade.", $COLOR_SUCCESS)
+			$iDecision += 1
+			Else
+				SetLog("Not enough elixir to continue with upgrade.", $COLOR_ERROR)
+				Return False
+		EndIf
+		If $iDecision = 4 Then
 		Return True
 		Endif
 	ElseIf $g_iCmbUpgrdPriority = 0 Then
