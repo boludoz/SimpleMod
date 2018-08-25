@@ -400,14 +400,14 @@ Func GoldPriority()
 			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
-				SetLog("Building: Priority Fail.", $COLOR_WARNING)
+				SetLog("Building: Priority Failure.", $COLOR_ERROR)
 				Return False
 		EndIf
 		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1) Then
 			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
-				SetLog("Auto Upgrade: Priority Fail.", $COLOR_WARNING)
+				SetLog("Auto Upgrade: Priority Failure.", $COLOR_ERROR)
 				Return False
 		EndIf
 		If $iDecision = 2 Then
@@ -445,21 +445,21 @@ Func ElixirPriority()
 			SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
-				SetLog("Building: Priority Fail.", $COLOR_WARNING)
+				SetLog("Building: Priority Failure.", $COLOR_ERROR)
 				Return False
 		EndIf
 		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = 1) Then
 			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
-				SetLog("Auto Upgrade: Priority Fail.", $COLOR_WARNING)
+				SetLog("Auto Upgrade: Priority Failure.", $COLOR_ERROR)
 				Return False
 		EndIf
 		If ($g_bAutoLabUpgradeEnable = False) Or ($g_bAutoLabUpgradeEnable = True And (($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0)) Or ($g_sLabUpgradeTime <> "") Then
 			SetLog("Laboratory: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
-				SetLog("Laboratory: Priority Fail.", $COLOR_WARNING)
+				SetLog("Laboratory: Priority Failure.", $COLOR_ERROR)
 				Return False
 		EndIf
 		If $iDecision = 3 Then
