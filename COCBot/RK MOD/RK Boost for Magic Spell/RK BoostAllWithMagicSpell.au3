@@ -337,7 +337,7 @@ EndFunc   ;==>BoostWhitC
 
 
 ;_----------------------------
-;           SetLog("COMPDBG")
+;          setlog("COMPDBG")
 
 ;BuildingClickP($g_aiClanCastlePos)
 ;_Sleep(500)

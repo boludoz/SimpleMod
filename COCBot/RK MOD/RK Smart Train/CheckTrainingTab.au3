@@ -34,7 +34,7 @@ Func CheckTrainingTab($sText = "Troops")
 
 	If _Sleep(1000) Then Return
 
-	Local $ArmyCamp = GetOCRCurrent(43, 160)
+	Local $ArmyCamp = GetOCRCurrent(48, 160)
 	SetLog("Checking " & $sText & " tab: " & $ArmyCamp[0] & "/" & $ArmyCamp[1] * 2)
 	If $ArmyCamp[1] = 0 Then $g_sSmartTrainError = SetError(2, 0, "Error GetOCRCurrent called from CheckTrainingTab")
 	If @error Then Return ; quit SmartTrain
@@ -172,7 +172,7 @@ Func ForceBrewSpells($iRemainQueue)
 EndFunc   ;==>ForceBrewSpells
 
 Func CheckBlockTroops($sText = "Troops")
-	Local $NewCampOCR = GetOCRCurrent(43, 160)
+	Local $NewCampOCR = GetOCRCurrent(48, 160)
 	If $NewCampOCR[0] - $NewCampOCR[1] >= 0 Then ; Full camp after deleting queue.
 		Return False ; train $g_efull
 	Else

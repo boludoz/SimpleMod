@@ -50,7 +50,7 @@ Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of tr
 EndFunc   ;==>_getArmyCapacityOnTrainTroops
 
 Func CheckAutoCamp() ; Only first Run and th5 + (Then every time he does the troops he will do it alone.)
-	Local $dbg = 1
+	Local $dbg = 0
 	If $dbg = 1 Then Setlog("campon")
 Sleep(50)
 If $g_bFirstRun = True Then Return
