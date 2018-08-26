@@ -104,12 +104,12 @@ Func cmbAndroidBackgroundMode()
 	UpdateAndroidBackgroundMode()
 EndFunc   ;==>cmbAndroidBackgroundMode
 
-func EnableShowTouchs()
+Func EnableShowTouchs()
 	AndroidAdbSendShellCommand("content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:1")
 	SetDebugLog("EnableShowTouchs ON")
 EndFunc
 
-func DisableShowTouchs()
+Func DisableShowTouchs()
 	AndroidAdbSendShellCommand("content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:0")
 	SetDebugLog("EnableShowTouchs OFF")
 EndFunc
