@@ -394,20 +394,6 @@ Func _VillageSearch() ;Control for searching a village that meets conditions
 			SetLog($GetResourcesTXT, $COLOR_BLACK, "Lucida Console", 7.5)
 		EndIf
 
-		; Grab Healed Heroes - RK MOD
-		If $g_bRestartSearchGrabHero Then
-			For $i = 0 To 2 ; check all 3 hero
-				If Not $abHeroUse[$i] Or Not _DateIsValid($g_asHeroHealTime[$i]) Then ContinueLoop
-				Local $iTimeTillHeroHealed = Int(_DateDiff('s', _NowCalc(), $g_asHeroHealTime[$i])) ; hero time in seconds
-				SetDebugLog($g_asHeroNames[$i] & " will be ready in " & $iTimeTillHeroHealed & " seconds")
-				If $iTimeTillHeroHealed <= 0 Then
-					$bReturnToGrabHero = True
-					$g_asHeroHealTime[$i] = ""
-					SetLog($g_asHeroNames[$i] & " is ready. Return home to grab " & ($i <> 1 ? "him" : "her") & " to join the attack")
-					ExitLoop ; found 1 Hero is ready, skip checking other heros
-				EndIf
-			Next
-		EndIf
 		; Return Home on Search limit
 		If SearchLimit($iSkipped + 1, $bReturnToGrabHero) Then Return True
 

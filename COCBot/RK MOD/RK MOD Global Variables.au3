@@ -120,8 +120,6 @@ Global $g_bOnReplayWindow, $g_iReplayToPause
 Global $g_iLastLayout = 0
 
 ; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
-
-Global $g_bRestartSearchGrabHero
 Global $g_asHeroHealTime[3] = ["", "", ""] 
 
 ; ================================================ Switch Profile - Added by RK MOD ======================================== ;

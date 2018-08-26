@@ -51,7 +51,7 @@ Func btnAddConfirm()
 			GUICtrlSetState($g_hBtnPullSharedPrefs, $GUI_HIDE)
 			GUICtrlSetState($g_hBtnPushSharedPrefs, $GUI_HIDE)
 			GUICtrlSetState($g_hBtnSaveprofile, $GUI_HIDE)
-    		
+
 		Case $g_hBtnConfirmAddProfile
 			Local $newProfileName = StringRegExpReplace(GUICtrlRead($g_hTxtVillageName), '[/:*?"<>|]', '_')
 			If FileExists($g_sProfilePath & "\" & $newProfileName) Then
@@ -66,7 +66,7 @@ Func btnAddConfirm()
 			createProfile()
 			setupProfileComboBox()
 			setupProfileComboBoxswitch() ; Add RK MOD
-			
+
 			selectProfile()
 			GUICtrlSetState($g_hTxtVillageName, $GUI_HIDE)
 			GUICtrlSetState($g_hCmbProfile, $GUI_SHOW)
@@ -158,9 +158,9 @@ Func btnRenameConfirm()
 			; Rename the profile.
 			renameProfile()
 			setupProfileComboBox()
-			
+
 			setupProfileComboBoxswitch() ; Add RK MOD
-			
+
 			selectProfile()
 
 			GUICtrlSetState($g_hTxtVillageName, $GUI_HIDE)
@@ -174,7 +174,7 @@ Func btnRenameConfirm()
 			GUICtrlSetState($g_hBtnPullSharedPrefs, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnPushSharedPrefs, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnSaveprofile, $GUI_SHOW)
-    
+
 		Case Else
 			SetLog("If you are seeing this log message there is something wrong.", $COLOR_ERROR)
 	EndSwitch
@@ -600,7 +600,7 @@ EndFunc   ;==>chkStartClockTowerBoost
 
 Func chkActivateClangames()
 	If GUICtrlRead($g_hChkClanGamesEnabled) = $GUI_CHECKED Then
-		GUICtrlSetState($g_hChkClanGamesOnly, $GUI_ENABLE)
+		GUICtrlSetState($g_hChkClanGames60, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkClanGamesAir, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkClanGamesGround, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkClanGamesMisc, $GUI_ENABLE)
@@ -618,7 +618,7 @@ Func chkActivateClangames()
 		GUICtrlSetState($g_hChkClanGamesStopBeforeReachAndPurge, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkClanGamesDebug, $GUI_ENABLE)
 	Else
-		GUICtrlSetState($g_hChkClanGamesOnly, $GUI_DISABLE)
+		GUICtrlSetState($g_hChkClanGames60, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkClanGamesAir, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkClanGamesGround, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkClanGamesMisc, $GUI_DISABLE)

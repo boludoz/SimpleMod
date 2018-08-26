@@ -1308,14 +1308,21 @@ EndFunc   ;==>_RunFunction
 
 Func FirstCheck()
 
+    SetDebugLog("-- FirstCheck Loop --")
+    If Not $g_bRunState Then Return
+
+	If ProfileSwitchAccountEnabled() And $g_abDonateOnly[$g_iCurAccount] Then Return
+
+    $g_bRestart = False
+    $g_bFullArmy = False
+    $g_iCommandStop = -1
+	
+	CheckFarmSchedule()
 
 	MainGTFO()
 	MainKickout()
 	VillageReport()
 
-	If ProfileSwitchAccountEnabled() And $g_abDonateOnly[$g_iCurAccount] Then Return
-
-	CheckFarmSchedule()
 	
 	If $g_bReqCCFirst = 1 Then RequestCC()
 	
@@ -1350,6 +1357,11 @@ Func FirstCheck()
 		If Not $g_bRunState Then Return
 		SetDebugLog("Are you ready? " & String($g_bIsFullArmywithHeroesAndSpells))
 		If $g_bIsFullArmywithHeroesAndSpells Then
+            ; Just in case of new profile! or BotDetectFirstTime() failed on Initiate()
+            If (isInsideDiamond($g_aiTownHallPos) = False) Then
+                BotDetectFirstTime()
+            EndIf
+            ; Now the bot can attack
 			If $g_iCommandStop <> 0 And $g_iCommandStop <> 3 Then
 				Setlog("Before any other routine let's attack!!", $COLOR_INFO)
 				If Not $g_bRunState Then Return

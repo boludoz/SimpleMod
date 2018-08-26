@@ -333,6 +333,10 @@ Func SaveConfig_600_6()
 	_Ini_Add("other", "minrestartdark", $g_iTxtRestartDark)
 	_Ini_Add("other", "chkTrap", $g_bChkTrap ? 1 : 0)
 	_Ini_Add("other", "chkCollect", $g_bChkCollect ? 1 : 0)
+	_Ini_Add("other", "chkCollectCartFirst", $g_bChkCollectCartFirst ? 1 : 0)
+	_Ini_Add("other", "minCollectgold", $g_iTxtCollectGold)
+	_Ini_Add("other", "minCollectelixir", $g_iTxtCollectElixir)
+	_Ini_Add("other", "minCollectdark", $g_iTxtCollectDark)
 	_Ini_Add("other", "chkTombstones", $g_bChkTombstones ? 1 : 0)
 	_Ini_Add("other", "chkCleanYard", $g_bChkCleanYard ? 1 : 0)
 	_Ini_Add("other", "ChkCollectFreeMagicItems", $g_bChkCollectFreeMagicItems ? 1 : 0)
@@ -357,7 +361,7 @@ Func SaveConfig_600_6()
 	_Ini_Add("other", "ChkClanGamesMisc", $g_bChkClanGamesMisc ? 1 : 0)
 
 	_Ini_Add("other", "ChkClanGamesEnabled", $g_bChkClanGamesEnabled ? 1 : 0)
-	_Ini_Add("other", "ChkClanGamesOnly", $g_bChkClanGamesOnly ? 1 : 0)
+	_Ini_Add("other", "ChkClanGames60", $g_bChkClanGames60 ? 1 : 0)
 	_Ini_Add("other", "ChkClanGamesPurge", $g_bChkClanGamesPurge ? 1 : 0)
 	_Ini_Add("other", "ChkClanGamesStopBeforeReachAndPurge", $g_bChkClanGamesStopBeforeReachAndPurge ? 1 : 0)
 	_Ini_Add("other", "ChkClanGamesDebug", $g_bChkClanGamesDebug ? 1 : 0)
@@ -391,6 +395,18 @@ Func SaveConfig_600_11()
 	; <><><><> Village / Donate - Request <><><><>
 	_Ini_Add("planned", "RequestHoursEnable", $g_bRequestTroopsEnable ? 1 : 0)
 	_Ini_Add("donate", "txtRequest", $g_sRequestTroopsText)
+	; Request Type - Demen
+	_Ini_Add("donate", "RequestType_Troop", $g_abRequestType[0] ? 1 : 0)
+	_Ini_Add("donate", "RequestType_Spell", $g_abRequestType[1] ? 1 : 0)
+	_Ini_Add("donate", "RequestType_Siege", $g_abRequestType[2] ? 1 : 0)
+	_Ini_Add("donate", "RequestCountCC_Troop", $g_iRequestCountCCTroop)
+	_Ini_Add("donate", "RequestCountCC_Spell", $g_iRequestCountCCSpell)
+	_Ini_Add("donate", "cmbClanCastleSpell", $g_iClanCastleSpellsWaitFirst)
+	_Ini_Add("donate", "cmbClanCastleSpell2", $g_iClanCastleSpellsWaitSecond)
+	For $i = 0 To 2
+		_Ini_Add("donate", "cmbClanCastleTroop" & $i, $g_aiClanCastleTroopWaitType[$i])
+		_Ini_Add("donate", "txtClanCastleTroop" & $i, $g_aiClanCastleTroopWaitQty[$i])
+	Next
 	Local $string = ""
 	For $i = 0 To 23
 		$string &= ($g_abRequestCCHours[$i] ? "1" : "0") & "|"
@@ -557,6 +573,7 @@ Func SaveConfig_600_18()
 	ApplyConfig_600_18(GetApplyConfigSaveAction())
 	_Ini_Add("notify", "TGEnabled", $g_bNotifyTGEnable ? 1 : 0)
 	_Ini_Add("notify", "TGToken", $g_sNotifyTGToken)
+	_Ini_Add("notify", "TGUserID", $g_sTGChatID)
 	;Remote Control
 	_Ini_Add("notify", "PBRemote", $g_bNotifyRemoteEnable ? 1 : 0)
 	_Ini_Add("notify", "HoursPushBullet", $g_iNotifyDeletePushesOlderThanHours)
@@ -643,10 +660,8 @@ Func SaveConfig_600_28()
 	_Ini_Add("general", "attacknowdelay", $g_iSearchAttackNowDelay)
 	_Ini_Add("search", "ChkRestartSearchLimit", $g_bSearchRestartEnable ? 1 : 0)
 	_Ini_Add("search", "RestartSearchLimit", $g_iSearchRestartLimit)
+	_Ini_Add("search", "RestartSearchPickupHero", $g_bSearchRestartPickupHero ? 1 : 0)
 	_Ini_Add("general", "AlertSearch", $g_bSearchAlertMe ? 1 : 0)
-	; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
-
-	_Ini_Add("search", "GrabHealHero", $g_bRestartSearchGrabHero ? 1 : 0)
 	
 	; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 	_Ini_Add("search", "ChkReturnTimerEnable", $g_bReturnTimerEnable ? 1 : 0)
