@@ -59,6 +59,7 @@ Func TrainSystem()
 	If $g_bDoubleTrain And ($g_bDoubleTrainDone Or $g_bIsFullArmywithHeroesAndSpells) Then
 		; Do nothing DoubleQuickTrain()
 	
+	;------------------ADDED By RK MOD - START------------------
 	;SmartTrain - RK MOD (Demen)
 	If $g_bChkSmartTrain Then
 		SmartTrain()
@@ -66,6 +67,7 @@ Func TrainSystem()
 		EndGainCost("Train")
 		Return
 	EndIf
+	;------------------ADDED By RK MOD - END------------------
 
 	ElseIf $g_bIsFullArmywithHeroesAndSpells Or ($g_CurrentCampUtilization = 0 And $g_bFirstStart) Then
 
@@ -838,7 +840,7 @@ Func RemoveExtraTroops($toRemove)
 			EndIf
 		EndIf
 
-		If Not OpenArmyTab(True, "RemoveExtraTroops()") Then Return
+		If Not OpenArmyTab(True, "RemoveExtraTroops()") Then Return ; was False EDITED By RK MOD
 		$toRemove = WhatToTrain(True, False)
 
 		$rGetSlotNumber = GetSlotNumber() ; Get all available Slot numbers with troops assigned on them
@@ -1124,7 +1126,7 @@ Func GetSlotNumber($bSpells = False)
 EndFunc   ;==>GetSlotNumber
 
 Func WhatToTrain($ReturnExtraTroopsOnly = False, $bSetLog = True)
-	OpenArmyTab(True, "WhatToTrain()")
+	OpenArmyTab(True, "WhatToTrain()"); was False EDITED By RK MOD
 	Local $ToReturn[1][2] = [["Arch", 0]]
 
 	If $g_bIsFullArmywithHeroesAndSpells And Not $ReturnExtraTroopsOnly Then
@@ -1422,7 +1424,7 @@ Func SearchArmy($sImageDir = "", $x = 0, $y = 0, $x1 = 0, $y1 = 0, $sArmyType = 
 					If UBound($aCoordsSplit) = 2 Then
 						; Store the coords into a two dimensional array
 						$aCoordArray[0][0] = $aCoordsSplit[0] + $x ; X coord.
-						$aCoordArray[0][1] = $aCoordsSplit[1] ; Y coord.
+						$aCoordArray[0][1] = $aCoordsSplit[1] + $y ; Y coord.
 					Else
 						$aCoordArray[0][0] = -1
 						$aCoordArray[0][1] = -1
@@ -1907,6 +1909,7 @@ Func IIf($Condition, $IfTrue, $IfFalse)
 	EndIf
 EndFunc   ;==>IIf
 
+;------------------REMOVED By RK MOD Using Own _ArryRemoveBlanks From RK ArrayFunctions.au3 - START------------------
 ;Func _ArryRemoveBlanks(ByRef $aArray)
 ;	Local $iCounter = 0
 ;	For $i = 0 To UBound($aArray) - 1
@@ -1917,6 +1920,7 @@ EndFunc   ;==>IIf
 ;	Next
 ;	ReDim $aArray[$iCounter]
 ;EndFunc   ;==>_ArryRemoveBlanks
+;------------------REMOVED By RK MOD - END------------------
 
 Func ValidateSearchArmyResult($aSearchResult, $iIndex = 0)
 	If IsArray($aSearchResult) Then
