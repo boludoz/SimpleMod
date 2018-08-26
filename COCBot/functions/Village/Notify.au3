@@ -485,33 +485,30 @@ Func NotifyRemoteControlProc()
 						$bHibernate = False
 						$bStandby = False
 					Case Else
-                        NotifyPushToTelegram(GetTranslatedFileIni("MBR Func_Notify", "ELSE_Info_01", "Sorry Chief!, ") & $TGActionMSG & _
-								GetTranslatedFileIni("MBR Func_Notify", "ELSE_Info_02", " is not a valid command."))
+						Local $bFoundChatMessage = False
 						If StringInStr($TGActionMSG, "SENDCHAT") Then
-						Local $FoundChatMessage = 1
-						Local $chatMessage = StringRight($TGActionMSG, StringLen($TGActionMSG) - StringLen("SENDCHAT "))
+							$bFoundChatMessage = True
+							Local $chatMessage = StringRight($TGActionMSG, StringLen($TGActionMSG) - StringLen("SENDCHAT "))
 							$chatMessage = StringLower($chatMessage)
 							ChatbotNotifyQueueChat($chatMessage)
 							NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Chat queued, will send on next idle")
 						ElseIf StringInStr($TGActionMSG, "GETCHATS") Then
-							$FoundChatMessage = 1
+							$bFoundChatMessage = True
 							Local $Interval = 1
 							$Interval = StringRight($TGActionMSG, StringLen($TGActionMSG) - StringLen("GETCHATS "))
-							If $Interval = "STOP" Then
-								ChatbotNotifyStopChatRead()
-								NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Stopping interval sending")
-							ElseIf $Interval = "NOW" Then
-								ChatbotNotifySendChat()
-								NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Command queued, will send clan chat image on next idle")
-							Else
-								If Number($Interval) <> 0 Then
-									ChatbotNotifyIntervalChatRead(Number($Interval))
-									NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Command queued, will send clan chat image on interval")
+								If $Interval = "STOP" Then
+									ChatbotNotifyStopChatRead()
+									NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Stopping interval sending")
 								Else
-									SetLog("Telegram: received command syntax wrong, command ignored.", $COLOR_RED)
-									NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Command not recognized" & "%0A" &  "Please push BOT HELP to obtain a complete command list.")
+								If $Interval = "NOW" Then
+									ChatbotNotifySendChat()
+									NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Command queued, will send clan chat image on next idle")
 								EndIf
-							EndIf
+						EndIf
+						EndIf
+						If not $bFoundChatMessage Then
+						NotifyPushToTelegram(GetTranslatedFileIni("MBR Func_Notify", "ELSE_Info_01", "Sorry Chief!, ") & $TGActionMSG & _
+						GetTranslatedFileIni("MBR Func_Notify", "ELSE_Info_02", " is not a valid command."))
 						EndIf
                     ;=========================>
 				EndSwitch
