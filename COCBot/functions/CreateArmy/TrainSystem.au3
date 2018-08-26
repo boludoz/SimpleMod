@@ -1538,6 +1538,7 @@ Func ResetVariables($sArmyType = "")
 
 EndFunc   ;==>ResetVariables
 
+;------------------CUSTOM LOGIC By RK MOD - START------------------
 Func TrainArmyNumber($Army, $iMultiClick = 5)
 
 	Local $a_TrainArmy[3][4] = [[784, 368, 0x6fb830, 10], [784, 485, 0x72bb2f, 10], [784, 602, 0x71ba2f, 10]]
@@ -1564,6 +1565,7 @@ Func TrainArmyNumber($Army, $iMultiClick = 5)
 	Next
 
 EndFunc   ;==>TrainArmyNumber
+;------------------CUSTOM LOGIC By RK MOD - END------------------
 
 Func DeleteQueued($sArmyTypeQueued, $iOffsetQueued = 802)
 
