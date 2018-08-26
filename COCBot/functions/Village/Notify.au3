@@ -299,8 +299,8 @@ Func NotifyRemoteControlProc()
 						$txtHelp &= "%0A" & GetTranslatedFileIni("MBR Func_Notify", "HIBERNATE", "HIBERNATE") & " " & GetTranslatedFileIni("MBR Func_Notify", "HIBERNATE_Info_01", "- Hibernate host PC")
 						$txtHelp &= "%0A" & GetTranslatedFileIni("MBR Func_Notify", "SHUTDOWN", "SHUTDOWN") & " " & GetTranslatedFileIni("MBR Func_Notify", "SHUTDOWN_Info_01", "- Shut down host PC")
 						$txtHelp &= "%0A" & GetTranslatedFileIni("MBR Func_Notify", "STANDBY", "STANDBY") & " " & GetTranslatedFileIni("MBR Func_Notify", "STANDBY_Info_01", "- Standby host PC")
-                        $txtHelp &= "\n" & GetTranslatedFileIni("MBR Func_Notify", "GETCHATS", "GETCHATS") & " " & GetTranslatedFileIni("MBR Func_Notify", "GETCHATS_Info_01", "- GETCHATS <INTERVAL|NOW|STOP> - to get the latest clan chat as an image")
-						$txtHelp &= "\n" & GetTranslatedFileIni("MBR Func_Notify", "SENDCHAT", "SENDCHAT") & " " & GetTranslatedFileIni("MBR Func_Notify", "STANDBY_Info_01", "- SENDCHAT <chat message> - to send a chat to your clan")
+                        $txtHelp &= "%0A" & GetTranslatedFileIni("MBR Func_Notify", "GETCHATS", "GETCHATS") & " " & GetTranslatedFileIni("MBR Func_Notify", "GETCHATS_Info_01", "- GETCHATS <INTERVAL|NOW|STOP> - to get the latest clan chat as an image")
+						$txtHelp &= "%0A" & GetTranslatedFileIni("MBR Func_Notify", "SENDCHAT", "SENDCHAT") & " " & GetTranslatedFileIni("MBR Func_Notify", "STANDBY_Info_01", "- SENDCHAT <chat message> - to send a chat to your clan")
 
 						NotifyPushToTelegram($g_sNotifyOrigin & " | " & GetTranslatedFileIni("MBR Func_Notify", "Request-For-Help_Info_02", "Request for Help") & "%0A" & $txtHelp)
 						SetLog("Notify Telegram: Your request has been received from " & $g_sNotifyOrigin & ". Help has been sent", $COLOR_SUCCESS)
@@ -509,7 +509,7 @@ Func NotifyRemoteControlProc()
 									NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Command queued, will send clan chat image on interval")
 								Else
 									SetLog("Telegram: received command syntax wrong, command ignored.", $COLOR_RED)
-									NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Command not recognized" & "\n" &  "Please push BOT HELP to obtain a complete command list.")
+									NotifyPushToTelegram($g_sNotifyOrigin & " | " &  "Command not recognized" & "%0A" &  "Please push BOT HELP to obtain a complete command list.")
 								EndIf
 							EndIf
 						EndIf
