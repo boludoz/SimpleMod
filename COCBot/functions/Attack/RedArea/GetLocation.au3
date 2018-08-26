@@ -263,7 +263,7 @@ Func GetLocationBuilding($iBuildingType, $iAttackingTH = 12, $bForceCaptureRegio
 				_ObjPutValue($g_oBldgAttackInfo, $eBldgRedLine & "_COUNT", $redlinesCount)
 				If @error Then _ObjErrMsg("_ObjSetValue $g_oBldgAttackInfo", @error)
 			Else
-				Setdebuglog("> Not enough red line points to save in building dictionary?", $COLOR_WARNING)
+				SetDebugLog("> Not enough red line points to save in building dictionary?", $COLOR_WARNING)
 			EndIf
 		Else
 			SetLog("> DLL Error getting Red Lines in GetLocationBuilding", $COLOR_ERROR)

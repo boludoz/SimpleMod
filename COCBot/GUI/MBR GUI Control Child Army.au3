@@ -163,7 +163,7 @@ Func lblTotalCountTroop1()
 		$g_iSpaceForTroopsFill = $g_iTotalCampForcedValue - $TotalTroopsToTrain
 		GUICtrlSetData($g_ahTxtTrainArmyTroopCount[$eTroopArcher], $g_aiArmyCompTroops[$eTroopArcher] + $g_iSpaceForTroopsFill)
 		$g_aiArmyCompTroops[$eTroopArcher] = $g_aiArmyCompTroops[$eTroopArcher] + $g_iSpaceForTroopsFill
-		If $bLocalBbg then setlog($g_aiArmyCompTroops[$eTroopArcher] & ", " & $g_iTotalCampForcedValue & ", " & $TotalTroopsToTrain & ", " & $g_iSpaceForTroopsFill)
+		If $bLocalBbg then SetLog($g_aiArmyCompTroops[$eTroopArcher] & ", " & $g_iTotalCampForcedValue & ", " & $TotalTroopsToTrain & ", " & $g_iSpaceForTroopsFill)
 	EndIf
 	;------------------ADDED By RK MOD - END------------------
 	lblTotalCountTroop2()

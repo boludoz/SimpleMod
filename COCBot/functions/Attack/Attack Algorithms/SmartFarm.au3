@@ -77,7 +77,7 @@ Func ChkSmartFarm($TypeResources = "All")
 	If $g_iSearchTH = "-" Then FindTownHall(True, True)
 	; [0] = Level , [1] = Xaxis , [2] = Yaxis , [3] = Distances to redlines
 	Local $THdetails[4] = [$g_iSearchTH, $g_iTHx, $g_iTHy, _ObjGetValue($g_oBldgAttackInfo, $eBldgTownHall & "_REDLINEDISTANCE")]
-	setlog("TH Details: " & _ArrayToString($THdetails, "|"))
+	SetLog("TH Details: " & _ArrayToString($THdetails, "|"))
 
 	; [0] = x , [1] = y , [2] = Distance to Redline ,[3] = In/Out, [4] = Side,  [5]= Is array Dim[2] with 5 coordinates to deploy
 	Local $aAll = SmartFarmDetection($TypeResources)

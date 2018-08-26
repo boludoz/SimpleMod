@@ -765,7 +765,7 @@ Func SwitchCOCAcc_ClickAccountSCID(ByRef $bResult, $NextAccount, $iStep = 4)
 							Next
 							Setlog("SC_ID account number " & $NextAccount + 1 & " named: " & $g_asProfileName[$NextAccount])
 							If $NextAccount + 1 > UBound($XCoordinates) Then
-								setlog("You selected a SCID undetected account!!", $COLOR_ERROR)
+								SetLog("You selected a SCID undetected account!!", $COLOR_ERROR)
 								ExitLoop
 							EndIf
 							Click($AccountsCoord[$NextAccount][0] - 150, $AccountsCoord[$NextAccount][1], 1)
@@ -1070,7 +1070,7 @@ Func CheckLoginWithSupercellIDScreen()
 				Next
 				Setlog("SC_ID account number " & $acount + 1 & " named: " & $g_asProfileName[$acount])
 				If $acount + 1 > UBound($XCoordinates) Then
-					setlog("You selected a SCID undetected account!!", $COLOR_ERROR)
+					SetLog("You selected a SCID undetected account!!", $COLOR_ERROR)
 					ExitLoop
 				EndIf
 				Click($AccountsCoord[$acount][0] - 150, $AccountsCoord[$acount][1], 1)

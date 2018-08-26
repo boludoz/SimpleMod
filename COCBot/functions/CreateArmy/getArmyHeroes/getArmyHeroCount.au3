@@ -168,7 +168,7 @@ Func ArmyHeroStatus($i)
 		If StringInStr($aKeys[0], "xml", $STR_NOCASESENSEBASIC) Then
 			Local $aResult = StringSplit($aKeys[0], "_", $STR_NOCOUNT)
 			$sResult = $aResult[0]
-			;setlog("$i , $sResult :"& $i  & ", " & $sResult )
+			;SetLog("$i , $sResult :"& $i  & ", " & $sResult )
 
 			Select
 				Case $i = "King" Or $i = 0 Or $i = $eKing

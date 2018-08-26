@@ -441,7 +441,7 @@ Func DefenseSearchMultiMatch($iDefenseType, $directory, $redlines = "DCD", $stat
 				If @error Then _ObjErrMsg("_ObjSetValue $g_oBldgAttackInfo", @error)
 				$return[6] = $redlines ; Add the redline data to return array if we want to make future searches faster
 			Else
-				Setdebuglog("> Not enough red line points to save in building dictionary?", $COLOR_WARNING)
+				SetDebugLog("> Not enough red line points to save in building dictionary?", $COLOR_WARNING)
 			EndIf
 		Else
 			SetLog("> DLL Error getting Red Lines in DefenseSearchMultiMatch", $COLOR_ERROR)
