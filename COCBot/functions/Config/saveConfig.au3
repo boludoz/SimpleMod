@@ -395,6 +395,18 @@ Func SaveConfig_600_11()
 	; <><><><> Village / Donate - Request <><><><>
 	_Ini_Add("planned", "RequestHoursEnable", $g_bRequestTroopsEnable ? 1 : 0)
 	_Ini_Add("donate", "txtRequest", $g_sRequestTroopsText)
+	; Request Type - Demen
+	_Ini_Add("donate", "RequestType_Troop", $g_abRequestType[0] ? 1 : 0)
+	_Ini_Add("donate", "RequestType_Spell", $g_abRequestType[1] ? 1 : 0)
+	_Ini_Add("donate", "RequestType_Siege", $g_abRequestType[2] ? 1 : 0)
+	_Ini_Add("donate", "RequestCountCC_Troop", $g_iRequestCountCCTroop)
+	_Ini_Add("donate", "RequestCountCC_Spell", $g_iRequestCountCCSpell)
+	_Ini_Add("donate", "cmbClanCastleSpell", $g_iClanCastleSpellsWaitFirst)
+	_Ini_Add("donate", "cmbClanCastleSpell2", $g_iClanCastleSpellsWaitSecond)
+	For $i = 0 To 2
+		_Ini_Add("donate", "cmbClanCastleTroop" & $i, $g_aiClanCastleTroopWaitType[$i])
+		_Ini_Add("donate", "txtClanCastleTroop" & $i, $g_aiClanCastleTroopWaitQty[$i])
+	Next
 	Local $string = ""
 	For $i = 0 To 23
 		$string &= ($g_abRequestCCHours[$i] ? "1" : "0") & "|"
@@ -648,10 +660,9 @@ Func SaveConfig_600_28()
 	_Ini_Add("general", "attacknowdelay", $g_iSearchAttackNowDelay)
 	_Ini_Add("search", "ChkRestartSearchLimit", $g_bSearchRestartEnable ? 1 : 0)
 	_Ini_Add("search", "RestartSearchLimit", $g_iSearchRestartLimit)
+	_Ini_Add("search", "RestartSearchPickupHero", $g_bSearchRestartPickupHero ? 1 : 0)
 	_Ini_Add("general", "AlertSearch", $g_bSearchAlertMe ? 1 : 0)
-	; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
 
-	_Ini_Add("search", "GrabHealHero", $g_bRestartSearchGrabHero ? 1 : 0)
 	
 	; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 	_Ini_Add("search", "ChkReturnTimerEnable", $g_bReturnTimerEnable ? 1 : 0)

@@ -6352,7 +6352,8 @@ Global $g_bEndTSCampsEnable = False, $g_iEndTSCampsPct = 0
 Global $g_iAtkTBEnableCount = 150, $g_iAtkTBMaxTHLevel = 0, $g_iAtkTBMode = 0
 Global $g_bSearchReductionEnable = False, $g_iSearchReductionCount = 20, $g_iSearchReductionGold = 2000, $g_iSearchReductionElixir = 2000, $g_iSearchReductionGoldPlusElixir = 4000, $g_iSearchReductionDark = 100, $g_iSearchReductionTrophy = 2
 Global $g_iSearchDelayMin = 0, $g_iSearchDelayMax = 0
-Global $g_bSearchAttackNowEnable = False, $g_iSearchAttackNowDelay = 0, $g_bSearchRestartEnable = False, $g_iSearchRestartLimit = 25, $g_bSearchAlertMe = True
+Global $g_bSearchAttackNowEnable = False, $g_iSearchAttackNowDelay = 0, $g_bSearchRestartEnable = False, $g_iSearchRestartLimit = 25, $g_bSearchAlertMe = True, $g_bSearchRestartPickupHero = False
+Global $g_asHeroHealTime[3] = ["", "", ""]
 Global $g_iActivateQueen = 0, $g_iActivateKing = 0, $g_iActivateWarden = 0
 Global $g_iDelayActivateQueen = 9000, $g_iDelayActivateKing = 9000, $g_iDelayActivateWarden = 10000
 Global $g_aHeroesTimerActivation[$eHeroCount] = [0, 0, 0]
@@ -6772,8 +6773,6 @@ Global $g_ichkUseBotHumanization = 0, $g_ichkUseAltRClick = 0, $g_icmbMaxActions
 Global $g_aReplayDuration[2] = [0, 0]
 Global $g_bOnReplayWindow, $g_iReplayToPause
 Global $g_iLastLayout = 0
-Global $g_bRestartSearchGrabHero
-Global $g_asHeroHealTime[3] = ["", "", ""]
 Global $profileString = ""
 Global $g_iChkGoldSwitchMax, $g_iTxtMaxGoldAmount, $g_iCmbGoldMaxProfile, $g_iChkGoldSwitchMin, $g_iTxtMinGoldAmount, $g_iCmbGoldMinProfile
 Global $g_iChkElixirSwitchMax, $g_iTxtMaxElixirAmount, $g_iCmbElixirMaxProfile, $g_iChkElixirSwitchMin, $g_iTxtMinElixirAmount, $g_iCmbElixirMinProfile
@@ -17984,7 +17983,7 @@ Global $g_hChkSearchReduction = 0, $g_hTxtSearchReduceCount = 0, $g_hTxtSearchRe
 Global $g_hSldVSDelay = 0, $g_hSldMaxVSDelay = 0
 Global $g_hChkAttackNow = 0, $g_hCmbAttackNowDelay = 0, $g_hChkRestartSearchLimit = 0, $g_hTxtRestartSearchlimit = 0, $g_hChkAlertSearch = 0
 Global $g_hLblVSDelay = 0, $g_hLblTextVSDelay = 0, $g_hLblMaxVSDelay = 0, $g_hLblTextMaxVSDelay = 0, $g_hLblAttackNow = 0, $g_hLblAttackNowSec = 0
-Global $g_hChkRestartSearchGrabHero = 0
+Global $g_hChkRestartSearchPickupHero = 0
 Global $g_hChkReturnTimerEnable = 0, $g_hTxtReturnTimer = 0
 Func CreateAttackSearchOptionsSearch()
 Local $sTxtTip = ""
@@ -18117,12 +18116,12 @@ _GUICtrlSetTip(-1, $sTxtTip)
 GUICtrlSetLimit(-1, 3)
 GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "search(es).", -1), $x + 47, $y + 17, -1, -1)
 $y += 45
+$g_hChkRestartSearchPickupHero = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkRestartSearchPickupHero", "Restart to pickup healed hero"), $x - 5, $y, -1, -1)
+_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkRestartSearchPickupHero_Info_01", "Return to base when a hero is healed and ready to join the attack"))
+$y += 25
 $g_hChkAlertSearch = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAlertSearch", "Alert me when Village found"), $x - 5, $y, -1, -1)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAlertSearch_Info_01", "Check this if you want an Audio alarm & a Balloon Tip when a Base to attack is found."))
 GUICtrlSetState(-1, $GUI_CHECKED)
-$g_hChkRestartSearchGrabHero = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkRestartSearchGrabHero_01", "Return home to grab healed hero"), $x - 5, $y + 25, -1, -1)
-_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkRestartSearchGrabHero_02", "Return to base when a hero is healed and ready to join the attack"))
-GUICtrlSetState(-1, $GUI_UNCHECKED)
 $y += 25
 $g_hChkReturnTimerEnable = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkReturnTimerEnable_01", "Return Home by Time"), $x - 5, $y + 25, -1, -1)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkReturnTimerEnable_02", "Return home by time due to the long wait in the cloud."))
@@ -28244,11 +28243,11 @@ Func cmbAndroidBackgroundMode()
 $g_iAndroidBackgroundMode = _GUICtrlComboBox_GetCurSel($g_hCmbAndroidBackgroundMode)
 UpdateAndroidBackgroundMode()
 EndFunc
-func EnableShowTouchs()
+Func EnableShowTouchs()
 AndroidAdbSendShellCommand("content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:1")
 SetDebugLog("EnableShowTouchs ON")
 EndFunc
-func DisableShowTouchs()
+Func DisableShowTouchs()
 AndroidAdbSendShellCommand("content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:0")
 SetDebugLog("EnableShowTouchs OFF")
 EndFunc
@@ -40811,14 +40810,14 @@ If($iTrainWaitTime >= $MinimumTimeClose) Or $bTest Then
 If $iShieldTime > 0 Then
 If $iDiffTime <= 0 Then
 SetLog("Smart wait while shield time = " & StringFormat("%.2f", $iShieldTime / 60) & " Minutes", $COLOR_INFO)
-If $g_bNotifyTGEnable And $g_bNotifyAlertSmartWaitTime Then NotifyPushToTelegram($g_sNotifyOrigin & " : " & "\n" & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_01", "Smart Wait While Shield Time = ") & StringFormat("%.2f", $iShieldTime / 60) & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_02", " Minutes") & "\n" & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_03", "Wait For Troops Ready"))
+If $g_bNotifyTGEnable And $g_bNotifyAlertSmartWaitTime Then NotifyPushToTelegram($g_sNotifyOrigin & " : " & "%0A" & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_01", "Smart Wait While Shield Time = ") & StringFormat("%.2f", $iShieldTime / 60) & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_02", " Minutes") & "%0A" & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_03", "Wait For Troops Ready"))
 If $bTest Then $iShieldTime = $iTestSeconds
 UniversalCloseWaitOpenCoC($iShieldTime * 1000, "SmartWait4Train_", $StopEmulator, $bFullRestart, $bSuspendComputer)
 $g_bRestart = True
 ResetTrainTimeArray()
 Else
 SetLog("Smart wait train time = " & StringFormat("%.2f", $iTrainWaitTime / 60) & " Minutes", $COLOR_INFO)
-If $g_bNotifyTGEnable And $g_bNotifyAlertSmartWaitTime Then NotifyPushToTelegram($g_sNotifyOrigin & " : " & "\n" & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_04", "Smart Wait Train Time = ") & StringFormat("%.2f", $iTrainWaitTime / 60) & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_02", " Minutes") & "\n" & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_03", "Wait For Troops Ready"))
+If $g_bNotifyTGEnable And $g_bNotifyAlertSmartWaitTime Then NotifyPushToTelegram($g_sNotifyOrigin & " : " & "%0A" & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_04", "Smart Wait Train Time = ") & StringFormat("%.2f", $iTrainWaitTime / 60) & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_02", " Minutes") & "%0A" & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_03", "Wait For Troops Ready"))
 If $bTest Then $iTrainWaitTime = $iTestSeconds
 UniversalCloseWaitOpenCoC($iTrainWaitTime * 1000, "SmartWait4Train_", $StopEmulator, $bFullRestart, $bSuspendComputer)
 $g_bRestart = True
@@ -40826,7 +40825,7 @@ ResetTrainTimeArray()
 EndIf
 ElseIf($g_bCloseWithoutShield And $g_aiTimeTrain[0] > 0) Or($ichkCloseWaitSpell = 1 And $g_aiTimeTrain[1] > 0) Or($ichkCloseWaitHero = 1 And $g_aiTimeTrain[2] > 0) Then
 SetLog("Smart Wait time = " & StringFormat("%.2f", $iTrainWaitTime / 60) & " Minutes", $COLOR_INFO)
-If $g_bNotifyTGEnable And $g_bNotifyAlertSmartWaitTime Then NotifyPushToTelegram($g_sNotifyOrigin & " : " & "\n" & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_05", "Smart Wait Time = ") & StringFormat("%.2f", $iTrainWaitTime / 60) & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_02", " Minutes") & "\n" & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_03", "Wait For Troops Ready"))
+If $g_bNotifyTGEnable And $g_bNotifyAlertSmartWaitTime Then NotifyPushToTelegram($g_sNotifyOrigin & " : " & "%0A" & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_05", "Smart Wait Time = ") & StringFormat("%.2f", $iTrainWaitTime / 60) & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_02", " Minutes") & "%0A" & GetTranslatedFileIni("MBR Func_Notify", "Smart-Wait-Time_Info_03", "Wait For Troops Ready"))
 If $bTest Then $iTrainWaitTime = $iTestSeconds
 UniversalCloseWaitOpenCoC($iTrainWaitTime * 1000, "SmartWait4TrainNoShield_", $StopEmulator, $bFullRestart, $bSuspendComputer)
 $g_bRestart = True
@@ -42050,7 +42049,7 @@ $aCoords = decodeMultipleCoords($aValue, 50)
 $aCoordsSplit = $aCoords[0]
 If UBound($aCoordsSplit) = 2 Then
 $aCoordArray[0][0] = $aCoordsSplit[0] + $x
-$aCoordArray[0][1] = $aCoordsSplit[1]
+$aCoordArray[0][1] = $aCoordsSplit[1] + $y
 Else
 $aCoordArray[0][0] = -1
 $aCoordArray[0][1] = -1
@@ -56312,7 +56311,7 @@ Return
 EndFunc
 Func PrepareSearch()
 SetLog("Going to Attack...", $COLOR_INFO)
-If $g_bRestartSearchGrabHero Then
+If $g_bSearchRestartPickupHero Then
 For $pTroopType = $eKing To $eWarden
 For $pMatchMode = $DB To $g_iModeCount - 1
 If IsSpecialTroopToBeUsed($pMatchMode, $pTroopType) Then
@@ -56406,7 +56405,7 @@ Local $Result
 Local $weakBaseValues
 Local $logwrited = False
 Local $iSkipped = 0
-Local $bReturnToGrabHero = False
+Local $bReturnToPickupHero = False
 Local $abHeroUse[3] = [False, False, False]
 For $i = 0 to 2
 $abHeroUse[$i] =($g_abSearchSearchesEnable[$DB] ? IsSpecialTroopToBeUsed($DB, $eKing + $i) : False) Or($g_abSearchSearchesEnable[$LB] ? IsSpecialTroopToBeUsed($LB, $eKing + $i) : False)
@@ -56694,20 +56693,20 @@ EndIf
 If Not($logwrited) Then
 SetLog($GetResourcesTXT, $COLOR_BLACK, "Lucida Console", 7.5)
 EndIf
-If $g_bRestartSearchGrabHero Then
+If $g_bSearchRestartPickupHero Then
 For $i = 0 To 2
 If Not $abHeroUse[$i] Or Not _DateIsValid($g_asHeroHealTime[$i]) Then ContinueLoop
 Local $iTimeTillHeroHealed = Int(_DateDiff('s', _NowCalc(), $g_asHeroHealTime[$i]))
 SetDebugLog($g_asHeroNames[$i] & " will be ready in " & $iTimeTillHeroHealed & " seconds")
 If $iTimeTillHeroHealed <= 0 Then
-$bReturnToGrabHero = True
+$bReturnToPickupHero = True
 $g_asHeroHealTime[$i] = ""
-SetLog($g_asHeroNames[$i] & " is ready. Return home to grab " &($i <> 1 ? "him" : "her") & " to join the attack")
+SetLog($g_asHeroNames[$i] & " is ready. Return home to pick " &($i <> 1 ? "him" : "her") & " up to join the attack")
 ExitLoop
 EndIf
 Next
 EndIf
-If SearchLimit($iSkipped + 1, $bReturnToGrabHero) Then Return True
+If SearchLimit($iSkipped + 1, $bReturnToPickupHero) Then Return True
 If CheckAndroidReboot() = True Then
 $g_bRestart = True
 $g_bIsClientSyncError = True
@@ -56812,8 +56811,8 @@ SetLogCentered(" Search Complete ", Default, $COLOR_INFO)
 PushMsg("MatchFound")
 $g_bIsClientSyncError = False
 EndFunc
-Func SearchLimit($iSkipped, $bReturnToGrabHero = False)
-If $bReturnToGrabHero Or($g_bSearchRestartEnable And $iSkipped >= Number($g_iSearchRestartLimit)) Then
+Func SearchLimit($iSkipped, $bReturnToPickupHero = False)
+If $bReturnToPickupHero Or($g_bSearchRestartEnable And $iSkipped >= Number($g_iSearchRestartLimit)) Then
 Local $Wcount = 0
 While _CheckPixel($aSurrenderButton, $g_bCapturePixel) = False
 If _Sleep($DELAYSEARCHLIMIT) Then Return
@@ -67406,6 +67405,18 @@ Func ApplyConfig_600_11($TypeReadSave)
 Switch $TypeReadSave
 Case "Read"
 GUICtrlSetState($g_hChkRequestTroopsEnable, $g_bRequestTroopsEnable ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkRequestType_Troops, $g_abRequestType[0] ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkRequestType_Spells, $g_abRequestType[1] ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkRequestType_Siege, $g_abRequestType[2] ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetData($g_hTxtRequestCountCCTroop, $g_iRequestCountCCTroop)
+GUICtrlSetData($g_hTxtRequestCountCCSpell, $g_iRequestCountCCSpell)
+_GUICtrlComboBox_SetCurSel($g_hCmbClanCastleSpell, $g_iClanCastleSpellsWaitFirst)
+_GUICtrlComboBox_SetCurSel($g_hCmbClanCastleSpell2, $g_iClanCastleSpellsWaitSecond)
+For $i = 0 To 2
+_GUICtrlComboBox_SetCurSel($g_ahCmbClanCastleTroop[$i] , $g_aiClanCastleTroopWaitType[$i])
+GUICtrlSetData($g_ahTxtClanCastleTroop[$i], $g_aiClanCastleTroopWaitQty[$i])
+Next
+chkRequestCountCC()
 chkRequestCCHours()
 GUICtrlSetData($g_hTxtRequestCC, $g_sRequestTroopsText)
 For $i = 0 To 23
@@ -67421,6 +67432,17 @@ chkRusLang2()
 Case "Save"
 $g_bRequestTroopsEnable =(GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED)
 $g_sRequestTroopsText = GUICtrlRead($g_hTxtRequestCC)
+$g_abRequestType[0] =(GUICtrlRead($g_hChkRequestType_Troops) = $GUI_CHECKED)
+$g_abRequestType[1] =(GUICtrlRead($g_hChkRequestType_Spells) = $GUI_CHECKED)
+$g_abRequestType[2] =(GUICtrlRead($g_hChkRequestType_Siege) = $GUI_CHECKED)
+$g_iRequestCountCCTroop = GUICtrlRead($g_hTxtRequestCountCCTroop)
+$g_iRequestCountCCSpell = GUICtrlRead($g_hTxtRequestCountCCSpell)
+$g_iClanCastleSpellsWaitFirst = _GUICtrlComboBox_GetCurSel($g_hCmbClanCastleSpell)
+$g_iClanCastleSpellsWaitSecond = _GUICtrlComboBox_GetCurSel($g_hCmbClanCastleSpell2)
+For $i = 0 To 2
+$g_aiClanCastleTroopWaitType[$i] = _GUICtrlComboBox_GetCurSel($g_ahCmbClanCastleTroop[$i])
+$g_aiClanCastleTroopWaitQty[$i] = GUICtrlRead($g_ahTxtClanCastleTroop[$i])
+Next
 For $i = 0 To 23
 $g_abRequestCCHours[$i] =(GUICtrlRead($g_ahChkRequestCCHours[$i]) = $GUI_CHECKED)
 Next
@@ -67891,8 +67913,8 @@ _GUICtrlComboBox_SetCurSel($g_hCmbAttackNowDelay, $g_iSearchAttackNowDelay)
 GUICtrlSetState($g_hChkRestartSearchLimit, $g_bSearchRestartEnable ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetData($g_hTxtRestartSearchlimit, $g_iSearchRestartLimit)
 ChkRestartSearchLimit()
+GUICtrlSetState($g_hChkRestartSearchPickupHero, $g_bSearchRestartPickupHero ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetState($g_hChkAlertSearch, $g_bSearchAlertMe ? $GUI_CHECKED : $GUI_UNCHECKED)
-GUICtrlSetState($g_hChkRestartSearchGrabHero, $g_bRestartSearchGrabHero ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetState($g_hChkReturnTimerEnable, $g_bReturnTimerEnable ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetData($g_hTxtReturnTimer, $g_iTxtReturnTimer)
 chkReturnTimer()
@@ -67910,8 +67932,8 @@ $g_bSearchAttackNowEnable =(GUICtrlRead($g_hChkAttackNow) = $GUI_CHECKED)
 $g_iSearchAttackNowDelay = _GUICtrlComboBox_GetCurSel($g_hCmbAttackNowDelay)
 $g_bSearchRestartEnable =(GUICtrlRead($g_hChkRestartSearchLimit) = $GUI_CHECKED)
 $g_iSearchRestartLimit = GUICtrlRead($g_hTxtRestartSearchlimit)
+$g_bSearchRestartPickupHero =(GUICtrlRead($g_hChkRestartSearchPickupHero) = $GUI_CHECKED)
 $g_bSearchAlertMe =(GUICtrlRead($g_hChkAlertSearch) = $GUI_CHECKED)
-$g_bRestartSearchGrabHero =(GUICtrlRead($g_hChkRestartSearchGrabHero) = $GUI_CHECKED)
 $g_bReturnTimerEnable =(GUICtrlRead($g_hChkReturnTimerEnable) = $GUI_CHECKED)
 $g_iTxtReturnTimer = GUICtrlRead($g_hTxtReturnTimer)
 EndSwitch
@@ -69538,6 +69560,23 @@ EndFunc
 Func ReadConfig_600_11()
 $g_bRequestTroopsEnable =(IniRead($g_sProfileConfigPath, "planned", "RequestHoursEnable", "0") = "1")
 $g_sRequestTroopsText = IniRead($g_sProfileConfigPath, "donate", "txtRequest", "")
+$g_abRequestType[0] =(IniRead($g_sProfileConfigPath, "donate", "RequestType_Troop", "0") = "1")
+$g_abRequestType[1] =(IniRead($g_sProfileConfigPath, "donate", "RequestType_Spell", "0") = "1")
+$g_abRequestType[2] =(IniRead($g_sProfileConfigPath, "donate", "RequestType_Siege", "0") = "1")
+$g_iRequestCountCCTroop = Int(IniRead($g_sProfileConfigPath, "donate", "RequestCountCC_Troop", "0"))
+$g_iRequestCountCCSpell = Int(IniRead($g_sProfileConfigPath, "donate", "RequestCountCC_Spell", "0"))
+$g_iClanCastleSpellsWaitFirst = Int(IniRead($g_sProfileConfigPath, "donate", "cmbClanCastleSpell", "0"))
+$g_iClanCastleSpellsWaitSecond = Int(IniRead($g_sProfileConfigPath, "donate", "cmbClanCastleSpell2", "0"))
+For $i = 0 To $eTroopCount - 1
+$g_aiCCTroopsExpected[$i] =0
+Next
+For $i = 0 To 2
+$g_aiClanCastleTroopWaitType[$i] = Int(IniRead($g_sProfileConfigPath, "donate", "cmbClanCastleTroop" & $i, "20"))
+$g_aiClanCastleTroopWaitQty[$i] = Int(IniRead($g_sProfileConfigPath, "donate", "txtClanCastleTroop" & $i, "0"))
+If $g_aiClanCastleTroopWaitType[$i] < $eTroopCount Then
+$g_aiCCTroopsExpected[$g_aiClanCastleTroopWaitType[$i]] += $g_aiClanCastleTroopWaitQty[$i]
+EndIf
+Next
 $g_abRequestCCHours = StringSplit(IniRead($g_sProfileConfigPath, "planned", "RequestHours", "1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1|1"), "|", $STR_NOCOUNT)
 For $i = 0 To 23
 $g_abRequestCCHours[$i] =($g_abRequestCCHours[$i] = "1")
@@ -69810,8 +69849,8 @@ IniReadS($g_bSearchAttackNowEnable, $g_sProfileConfigPath, "general", "AttackNow
 IniReadS($g_iSearchAttackNowDelay, $g_sProfileConfigPath, "general", "attacknowdelay", 3, "int")
 IniReadS($g_bSearchRestartEnable, $g_sProfileConfigPath, "search", "ChkRestartSearchLimit", True, "Bool")
 IniReadS($g_iSearchRestartLimit, $g_sProfileConfigPath, "search", "RestartSearchLimit", 50, "int")
+IniReadS($g_bSearchRestartPickupHero, $g_sProfileConfigPath, "search", "RestartSearchPickupHero", False, "Bool")
 IniReadS($g_bSearchAlertMe, $g_sProfileConfigPath, "general", "AlertSearch", False, "Bool")
-IniReadS($g_bRestartSearchGrabHero, $g_sProfileConfigPath, "search", "GrabHealHero", False, "Bool")
 IniReadS($g_bReturnTimerEnable, $g_sProfileConfigPath, "search", "ChkReturnTimerEnable", "Bool")
 IniReadS($g_iTxtReturnTimer, $g_sProfileConfigPath, "search", "ReturnTimer", 5, "int")
 EndFunc
@@ -70647,6 +70686,17 @@ Func SaveConfig_600_11()
 ApplyConfig_600_11(GetApplyConfigSaveAction())
 _Ini_Add("planned", "RequestHoursEnable", $g_bRequestTroopsEnable ? 1 : 0)
 _Ini_Add("donate", "txtRequest", $g_sRequestTroopsText)
+_Ini_Add("donate", "RequestType_Troop", $g_abRequestType[0] ? 1 : 0)
+_Ini_Add("donate", "RequestType_Spell", $g_abRequestType[1] ? 1 : 0)
+_Ini_Add("donate", "RequestType_Siege", $g_abRequestType[2] ? 1 : 0)
+_Ini_Add("donate", "RequestCountCC_Troop", $g_iRequestCountCCTroop)
+_Ini_Add("donate", "RequestCountCC_Spell", $g_iRequestCountCCSpell)
+_Ini_Add("donate", "cmbClanCastleSpell", $g_iClanCastleSpellsWaitFirst)
+_Ini_Add("donate", "cmbClanCastleSpell2", $g_iClanCastleSpellsWaitSecond)
+For $i = 0 To 2
+_Ini_Add("donate", "cmbClanCastleTroop" & $i, $g_aiClanCastleTroopWaitType[$i])
+_Ini_Add("donate", "txtClanCastleTroop" & $i, $g_aiClanCastleTroopWaitQty[$i])
+Next
 Local $string = ""
 For $i = 0 To 23
 $string &=($g_abRequestCCHours[$i] ? "1" : "0") & "|"
@@ -70852,8 +70902,8 @@ _Ini_Add("general", "attacknow", $g_bSearchAttackNowEnable ? 1 : 0)
 _Ini_Add("general", "attacknowdelay", $g_iSearchAttackNowDelay)
 _Ini_Add("search", "ChkRestartSearchLimit", $g_bSearchRestartEnable ? 1 : 0)
 _Ini_Add("search", "RestartSearchLimit", $g_iSearchRestartLimit)
+_Ini_Add("search", "RestartSearchPickupHero", $g_bSearchRestartPickupHero ? 1 : 0)
 _Ini_Add("general", "AlertSearch", $g_bSearchAlertMe ? 1 : 0)
-_Ini_Add("search", "GrabHealHero", $g_bRestartSearchGrabHero ? 1 : 0)
 _Ini_Add("search", "ChkReturnTimerEnable", $g_bReturnTimerEnable ? 1 : 0)
 _Ini_Add("search", "ReturnTimer", $g_iTxtReturnTimer)
 EndFunc
@@ -78173,6 +78223,12 @@ If $bSetlog Then SetLog("Checking Troop tab: " & $TroopCamp[0] & "/" & $TroopCam
 If $TroopCamp[1] = 0 Then ExitLoop
 If $bSetlog And $TroopCamp[1] <> $g_iTotalCampSpace Then SetLog("Incorrect Troop combo: " & $g_iTotalCampSpace & " vs Total camp: " & $TroopCamp[1] & @CRLF & "                 Double train may not work well", $COLOR_DEBUG)
 If $TroopCamp[0] < $TroopCamp[1] Then
+If $g_bDonationEnabled And $g_bChkDonate And MakingDonatedTroops("Troops") Then
+If $bDebug Then SetLog($Step & ". MakingDonatedTroops('Troops')", $COLOR_DEBUG)
+$Step += 1
+If $Step = 6 Then ExitLoop
+ContinueLoop
+EndIf
 If Not IsQueueEmpty("Troops", False, False) Then DeleteQueued("Troops")
 $bNeedReCheckTroopTab = True
 If $bDebug Then SetLog($Step & ". DeleteQueued('Troops'). $bNeedReCheckTroopTab: " & $bNeedReCheckTroopTab, $COLOR_DEBUG)
@@ -78213,6 +78269,12 @@ If $bSetlog And Not $g_bForceBrewSpells Then SetLog("Incorrect Spell combo: " & 
 If $g_bForceBrewSpells And $SpellCamp[1] > $TotalSpell Then $SpellCamp[1] = $TotalSpell
 EndIf
 If $SpellCamp[0] < $SpellCamp[1] Then
+If $g_bDonationEnabled And $g_bChkDonate And MakingDonatedTroops("Spells") Then
+If $bDebug Then SetLog($Step & ". MakingDonatedTroops('Spells')", $COLOR_DEBUG)
+$Step += 1
+If $Step = 6 Then ExitLoop
+ContinueLoop
+EndIf
 If Not IsQueueEmpty("Spells", False, False) Then DeleteQueued("Spells")
 $bNeedReCheckSpellTab = True
 If $bDebug Then SetLog($Step & ". DeleteQueued('Spells'). $bNeedReCheckSpellTab: " & $bNeedReCheckSpellTab, $COLOR_DEBUG)
@@ -78267,6 +78329,7 @@ $g_bDoubleTrainDone = $bDoubleTrainTroop And $bDoubleTrainSpell
 If $bDebug Then SetLog("$g_bDoubleTrainDone: " & $g_bDoubleTrainDone, $COLOR_DEBUG)
 If ProfileSwitchAccountEnabled() Then $g_abDoubleTrainDone[$g_iCurAccount] = $g_bDoubleTrainDone
 $g_bIsFullArmywithHeroesAndSpells = $bIsFullArmywithHeroesAndSpells
+If $g_bDonationEnabled And $g_bChkDonate Then ResetVariables("donated")
 EndGainCost("Double Train")
 checkAttackDisable($g_iTaBChkIdle)
 EndFunc
@@ -78349,6 +78412,8 @@ TrainArmyNumber($g_bQuickTrainArmy, $iMultiClick)
 Else
 If $bSetlog Then SetLog("Full queue, skip Double Quick Train")
 EndIf
+If _Sleep(250) Then Return
+ClickP($aAway, 2, 0, "#0346")
 If _Sleep(250) Then Return
 $g_bDoubleTrainDone = True
 If $bDebug Then SetLog("$g_bDoubleTrainDone: " & $g_bDoubleTrainDone, $COLOR_DEBUG)
@@ -78445,7 +78510,7 @@ Return False
 EndIf
 Next
 If $ArmyCamp[0] < $ArmyCamp[1] * 2 Then
-SetLog("Checking troop queue:")
+SetLog("Checking spells queue:")
 Local $rWTT[1][2] = [["Arch", 0]]
 For $i = 0 To UBound($aiQueueSpells) - 1
 Local $iIndex = $g_aiBrewOrder[$i]
@@ -78462,9 +78527,9 @@ $g_bIsFullArmywithHeroesAndSpells = True
 TrainUsingWhatToTrain($rWTT, True)
 $g_bIsFullArmywithHeroesAndSpells = $bIsFullArmywithHeroesAndSpells
 If _Sleep(1000) Then Return
-$ArmyCamp = GetCurrentArmy(43, 160)
-SetLog("Checking spell tab: " & $ArmyCamp[0] & "/" & $ArmyCamp[1] * 2 &($ArmyCamp[0] < $ArmyCamp[1] * 2 ? ". Top-up queue failed!" : ""))
-If $ArmyCamp[0] < $ArmyCamp[1] * 2 Then Return False
+Local $NewSpellCamp = GetCurrentArmy(43, 160)
+SetLog("Checking spell tab: " & $NewSpellCamp[0] & "/" & $NewSpellCamp[1] * 2 &($NewSpellCamp[0] < $ArmyCamp[1] * 2 ? ". Top-up queue failed!" : ""))
+If $NewSpellCamp[0] < $ArmyCamp[1] * 2 Then Return False
 EndIf
 Return True
 EndFunc

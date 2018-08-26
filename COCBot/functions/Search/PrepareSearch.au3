@@ -17,8 +17,8 @@ Func PrepareSearch() ;Click attack button and find match button, will break shie
 
 	SetLog("Going to Attack...", $COLOR_INFO)
 
-	; Grab Healed Heroes - RK MOD
-	If $g_bRestartSearchGrabHero Then
+	; RestartSearchPickupHero - Check Remaining Heal Time
+	If $g_bSearchRestartPickupHero Then
 		For $pTroopType = $eKing To $eWarden ; check all 3 hero
 			For $pMatchMode = $DB To $g_iModeCount - 1 ; check all attack modes
 				If IsSpecialTroopToBeUsed($pMatchMode, $pTroopType) Then

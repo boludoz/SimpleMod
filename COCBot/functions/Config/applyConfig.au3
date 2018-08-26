@@ -419,12 +419,25 @@ Func ApplyConfig_600_11($TypeReadSave)
 	Switch $TypeReadSave
 		Case "Read"
 			GUICtrlSetState($g_hChkRequestTroopsEnable, $g_bRequestTroopsEnable ? $GUI_CHECKED : $GUI_UNCHECKED)
+			; Request Type - Demen
+			GUICtrlSetState($g_hChkRequestType_Troops, $g_abRequestType[0] ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkRequestType_Spells, $g_abRequestType[1] ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkRequestType_Siege, $g_abRequestType[2] ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtRequestCountCCTroop, $g_iRequestCountCCTroop)
+			GUICtrlSetData($g_hTxtRequestCountCCSpell, $g_iRequestCountCCSpell)
+			_GUICtrlComboBox_SetCurSel($g_hCmbClanCastleSpell, $g_iClanCastleSpellsWaitFirst)
+			_GUICtrlComboBox_SetCurSel($g_hCmbClanCastleSpell2, $g_iClanCastleSpellsWaitSecond)
+			For $i = 0 To 2
+				_GUICtrlComboBox_SetCurSel($g_ahCmbClanCastleTroop[$i] , $g_aiClanCastleTroopWaitType[$i])
+				GUICtrlSetData($g_ahTxtClanCastleTroop[$i], $g_aiClanCastleTroopWaitQty[$i])
+			Next
+			chkRequestCountCC()
 			chkRequestCCHours()
 			GUICtrlSetData($g_hTxtRequestCC, $g_sRequestTroopsText)
 			For $i = 0 To 23
 				GUICtrlSetState($g_ahChkRequestCCHours[$i], $g_abRequestCCHours[$i] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			Next
-			
+			;------------------ADDED By RK MOD - START------------------
 			; Request defense CC (Demen)
             GUICtrlSetState($g_hChkRequestCCDefense, $g_bRequestCCDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
             chkRequestDefense()
@@ -436,14 +449,26 @@ Func ApplyConfig_600_11($TypeReadSave)
 
 			GUICtrlSetState($g_hChkRusLang2, $g_iChkRusLang2 = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
    		    chkRusLang2()
-			
+			;------------------ADDED By RK MOD - END------------------
 		Case "Save"
 			$g_bRequestTroopsEnable = (GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED)
 			$g_sRequestTroopsText = GUICtrlRead($g_hTxtRequestCC)
+			; Request Type - Demen
+			$g_abRequestType[0] = (GUICtrlRead($g_hChkRequestType_Troops) = $GUI_CHECKED)
+			$g_abRequestType[1] = (GUICtrlRead($g_hChkRequestType_Spells) = $GUI_CHECKED)
+			$g_abRequestType[2] = (GUICtrlRead($g_hChkRequestType_Siege) = $GUI_CHECKED)
+			$g_iRequestCountCCTroop = GUICtrlRead($g_hTxtRequestCountCCTroop)
+			$g_iRequestCountCCSpell = GUICtrlRead($g_hTxtRequestCountCCSpell)
+			$g_iClanCastleSpellsWaitFirst = _GUICtrlComboBox_GetCurSel($g_hCmbClanCastleSpell)
+			$g_iClanCastleSpellsWaitSecond = _GUICtrlComboBox_GetCurSel($g_hCmbClanCastleSpell2)
+			For $i = 0 To 2
+				$g_aiClanCastleTroopWaitType[$i] = _GUICtrlComboBox_GetCurSel($g_ahCmbClanCastleTroop[$i])
+				$g_aiClanCastleTroopWaitQty[$i] = GUICtrlRead($g_ahTxtClanCastleTroop[$i])
+			Next
 			For $i = 0 To 23
 				$g_abRequestCCHours[$i] = (GUICtrlRead($g_ahChkRequestCCHours[$i]) = $GUI_CHECKED)
 			Next
-			
+			;------------------ADDED By RK MOD - START------------------
 			; Request defense CC (Demen)
             $g_bRequestCCDefense = (GUICtrlRead($g_hChkRequestCCDefense) = $GUI_CHECKED)
             $g_sRequestCCDefenseText = GUICtrlRead($g_hTxtRequestCCDefense)
@@ -453,7 +478,7 @@ Func ApplyConfig_600_11($TypeReadSave)
 			; ================================================== Russian Request - by RK MOD ================================= ;
 
 			$g_iChkRusLang2 = GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED ? 1 : 0
-			
+			;------------------ADDED By RK MOD - END------------------
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_11
 
@@ -986,11 +1011,10 @@ Func ApplyConfig_600_28($TypeReadSave)
 			GUICtrlSetState($g_hChkRestartSearchLimit, $g_bSearchRestartEnable ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtRestartSearchlimit, $g_iSearchRestartLimit)
 			ChkRestartSearchLimit()
+			GUICtrlSetState($g_hChkRestartSearchPickupHero, $g_bSearchRestartPickupHero ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkAlertSearch, $g_bSearchAlertMe ? $GUI_CHECKED : $GUI_UNCHECKED)
 			
-			; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
 
-			GUICtrlSetState($g_hChkRestartSearchGrabHero, $g_bRestartSearchGrabHero ? $GUI_CHECKED : $GUI_UNCHECKED)
 			
 			; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 			GUICtrlSetState($g_hChkReturnTimerEnable, $g_bReturnTimerEnable ? $GUI_CHECKED : $GUI_UNCHECKED)
@@ -1011,11 +1035,9 @@ Func ApplyConfig_600_28($TypeReadSave)
 			$g_iSearchAttackNowDelay = _GUICtrlComboBox_GetCurSel($g_hCmbAttackNowDelay)
 			$g_bSearchRestartEnable = (GUICtrlRead($g_hChkRestartSearchLimit) = $GUI_CHECKED)
 			$g_iSearchRestartLimit = GUICtrlRead($g_hTxtRestartSearchlimit)
+			$g_bSearchRestartPickupHero = (GUICtrlRead($g_hChkRestartSearchPickupHero) = $GUI_CHECKED)
 			$g_bSearchAlertMe = (GUICtrlRead($g_hChkAlertSearch) = $GUI_CHECKED)
-			
-			; ================================================ Grab Healed Heroes - Added by RK MOD ======================================== ;
 
-			$g_bRestartSearchGrabHero = (GUICtrlRead($g_hChkRestartSearchGrabHero) = $GUI_CHECKED)
 			
 			; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 			$g_bReturnTimerEnable = (GUICtrlRead($g_hChkReturnTimerEnable) = $GUI_CHECKED)

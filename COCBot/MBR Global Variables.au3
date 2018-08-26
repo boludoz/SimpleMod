@@ -1154,10 +1154,8 @@ Global $g_iAtkTBEnableCount = 150, $g_iAtkTBMaxTHLevel = 0, $g_iAtkTBMode = 0
 Global $g_bSearchReductionEnable = False, $g_iSearchReductionCount = 20, $g_iSearchReductionGold = 2000, $g_iSearchReductionElixir = 2000, $g_iSearchReductionGoldPlusElixir = 4000, _
 		$g_iSearchReductionDark = 100, $g_iSearchReductionTrophy = 2
 Global $g_iSearchDelayMin = 0, $g_iSearchDelayMax = 0
-;------------------CUSTOM LOGIC By RK MOD - START------------------
-Global $g_bSearchAttackNowEnable = False, $g_iSearchAttackNowDelay = 0, $g_bSearchRestartEnable = False, $g_iSearchRestartLimit = 25, $g_bSearchAlertMe = True ; EDITED By RK MOD
-;Global $g_asHeroHealTime[3] = ["", "", ""] ; REMOVED By RK MOD
-;------------------CUSTOM LOGIC By RK MOD - END------------------
+Global $g_bSearchAttackNowEnable = False, $g_iSearchAttackNowDelay = 0, $g_bSearchRestartEnable = False, $g_iSearchRestartLimit = 25, $g_bSearchAlertMe = True, $g_bSearchRestartPickupHero = False
+Global $g_asHeroHealTime[3] = ["", "", ""]
 
 ; <><><><> Attack Plan / Search & Attack / Options / Attack <><><><>
 Global $g_iActivateQueen = 0, $g_iActivateKing = 0, $g_iActivateWarden = 0
