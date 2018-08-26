@@ -112,6 +112,7 @@
 #include "functions\CreateArmy\TrainSystem.au3"
 #include "functions\CreateArmy\TrainSiege.au3"
 #include "functions\CreateArmy\TrainIt.au3"
+;#include "functions\CreateArmy\DoubleTrain.au3" ; DoubleTrain Demen ; REMOVED By RK MOD
 
 #include "functions\CreateArmy\getArmyTroops\getArmyTroopTime.au3"
 #include "functions\CreateArmy\getArmyTroops\getArmyTroopCapacity.au3"
@@ -305,4 +306,4 @@
 #include "functions\Config\readConfig.au3"
 #include "functions\Config\saveConfig.au3"
 
-#include "RK MOD\RK MOD Functions.au3"
+#include "RK MOD\RK MOD Functions.au3"; ADDED By RK MOD
