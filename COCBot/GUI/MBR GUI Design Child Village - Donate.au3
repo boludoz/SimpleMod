@@ -13,7 +13,9 @@
 ; Example .......: No
 ; ===============================================================================================================================
 #include-once
+; RK MOD TODO NEED TO MARGE THIS FILE CAREFULLY
 
+;------------------EDITED By RK MOD - START------------------
 ; GFTO- RK MOD
 Global $g_hGUI_DONATE = 0, $g_hGUI_DONATE_TAB = 0, $g_hGUI_DONATE_TAB_ITEM1 = 0, $g_hGUI_DONATE_TAB_ITEM2 = 0, $g_hGUI_DONATE_TAB_ITEM3 = 0, $g_hGUI_DONATE_TAB_ITEM4 = 0
 Global $g_hLblGFTO = 0, $g_hChkUseGTFO = 0, $g_hTxtMinSaveGTFO_Elixir = 0, $g_hTxtMinSaveGTFO_DE = 0, $g_hTxtCyclesGTFO = 0
@@ -21,16 +23,15 @@ Global $g_hLblKickout = 0, $g_hChkUseKickOut = 0, $g_hTxtDonatedCap = 0, $g_hTxt
 Global $g_hLblInitialDonated = 0, $g_hLblCurrentDonated = 0, $g_hGUI_GTFOMOD = 0
 Global $g_hChkGTFOClanHop = False, $g_hChkGTFOReturnClan = False
 
+
 ; Request
 Global $g_hChkRequestTroopsEnable = 0, $g_hTxtRequestCC = 0, $g_ahChkRequestCCHours[24] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Global $g_hChkRequestCCHoursE1 = 0, $g_hChkRequestCCHoursE2 = 0
 Global $g_hGrpRequestCC = 0, $g_hLblRequestCCHoursAM = 0, $g_hLblRequestCCHoursPM = 0
 Global $g_hLblRequestCChour = 0, $g_ahLblRequestCChoursE = 0
 Global $g_hLblRequestCChours[12] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Global $g_hLblRequestType, $g_hChkRequestType_Troops, $g_hChkRequestType_Spells, $g_hChkRequestType_Siege
 Global $g_hChkSkipRequestCC, $g_hTxtSkipRequestCCTroop, $g_hTxtSkipRequestCCSpell, $g_hLblSkipRequestCCTroop, $g_hLblSkipRequestCCSpell ; Skip Request CC - Add RK MOD
 Global $g_hTxtRequestCountCCTroop, $g_hTxtRequestCountCCSpell, $g_hChkClanCastleSpell = 0, $g_hCmbClanCastleSpell = 0, $g_hCmbClanCastleSpell = 0,$g_hCmbClanCastleSpell2 = 0, $g_hTxtClanCastleSpell
-Global $g_ahCmbClanCastleTroop[3], $g_ahTxtClanCastleTroop[3]
 
 ; Request CC Troops CC First - Add RK MOD
 Global $g_hChkReqCCFirst = 0
@@ -41,7 +42,7 @@ Global $g_hChkRusLang2 = 0
 
 ; Request troops for defense Add RK MOD
 Global $g_hChkRequestCCDefense, $g_hTxtRequestCCDefense, $g_hCmbRequestCCDefenseWhen, $g_hTxtRequestCCDefenseTime
-
+;------------------EDITED By RK MOD - END------------------
 ; Donate
 Global $g_hChkExtraAlphabets = 0, $g_hChkExtraChinese = 0, $g_hChkExtraKorean = 0, $g_hChkExtraPersian = 0
 Global $g_ahChkDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeMachineCount] = 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
@@ -300,8 +301,8 @@ Func CreateRequestSubTab()
 			GUICtrlSetOnEvent(-1, "chkRequestCCHoursE2")
 		$g_hLblRequestCCHoursPM = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "PM", "PM"), $x + 5, $y)
 			GUICtrlSetState(-1, $GUI_DISABLE)
-
-
+			
+			
 		; Request CC defense (Demen)
 	$x -= 70
 	$y += 35
@@ -315,7 +316,7 @@ Func CreateRequestSubTab()
         $g_hTxtRequestCCDefenseTime = GUICtrlCreateInput("30", $x + 236, $y + 40, 28, 21, $SS_CENTER)
             GUICtrlSetLimit(-1, 3)
             GUICtrlSetBkColor(-1, $COLOR_MONEYGREEN)
-
+			
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 EndFunc   ;==>CreateRequestSubTab
@@ -2258,7 +2259,7 @@ Func GTFOMODGUI()
 		GUICtrlSetFont(-1, 9, $FW_BOLD, "Arial", $CLEARTYPE_QUALITY)
         GUICtrlSetColor(-1, $COLOR_BLACK)
 		GUICtrlSetOnEvent(-1, "chkGTFOClanHop")
-
+		
 		$g_hChkGTFOReturnClan = GUICtrlCreateCheckbox(GetTranslatedFileIni("MOD GUI Design - Misc", "GTFOReturnClan", "Return to clan after finish"), $x + 30, $y + 100, -1, -1)
 		GUICtrlSetFont(-1, 9, $FW_BOLD, "Arial", $CLEARTYPE_QUALITY)
         GUICtrlSetColor(-1, $COLOR_BLACK)

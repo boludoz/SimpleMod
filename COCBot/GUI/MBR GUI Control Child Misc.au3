@@ -51,7 +51,6 @@ Func btnAddConfirm()
 			GUICtrlSetState($g_hBtnPullSharedPrefs, $GUI_HIDE)
 			GUICtrlSetState($g_hBtnPushSharedPrefs, $GUI_HIDE)
 			GUICtrlSetState($g_hBtnSaveprofile, $GUI_HIDE)
-
 		Case $g_hBtnConfirmAddProfile
 			Local $newProfileName = StringRegExpReplace(GUICtrlRead($g_hTxtVillageName), '[/:*?"<>|]', '_')
 			If FileExists($g_sProfilePath & "\" & $newProfileName) Then
@@ -65,8 +64,8 @@ Func btnAddConfirm()
 			; Setup the profile if it doesn't exist.
 			createProfile()
 			setupProfileComboBox()
-			setupProfileComboBoxswitch() ; Add RK MOD
-
+			setupProfileComboBoxswitch() ; ADDED By RK MOD
+			
 			selectProfile()
 			GUICtrlSetState($g_hTxtVillageName, $GUI_HIDE)
 			GUICtrlSetState($g_hCmbProfile, $GUI_SHOW)
@@ -158,9 +157,9 @@ Func btnRenameConfirm()
 			; Rename the profile.
 			renameProfile()
 			setupProfileComboBox()
-
-			setupProfileComboBoxswitch() ; Add RK MOD
-
+			
+			setupProfileComboBoxswitch() ; ADDED By RK MOD
+			
 			selectProfile()
 
 			GUICtrlSetState($g_hTxtVillageName, $GUI_HIDE)
@@ -174,7 +173,6 @@ Func btnRenameConfirm()
 			GUICtrlSetState($g_hBtnPullSharedPrefs, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnPushSharedPrefs, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnSaveprofile, $GUI_SHOW)
-
 		Case Else
 			SetLog("If you are seeing this log message there is something wrong.", $COLOR_ERROR)
 	EndSwitch
@@ -568,10 +566,19 @@ EndFunc   ;==>chkTrophyHeroes
 
 Func ChkCollect()
 	If GUICtrlRead($g_hChkCollect) = $GUI_CHECKED Then
+		GUICtrlSetState($g_hChkCollectCartFirst, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkTreasuryCollect, $GUI_ENABLE)
+		GUICtrlSetState($g_hTxtCollectGold, $GUI_ENABLE)
+		GUICtrlSetState($g_hTxtCollectElixir, $GUI_ENABLE)
+		GUICtrlSetState($g_hTxtCollectDark, $GUI_ENABLE)
 	Else
+		GUICtrlSetState($g_hChkCollectCartFirst, $GUI_UNCHECKED)
+		GUICtrlSetState($g_hChkCollectCartFirst, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkTreasuryCollect, $GUI_UNCHECKED)
 		GUICtrlSetState($g_hChkTreasuryCollect, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtCollectGold, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtCollectElixir, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtCollectDark, $GUI_DISABLE)
 	EndIf
 	ChkTreasuryCollect()
 EndFunc   ;==>ChkCollect
