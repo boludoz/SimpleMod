@@ -10,6 +10,11 @@
 #Au3Stripper_Off
 #Au3Stripper_On
 Global $g_sBotVersion = "v7.6.2"
+<<<<<<< HEAD
+=======
+Global $g_sModversion = "v3.0.5 r4 beta"
+Global $g_sModSupportUrl = "https://github.com/rulesss2/MyBot-MBR_v7.6.1_RK_MOD/releases"
+>>>>>>> origin/rkbot_fahid_7.6.2
 Opt("MustDeclareVars", 1)
 Global $g_sBotTitle = ""
 Global $g_hFrmBot = 0
