@@ -51,6 +51,7 @@ Func btnAddConfirm()
 			GUICtrlSetState($g_hBtnPullSharedPrefs, $GUI_HIDE)
 			GUICtrlSetState($g_hBtnPushSharedPrefs, $GUI_HIDE)
 			GUICtrlSetState($g_hBtnSaveprofile, $GUI_HIDE)
+
 		Case $g_hBtnConfirmAddProfile
 			Local $newProfileName = StringRegExpReplace(GUICtrlRead($g_hTxtVillageName), '[/:*?"<>|]', '_')
 			If FileExists($g_sProfilePath & "\" & $newProfileName) Then
@@ -64,8 +65,8 @@ Func btnAddConfirm()
 			; Setup the profile if it doesn't exist.
 			createProfile()
 			setupProfileComboBox()
-			setupProfileComboBoxswitch() ; ADDED By RK MOD
-			
+			setupProfileComboBoxswitch() ; Add RK MOD
+
 			selectProfile()
 			GUICtrlSetState($g_hTxtVillageName, $GUI_HIDE)
 			GUICtrlSetState($g_hCmbProfile, $GUI_SHOW)
@@ -157,9 +158,9 @@ Func btnRenameConfirm()
 			; Rename the profile.
 			renameProfile()
 			setupProfileComboBox()
-			
-			setupProfileComboBoxswitch() ; ADDED By RK MOD
-			
+
+			setupProfileComboBoxswitch() ; Add RK MOD
+
 			selectProfile()
 
 			GUICtrlSetState($g_hTxtVillageName, $GUI_HIDE)
@@ -173,6 +174,7 @@ Func btnRenameConfirm()
 			GUICtrlSetState($g_hBtnPullSharedPrefs, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnPushSharedPrefs, $GUI_SHOW)
 			GUICtrlSetState($g_hBtnSaveprofile, $GUI_SHOW)
+
 		Case Else
 			SetLog("If you are seeing this log message there is something wrong.", $COLOR_ERROR)
 	EndSwitch

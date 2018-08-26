@@ -124,67 +124,67 @@ Func CreateBottomPanel()
 
 
 ;New section for royal and lab status
-	Local $x = 200, $y = $y_bottom + 5 ; EDITED By RK MOD
+	Local $x = 200, $y = $y_bottom + 5
 		$sTxtTip = GetTranslatedFileIni("MBR GUI Design Bottom","GrpStatus_Info_01", "Gray - Not Read, Green - Ready to Use, Blue - Healing, Red - Upgrading")
 		$g_hlblKing = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design Names Troops", "King", "King"), $x, $y, 50, 16, $SS_LEFT)
 			;GUICtrlSetBkColor(-1, 0xE1E1E1)
 			_GUICtrlSetTip(-1, $sTxtTip)
-		$g_hPicKingGray = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGrayShield, $x + 63, $y, 16, 16); EDITED By RK MOD
+		$g_hPicKingGray = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGrayShield, $x + 63, $y, 16, 16)
 			_GUICtrlSetTip(-1, $sTxtTip)
-		$g_hPicKingBlue = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBlueShield, $x + 63, $y, 16, 16); EDITED By RK MOD
-			_GUICtrlSetTip(-1, $sTxtTip)
-			GUICtrlSetState(-1, $GUI_HIDE)
-		$g_hPicKingGreen = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGreenShield, $x + 63, $y, 16, 16); EDITED By RK MOD
+		$g_hPicKingBlue = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBlueShield, $x + 63, $y, 16, 16)
 			_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetState(-1, $GUI_HIDE)
-		$g_hPicKingRed = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnRedShield, $x + 63, $y, 16, 16); EDITED By RK MOD
+		$g_hPicKingGreen = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGreenShield, $x + 63, $y, 16, 16)
+			_GUICtrlSetTip(-1, $sTxtTip)
+			GUICtrlSetState(-1, $GUI_HIDE)
+		$g_hPicKingRed = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnRedShield, $x + 63, $y, 16, 16)
 			_GUICtrlSetTip(-1, $sTxtTip)																	 
 			GUICtrlSetState(-1, $GUI_HIDE)
 
-	$y += 23; EDITED By RK MOD
+	$y += 23
 		$g_hlblQueen = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design Names Troops", "Queen", "Queen"), $x, $y, 50, 16, $SS_LEFT)
 	  		_GUICtrlSetTip(-1, $sTxtTip)
 			;GUICtrlSetBkColor(-1, 0xE1E1E1)
-		$g_hPicQueenGray = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGrayShield, $x + 63, $y, 16, 16 ); EDITED By RK MOD
+		$g_hPicQueenGray = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGrayShield, $x + 63, $y, 16, 16 )
 	  		_GUICtrlSetTip(-1, $sTxtTip)
-		$g_hPicQueenBlue = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBlueShield, $x + 63, $y, 16, 16 ); EDITED By RK MOD
+		$g_hPicQueenBlue = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBlueShield, $x + 63, $y, 16, 16 )
 	  		_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetState(-1, $GUI_HIDE)
-		$g_hPicQueenGreen = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGreenShield, $x + 63, $y, 16, 16 ); EDITED By RK MOD
+		$g_hPicQueenGreen = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGreenShield, $x + 63, $y, 16, 16 )
 	  		_GUICtrlSetTip(-1, $sTxtTip)																	 
 			GUICtrlSetState(-1, $GUI_HIDE)
-		$g_hPicQueenRed = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnRedShield, $x + 63, $y, 16, 16 ); EDITED By RK MOD
+		$g_hPicQueenRed = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnRedShield, $x + 63, $y, 16, 16 )
 	  		_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetState(-1, $GUI_HIDE)
 
 
-	$y += 23; EDITED By RK MOD
-		$g_hlblWarden = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design Names Troops", "Warden", "Warden"), $x, $y, 54, 16, $SS_LEFT); EDITED By RK MOD
+	$y += 23
+		$g_hlblWarden = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design Names Troops", "Warden", "Warden"), $x, $y, 54, 16, $SS_LEFT)
 	  		_GUICtrlSetTip(-1, $sTxtTip)
 			;GUICtrlSetBkColor(-1, 0xE1E1E1)
-		$g_hPicWardenGray = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGrayShield, $x + 63, $y, 16, 16 ); EDITED By RK MOD
+		$g_hPicWardenGray = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGrayShield, $x + 63, $y, 16, 16 )
 	  		_GUICtrlSetTip(-1, $sTxtTip)						 
-		$g_hPicWardenBlue = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBlueShield, $x + 63, $y, 16, 16 ); EDITED By RK MOD
+		$g_hPicWardenBlue = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBlueShield, $x + 63, $y, 16, 16 )
 	  		_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetState(-1, $GUI_HIDE)																			  
-		$g_hPicWardenGreen = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGreenShield, $x + 63, $y, 16, 16 ); EDITED By RK MOD
+		$g_hPicWardenGreen = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGreenShield, $x + 63, $y, 16, 16 )
 	  		_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetState(-1, $GUI_HIDE)
-		$g_hPicWardenRed = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnRedShield, $x + 63, $y, 16, 16 ); EDITED By RK MOD
+		$g_hPicWardenRed = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnRedShield, $x + 63, $y, 16, 16 )
 	  		_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetState(-1, $GUI_HIDE)
 
-	$y += 23 ; EDITED By RK MOD
+	$y += 23
 		$sTxtTip = GetTranslatedFileIni("MBR GUI Design Bottom","GrpStatus_Info_02", "Green - Lab is Running, Red - Lab Has Stopped")
-		$g_hlblLab = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Bottom", "Lab", "Lab"), $x, $y, 61, 16, $SS_LEFT); EDITED By RK MOD
+		$g_hlblLab = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Bottom", "Lab", "Lab"), $x, $y, 61, 16, $SS_LEFT)
 	  		_GUICtrlSetTip(-1, $sTxtTip)
 			;GUICtrlSetBkColor(-1, 0xE1E1E1)
-		$g_hPicLabGray = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGrayShield, $x + 63 , $y, 16, 16 ); EDITED By RK MOD
+		$g_hPicLabGray = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGrayShield, $x + 63 , $y, 16, 16 )
 	  		_GUICtrlSetTip(-1, $sTxtTip)
-		$g_hPicLabGreen = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGreenShield, $x + 63, $y, 16, 16 ); EDITED By RK MOD
+		$g_hPicLabGreen = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnGreenShield, $x + 63, $y, 16, 16 )
 	  		_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetState(-1, $GUI_HIDE)
-		$g_hPicLabRed = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnRedShield, $x + 63, $y, 16, 16 ); EDITED By RK MOD
+		$g_hPicLabRed = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnRedShield, $x + 63, $y, 16, 16 )
 	  		_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetState(-1, $GUI_HIDE)
 

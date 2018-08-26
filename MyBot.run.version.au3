@@ -14,9 +14,12 @@
 #Au3Stripper_Off
 #pragma compile(Icon, "Images\MyBot.ico")
 #pragma compile(FileDescription, Clash of Clans Bot - A Free Clash of Clans bot - https://mybot.run)
-#pragma compile(ProductVersion, 7.6)
+#pragma compile(ProductVersion, 7.6.2)
 #pragma compile(FileVersion, 7.6.2)
 #pragma compile(LegalCopyright, © https://mybot.run)
 #Au3Stripper_On
 
 Global $g_sBotVersion = "v7.6.2" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it is also use on Checkversion()
+
+Global $g_sModversion = "v3.0.5" ;<== Just Change This to Version Number
+Global $g_sModSupportUrl = "https://github.com/rulesss2/MyBot-MBR_v7.6.2_RK_MOD/releases" ;<== Our Website Link Download

@@ -215,12 +215,10 @@ Func chkSwitchAcc()
 		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_UNCHECKED)
 		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_DISABLE)
 		OnlySCIDAccounts()
-		;------------------ADDED By RK MOD - START------------------
 		For $i = 0 To 7
 			GUICtrlSetState($g_ahChkSetFarm[$i], $GUI_ENABLE)
 			_chkSetFarmSchedule($i)
 		Next
-		;------------------ADDED By RK MOD - END------------------
 	Else
 		releaseSwitchAccountMutex()
 		For $i = $g_hCmbTotalAccount To $g_ahChkDonate[7]
@@ -228,13 +226,11 @@ Func chkSwitchAcc()
 		Next
 		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_ENABLE)
 		OnlySCIDAccounts()
-		;------------------ADDED By RK MOD - START------------------
 		For $i = 0 To 7
 			For $j = $g_ahChkSetFarm[$i] To $g_ahCmbTime2[$i]
 				GUICtrlSetState($j, $GUI_DISABLE)
 			Next
 		Next
-		;------------------ADDED By RK MOD - END------------------
 	EndIf
 EndFunc   ;==>chkSwitchAcc
 
@@ -300,14 +296,15 @@ Func _cmbSwitchAcc($bReadSaveConfig = True)
 	For $i = $g_hCmbTotalAccount To $g_ahChkDonate[7]
 		GUICtrlSetState($i, (($bEnable) ? $GUI_ENABLE : $GUI_DISABLE))
 	Next
+
 	cmbTotalAcc()
-	;------------------ADDED By RK MOD - START------------------
+
 	For $i = 0 To 7
 		For $j = $g_ahChkSetFarm[$i] To $g_ahCmbTime2[$i]
 			GUICtrlSetState($j, (($bEnable) ? $GUI_ENABLE : $GUI_DISABLE))
 		Next
 	Next
-	;------------------ADDED By RK MOD - END------------------
+
 	$s_bActive = False
 EndFunc   ;==>_cmbSwitchAcc
 
@@ -316,20 +313,16 @@ Func cmbTotalAcc()
 	For $i = 0 To 7
 		If $iCmbTotalAcc >= 0 And $i <= $iCmbTotalAcc Then
 			_GUI_Value_STATE("SHOW", $g_ahChkAccount[$i] & "#" & $g_ahCmbProfile[$i] & "#" & $g_ahChkDonate[$i])
-			;------------------ADDED By RK MOD - START------------------
 			For $j = $g_ahChkSetFarm[$i] To $g_ahCmbTime2[$i]
 				GUICtrlSetState($j, $GUI_SHOW)
 			Next
 			_chkSetFarmSchedule($i)
-			;------------------ADDED By RK MOD - END------------------
 		ElseIf $i > $iCmbTotalAcc Then
 			GUICtrlSetState($g_ahChkAccount[$i], $GUI_UNCHECKED)
 			_GUI_Value_STATE("HIDE", $g_ahChkAccount[$i] & "#" & $g_ahCmbProfile[$i] & "#" & $g_ahChkDonate[$i])
-			;------------------ADDED By RK MOD - START------------------
 			For $j = $g_ahChkSetFarm[$i] To $g_ahCmbTime2[$i]
 				GUICtrlSetState($j, $GUI_HIDE)
 			Next
-			;------------------ADDED By RK MOD - END------------------
 		EndIf
 		chkAccount($i)
 	Next
@@ -404,33 +397,30 @@ Func chkAccSwitchMode()
 		$g_bChkGooglePlay = True
 		$g_bChkSuperCellID = False
 		$g_bChkSharedPrefs = False
-		$g_bChkAltuFaltuSCID = False	; AltuFaltu-n ADDED By RK MOD 
+		$g_bChkAltuFaltuSCID = False	;AltuFaltu-n
 	ElseIf GUICtrlRead($g_hRadSwitchSuperCellID) = $GUI_CHECKED Then
 		$g_bChkGooglePlay = False
 		$g_bChkSuperCellID = True
 		$g_bChkSharedPrefs = False
-		$g_bChkAltuFaltuSCID = False	; AltuFaltu-n ADDED By RK MOD 
+		$g_bChkAltuFaltuSCID = False	;AltuFaltu-n
 	ElseIf GUICtrlRead($g_hRadSwitchSharedPrefs) = $GUI_CHECKED Then
 		$g_bChkGooglePlay = False
 		$g_bChkSuperCellID = False
 		$g_bChkSharedPrefs = True
-		;------------------ADDED By RK MOD - START------------------
 		$g_bChkAltuFaltuSCID = False	;AltuFaltu-n
 	ElseIf GUICtrlRead($g_hRadAltuFaltuSCID) = $GUI_CHECKED Then	;AltuFaltu-s
 		$g_bChkGooglePlay = False
 		$g_bChkSuperCellID = False
 		$g_bChkSharedPrefs = False
-		$g_bChkAltuFaltuSCID = True	;AltuFaltu-e
-		;------------------ADDED By RK MOD - END------------------
+		$g_bChkAltuFaltuSCID = True		;AltuFaltu-e
 	Else
 		$g_bChkGooglePlay = False
 		$g_bChkSuperCellID = False
 		$g_bChkSharedPrefs = False
-		$g_bChkAltuFaltuSCID = False	;AltuFaltu-n ADDED By RK MOD 
+		$g_bChkAltuFaltuSCID = False	;AltuFaltu-n
 	EndIf
 EndFunc   ;==>chkAccSwitchMode
 
-;------------------ADDED By RK MOD - START------------------
 ; ========== FarmSchedule ============
 Func chkSetFarmSchedule()
 	For $i = 0 To UBound($g_ahChkSetFarm) - 1
@@ -502,7 +492,7 @@ Func _cmbCriteria2($i)
 			GUICtrlSetState($g_ahCmbTime2[$i], $GUI_SHOW + $GUI_ENABLE)
 	EndSwitch
 EndFunc   ;==>_cmbCriteria2
-;------------------ADDED By RK MOD - END------------------
+
 ; #DEBUG FUNCTION# ==============================================================================================================
 
 Func chkDebugSetLog()
@@ -676,31 +666,52 @@ Func btnTestSendText()
 EndFunc   ;==>btnTestSendText
 
 Func btnTestAttackBar()
-	Local $bCurrentOCR = $g_bDebugOcr, $bCurrentRunState = $g_bRunState, $bCurrentDebugImage = $g_bDebugImageSave
-
+	BeginImageTest() ; get image for testing
+	Local $currentOCR = $g_bDebugOcr
+	Local $currentRunState = $g_bRunState
 	_GUICtrlTab_ClickTab($g_hTabMain, 0)
 
 	$g_bDebugOcr = True
-        $g_bDebugImageSave = True
 	$g_bRunState = True
+	ForceCaptureRegion()
+	SetLog(_PadStringCenter(" Test Attack Bar begin (" & $g_sBotVersion & ")", 54, "="), $COLOR_INFO)
 
-	SetLog(_PadStringCenter(" Begin AttackBar Detection", 54, "="), $COlOR_INFO)
-
-	Local $aAttackBar = StringSplit(AttackBarCheck(False, $DB, True), "|", $STR_NOCOUNT)
-	Local $aTroop
-
-	If IsArray($aAttackBar) And UBound($aAttackBar, 1) >= 1 Then
-	SetLog("Found " & UBound($aAttackBar, 1) & " Slots", $COlOR_SUCCESS)
-	For $i = 0 To UBound($aAttackBar, 1) - 1
-		$aTroop = StringSplit($aAttackBar[$i], "#", $STR_NOCOUNT)
-		If IsArray($aTroop) And UBound($aTroop, 1) = 3 Then SetLog("- Slot " & $aTroop[1] & ": " & $aTroop[2] & " " & GetTroopName($aTroop[0], $aTroop[2]), $COLOR_SUCCESS)
-	Next
+	_CaptureRegion2(0, 571 + $g_iBottomOffsetY, 859, 671 + $g_iBottomOffsetY)
+	Local $result = DllCallMyBot("searchIdentifyTroop", "ptr", $g_hHBitmap2)
+	SetLog("DLL Troopsbar list: " & $result[0], $COLOR_DEBUG)
+	If $g_bForceClanCastleDetection Then $result[0] = FixClanCastle($result[0])
+	Local $aTroopDataList = StringSplit($result[0], "|")
+	Local $aTemp[12][3]
+	If $result[0] <> "" Then
+		For $i = 1 To $aTroopDataList[0]
+			Local $troopData = StringSplit($aTroopDataList[$i], "#", $STR_NOCOUNT)
+;~ 				$aTemp[Number($troopData[1])][0] = $troopData[0]
+;~ 				$aTemp[Number($troopData[1])][1] = Number($troopData[2])
+;~ 				SetLog("-" & NameOfTroop( $aTemp[$i][0]) & " pos  " & $aTemp[$i][0] & " qty " & $aTemp[$i][2])
+			If $troopData[0] = 17 Or $troopData[0] = 18 Or $troopData[0] = 19 Or $troopData[0] = 20 Then $troopData[2] = 1
+			SetLog("position: " & $troopData[1] & " | troop code: " & $troopData[0] & " troop name:" & NameOfTroop($troopData[0]) & " | qty: " & $troopData[2])
+		Next
 	EndIf
-	SetLog(_PadStringCenter(" End AttackBar Detection ", 54, "="), $COlOR_INFO)
 
-	$g_bDebugOcr = $bCurrentOCR
-	$g_bDebugImageSave = $bCurrentDebugImage
-	$g_bRunState = $bCurrentRunState
+	;make snapshot start
+	_CaptureRegion(0, 630, $g_iDEFAULT_WIDTH)
+	Local $savefolder = $g_sProfileTempDebugPath
+	$savefolder = $g_sProfileTempDebugPath & "Test_Attack_Bar\"
+	DirCreate($savefolder)
+	Local $debugfile
+	Local $Date = @MDAY & "." & @MON & "." & @YEAR
+	Local $Time = @HOUR & "." & @MIN & "." & @SEC
+	$debugfile = "Test_Attack_Bar_" & $g_sBotVersion & "_" & $Date & "_" & $Time & ".png"
+	_GDIPlus_ImageSaveToFile($g_hBitmap, $savefolder & $debugfile)
+	;make snapshot end
+
+	EndImageTest() ; clear test image handle
+
+	SetLog(_PadStringCenter(" Test Attack Bar end ", 54, "="), $COLOR_INFO)
+	ShellExecute($savefolder)
+
+	$g_bDebugOcr = $currentOCR
+	$g_bRunState = $currentRunState
 EndFunc   ;==>btnTestAttackBar
 
 
@@ -1256,7 +1267,6 @@ Func btnConsoleWindow()
 	ConsoleWindow()
 EndFunc   ;==>btnConsoleWindow
 
-;------------------ADDED By RK MOD - START------------------
 Func chkLabCheck()
 	If GUICtrlRead($g_hChkLabCheck) = $GUI_CHECKED Then
 	$g_iChkLabCheck = 1		
@@ -1264,8 +1274,6 @@ Func chkLabCheck()
 	$g_iChkLabCheck = 0		
 	EndIf
 EndFunc ;==>chkLabCheck
-;------------------ADDED By RK MOD - END------------------
-
 Func chkSQLite()
 	$g_bUseStatistics = GUICtrlRead($g_hChkSqlite) = $GUI_CHECKED
 EndFunc   ;==>chkSQLite

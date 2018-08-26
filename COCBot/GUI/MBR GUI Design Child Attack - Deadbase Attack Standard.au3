@@ -20,11 +20,11 @@ Global $g_hCmbStandardDropOrderDB = 0, $g_hCmbStandardDropSidesDB = 0, $g_hCmbSt
 
 Global $g_hLblSmartDeployDB = 0, $g_hPicAttackNearDarkElixirDrillDB = 0
 Global $g_hBtnCustomDropOrderDB = 0
-;------------------ADDED By RK MOD - START------------------
+
 ; Multi finger
 Global $g_hLblDBMultiFinger = 0, $g_hTxtUnitFactor = 0, $g_hTxtWaveFactor = 0
 Global $g_hCmbDBMultiFinger = 0, $g_hChkUnitFactor = 0, $g_hChkWaveFactor = 0
-;------------------ADDED By RK MOD - END------------------
+
 Func CreateAttackSearchDeadBaseStandard()
 
 	$g_hGUI_DEADBASE_ATTACK_STANDARD = _GUICreate("", $_GUI_MAIN_WIDTH - 195, $g_iSizeHGrpTab4, 150, 25, BitOR($WS_CHILD, $WS_TABSTOP), -1, $g_hGUI_DEADBASE)
@@ -45,7 +45,6 @@ Func CreateAttackSearchDeadBaseStandard()
 								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropOrder_Info_03", "Only the troops selected in the ""Only drop these troops"" option will be dropped"))
 
 		$y += 25
-			;------------------EDITED By RK MOD - START------------------
 			GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "Label_02", "Attack on") & ":", $x, $y + 5, -1, -1)
 			$g_hCmbStandardDropSidesDB = GUICtrlCreateCombo("", $x + 55, $y, 120, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 				_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Info_01", "Attack on a single side, penetrates through base") & @CRLF & _
@@ -62,7 +61,7 @@ Func CreateAttackSearchDeadBaseStandard()
 								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Item_08", "Multi Finger"), _
 								   GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "CmbStandardDropSides_Item_04", -1))
 			    GUICtrlSetOnEvent(-1, "Bridge") ; Uncheck SmartAttack Red Area when enable FourFinger to avoid conflict by RK MOD
-			    ;------------------EDITED By RK MOD - END------------------	
+
 		$y += 25
 			GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "Lbl-CmbStandardUnitDelay", "Delay Unit") & ":", $x, $y + 5, -1, -1)
 				$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Standard", "Lbl-CmbStandardUnitDelay_Info_01", "This delays the deployment of troops, 1 (fast) = like a Bot, 10 (slow) = Like a Human.") & @CRLF & _
@@ -121,13 +120,13 @@ Func CreateAttackSearchDeadBaseStandard()
 			$g_hPicAttackNearDarkElixirDrillDB = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnDrill, $x + 20 , $y - 3, 24, 24)
 				_GUICtrlSetTip(-1, $sTxtTip)
 
-		$y += 50 ; 40 to 50 EDITED By RK MOD 
+		$y += 50
 		$x = 98
 			$g_hBtnCustomDropOrderDB = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "BtnCustomDropOrder", "Drop Order"), $x, $y, 85, 25)
 				_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "BtnCustomDropOrder_Info_01", "Select Custom Troops Dropping Order"))
 				GUICtrlSetOnEvent(-1, "CustomDropOrder")
 		GUICtrlCreateGroup("", -99, -99, 1, 1)
- ;------------------ADDED By RK MOD - START------------------      
+       
 	   ; ====================================================== MULTI FINGERS ADD by RK MOD======================================================
 	$x  =  23
 	$y += - 100
@@ -179,5 +178,5 @@ $g_hTxtWaveFactor = GUICtrlCreateInput("100", $x + 140, $y - 5, 31, 20, BitOR($G
 	GUICtrlSetOnEvent(-1, "chkWaveFactor")
 	   GUICtrlCreateGroup("", -99, -99, 1, 1)
  GUICtrlCreateGroup("", -99, -99, 1, 1)
-;------------------ADDED By RK MOD - END------------------
+ 
 EndFunc   ;==>CreateAttackSearchDeadBaseStandard

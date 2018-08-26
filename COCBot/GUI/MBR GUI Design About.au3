@@ -116,9 +116,9 @@ Func ShowCommandLineHelp()
 
 	; This can be use for several Help Files
 	Switch @GUI_CtrlId
-		Case $g_lblHelpBot; Bot/Android/Help Handle
+		Case 2620 to 2670 ; Bot/Android/Help Handle
 			$PathHelp = "CommandLineParameter"
-		Case $g_lblHepNotify
+		Case 1100 to 1150
 			$PathHelp = "NotifyHelp"
 	EndSwitch
 

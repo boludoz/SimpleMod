@@ -24,7 +24,7 @@ Global $g_hTxtGlobalActiveBotsAllowed = 0, $g_hTxtGlobalThreads = 0, $g_hTxtThre
 Global $g_hChkBotCustomTitleBarClick = 0, $g_hChkBotAutoSlideClick = 0, $g_hChkHideWhenMinimized = 0, $g_hChkUseRandomClick = 0, $g_hChkScreenshotType = 0, _
 	   $g_hChkScreenshotHideName = 0, $g_hTxtTimeAnotherDevice = 0
 Global $g_hChkSinglePBTForced = 0, $g_hTxtSinglePBTimeForced = 0, $g_hTxtPBTimeForcedExit = 0, $g_hChkFixClanCastle = 0, $g_hChkAutoResume = 0, $g_hTxtAutoResumeTime = 0, $g_hChkDisableNotifications = 0
-Global $g_hChkLabCheck = 0 ; ADDED By RK MOD
+Global $g_hChkLabCheck = 0
 Global $g_hChkSqlite = 0
 Global $g_hBtnExportData = 0
 
@@ -162,7 +162,7 @@ Func CreateBotOptions()
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	Local $x = 240, $y = 45, $yGroup = $y
-	Local $hGroup = GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Bot - Options", "Group_04", "Advanced"), $x - 20, $y - 20, 225, 162); EDITED By RK MOD
+	Local $hGroup = GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Bot - Options", "Group_04", "Advanced"), $x - 20, $y - 20, 225, 162)
 		#cs
 		$g_hChkUpdatingWhenMinimized = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Bot - Options", "ChkUpdatingWhenMinimized", "Updating when minimized"), $x, $y, -1, -1)
 			GUICtrlSetState(-1, $GUI_DISABLE) ; must be always enabled
@@ -198,12 +198,10 @@ Func CreateBotOptions()
 	$y += 19
 		$g_hChkUseRandomClick = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Bot - Options", "ChkUseRandomClick", "Random Click"), $x, $y, -1, -1)
 			GUICtrlSetOnEvent(-1, "chkUseRandomClick")
-	;------------------ADDED By RK MOD - START------------------
 	$y += 19
 	   $g_hChkLabCheck = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Bot - Options", "ChkLabCheck", "Disable Laboratory Check"), $x, $y + 2, -1, -1)
 	       GUICtrlSetState(-1, $GUI_UNCHECKED)
 		   GUICtrlSetOnEvent(-1, "ChkLabCheck")
-	;------------------ADDED By RK MOD - END------------------
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	$y += 45
