@@ -46,15 +46,15 @@ Func chkRequestCCHours()
 
 	If GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hTxtRequestCC, $GUI_SHOW + $GUI_ENABLE)
-		For $i = $g_hChkSkipRequestCC To $g_hLblRequestCCHoursPM ; Skip request CC - Demen
- 			GUICtrlSetState($i, $GUI_ENABLE)
- 		Next
-		chkSkipRequestCC() ; Skip request CC - Add RK MOD
+		For $i = $g_hLblRequestType To $g_hLblRequestCCHoursPM
+			GUICtrlSetState($i, $GUI_ENABLE)
+		Next
+		chkRequestCountCC()
 	Else
 		GUICtrlSetState($g_hTxtRequestCC, $GUI_SHOW + $GUI_DISABLE)
-		For $i = $g_hChkSkipRequestCC To $g_hLblRequestCCHoursPM ; Skip request CC - Demen
- 			GUICtrlSetState($i, $GUI_DISABLE)
- 		Next
+		For $i = $g_hLblRequestType To $g_hLblRequestCCHoursPM
+			GUICtrlSetState($i, $GUI_DISABLE)
+		Next
 	EndIf
 
 	SetRedrawBotWindowControls($bWasRedraw, $g_hGrpRequestCC, "chkRequestCCHours")
@@ -105,29 +105,6 @@ Func cmbClanCastleSpell()
 		GUICtrlSetState($g_hTxtClanCastleSpell, BitOR($GUI_SHOW, $GUI_ENABLE))
 	EndIf
 EndFunc   ;==>cmbDBWaitForCCSpell
-
-; Skip request CC - Add RK MOD
-Func chkSkipRequestCC()
-	If GUICtrlRead($g_hChkSkipRequestCC) = $GUI_CHECKED Then
-		For $i = $g_hTxtSkipRequestCCTroop To $g_hTxtSkipRequestCCSpell
-			GUICtrlSetState($i, $GUI_ENABLE)
-		Next
-		If GUICtrlRead($g_hTxtSkipRequestCCTroop) <= 0 Then
-			GUICtrlSetState($g_hLblSkipRequestCCTroop, $GUI_DISABLE)
-		Else
-			GUICtrlSetState($g_hLblSkipRequestCCTroop, $GUI_ENABLE)
-		EndIf
-		If GUICtrlRead($g_hTxtSkipRequestCCSpell) <= 0 Then
-			GUICtrlSetState($g_hLblSkipRequestCCSpell, $GUI_DISABLE)
-		Else
-			GUICtrlSetState($g_hLblSkipRequestCCSpell, $GUI_ENABLE)
-		EndIf
-	Else
-		For $i = $g_hTxtSkipRequestCCTroop To $g_hTxtSkipRequestCCSpell
-			GUICtrlSetState($i, $GUI_DISABLE)
-		Next
-	EndIf
-EndFunc   ;==>chkSkipRequestCC
 
 Func chkRequestCCHoursE1()
 	If GUICtrlRead($g_hChkRequestCCHoursE1) = $GUI_CHECKED And GUICtrlRead($g_ahChkRequestCCHours[0]) = $GUI_CHECKED Then

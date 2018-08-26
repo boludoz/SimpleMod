@@ -81,8 +81,8 @@ Func RequestCC($ClickPAtEnd = True, $specifyText = "")
 	WEnd
 
 	If $ClickPAtEnd Then
-        getArmyCCSpellCapacity(False, False, False, False)
-        CheckCCArmy()
+		getArmyCCSpellCapacity(False, False, False, False)
+		CheckCCArmy()
 	EndIf
 
 	Local $color1 = _GetPixelColor($aRequestTroopsAO[0], $aRequestTroopsAO[1] + 20, True) ; Gray/Green color at 20px below Letter "R"
@@ -110,33 +110,8 @@ Func RequestCC($ClickPAtEnd = True, $specifyText = "")
 				Next
 			EndIf
 
-			; Skip request CC - Add RK MOD
-			If $g_bSkipRequestCC Then
-				Local $aiSkipRequestCC[2] = [Number($g_iSkipRequestCCTroop), Number($g_iSkipRequestCCSpell)]
-				For $i = 0 To 1
-					If $aiSkipRequestCC[$i] = 0 Then ContinueLoop
-					If $aiSkipRequestCC[$i] >= 40 - $i * 38 Then
-						$bNeedRequest = _ColorCheck(_GetPixelColor(24 + 455 * $i, 470, True), Hex(0xDC363A , 6), 30) ; Red symbol (Not full CC)
-						If Not $bNeedRequest Then SetLog(($i = 0 ? " CC Troop is full." : " CC Spell is full or unavailable"))
-					Else
-						Local $sCCReceived = getOcrAndCapture("coc-ms", 289 + $i * 183, 468, 60, 16, True, False, True) ; read CC (troops 0/40 or spells 0/2)
-						SetDebugLog("Read CC " & ($i = 0 ? "Troops: " : "Spells: ") & $sCCReceived)
-						Local $aCCReceived = StringSplit($sCCReceived, "#", $STR_NOCOUNT) ; split the trained troop number from the total troop number
-						If IsArray($aCCReceived) Then
-							If Number($aCCReceived[0]) < $aiSkipRequestCC[$i] Then $bNeedRequest = True
-							If Not $bNeedRequest Or $g_bDebugSetlog Then SetLog("Already received " & Number($aCCReceived[0]) & ($i = 0 ? " CC Troops." : " CC Spells."))
-						EndIf
-					EndIf
-					If $bNeedRequest Then ExitLoop
-				Next
-			Else
-				$bNeedRequest = True
-			EndIf
-
 			If $bNeedRequest Then
 				Local $x = _makerequest()
-			Else
-				$g_bCanRequestCC = False
 			EndIf
 
 		Else
@@ -274,7 +249,7 @@ Func IsFullClanCastleType($CCType = 0) ; Troops = 0, Spells = 1, Siege Machine =
 			Return True
 		EndIf
 	EndIf
-EndFunc	  ;==>IsFullClanCastleType
+EndFunc   ;==>IsFullClanCastleType
 
 Func IsFullClanCastle()
 	Local $bNeedRequest = False
@@ -287,7 +262,7 @@ Func IsFullClanCastle()
 	If ($g_abAttackTypeEnable[$DB] And $g_abSearchCastleWaitEnable[$DB]) Or ($g_abAttackTypeEnable[$LB] And $g_abSearchCastleWaitEnable[$LB]) Then
 		CheckCCArmy()
 		For $i = 0 To 2
-			If Not IsFullClanCastleType($i) Then 
+			If Not IsFullClanCastleType($i) Then
 				$bNeedRequest = True
 				ExitLoop
 			EndIf
@@ -337,7 +312,6 @@ Func CheckCCArmy()
 	Local $bCCSpellFull = False
 
 	If Not $g_bRunState Then Return
-
 	If $g_abRequestType[1] And $g_iClanCastleSpellsWaitFirst > 0 And $g_iCurrentCCSpells = $g_iTotalCCSpells And $g_iTotalCCSpells > 0 Then
 		If $g_bDebugSetlog Then SetLog("Getting current available spell in Clan Castle.")
 		; Imgloc Detection

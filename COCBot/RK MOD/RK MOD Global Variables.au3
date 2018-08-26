@@ -59,10 +59,6 @@ Global $ichkForecastHopingSwitchMax = 0, $icmbForecastHopingSwitchMax = 0 , $itx
 Global $icmbSwLang = 0
 Global $cmbSwLang = 0
 
-; ================================================ Skip Request CC - Added by RK MOD =================================================== ;
-
-Global $g_bSkipRequestCC, $g_iSkipRequestCCTroop, $g_iSkipRequestCCSpell
-
 ; ================================================ First Request CC Troops - Added by RK MOD ======================================== ;
 
 Global $g_bReqCCFirst = False

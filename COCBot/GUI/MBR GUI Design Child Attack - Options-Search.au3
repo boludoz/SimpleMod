@@ -182,13 +182,13 @@ Func CreateAttackSearchOptionsSearch()
 		
 	    ;Return Home by Time - RK MOD
 		$y += 25
-		$g_hChkReturnTimerEnable = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkReturnTimerEnable_01", "Return Home by Time"), $x - 5, $y + 25, -1, -1)
+		$g_hChkReturnTimerEnable = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkReturnTimerEnable_01", "Return Home by Time"), $x - 5, $y - 3, -1, -1)
 		    _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkReturnTimerEnable_02", "Return home by time due to the long wait in the cloud."))
 		    ;GUICtrlSetState(-1, $GUI_UNCHECKED)
 		    GUICtrlSetOnEvent(-1, "chkReturnTimer")
-		$g_hTxtReturnTimer = GUICtrlCreateInput("5", $x + 118, $y + 27, 25, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+		$g_hTxtReturnTimer = GUICtrlCreateInput("5", $x + 118, $y, 25, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 		_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "TxtReturnTimer_01", "Set the desired time, if the wait in the cloud exceeds this time, the bot will return home."))
-		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "Label_15", "min.", -1), $x + 147, $y + 29, -1, -1)
+		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "Label_15", "min.", -1), $x + 147, $y, -1, -1)
 		GUICtrlSetLimit(-1, 3)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
