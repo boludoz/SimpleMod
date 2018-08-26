@@ -511,6 +511,7 @@ Global Const $g_sIcnBldTrophy = @ScriptDir & "\Images\trophy.png"
 ; Improve GUI interactions by disabling bot window redraw
 Global $g_iRedrawBotWindowMode = 2 ; 0 = disabled, 1 = Redraw always entire bot window, 2 = Redraw only required bot window area (or entire bot if control not specified)
 
+;------------------EDITED By RK MOD - START------------------
 ; enumerated Icons 1-based index to IconLib
 Global Enum $eIcnArcher = 1, $eIcnDonArcher, $eIcnBalloon, $eIcnDonBalloon, $eIcnBarbarian, $eIcnDonBarbarian, $eBtnTest, $eIcnBuilder, $eIcnCC, $eIcnGUI, _
 		$eIcnDark, $eIcnDragon, $eIcnDonDragon, $eIcnDrill, $eIcnElixir, $eIcnCollector, $eIcnFreezeSpell, $eIcnGem, $eIcnGiant, $eIcnDonGiant, _
@@ -538,7 +539,7 @@ Global Enum $eIcnArcher = 1, $eIcnDonArcher, $eIcnBalloon, $eIcnDonBalloon, $eIc
 		$eIcnChat, $eIcnRepeat, $eIcnClan, $eIcnTarget, $eIcnSettings, _
 		$eIcnClanGames, $eIcnFarmingSchedule, $eIcnWarPreparation, $eIcnSwitchAcc, $eIcnSwitchProfile, $eIcnElectroDragon, $eIcnTH12, $eHdV12, $eWall13, $eIcnGrayShield, $eIcnBlueShield, $eIcnGreenShield, $eIcnRedShield, _
 		$eIcnBattleB , $eIcnWallW, $eIcnSiegeCost
-
+;------------------EDITED By RK MOD - END------------------
 
 Global $eIcnDonBlank = $eIcnDonBlacklist
 Global $eIcnOptions = $eIcnDonBlacklist
@@ -764,11 +765,11 @@ EndFunc   ;==>TroopIndexLookup
 ; This function takes a troop,spell,hero, or castle index, based on the "Global Enum $eBarb, $eArch ... $eHaSpell, $eSkSpell" declaration,
 ; and returns the full name.
 ;--------------------------------------------------------------------------
-Func GetTroopName(Const $iIndex)
+Func GetTroopName(Const $iIndex, $iQuantity = 1)
 	If $iIndex >= $eBarb And $iIndex <= $eBowl Then
-		Return $g_asTroopNames[$iIndex]
+		Return $iQuantity > 1 ? $g_asTroopNamesPlural[$iIndex] : $g_asTroopNames[$iIndex]
 	ElseIf $iIndex >= $eLSpell And $iIndex <= $eSkSpell Then
-		Return $g_asSpellNames[$iIndex - $eLSpell]
+		Return $iQuantity > 1 ? $g_asSpellNames[$iIndex - $eLSpell] & "Spells" : $g_asSpellNames[$iIndex - $eLSpell] & "Spell"
 	ElseIf $iIndex >= $eKing And $iIndex <= $eWarden Then
 		Return $g_asHeroNames[$iIndex - $eKing]
 	ElseIf $iIndex >= $eWallW And $iIndex <= $eBattleB Then
@@ -804,6 +805,7 @@ Global $g_iTxtRestartGold = 10000
 Global $g_iTxtRestartElixir = 25000
 Global $g_iTxtRestartDark = 500
 Global $g_bChkTrap = True, $g_bChkCollect = True, $g_bChkTombstones = True, $g_bChkCleanYard = False, $g_bChkGemsBox = False
+Global $g_bChkCollectCartFirst = False, $g_iTxtCollectGold = 0, $g_iTxtCollectElixir = 0, $g_iTxtCollectDark = 0
 Global $g_bChkTreasuryCollect = False
 Global $g_iTxtTreasuryGold = 0
 Global $g_iTxtTreasuryElixir = 0
@@ -817,6 +819,8 @@ Global $g_sRequestTroopsText = ""
 Global $g_abRequestCCHours[24] = [False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False, False]
 Global $g_abRequestType[3] = [True, True, False] ; (0 = Troop, 1 = Spell, 2 = Siege Machine)
 Global $g_iRequestCountCCTroop = 0, $g_iRequestCountCCSpell = 0, $g_iClanCastleSpellsWaitFirst = 0, $g_iClanCastleSpellsWaitSecond = 0
+Global $g_aiCCTroopsExpected[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
+Global $g_aiClanCastleTroopWaitType[3], $g_aiClanCastleTroopWaitQty[3]
 
 ; <><><><> Village / Donate - Donate <><><><>
 Global $g_bChkDonate = True
@@ -911,6 +915,7 @@ Global $g_iUnbrkMinGold = 50000, $g_iUnbrkMinElixir = 50000, $g_iUnbrkMaxGold = 
 ; <><><><> Village / Notify <><><><>
 Global Const $g_sCurlPath = $g_sLibPath & "\curl\curl.exe" ; Curl used on PushBullet
 Global $g_bNotifyForced = False
+; Super Important is the user_id is to store in INI file as '_Ini_Add("notify", "TGUserID", $g_sTGChatID)' -> SaveConfig_600_18()
 Global $g_sTGChatID = ""
 Global $g_bTGRequestScreenshot = False
 Global $g_bTGRequestScreenshotHD = False
@@ -948,13 +953,13 @@ Global $g_iTrainArmyFullTroopPct = 100
 Global $g_bTotalCampForced = False, $g_iTotalCampForcedValue = 200
 Global $g_bForceBrewSpells = False
 Global $g_iTotalSpellValue = 0
-Global $g_bDoubleTrain, $g_bDoubleTrainDone = False, $g_bChkMultiClick, $g_iMultiClick = 1 ; DoubleTrain Demen
+Global $g_bDoubleTrain, $g_bDoubleTrainDone = False, $g_bChkMultiClick, $g_iMultiClick = 1 ; EDITED By RK MOD DoubleTrain Demen
 Global $g_abDoubleTrainDone[8] = [False, False, False, False, False, False, False, False]; DoubleTrain Demen
-Global $g_aiQueueTroops[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; DoubleTrain Demen
-Global $g_aiQueueSpells[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; DoubleTrain Demen
+Global $g_aiQueueTroops[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; ADDED By RK MOD DoubleTrain Demen
+Global $g_aiQueueSpells[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]; ADDED By RK MOD DoubleTrain Demen
 
 ; <><><><> Attack Plan / Train Army / Boost <><><><>
-Global $g_iCmbBoostBarracks = 0, $g_iCmbBoostSpellFactory = 0, $g_iCmbBoostBarbarianKing = 0, $g_iCmbBoostArcherQueen = 0, $g_iCmbBoostWarden = 0
+Global $g_iCmbBoostBarracks = 0, $g_iCmbBoostSpellFactory = 0, $g_iCmbBoostBarbarianKing = 0, $g_iCmbBoostArcherQueen = 0, $g_iCmbBoostWarden = 0; EDITED By RK MOD 
 Global $g_abBoostBarracksHours[24] = [True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True, True]
 
 ; <><><><> Attack Plan / Train Army / Train Order <><><><>
@@ -1103,6 +1108,7 @@ Global $g_aiCollectorLevelFill[13] = [-1, -1, -1, -1, -1, -1, 1, 1, 1, 1, 1, 1, 
 Global $g_bCollectorFilterDisable = False
 Global $g_iCollectorMatchesMin = 3
 Global $g_iCollectorToleranceOffset = 0
+;------------------ADDED By RK MOD - START------------------
 ; Check Collector Outside - RK MOD
 Global $g_bScanMineAndElixir = False
 #region Check Collectors Outside
@@ -1115,6 +1121,7 @@ Global $g_bDBCollectorsNearRedline = 1, $g_bSkipCollectorCheck = 1, $g_bSkipColl
 Global $g_iCmbRedlineTiles = 1, $g_iCmbSkipCollectorCheckTH = 1
 Global $g_iTxtSkipCollectorGold = 400000, $g_iTxtSkipCollectorElixir = 400000, $g_iTxtSkipCollectorDark = 0
 #endregion
+;------------------ADDED By RK MOD - END------------------
 
 ; <><><><> Attack Plan / Search & Attack / Activebase / Search <><><><>
 ; <<< nothing here - all in common Search & Attack grouping >>>
@@ -1147,7 +1154,10 @@ Global $g_iAtkTBEnableCount = 150, $g_iAtkTBMaxTHLevel = 0, $g_iAtkTBMode = 0
 Global $g_bSearchReductionEnable = False, $g_iSearchReductionCount = 20, $g_iSearchReductionGold = 2000, $g_iSearchReductionElixir = 2000, $g_iSearchReductionGoldPlusElixir = 4000, _
 		$g_iSearchReductionDark = 100, $g_iSearchReductionTrophy = 2
 Global $g_iSearchDelayMin = 0, $g_iSearchDelayMax = 0
-Global $g_bSearchAttackNowEnable = False, $g_iSearchAttackNowDelay = 0, $g_bSearchRestartEnable = False, $g_iSearchRestartLimit = 25, $g_bSearchAlertMe = True
+;------------------CUSTOM LOGIC By RK MOD - START------------------
+Global $g_bSearchAttackNowEnable = False, $g_iSearchAttackNowDelay = 0, $g_bSearchRestartEnable = False, $g_iSearchRestartLimit = 25, $g_bSearchAlertMe = True ; EDITED By RK MOD
+;Global $g_asHeroHealTime[3] = ["", "", ""] ; REMOVED By RK MOD
+;------------------CUSTOM LOGIC By RK MOD - END------------------
 
 ; <><><><> Attack Plan / Search & Attack / Options / Attack <><><><>
 Global $g_iActivateQueen = 0, $g_iActivateKing = 0, $g_iActivateWarden = 0
@@ -1212,9 +1222,11 @@ Global $g_aiAttackedCountSwitch[8], $g_iActiveSwitchCounter = 0, $g_iDonateSwitc
 Global $g_aiRemainTrainTime[8], $g_aiTimerStart[8], $g_abPBActive[8]
 Global $g_aiGoldTotalAcc[8], $g_aiElixirTotalAcc[8], $g_aiDarkTotalAcc[8], $g_aiTrophyLootAcc[8], $g_aiSkippedVillageCountAcc[8], $g_aiAttackedCountAcc[8] ; Total Gain
 Global $g_aiGoldCurrentAcc[8], $g_aiElixirCurrentAcc[8], $g_aiDarkCurrentAcc[8], $g_aiTrophyCurrentAcc[8], $g_aiFreeBuilderCountAcc[8], $g_aiTotalBuilderCountAcc[8], $g_aiGemAmountAcc[8], $g_aiPersonalBreak[8] ; village report
+;------------------ADDED By RK MOD - START------------------
 Global $g_abChkSetFarm[8], _
 		$g_aiCmbAction1[8], $g_aiCmbCriteria1[8], $g_aiTxtResource1[8], $g_aiCmbTime1[8], _
 		$g_aiCmbAction2[8], $g_aiCmbCriteria2[8], $g_aiTxtResource2[8], $g_aiCmbTime2[8]
+;------------------ADDED By RK MOD - END------------------
 
 ; <><><><> Bot / Stats <><><><>
 ; <<< nothing here >>>
@@ -1368,10 +1380,10 @@ Global Const $g_aaiTroopsToBeUsed[12] = [$g_aiUseAllTroops, $g_aiUseBarracks, $g
 Global $g_bTHSnipeUsedKing = False
 Global $g_bTHSnipeUsedQueen = False
 Global $g_bTHSnipeUsedWarden = False
-Global $g_avAttackTroops[22][2] ;11 Slots of troops -  Name, Amount (was [12][2], + 11 slots extended (Slot11+)) RK Mod by Demen
-Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; Slot11+
+Global $g_avAttackTroops[22][2] ;11 Slots of troops -  Name, Amount (+ 11 extended slots Slot11+) RK Mod by Demen
 Global $g_bFullArmy = False ;Check for full army or not
 Global $g_iKingSlot = -1, $g_iQueenSlot = -1, $g_iWardenSlot = -1, $g_iClanCastleSlot = -1
+Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; Slot11+
 
 ; Attack - Heroes
 Global $g_iHeroWaitAttackNoBit[$g_iModeCount][3] ; Heroes wait status for attack
@@ -1533,7 +1545,7 @@ Global $g_iDonationWindowY = 0
 
 ; Drop trophy
 Global $g_bDisableDropTrophy = False ; this will be True if you tried to use Drop Throphy and did not have Tier 1 or 2 Troops to protect you expensive troops from being dropped.
-Global $g_avDTtroopsToBeUsed[7][2] = [["Barb", 0], ["Arch", 0], ["Giant", 0], ["Wall", 0], ["Gobl", 0], ["Mini", 0], ["Ball", 0]] ; DT available troops [type, qty]
+Global $g_avDTtroopsToBeUsed[7][2] = [["Barb", 0], ["Arch", 0], ["Giant", 0], ["Wall", 0], ["Gobl", 0], ["Mini", 0], ["Ball", 0]] ; DT available troops [type, qty]; EDITED By RK MOD
 
 ; Obstacles
 Global $g_bMinorObstacle = False
@@ -1699,11 +1711,11 @@ $g_oBldgImages.add($eBldgAirDefense & "_" & "0", @ScriptDir & "\imgxml\Buildings
 ; Clan Games v3
 Global $g_bChkClanGamesAir = 0, $g_bChkClanGamesGround = 0, $g_bChkClanGamesMisc = 0
 Global $g_bChkClanGamesEnabled = 0
-Global $g_bChkClanGamesOnly = 0
+Global $g_bChkClanGames60 = 0
 Global $g_bChkClanGamesLoot = 0
 Global $g_bChkClanGamesBattle = 0
 
-#include "RK MOD\RK MOD Global Variables.au3"
+#include "RK MOD\RK MOD Global Variables.au3"; ADDED By RK MOD
 Global $g_bChkClanGamesDestruction = 0
 Global $g_bChkClanGamesAirTroop = 0
 Global $g_bChkClanGamesGroundTroop = 0
@@ -1717,7 +1729,7 @@ Global $g_iPurgeMax = 5 ; [0] is unlimited , 1-10
 ; Collect Free Magic Items
 Global $g_bChkCollectFreeMagicItems = True
 
-Global $g_iChkLabCheck = 0
+Global $g_iChkLabCheck = 0 ; ADDED By RK MOD
 
 ; SC_ID without shared_prefs
 GloBal $g_bOnlySCIDAccounts =  False
@@ -1750,5 +1762,5 @@ Global $g_sBonusDE = Null
 Global $g_sPercentagesResources = Null
 
 ; Builder Status - Add RK MOD
-Global $g_sNextBuilderReadyTime = ""
-Global $g_asNextBuilderReadyTime[8] = ["", "", "", "", "", "", "", ""]
+Global $g_sNextBuilderReadyTime = "" ; ADDED By RK MOD
+Global $g_asNextBuilderReadyTime[8] = ["", "", "", "", "", "", "", ""] ; ADDED By RK MOD

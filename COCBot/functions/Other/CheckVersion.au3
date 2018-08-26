@@ -13,7 +13,7 @@
 ; Example .......: No
 ; ===============================================================================================================================
 #include-once
-
+; RK MOD TODO NEED TO MARGE THIS FILE CAREFULLY
 Global $g_sLastModversion = "" ;latest version from GIT
 Global $g_sLastModmessage = "" ;message for last version
 Global $g_sOldModversmessage = "" ;warning message for old bot

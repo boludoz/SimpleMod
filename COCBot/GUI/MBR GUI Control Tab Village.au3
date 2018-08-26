@@ -28,6 +28,7 @@
 	; $g_bChkCollect = (GUICtrlRead($g_hChkCollect) = $GUI_CHECKED)
 ; EndFunc   ;==>ChkCollect
 
+;------------------ADDED By RK MOD - START------------------
 ; Request troops for defense Add RK MOD
 Func chkRequestDefense()
     If GUICtrlRead($g_hChkRequestCCDefense) = $GUI_CHECKED Then
@@ -40,7 +41,9 @@ Func chkRequestDefense()
         Next
     EndIf
 EndFunc   ;==>chkRequestDefense
+;------------------ADDED By RK MOD - END------------------
 
+;------------------CUSTOM LOGIC By RK MOD - START------------------
 Func chkRequestCCHours()
 	Local $bWasRedraw = SetRedrawBotWindow(False, Default, Default, Default, "chkRequestCCHours")
 
@@ -59,7 +62,7 @@ Func chkRequestCCHours()
 
 	SetRedrawBotWindowControls($bWasRedraw, $g_hGrpRequestCC, "chkRequestCCHours")
 EndFunc   ;==>chkRequestCCHours
-
+;------------------CUSTOM LOGIC By RK MOD - END------------------
 
 Func cmbClanCastleSpell()
 	Local $iSpellSelection = _GUICtrlComboBox_GetCurSel($g_hCmbClanCastleSpell)
@@ -72,6 +75,7 @@ Func cmbClanCastleSpell()
 	EndIf
 EndFunc   ;==>cmbDBWaitForCCSpell
 
+;------------------ADDED By RK MOD - START------------------
 ; Skip request CC - Add RK MOD
 Func chkSkipRequestCC()
 	If GUICtrlRead($g_hChkSkipRequestCC) = $GUI_CHECKED Then
@@ -94,6 +98,7 @@ Func chkSkipRequestCC()
 		Next
 	EndIf
 EndFunc   ;==>chkSkipRequestCC
+;------------------ADDED By RK MOD - END------------------
 
 Func chkRequestCCHoursE1()
 	If GUICtrlRead($g_hChkRequestCCHoursE1) = $GUI_CHECKED And GUICtrlRead($g_ahChkRequestCCHours[0]) = $GUI_CHECKED Then
@@ -167,7 +172,9 @@ Func chkDonateHoursE2()
 	GUICtrlSetState($g_ahChkDonateHoursE2, $GUI_UNCHECKED)
 EndFunc   ;==>chkDonateHoursE2
 
+;------------------ADDED By RK MOD - START------------------
 ; Request CC Troops at first - RK MOD
 Func chkReqCCFirst()
 	$g_bReqCCFirst = (GUICtrlRead($g_hChkReqCCFirst) = $GUI_CHECKED)
 EndFunc   ;==>chkReqCCFirst
+;------------------ADDED By RK MOD - END------------------

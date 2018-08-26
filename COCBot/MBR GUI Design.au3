@@ -105,7 +105,7 @@ Global $g_bBotDockedShrinked = False ; Bot is shrinked or not when docked
 Global $g_hFrmBotButtons, $g_hFrmBotLogoUrlSmall, $g_hFrmBotEx = 0, $g_hLblBotTitle, $g_hLblBotShrink = 0, $g_hLblBotExpand = 0, $g_hLblBotMiniGUI = 0, $g_hLblBotNormalGUI = 0 _
 		, $g_hLblBotMinimize = 0, $g_hLblBotClose = 0, $g_hFrmBotBottom = 0, $g_hFrmBotEmbeddedShield = 0, $g_hFrmBotEmbeddedShieldInput = 0, $g_hFrmBotEmbeddedGraphics = 0
 Global $g_hFrmBot_MAIN_PIC = 0, $g_hFrmBot_URL_PIC = 0, $g_hFrmBot_URL_PIC2 = 0
-Global $g_hTabMain = 0, $g_hTabLog = 0, $g_hTabVillage = 0, $g_hTabAttack = 0, $g_hTabBot = 0, $g_hTabAbout = 0, $g_hTabMOD = 0
+Global $g_hTabMain = 0, $g_hTabLog = 0, $g_hTabVillage = 0, $g_hTabAttack = 0, $g_hTabBot = 0, $g_hTabAbout = 0, $g_hTabMOD = 0; ADDED By RK MOD
 Global $g_hStatusBar = 0
 Global $g_hTiShow = 0, $g_hTiHide = 0, $g_hTiDonate = 0, $g_hTiAbout = 0, $g_hTiStartStop = 0, $g_hTiPause = 0, $g_hTiExit = 0
 Global $g_aFrmBotPosInit[8] = [0, 0, 0, 0, 0, 0, 0, 0]
@@ -373,8 +373,10 @@ Func CreateMainGUIControls($bGuiModeUpdate = False)
 	SplashStep(GetTranslatedFileIni("MBR GUI Design - Loading", "SplashStep_05", "Loading Attack tab..."))
 	CreateAttackTab()
     
+    	;------------------ADDED By RK MOD - START------------------
 	SplashStep("Loading MOD tab...")
-    CreateMODTab()
+    	CreateMODTab()
+	;------------------ADDED By RK MOD - END------------------
 	
 	SplashStep(GetTranslatedFileIni("MBR GUI Design - Loading", "SplashStep_06", "Loading Bot tab..."))
 	CreateBotTab() ; also creates  $g_hLastControlToHide
@@ -400,7 +402,7 @@ Func CreateMainGUIControls($bGuiModeUpdate = False)
 	$g_hTabLog = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_01", "Log"))
 	$g_hTabVillage = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_02", "Village"))
 	$g_hTabAttack = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_03", "Attack Plan"))
-	$g_hTabMOD = GUICtrlCreateTabItem(" RK MOD")
+	$g_hTabMOD = GUICtrlCreateTabItem(" RK MOD"); ADDED By RK MOD
 	$g_hTabBot = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_04", "Bot"))
 	$g_hTabAbout = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_05", "About Us"))
 	GUICtrlCreateTabItem("")
@@ -429,9 +431,11 @@ Func CreateMainGUIControls($bGuiModeUpdate = False)
 	Static $g_hGUI_BOT_TAB_ImageList = 0
 	Static $g_hGUI_STATS_TAB_ImageList = 0
 	
+	;------------------ADDED By RK MOD - START------------------
 	Static $g_HGUI_MOD_TAB_ImageList = 0
 	Bind_ImageList($g_hGUI_MOD_TAB, $g_HGUI_MOD_TAB_ImageList)
-
+	;------------------ADDED By RK MOD - END------------------
+	
 	Bind_ImageList($g_hTabMain, $g_hTabMain_ImageList)
 
 	Bind_ImageList($g_hGUI_VILLAGE_TAB, $g_hGUI_VILLAGE_TAB_ImageList)

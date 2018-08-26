@@ -13,13 +13,16 @@
 ; Example .......: No
 ; ===============================================================================================================================
 #include-once
+; RK MOD TODO NEED TO MARGE THIS FILE CAREFULLY
 
+;------------------EDITED By RK MOD - START------------------
 ; GFTO- RK MOD
 Global $g_hGUI_DONATE = 0, $g_hGUI_DONATE_TAB = 0, $g_hGUI_DONATE_TAB_ITEM1 = 0, $g_hGUI_DONATE_TAB_ITEM2 = 0, $g_hGUI_DONATE_TAB_ITEM3 = 0, $g_hGUI_DONATE_TAB_ITEM4 = 0
 Global $g_hLblGFTO = 0, $g_hChkUseGTFO = 0, $g_hTxtMinSaveGTFO_Elixir = 0, $g_hTxtMinSaveGTFO_DE = 0, $g_hTxtCyclesGTFO = 0
 Global $g_hLblKickout = 0, $g_hChkUseKickOut = 0, $g_hTxtDonatedCap = 0, $g_hTxtReceivedCap = 0, $g_hChkKickOutSpammers = 0, $g_hTxtKickLimit = 0
 Global $g_hLblInitialDonated = 0, $g_hLblCurrentDonated = 0, $g_hGUI_GTFOMOD = 0
 Global $g_hChkGTFOClanHop = False, $g_hChkGTFOReturnClan = False
+
 
 ; Request
 Global $g_hChkRequestTroopsEnable = 0, $g_hTxtRequestCC = 0, $g_ahChkRequestCCHours[24] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -39,7 +42,7 @@ Global $g_hChkRusLang2 = 0
 
 ; Request troops for defense Add RK MOD
 Global $g_hChkRequestCCDefense, $g_hTxtRequestCCDefense, $g_hCmbRequestCCDefenseWhen, $g_hTxtRequestCCDefenseTime
-
+;------------------EDITED By RK MOD - END------------------
 ; Donate
 Global $g_hChkExtraAlphabets = 0, $g_hChkExtraChinese = 0, $g_hChkExtraKorean = 0, $g_hChkExtraPersian = 0
 Global $g_ahChkDonateTroop[$eTroopCount + $g_iCustomDonateConfigs + $eSiegeMachineCount] = 		[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0 ]
