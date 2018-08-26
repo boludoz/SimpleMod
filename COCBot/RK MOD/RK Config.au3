@@ -43,12 +43,6 @@ Func ReadConfig_RKMod()
 	IniReadS($itxtForecastHopingSwitchMin, $g_sProfileConfigPath, "RK Forecast", "txtForecastHopingSwitchMin", 2, "Int")
 	IniReadS($icmbSwLang, $g_sProfileConfigPath, "RK Forecast", "cmbSwLang", 1, "int")
 
-	;==================================================== Skip Request CC - Added by RK MOD ============================ ;
-
-	$g_bSkipRequestCC = (IniRead($g_sProfileConfigPath, "donate", "SkipRequestCC", "0") = "1")
-	$g_iSkipRequestCCTroop = Int(IniRead($g_sProfileConfigPath, "donate", "SkipRequestCC_Troop", "0"))
-	$g_iSkipRequestCCSpell = Int(IniRead($g_sProfileConfigPath, "donate", "SkipRequestCC_Spell", "0"))
-
 	;================================================== Move the Request CC Troops - Added by RK MOD =================== ;
 
 	IniReadS($g_bReqCCFirst, $g_sProfileConfigPath, "planned", "ReqCCFirst", $g_bReqCCFirst, "Bool")
@@ -183,12 +177,6 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	_Ini_Add("RK Forecast", "chkForecastHopingSwitchMax", $ichkForecastHopingSwitchMax ? 1 : 0)
 	_Ini_Add("RK Forecast", "chkForecastHopingSwitchMin", $ichkForecastHopingSwitchMin ? 1 : 0)
 	_Ini_Add("RK Forecast", "cmbSwLang", _GUICtrlComboBox_GetCurSel($cmbSwLang))
-
-	 ; ================================================== Skip Request CC - Added by RK MOD  ============================ ;
-
-	_Ini_Add("donate", "SkipRequestCC", $g_bSkipRequestCC ? 1 : 0)
-	_Ini_Add("donate", "SkipRequestCC_Troop", $g_iSkipRequestCCTroop)
-	_Ini_Add("donate", "SkipRequestCC_Spell", $g_iSkipRequestCCSpell)
 
 	;================================================== Move the Request CC Troops - Added by RK MOD ==================== ;
 
@@ -331,12 +319,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$icmbSwLang = _GUICtrlComboBox_GetCurSel($cmbSwLang)
 			$iTxtForecastPause = GUICtrlRead($txtForecastPause)
 
-			; ================================================== ; Skip Request CC  - Added by RK MOD ======================= ;
-
-			$g_bSkipRequestCC = (GUICtrlRead($g_hChkSkipRequestCC) = $GUI_CHECKED)
-			$g_iSkipRequestCCTroop = GUICtrlRead($g_hTxtSkipRequestCCTroop)
-			$g_iSkipRequestCCSpell = GUICtrlRead($g_hTxtSkipRequestCCSpell)
-
 			; =============================================== Move the Request CC Troops - Added by RK MOD =================== ;
 
 			$g_bReqCCFirst = (GUICtrlRead($g_hChkReqCCFirst) = $GUI_CHECKED)
@@ -477,12 +459,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			chkForecastHopingSwitchMin()
 			_GUICtrlComboBox_SetCurSel($cmbSwLang, $icmbSwLang)
 
-			; ================================================== Skip Request CC - Added by RK MOD ============================= ;
-
-			GUICtrlSetState($g_hChkSkipRequestCC, $g_bSkipRequestCC ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetData($g_hTxtSkipRequestCCTroop, $g_iSkipRequestCCTroop)
-			GUICtrlSetData($g_hTxtSkipRequestCCSpell, $g_iSkipRequestCCSpell)
-            chkSkipRequestCC()
 			; ================================================== Move the Request CC Troops - Added by RK MOD ================== ;
 
 			GUICtrlSetState($g_hChkReqCCFirst, $g_bReqCCFirst = True ? $GUI_CHECKED : $GUI_UNCHECKED)

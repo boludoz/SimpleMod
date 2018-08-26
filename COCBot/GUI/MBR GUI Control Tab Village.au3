@@ -43,26 +43,59 @@ Func chkRequestDefense()
 EndFunc   ;==>chkRequestDefense
 ;------------------ADDED By RK MOD - END------------------
 
-;------------------CUSTOM LOGIC By RK MOD - START------------------
 Func chkRequestCCHours()
 	Local $bWasRedraw = SetRedrawBotWindow(False, Default, Default, Default, "chkRequestCCHours")
 
 	If GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hTxtRequestCC, $GUI_SHOW + $GUI_ENABLE)
-		For $i = $g_hChkSkipRequestCC To $g_hLblRequestCCHoursPM ; Skip request CC - Demen
- 			GUICtrlSetState($i, $GUI_ENABLE)
- 		Next
-		chkSkipRequestCC() ; Skip request CC - Add RK MOD
+		For $i = $g_hLblRequestType To $g_hLblRequestCCHoursPM
+			GUICtrlSetState($i, $GUI_ENABLE)
+		Next
+		chkRequestCountCC()
 	Else
 		GUICtrlSetState($g_hTxtRequestCC, $GUI_SHOW + $GUI_DISABLE)
-		For $i = $g_hChkSkipRequestCC To $g_hLblRequestCCHoursPM ; Skip request CC - Demen
- 			GUICtrlSetState($i, $GUI_DISABLE)
- 		Next
+		For $i = $g_hLblRequestType To $g_hLblRequestCCHoursPM
+			GUICtrlSetState($i, $GUI_DISABLE)
+		Next
 	EndIf
 
 	SetRedrawBotWindowControls($bWasRedraw, $g_hGrpRequestCC, "chkRequestCCHours")
 EndFunc   ;==>chkRequestCCHours
-;------------------CUSTOM LOGIC By RK MOD - END------------------
+
+Func chkRequestCountCC()
+	If GUICtrlRead($g_hChkRequestType_Troops) = $GUI_CHECKED Then
+		GUICtrlSetState($g_hTxtRequestCountCCTroop, $GUI_ENABLE)
+		For $i = $g_ahCmbClanCastleTroop[0] To $g_ahCmbClanCastleTroop[2]
+			GUICtrlSetState($i, $GUI_ENABLE)
+		Next
+		CmbClanCastleTroop()
+	Else
+		GUICtrlSetState($g_hTxtRequestCountCCTroop, $GUI_DISABLE)
+		For $i = $g_ahCmbClanCastleTroop[0] To $g_ahTxtClanCastleTroop[2]
+			GUICtrlSetState($i, $GUI_DISABLE)
+		Next
+	EndIf
+	If GUICtrlRead($g_hChkRequestType_Spells) = $GUI_CHECKED Then
+		GUICtrlSetState($g_hTxtRequestCountCCSpell, $GUI_ENABLE)
+		GUICtrlSetState($g_hCmbClanCastleSpell, $GUI_ENABLE)
+		cmbClanCastleSpell()
+	Else
+		GUICtrlSetState($g_hTxtRequestCountCCSpell, $GUI_DISABLE)
+		GUICtrlSetState($g_hCmbClanCastleSpell, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtClanCastleSpell, $GUI_DISABLE)
+		GUICtrlSetState($g_hCmbClanCastleSpell2, $GUI_DISABLE)
+	EndIf
+EndFunc   ;==>chkRequestCountCC
+
+Func CmbClanCastleTroop()
+	For $i = 0 To UBound($g_ahCmbClanCastleTroop) - 1
+		If _GUICtrlComboBox_GetCurSel($g_ahCmbClanCastleTroop[$i]) <= $eTroopBowler Then
+			GUICtrlSetState($g_ahTxtClanCastleTroop[$i], $GUI_ENABLE)
+		Else
+			GUICtrlSetState($g_ahTxtClanCastleTroop[$i], $GUI_DISABLE)
+		EndIf
+	Next
+EndFunc   ;==>CmbClanCastleTroop
 
 Func cmbClanCastleSpell()
 	Local $iSpellSelection = _GUICtrlComboBox_GetCurSel($g_hCmbClanCastleSpell)
@@ -74,31 +107,6 @@ Func cmbClanCastleSpell()
 		GUICtrlSetState($g_hTxtClanCastleSpell, BitOR($GUI_SHOW, $GUI_ENABLE))
 	EndIf
 EndFunc   ;==>cmbDBWaitForCCSpell
-
-;------------------ADDED By RK MOD - START------------------
-; Skip request CC - Add RK MOD
-Func chkSkipRequestCC()
-	If GUICtrlRead($g_hChkSkipRequestCC) = $GUI_CHECKED Then
-		For $i = $g_hTxtSkipRequestCCTroop To $g_hTxtSkipRequestCCSpell
-			GUICtrlSetState($i, $GUI_ENABLE)
-		Next
-		If GUICtrlRead($g_hTxtSkipRequestCCTroop) <= 0 Then
-			GUICtrlSetState($g_hLblSkipRequestCCTroop, $GUI_DISABLE)
-		Else
-			GUICtrlSetState($g_hLblSkipRequestCCTroop, $GUI_ENABLE)
-		EndIf
-		If GUICtrlRead($g_hTxtSkipRequestCCSpell) <= 0 Then
-			GUICtrlSetState($g_hLblSkipRequestCCSpell, $GUI_DISABLE)
-		Else
-			GUICtrlSetState($g_hLblSkipRequestCCSpell, $GUI_ENABLE)
-		EndIf
-	Else
-		For $i = $g_hTxtSkipRequestCCTroop To $g_hTxtSkipRequestCCSpell
-			GUICtrlSetState($i, $GUI_DISABLE)
-		Next
-	EndIf
-EndFunc   ;==>chkSkipRequestCC
-;------------------ADDED By RK MOD - END------------------
 
 Func chkRequestCCHoursE1()
 	If GUICtrlRead($g_hChkRequestCCHoursE1) = $GUI_CHECKED And GUICtrlRead($g_ahChkRequestCCHours[0]) = $GUI_CHECKED Then

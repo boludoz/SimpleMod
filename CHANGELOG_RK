@@ -119,6 +119,7 @@ Update to v 7.6.1
 
 **v3.0.5**
 
+Update to v 7.6.2
 
 **IMPROVED AND FIXED**
 
@@ -131,5 +132,10 @@ Update to v 7.6.1
 -- Reported Labortarty
 -- Reported Auto Upgrade
 -- Request troops for defense.
+-- Return Home by Time.
 -- Request CC First.
 -- Max logout time.
+
+** Removed **
+
+-- Skip Request CC.
