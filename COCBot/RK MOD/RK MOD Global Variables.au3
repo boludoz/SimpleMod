@@ -63,25 +63,6 @@ Global $cmbSwLang = 0
 
 Global $g_bReqCCFirst = False
 
-; ================================================ AF_SCID - Added by RK MOD ======================================== ;
-
-;Glabal Variables for Debugging
-Global $g_DebugLogAF = 0
-Global $g_DebugImageAF = 0
-
-;Global Variables to hold Function Data
-Global $g_SwitchSCIDAccFatalErrorAF = False
-Global $g_ClkSCIDDisConnBtnAF[4] = [370,215,500,230]
-Global $g_ClkSCIDLogOutBtnAF[4] = [605,285,710,310]
-Global $g_ClkSCIDConfirmBtnAF[4] = [455,430,615,455]
-Global $g_ClkSCIDLoginBtnAF[4] = [120,675,405,700]
-
-Global Const $g_sImgSCIDCross =		@ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgMIS\Cross"
-Global Const $g_sImgSCIDAccs =		@ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgAccs"
-Global Const $g_sImgSCIDOr =		@ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgMIS\Or"
-
-Global $g_bChkAltuFaltuSCID = False        
-
 ; ================================================ AutoCamp - by RK MOD ======================================== ;
 
 Global $g_iChkAutoCamp = 0

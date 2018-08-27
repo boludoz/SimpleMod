@@ -21,9 +21,6 @@
 
 #include "RK Forecast.au3"
 
-#include "RK AF_SCID\AF_SCID Switch Acc.au3"
-#include "RK AF_SCID\AF_Various ImgSearch.au3"
-
 #include "RK Auto update camps.au3" ; (#ID135-)
 #include "RK Check Stop For War\CheckStopForWar.au3"
 

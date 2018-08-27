@@ -404,29 +404,18 @@ Func chkAccSwitchMode()
 		$g_bChkGooglePlay = True
 		$g_bChkSuperCellID = False
 		$g_bChkSharedPrefs = False
-		$g_bChkAltuFaltuSCID = False	; AltuFaltu-n ADDED By RK MOD 
 	ElseIf GUICtrlRead($g_hRadSwitchSuperCellID) = $GUI_CHECKED Then
 		$g_bChkGooglePlay = False
 		$g_bChkSuperCellID = True
 		$g_bChkSharedPrefs = False
-		$g_bChkAltuFaltuSCID = False	; AltuFaltu-n ADDED By RK MOD 
 	ElseIf GUICtrlRead($g_hRadSwitchSharedPrefs) = $GUI_CHECKED Then
 		$g_bChkGooglePlay = False
 		$g_bChkSuperCellID = False
 		$g_bChkSharedPrefs = True
-		;------------------ADDED By RK MOD - START------------------
-		$g_bChkAltuFaltuSCID = False	;AltuFaltu-n
-	ElseIf GUICtrlRead($g_hRadAltuFaltuSCID) = $GUI_CHECKED Then	;AltuFaltu-s
-		$g_bChkGooglePlay = False
-		$g_bChkSuperCellID = False
-		$g_bChkSharedPrefs = False
-		$g_bChkAltuFaltuSCID = True	;AltuFaltu-e
-		;------------------ADDED By RK MOD - END------------------
 	Else
 		$g_bChkGooglePlay = False
 		$g_bChkSuperCellID = False
 		$g_bChkSharedPrefs = False
-		$g_bChkAltuFaltuSCID = False	;AltuFaltu-n ADDED By RK MOD 
 	EndIf
 EndFunc   ;==>chkAccSwitchMode
 
