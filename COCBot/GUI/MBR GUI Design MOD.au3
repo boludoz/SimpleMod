@@ -53,7 +53,7 @@ Global $g_ahumanMessage[2] = ["", ""]
 ; ================================================== ChatBOT PART ================================================== ;
 
 Global $g_hCmblang = 0
-Global $g_hChkGlobalChat = 0, $g_hChkGlobalScramble = 0, $g_hChkSwitchLang = 0, $g_hChkClanChat = 0
+Global $g_hChkGlobalChat = 0, $g_hChkGlobalScramble = 0, $g_hChkSwitchLang = 0, $g_hChkClanChat = 0, $g_hChkCleverbot = 0
 Global $g_hChkUseResponses = 0, $g_hChkUseGeneric = 0, $g_hChkChatNotify = 0, $g_hChkPbSendNewChats = 0, $g_hChkRusLang = 0
 Global $g_hTxtEditGlobalMessages1 = "", $g_hTxtEditGlobalMessages2 = ""
 Global $g_hTxtEditResponses = 0, $g_hTxtEditGeneric = 0, $ChatbotQueuedChats[0], $ChatbotReadQueued = False, $ChatbotReadInterval = 0, $ChatbotIsOnInterval = False, $TmpResp
@@ -325,7 +325,7 @@ Func TabItem3()
    _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkGlobalScramble_02", "Scramble the message pieces defined in the textboxes below to be in a random order"))
    GUICtrlSetState(-1, $GUI_UNCHECKED)
    GUICtrlSetOnEvent(-1, "chkGlobalScramble")
-
+      
    $g_hChkSwitchLang = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkSwitchLang_01", "Switch languages"), 270 - $x, 184 - $y, 115, 17)
    _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkSwitchLang_02", "Switch languages after spamming for a new global chatroom"))
    GUICtrlSetState(-1, $GUI_UNCHECKED)
@@ -368,7 +368,11 @@ Func TabItem3()
    _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkUseGeneric_02", "Use generic chats if reading the latest chat failed or there are no new chats"))
    GUICtrlSetState(-1, $GUI_UNCHECKED)
    GUICtrlSetOnEvent(-1, "chkUseGeneric")
-
+   
+   $g_hChkCleverbot = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkCleverbot_01", "Cleverbot"), 70 - $x, 450 - $y, 97, 17)
+   _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkCleverbot_02", "Enabele on this function to communicate Cleverbot with your clan"))
+   GUICtrlSetState(-1, $GUI_UNCHECKED)
+   GUICtrlSetOnEvent(-1, "chkCleverbot")
 
    _GUICtrlCreateIcon ($g_sLibIconPath, $eIcnTelegram, $x + 7, $y + 223, 32, 32)
    $g_hChkChatNotify = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkChatNotify_01", "Use remote for chatting"), 70 - $x, 480 - $y, 126, 17)
@@ -380,8 +384,7 @@ Func TabItem3()
    _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkPbSendNewChats_02", "Will send an image of your clan chat via pushbullet & telegram when a new chat is detected. Not guaranteed to be 100% accurate."))
    GUICtrlSetState(-1, $GUI_UNCHECKED)
    GUICtrlSetOnEvent(-1, "chkPbSendNewChats")
-
-
+   
    $g_hTxtEditResponses = GUICtrlCreateEdit(_ArrayToString($g_iChkClanResponses, ":", -1, -1, @CRLF), 220 - $x, 380 - $y, 217, 81)
    _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "editResponses_01", "Look for the specified keywords in clan messages and respond with the responses. One item per line, in the format keyword:response"))
    GUICtrlSetOnEvent(-1, "ChatGuiEditUpdate")
@@ -391,6 +394,7 @@ Func TabItem3()
    GUICtrlSetOnEvent(-1, "ChatGuiEditUpdate")
 
    GUICtrlCreateGroup("", -99, -99, 1, 1)
+   
 EndFunc   ;==>TabItem3
 
 Func TabItem6()

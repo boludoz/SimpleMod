@@ -58,7 +58,7 @@ Func chkGlobalChat()
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_ENABLE)
 		GUICtrlSetState($g_hCmbLang, $GUI_SHOW)
-		GUICtrlSetState($g_hChkRusLang, $GUI_ENABLE)
+		GUICtrlSetState($g_hChkRusLang, $GUI_ENABLE) 
 		GUICtrlSetState($g_hTxtEditGlobalMessages1, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtEditGlobalMessages2, $GUI_ENABLE)
 	Else
@@ -106,6 +106,7 @@ Func chkClanChat()
 		GUICtrlSetState($g_hChkUseGeneric, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkChatNotify, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkPbSendNewChats, $GUI_ENABLE)
+		GUICtrlSetState($g_hChkCleverbot, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtEditResponses, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtEditGeneric, $GUI_ENABLE)
 	Else
@@ -114,6 +115,7 @@ Func chkClanChat()
 		GUICtrlSetState($g_hChkUseGeneric, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkChatNotify, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkPbSendNewChats, $GUI_DISABLE)
+		GUICtrlSetState($g_hChkCleverbot, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtEditResponses, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtEditGeneric, $GUI_DISABLE)
 	EndIf
@@ -151,11 +153,19 @@ Func chkPbSendNewChats()
 	EndIf
 EndFunc   ;==>chkPbSendNewChats
 
+Func chkCleverbot()
+    If GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED Then
+        $g_iChkCleverbot = 1
+    Else
+        $g_iChkCleverbot = 0
+    EndIf
+EndFunc ;==>chkCleverbot
+
 Func chkRusLang()
     If GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED Then
-    $g_iChkRusLang = 1
+        $g_iChkRusLang = 1
     Else
-    $g_iChkRusLang = 0
+        $g_iChkRusLang = 0
     EndIf
 EndFunc ;==>chkRusLang
 
@@ -591,8 +601,8 @@ Func ChatbotMessage() ; run the chatbot
 				Next
 			EndIf
 			
-			If not $SentMessage Then
-				Local $Response = runHelper($ChatMsg)
+			 If ($g_iChkCleverbot = 1) And Not $SentMessage Then
+				Local $Response = runHelper($ChatMsg, $g_iChkCleverbot)
 				If Not $Response = False Or not $ChatMsg = "" Or not $ChatMsg = " " Then
 				SetLog("Got cleverbot response: " & $Response, $COLOR_GREEN)
 					If Not ChatbotChatClanInput() Then Return
@@ -630,7 +640,7 @@ Func ChatbotMessage() ; run the chatbot
 EndFunc   ;==>ChatbotMessage
 
 ; Returns the response from cleverbot or simsimi, if any
-Func runHelper($msg) ; run a script to get a response from cleverbot.com or simsimi.com
+Func runHelper($msg, $g_iChkCleverbot) ; run a script to get a response from cleverbot.com or simsimi.com
  Local $command, $DOS, $HelperStartTime, $Time_Difference
  Dim $DOS, $Message = ''
 
