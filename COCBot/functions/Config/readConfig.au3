@@ -1338,7 +1338,6 @@ Func ReadConfig_SwitchAccounts()
 		$g_bChkGooglePlay = IniRead($sSwitchAccFile, "SwitchAccount", "GooglePlay", "0") = "1"
 		$g_bChkSuperCellID = IniRead($sSwitchAccFile, "SwitchAccount", "SuperCellID", "0") = "1"
 		$g_bChkSharedPrefs = IniRead($sSwitchAccFile, "SwitchAccount", "SharedPrefs", "0") = "1"
-		$g_bChkAltuFaltuSCID = IniRead($sSwitchAccFile, "SwitchAccount", "AltuFaltuSCID", "0") = "1"	;AltuFaltu-n
 		$g_bChkSmartSwitch = IniRead($sSwitchAccFile, "SwitchAccount", "SmartSwitch", "0") = "1"
 		$g_bDonateLikeCrazy = IniRead($sSwitchAccFile, "SwitchAccount", "DonateLikeCrazy", "0") = "1"
 		$g_iTotalAcc = Int(IniRead($sSwitchAccFile, "SwitchAccount", "TotalCocAccount", "-1"))
@@ -1346,7 +1345,8 @@ Func ReadConfig_SwitchAccounts()
 		For $i = 1 To 8
 			$g_abAccountNo[$i - 1] = IniRead($sSwitchAccFile, "SwitchAccount", "AccountNo." & $i, "") = "1"
 			$g_asProfileName[$i - 1] = IniRead($sSwitchAccFile, "SwitchAccount", "ProfileName." & $i, "")
-			$g_abDonateOnly[$i - 1] = IniRead($sSwitchAccFile, "SwitchAccount", "DonateOnly." & $i, "0") = "1"
+			$g_abDonateOnly[$i - 1] = $g_abAccountNo[$i - 1] And IniRead($sSwitchAccFile, "SwitchAccount", "DonateOnly." & $i, "0") = "1"
+
 			;FarmSchedule
 			$g_abChkSetFarm[$i - 1] = IniRead($sSwitchAccFile, "FarmStrategy", "ChkSetFarm" & $i, "0") = "1"
 
@@ -1359,6 +1359,7 @@ Func ReadConfig_SwitchAccounts()
 			$g_aiCmbCriteria2[$i - 1] = Int(IniRead($sSwitchAccFile, "FarmStrategy", "CmbCriteria2" & $i, 0))
 			$g_aiTxtResource2[$i - 1] = Int(IniRead($sSwitchAccFile, "FarmStrategy", "TxtResource2" & $i, 0))
 			$g_aiCmbTime2[$i - 1] = Int(IniRead($sSwitchAccFile, "FarmStrategy", "CmbTime2" & $i, -1))
+
 		Next
 	EndIf
 EndFunc   ;==>ReadConfig_SwitchAccounts

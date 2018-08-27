@@ -2214,26 +2214,17 @@ Func ApplyConfig_600_35_2($TypeReadSave)
 				GUICtrlSetState($g_hRadSwitchGooglePlay, $GUI_CHECKED)
 				GUICtrlSetState($g_hRadSwitchSuperCellID, $GUI_UNCHECKED)
 				GUICtrlSetState($g_hRadSwitchSharedPrefs, $GUI_UNCHECKED)
-				GUICtrlSetState($g_hRadAltuFaltuSCID, $GUI_UNCHECKED)	;AltuFaltu-n
 			EndIf
 			If $g_bChkSuperCellID Then
 				GUICtrlSetState($g_hRadSwitchGooglePlay, $GUI_UNCHECKED)
 				GUICtrlSetState($g_hRadSwitchSuperCellID, $GUI_CHECKED)
 				GUICtrlSetState($g_hRadSwitchSharedPrefs, $GUI_UNCHECKED)
-				GUICtrlSetState($g_hRadAltuFaltuSCID, $GUI_UNCHECKED)	;AltuFaltu-n
 			EndIf
 			If $g_bChkSharedPrefs Then
 				GUICtrlSetState($g_hRadSwitchGooglePlay, $GUI_UNCHECKED)
 				GUICtrlSetState($g_hRadSwitchSuperCellID, $GUI_UNCHECKED)
 				GUICtrlSetState($g_hRadSwitchSharedPrefs, $GUI_CHECKED)
-				GUICtrlSetState($g_hRadAltuFaltuSCID, $GUI_UNCHECKED)	;AltuFaltu-n
 			EndIf
-			If $g_bChkAltuFaltuSCID Then	;AltuFaltu-s
-				GUICtrlSetState($g_hRadSwitchGooglePlay, $GUI_UNCHECKED)
-				GUICtrlSetState($g_hRadSwitchSuperCellID, $GUI_UNCHECKED)
-				GUICtrlSetState($g_hRadSwitchSharedPrefs, $GUI_UNCHECKED)
-				GUICtrlSetState($g_hRadAltuFaltuSCID, $GUI_CHECKED)
-			EndIf	;AltuFaltu-e
 			GUICtrlSetState($g_hChkSmartSwitch, $g_bChkSmartSwitch ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkDonateLikeCrazy, $g_bDonateLikeCrazy ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbTotalAccount, $g_iTotalAcc - 1)
@@ -2266,7 +2257,6 @@ Func ApplyConfig_600_35_2($TypeReadSave)
 			$g_bChkGooglePlay = (GUICtrlRead($g_hRadSwitchGooglePlay) = $GUI_CHECKED)
 			$g_bChkSuperCellID = (GUICtrlRead($g_hRadSwitchSuperCellID) = $GUI_CHECKED)
 			$g_bChkSharedPrefs = (GUICtrlRead($g_hRadSwitchSharedPrefs) = $GUI_CHECKED)
-			$g_bChkAltuFaltuSCID = (GUICtrlRead($g_hRadAltuFaltuSCID) = $GUI_CHECKED)	;AltuFaltu-n
 			$g_bChkSmartSwitch = (GUICtrlRead($g_hChkSmartSwitch) = $GUI_CHECKED)
 			$g_bDonateLikeCrazy = (GUICtrlRead($g_hChkDonateLikeCrazy) = $GUI_CHECKED)
 			$g_iTotalAcc = _GUICtrlComboBox_GetCurSel($g_hCmbTotalAccount) + 1 ; at least 2 accounts needed

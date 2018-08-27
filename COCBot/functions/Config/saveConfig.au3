@@ -1204,7 +1204,6 @@ Func SaveConfig_600_35_2()
 		IniWrite($sSwitchAccFile, "SwitchAccount", "GooglePlay", $g_bChkGooglePlay ? 1 : 0)
 		IniWrite($sSwitchAccFile, "SwitchAccount", "SuperCellID", $g_bChkSuperCellID ? 1 : 0)
 		IniWrite($sSwitchAccFile, "SwitchAccount", "SharedPrefs", $g_bChkSharedPrefs ? 1 : 0)
-		IniWrite($sSwitchAccFile, "SwitchAccount", "AltuFaltuSCID", $g_bChkAltuFaltuSCID ? 1 : 0)	;AltuFaltu-n
 		IniWrite($sSwitchAccFile, "SwitchAccount", "SmartSwitch", $g_bChkSmartSwitch ? 1 : 0)
 		IniWrite($sSwitchAccFile, "SwitchAccount", "DonateLikeCrazy", $g_bDonateLikeCrazy ? 1 : 0)
 		IniWrite($sSwitchAccFile, "SwitchAccount", "TotalCocAccount", $g_iTotalAcc)
@@ -1214,6 +1213,7 @@ Func SaveConfig_600_35_2()
 			IniWrite($sSwitchAccFile, "SwitchAccount", "ProfileName." & $i, $g_asProfileName[$i - 1])
 			IniWrite($sSwitchAccFile, "SwitchAccount", "DonateOnly." & $i, $g_abDonateOnly[$i - 1] ? 1 : 0)
 		Next
+
 		;FarmSchedule
 		For $i = 1 To 8
 			IniWrite($sSwitchAccFile, "FarmStrategy", "ChkSetFarm" & $i, $g_abChkSetFarm[$i - 1] ? 1 : 0)

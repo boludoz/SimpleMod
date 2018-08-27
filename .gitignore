@@ -122,6 +122,10 @@
 ![Ii]mgxml/Boost/*.png
 ![Ii]mgxml/BuilderTime/*.png
 ![Ii]mgxml/HeroTime/*.png
+![Ii]mgxml/other/SwitchAccounts/ConfirmButton/*.png
+![Ii]mgxml/other/SwitchAccounts/ListAccounts/*.png
+![Ii]mgxml/other/SwitchAccounts/LogOutButton/*.png
+![Ii]mgxml/other/SwitchAccounts/*.png
 
 ![C]OCBot/Forecast/*/*.exe
 ![Ll]ib/*.exe
