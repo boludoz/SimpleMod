@@ -161,6 +161,9 @@ Func DoubleTrain($bQuickTrain = False)
 	EndIf
 
 	If _Sleep(250) Then Return
+	
+	DoubleTrainSiege($bDebug)
+	
 	ClickP($aAway, 2, 0, "#0346") ;Click Away
 	If _Sleep(250) Then Return
 
@@ -275,6 +278,8 @@ Func DoubleQuickTrain($bSetlog, $bDebug)
 	EndIf
 
 	If _Sleep(250) Then Return
+	
+	DoubleTrainSiege($bDebug)
 
 	ClickP($aAway, 2, 0, "#0346") ;Click Away
 
