@@ -439,16 +439,16 @@ Func ApplyConfig_600_11($TypeReadSave)
 			Next
 			;------------------ADDED By RK MOD - START------------------
 			; Request defense CC (Demen)
-            GUICtrlSetState($g_hChkRequestCCDefense, $g_bRequestCCDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
-            chkRequestDefense()
+            		GUICtrlSetState($g_hChkRequestCCDefense, $g_bRequestCCDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
+           		 chkRequestDefense()
 			GUICtrlSetData($g_hTxtRequestCCDefense, $g_sRequestCCDefenseText)
 			_GUICtrlComboBox_SetCurSel($g_hCmbRequestCCDefenseWhen, $g_bRequestCCDefenseWhenPB ? 0 : 1)
-            GUICtrlSetData($g_hTxtRequestCCDefenseTime, $g_iRequestDefenseTime)
+            		GUICtrlSetData($g_hTxtRequestCCDefenseTime, $g_iRequestDefenseTime)
 			
 			; ================================================== Russian Request - by RK MOD ======================================== ;
 
 			GUICtrlSetState($g_hChkRusLang2, $g_iChkRusLang2 = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-   		    chkRusLang2()
+   		    	chkRusLang2()
 			;------------------ADDED By RK MOD - END------------------
 		Case "Save"
 			$g_bRequestTroopsEnable = (GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED)
@@ -470,10 +470,10 @@ Func ApplyConfig_600_11($TypeReadSave)
 			Next
 			;------------------ADDED By RK MOD - START------------------
 			; Request defense CC (Demen)
-            $g_bRequestCCDefense = (GUICtrlRead($g_hChkRequestCCDefense) = $GUI_CHECKED)
-            $g_sRequestCCDefenseText = GUICtrlRead($g_hTxtRequestCCDefense)
+           		 $g_bRequestCCDefense = (GUICtrlRead($g_hChkRequestCCDefense) = $GUI_CHECKED)
+            		$g_sRequestCCDefenseText = GUICtrlRead($g_hTxtRequestCCDefense)
 			$g_bRequestCCDefenseWhenPB = (_GUICtrlComboBox_GetCurSel($g_hCmbRequestCCDefenseWhen) = 0)
-            $g_iRequestDefenseTime = GUICtrlRead($g_hTxtRequestCCDefenseTime)
+            		$g_iRequestDefenseTime = GUICtrlRead($g_hTxtRequestCCDefenseTime)
 			
 			; ================================================== Russian Request - by RK MOD ================================= ;
 
@@ -2288,13 +2288,13 @@ Func ApplyConfig_600_52_1($TypeReadSave)
 			GUICtrlSetState($g_ahChkArmy[0], $g_bQuickTrainArmy[0] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_ahChkArmy[1], $g_bQuickTrainArmy[1] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_ahChkArmy[2], $g_bQuickTrainArmy[2] ? $GUI_CHECKED : $GUI_UNCHECKED)
-            GUICtrlSetState($g_hChkMultiClick, $g_bChkMultiClick ? $GUI_CHECKED : $GUI_UNCHECKED) ; Multi-ClickArmy3 - Demen
+            		GUICtrlSetState($g_hChkMultiClick, $g_bChkMultiClick ? $GUI_CHECKED : $GUI_UNCHECKED) ; Multi-ClickArmy3 - Demen
 		Case "Save"
 			$g_bQuickTrainEnable = (GUICtrlRead($g_hChkUseQuickTrain) = $GUI_CHECKED)
 			$g_bQuickTrainArmy[0] = (GUICtrlRead($g_ahChkArmy[0]) = $GUI_CHECKED)
 			$g_bQuickTrainArmy[1] = (GUICtrlRead($g_ahChkArmy[1]) = $GUI_CHECKED)
 			$g_bQuickTrainArmy[2] = (GUICtrlRead($g_ahChkArmy[2]) = $GUI_CHECKED)
-            $g_bChkMultiClick = (GUICtrlRead($g_hChkMultiClick) = $GUI_CHECKED); Multi-ClickArmy3 - Demen
+           		 $g_bChkMultiClick = (GUICtrlRead($g_hChkMultiClick) = $GUI_CHECKED); Multi-ClickArmy3 - Demen
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_52_1
 
