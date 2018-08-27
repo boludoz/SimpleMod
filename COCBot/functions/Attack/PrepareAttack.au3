@@ -45,7 +45,9 @@ Func PrepareAttack($pMatchMode, $Remaining = False, $DebugSiege = False) ;Assign
 	Else
 		SetLog("Initiating attack for: " & $g_asModeText[$pMatchMode], $COLOR_ERROR)
 	EndIf
-
+    
+	Local $hStarttime = _Timer_Init()
+	
 	; JULY 2018 @PROMAC
 	; Lets Select The CC Or Siege Machine ; $eCastle , $eWallW , $eBattleB
 	Local $aPaths = [$g_sImgSwitchSiegeCastle, $g_sImgSwitchSiegeWallWrecker, $g_sImgSwitchSiegeBattleBlimp]
