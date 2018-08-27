@@ -337,8 +337,6 @@ EndFunc   ;==>BoostWhitC
 
 
 ;_----------------------------
-;          setlog("COMPDBG")
-
 ;BuildingClickP($g_aiClanCastlePos)
 ;_Sleep(500)
 ;        If QuickMIS("BC1", $g_sImgLibr, 136, 609, 726, 711) Then
