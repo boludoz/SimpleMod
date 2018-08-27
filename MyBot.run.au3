@@ -1220,26 +1220,27 @@ Func _RunFunction($action)
 			_Sleep($DELAYRUNBOT3)
 		Case "DonateCC"
 			If $g_iActiveDonate And $g_bChkDonate Then
-				If SkipDonateNearFullTroops(True) = False Then DonateCC(); EDITED By RK MOD
+				If SkipDonateNearFullTroops(True) = False Then DonateCC() ;  was And BalanceDonRec(True) EDITED By RK MOD
 				If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			EndIf
-		;------------------CUSTOM LOGIC By RK MOD - START------------------
+		;------------------ADDED By RK MOD - START------------------
 		Case "SendChat"
 			If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
 				ChatbotMessage()
 			EndIf
+		;------------------ADDED By RK MOD - END------------------
 		Case "DonateCC,Train"
-			; ======================= RK MOD (#ID135-)
-			If $g_iChkAutoCamp = 1 Then CheckAutoCamp()
-			; ======================= RK MOD (#ID135-)
+			If $g_iChkAutoCamp = 1 Then CheckAutoCamp() ; ADDED By RK MOD(#ID135-)
+
 			If $g_iActiveDonate And $g_bChkDonate Then
+				;------------------REMOVED By RK MOD - START------------------
 				;If $g_bFirstStart Then
 				;	getArmyTroopCapacity(True, False)
 				;	getArmySpellCapacity(False, True)
 				;EndIf
-				If SkipDonateNearFullTroops(True) = False Then DonateCC()
+				;------------------REMOVED By RK MOD - END------------------
+				If SkipDonateNearFullTroops(True) = False Then DonateCC() ;  was And BalanceDonRec(True) EDITED By RK MOD
 			EndIf
-		;------------------CUSTOM LOGIC By RK MOD - END------------------
 			If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			If $g_bTrainEnabled Then ; check for training enabled in halt mode
 				If $g_iActualTrainSkip < $g_iMaxTrainSkip Then
@@ -1252,9 +1253,11 @@ Func _RunFunction($action)
 					If $g_iActualTrainSkip >= $g_iMaxTrainSkip Then
 						$g_iActualTrainSkip = 0
 					EndIf
+					;------------------REMOVED By RK MOD - START------------------
 					;CheckOverviewFullArmy(True, False) ; use true parameter to open train overview window
 					;getArmySpells()
 					;getArmyHeroCount(False, True)
+					;------------------REMOVED By RK MOD - END------------------
 				EndIf
 			Else
 				If $g_bDebugSetlogTrain Then SetLog("Halt mode - training disabled", $COLOR_DEBUG)
@@ -1270,13 +1273,13 @@ Func _RunFunction($action)
 		Case "BoostWarden"
 			BoostWarden()
 		;------------------CUSTOM LOGIC By RK MOD - START------------------
-		Case "BoostAll"
-			BoostAllWithMagicSpell()
+		Case "BoostAll" ; EDITED By RK MOD
+			BoostAllWithMagicSpell() ; EDITED By RK MOD
 		Case "LabCheck"
-			If $g_iChkLabCheck = 0 Then
+			If $g_iChkLabCheck = 0 Then ; ADDED By RK MOD
 				LabGuiDisplay()
 				_Sleep($DELAYRUNBOT3)
-			EndIf
+			EndIf ; ADDED By RK MOD
 		Case "RequestCC"
 			If Not $g_bReqCCFirst And BalanceRecRec(True) Then ; MOD move the Request CC Troops function to the beginning of the run loop
 				RequestCC()

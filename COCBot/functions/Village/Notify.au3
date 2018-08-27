@@ -506,7 +506,7 @@ Func NotifyRemoteControlProc()
 								EndIf
 						EndIf
 						EndIf
-						If not $bFoundChatMessage Then
+						If Not $bFoundChatMessage Then
 						NotifyPushToTelegram(GetTranslatedFileIni("MBR Func_Notify", "ELSE_Info_01", "Sorry Chief!, ") & $TGActionMSG & _
 						GetTranslatedFileIni("MBR Func_Notify", "ELSE_Info_02", " is not a valid command."))
 						EndIf
