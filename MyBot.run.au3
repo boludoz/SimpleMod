@@ -624,7 +624,7 @@ Func MainLoop($bCheckPrerequisitesOK = True)
 
 	; Check the Supported Emulator versions
 	CheckEmuNewVersions()
-	
+
 	;Reset Telegram message
 	NotifyGetLastMessageFromTelegram()
 	$g_iTGLastRemote = $g_sTGLast_UID
@@ -746,7 +746,7 @@ Func runBot() ;Bot that runs everything in order
 			;If $g_bFirstStart Then ProfileReport()
 			;If _Sleep($DELAYRUNBOT5) Then Return
 			;If $g_bFirstStart Then checkArmyCamp(True, True, False, True)
-			$g_bcanRequestCC = True
+			$g_bCanRequestCC = True
 			If $g_bReqCCFirst And BalanceRecRec(True) Then
 				RequestCC()
 				If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
@@ -1045,7 +1045,7 @@ Func _Idle() ;Sequence that runs until Full Army
 		If $g_bRestart = True Then ExitLoop
 		$TimeIdle += Round(__TimerDiff($hTimer) / 1000, 2) ;In Seconds
 
-		If $g_bcanRequestCC = True And BalanceRecRec(True) Then RequestCC(); EDITED By RK MOD
+		If $g_bCanRequestCC = True And BalanceRecRec(True) Then RequestCC(); EDITED By RK MOD
 
 		SetLog("Time Idle: " & StringFormat("%02i", Floor(Floor($TimeIdle / 60) / 60)) & ":" & StringFormat("%02i", Floor(Mod(Floor($TimeIdle / 60), 60))) & ":" & StringFormat("%02i", Floor(Mod($TimeIdle, 60))))
 
