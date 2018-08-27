@@ -213,12 +213,6 @@ Global $g_iChkUpgrPriority = 0, $g_iCmbUpgrdPriority = 0
 Global Const $g_iLimitBreakGE[12] = [2250, 6300, 90000, 450000, 900000, 1800000, 3600000, 5400000, 7200000, 7650000, 9000000, 10800000];Gold And Elixir Town Hall Level max resource storages at 90%
 Global Const $g_iLimitBreakDE[12] = [0, 0, 0, 0, 0, 0, 18000, 72000, 171000, 180000, 180000, 216000];Dark Elixir Town Hall Level max resource storage at 90%
 
-; ================================================== SmartTrain - RK MOD (Demen) ======================================== ;
-
-Global $g_bChkSmartTrain = False, $g_bChkPreciseArmyCamp = False, $g_bChkFillArcher = False, $g_bChkFillEQ = False, $g_iTxtFillArcher = 5
-Global Enum $g_eFull, $g_eRemained, $g_eNoTrain
-Global $g_bWrongTroop, $g_bWrongSpell, $g_sSmartTrainError = ""
-
 ; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 
 Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 5

@@ -195,6 +195,7 @@ Func StopAndPrepareForWar($iSleepTime)
 		EndIf
 
 		; Train
+		StartGainCost()
 		OpenArmyOverview(False, "StopAndPrepareForWar()")
 
 		If Not IsQueueEmpty("Troops", True, False) Then DeleteQueued("Troops")
@@ -204,9 +205,34 @@ Func StopAndPrepareForWar($iSleepTime)
 		$g_bIsFullArmywithHeroesAndSpells = False
 
 		If Not $g_bUseQuickTrainWar Then
-			SmartTrain()     
+			; Custom Train 1st set
+			Local $aWhatToRemove = WhatToTrain(True, False)
+			RemoveExtraTroops($aWhatToRemove)
+
+			Local $rWhatToTrain = WhatToTrain(False, False)
+			TrainUsingWhatToTrain($rWhatToTrain) ; troop
+			If _Sleep(500) Then Return
+
+			$rWhatToTrain = WhatToTrain(False, True)
+			TrainUsingWhatToTrain($rWhatToTrain, True) ; spell
+			If _Sleep(500) Then Return
+
+			; Train 2nd set
+			SetLog("Let's train 2nd set of troops & spells")
+			$g_bIsFullArmywithHeroesAndSpells = True
+			$g_bForceBrewSpells = True ; this is to by pass HowManyTimesWillBeUsed() in Train Revamp
+			$rWhatToTrain = WhatToTrain(False, True)
+			TrainUsingWhatToTrain($rWhatToTrain)
+			If _Sleep(500) Then Return
+			Local $TroopCamp = GetOCRCurrent(43, 160)
+			SetLog("Checking troop tab: " & $TroopCamp[0] & "/" & $TroopCamp[1] * 2)
+
+			$rWhatToTrain = WhatToTrain(False, True)
+			TrainUsingWhatToTrain($rWhatToTrain, True)
+			If _Sleep(750) Then Return
+			Local $SpellCamp = GetOCRCurrent(43, 160)
+			SetLog("Checking spell tab: " & $SpellCamp[0] & "/" & $SpellCamp[1] * 2)
 		Else
-		    StartGainCost()
 			OpenArmyTab(False, "StopAndPrepareForWar()")
 			If _Sleep(300) Then Return
 
@@ -251,7 +277,7 @@ Func StopAndPrepareForWar($iSleepTime)
 	EndIf
 
 	SetLog("It's war time, let's take a break", $COLOR_ACTION)
-
+	If $g_bTrainWarTroop Then EndGainCost("Train")
 	readConfig() ; release all war variables value for war troops & requestCC
 
 	If ProfileSwitchAccountEnabled() Then
