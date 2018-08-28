@@ -18,10 +18,10 @@ Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
 Func OneGemBoost()
 	checkMainScreen()
 	CheckHeroOneGem()
-	CheckArmyCamp(True, False)
+	OpenArmyOverview(True, "OneGemBoost()")
 	CheckTroopsOneGem()
 	CheckSpellsOneGem()
-	CheckArmyCamp(False, True)
+	ClickP($aAway, 1, 0, "#0161")
 EndFunc   ;==>OneGemBoost
 
 Func CheckOneGem()
@@ -39,40 +39,46 @@ Func CheckOneGem()
 EndFunc   ;==>CheckOneGem
 
 Func CheckHeroOneGem()
+	Local $sHeroName[3] = ["King", "Queen", "Warden"]
 	For $index = 0 To 2
 		If $index = 0 Then
 			If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
-				SetLog("Please Locate ", $COLOR_INFO)
+				SetLog("Please Locate " & $sHeroName[$index], $COLOR_INFO)
 			EndIf
 		ElseIf $index = 1 Then
 			If $g_aiQueenAltarPos[0] = "" Or $g_aiQueenAltarPos[0] = -1 Then
-				SetLog("Please Locate ", $COLOR_INFO)
+				SetLog("Please Locate " & $sHeroName[$index], $COLOR_INFO)
 			EndIf
 		ElseIf $index = 2 Then
 			If $g_aiWardenAltarPos[0] = "" Or $g_aiWardenAltarPos[0] = -1 Then
-				SetLog("Please Locate ", $COLOR_INFO)
+				SetLog("Please Locate " & $sHeroName[$index], $COLOR_INFO)
 			EndIf
 		EndIf
 
 		If $index = 0 Then BuildingClickP($g_aiKingAltarPos, "#0462")
 		If $index = 1 Then BuildingClickP($g_aiQueenAltarPos, "#0462")
 		If $index = 2 Then BuildingClickP($g_aiWardenAltarPos, "#0462")
+		
+		_Sleep($DELAYBOOSTHEROES1)
 
 		Local $Boost = findButton("BoostOne")
 		If IsArray($Boost) Then
 			If $g_bDebugSetlog Then SetDebugLog("Boost Button X|Y = " & $Boost[0] & "|" & $Boost[1], $COLOR_DEBUG)
 			Click($Boost[0], $Boost[1], 1, 0, "#0463")
 			If _Sleep($DELAYBOOSTHEROES1) Then Return
-			If Not CheckOneGem() Then ContinueLoop
 			$Boost = findButton("GEM")
 			If IsArray($Boost) Then
+				If Not CheckOneGem() Then
+					ClickP($aAway, 1, 0, "#0161")
+					ContinueLoop
+				EndIf
 				Click($Boost[0], $Boost[1], 1, 0, "#0464")
 				If _Sleep($DELAYBOOSTHEROES4) Then Return
 				If IsArray(findButton("EnterShop")) Then
-					SetLog("Not enough gems to boost " & $sName, $COLOR_ERROR)
+					SetLog("Not enough gems to boost " & $sHeroName[$index], $COLOR_ERROR)
 				EndIf
 			Else
-				SetLog($sName & " is already Boosted", $COLOR_SUCCESS)
+				SetLog($sHeroName[$index] & " is already Boosted", $COLOR_SUCCESS)
 			EndIf
 		EndIf
 	Next
@@ -82,15 +88,18 @@ Func CheckTroopsOneGem()
 	OpenTroopsTab(True, "CheckTroopsOneGem()")
 	Local $aBoostBtn = findButton("BoostBarrack")
 	If IsArray($aBoostBtn) Then
-		If Not CheckOneGem() Then Return
 		ClickP($aBoostBtn)
 		_Sleep($DELAYBOOSTBARRACKS1)
 		Local $aGemWindowBtn = findButton("GEM")
 		If IsArray($aGemWindowBtn) Then
+			If Not CheckOneGem() Then
+				ClickP($aAway, 1, 0, "#0161")
+				Return
+			EndIf
 			ClickP($aGemWindowBtn)
 			_Sleep($DELAYBOOSTBARRACKS2)
 			If IsArray(findButton("EnterShop")) Then
-				SetLog("Not enough gems to boost " & $sName, $COLOR_ERROR)
+				SetLog("Not enough gems to boost ", $COLOR_ERROR)
 			EndIf
 		EndIf
 	EndIf
@@ -98,18 +107,21 @@ Func CheckTroopsOneGem()
 EndFunc   ;==>CheckTroopsOneGem
 
 Func CheckSpellsOneGem()
-	OpenSpellsTab(True, "CheckTroopsOneGem()")
+	OpenSpellsTab(True, "CheckSpellsOneGem()")
 	Local $aBoostBtn = findButton("BoostBarrack")
 	If IsArray($aBoostBtn) Then
-		If Not CheckOneGem() Then Return
 		ClickP($aBoostBtn)
 		_Sleep($DELAYBOOSTBARRACKS1)
+		If Not CheckOneGem() Then
+			ClickP($aAway, 1, 0, "#0161")
+			Return
+		EndIf
 		Local $aGemWindowBtn = findButton("GEM")
 		If IsArray($aGemWindowBtn) Then
 			ClickP($aGemWindowBtn)
 			_Sleep($DELAYBOOSTBARRACKS2)
 			If IsArray(findButton("EnterShop")) Then
-				SetLog("Not enough gems to boost " & $sName, $COLOR_ERROR)
+				SetLog("Not enough gems to boost ", $COLOR_ERROR)
 			EndIf
 		EndIf
 	EndIf
