@@ -56,6 +56,7 @@ Func chkGlobalChat()
     $g_iChkChatGlobal = 1
     If GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_ENABLE)
+		GUICtrlSetState($g_hChkDelayTime, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_ENABLE)
 		GUICtrlSetState($g_hCmbLang, $GUI_SHOW)
 		GUICtrlSetState($g_hChkRusLang, $GUI_ENABLE) 
@@ -65,6 +66,7 @@ Func chkGlobalChat()
 	    $g_iChkChatGlobal = 0
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_DISABLE)
+		GUICtrlSetState($g_hChkDelayTime, $GUI_DISABLE)
 		GUICtrlSetState($g_hCmbLang, $GUI_INDETERMINATE)
 		GUICtrlSetState($g_hChkRusLang, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtEditGlobalMessages1, $GUI_DISABLE)
@@ -76,6 +78,10 @@ Func chkGlobalChat()
     	GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
 	EndIf
 EndFunc ;==>chkGlobalChat
+
+Func chkDelayTime()
+    GUICtrlSetState($g_hTxtDelayTimerun, GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED ? $GUI_ENABLE : $GUI_DISABLE)
+EndFunc   ;==>chkReturnTimer
 
 
 Func chkGlobalScramble()
@@ -563,7 +569,7 @@ Func ChatbotMessage() ; run the chatbot
 
 			Dim $Tmp[0] ; clear queue
 			$ChatbotQueuedChats = $Tmp
-             _sleep(2000)
+             _Sleep(2000)
 			ChatbotNotifySendChat()
 
 			If Not ChatbotChatClose() Then Return
@@ -603,7 +609,8 @@ Func ChatbotMessage() ; run the chatbot
 			
 			 If ($g_iChkCleverbot = 1) And Not $SentMessage Then
 				Local $Response = runHelper($ChatMsg, $g_iChkCleverbot)
-				If Not $Response = False Or not $ChatMsg = "" Or not $ChatMsg = " " Then
+				If Not $Response = False Or Not $ChatMsg = "" Or Not $ChatMsg = " " Then
+				;If Not _Encoding_JavaUnicodeDecode($sString) Then Return
 				SetLog("Got cleverbot response: " & $Response, $COLOR_GREEN)
 					If Not ChatbotChatClanInput() Then Return
 					If Not ChatbotChatInput($Response) Then Return
@@ -641,7 +648,7 @@ EndFunc   ;==>ChatbotMessage
 
 ; Returns the response from cleverbot or simsimi, if any
 Func runHelper($msg, $g_iChkCleverbot) ; run a script to get a response from cleverbot.com or simsimi.com
- Local $command, $DOS, $HelperStartTime, $Time_Difference
+ Local $command, $DOS, $HelperStartTime, $Time_Difference, $sString
  Dim $DOS, $Message = ''
 
    $command = ' /c "phantomjs.exe phantom-cleverbot-helper.js '
