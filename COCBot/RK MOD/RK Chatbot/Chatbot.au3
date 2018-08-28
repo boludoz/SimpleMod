@@ -571,7 +571,7 @@ Func ChatbotMessage() ; run the chatbot
 			Return
 		EndIf
 
-		If not ChatbotIsLastChatNew() Then
+		If Not ChatbotIsLastChatNew() Then
 			; get text of the latest message
 			Local $sLastChat = ReadChat()
 			Local $ChatMsg = StringStripWS($sLastChat, 7)

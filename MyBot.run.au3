@@ -1376,9 +1376,6 @@ Func FirstCheck()
 		;------------------ADDED By RK MOD - START------------------
 		BoostAllWithMagicSpell()
 		TrainSystem()
-		If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
-			ChatbotMessage()
-		EndIf
 		;------------------ADDED By RK MOD - END------------------
 		If Not $g_bRunState Then Return
 		SetDebugLog("Are you ready? " & String($g_bIsFullArmywithHeroesAndSpells))
