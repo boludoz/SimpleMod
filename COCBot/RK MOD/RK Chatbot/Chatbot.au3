@@ -478,12 +478,14 @@ EndFunc   ;==>ChangeLanguageToTR
 ; MAIN SCRIPT ==============================================
 
 Func ChatbotMessage() ; run the chatbot
-	If $g_iChkChatGlobal Then
+    Local $sendChatGlobal = DelayTime($startDelayTimer, "GLOBAL")
+	
+	If $g_iChkChatGlobal = 1 Then
 		SetLog("Chatbot: Sending some chats", $COLOR_GREEN)
 	ElseIf $g_iChkChatClan Then
 		SetLog("Chatbot: Sending some chats", $COLOR_GREEN)
 	EndIf
-	If $g_iChkChatGlobal Then
+	If $g_iChkChatGlobal And $sendChatGlobal Then 
 ;========================Kychera modified==========================================
 		If $g_iChkSwitchLang = 1 Then
 		Switch GUICtrlRead($g_hCmbLang)
@@ -511,6 +513,7 @@ Func ChatbotMessage() ; run the chatbot
 			waitMainScreen()
 		EndIf
 ;======================================================================================
+        $startDelayTimer = TimerInit()
 		If Not ChatbotChatOpen() Then Return
 		SetLog("Chatbot: Sending chats to global", $COLOR_GREEN)
 		; assemble a message
@@ -714,3 +717,17 @@ Func _Encoding_JavaUnicodeDecode($sString)
 	Return $sOut
 EndFunc ;==>_Encoding_JavaUnicodeDecode
 ;============================================
+
+Func DelayTime($sendTimer, $chatType)
+	Local $TimeDiff = __TimerDiff(($sendTimer *60)/1000)  
+
+    If $chatType = "GLOBAL" Then
+	    If $TimeDiff > $g_iTxtDelayTimerun Then
+		    Return True
+	    Else
+		    SetLog("Chatbot: Skip sending chats to global chat", $COLOR_INFO)
+			SetLog("Delay Time " & StringFormat("%.1f", $TimeDiff) & " minute(s)", $COLOR_INFO)
+		    Return False
+	    EndIf
+   EndIf
+EndFunc ;==> DelayTime
