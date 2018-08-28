@@ -125,4 +125,5 @@ Func CheckSpellsOneGem()
 			EndIf
 		EndIf
 	EndIf
+	_Sleep(500)
 EndFunc   ;==>CheckSpellsOneGem
