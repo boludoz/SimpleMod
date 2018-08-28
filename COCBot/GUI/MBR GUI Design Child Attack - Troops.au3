@@ -789,7 +789,6 @@ Func CreateBoostSubTab()
 	$g_hChkOneGemBoostBr = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkOneGemBoostBr_Info_01", "One Gem Boost"), $x + 260, $y + 7, -1, -1)
 	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostBr_Info_02", "Enable this function for Check one gem boost."))
 	GUICtrlSetState(-1, $GUI_UNCHECKED)
-    GUICtrlSetOnEvent(-1, "chkOneGemBoostBr")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	$y += 65
@@ -805,7 +804,6 @@ Func CreateBoostSubTab()
 	$g_hChkOneGemBoostFr = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkOneGemBoostFr_Info_01", "One Gem Boost"), $x + 260, $y, -1, -1)
 	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostFr_Info_02", "Enable this function for Check one gem boost."))
 	GUICtrlSetState(-1, $GUI_UNCHECKED)
-    GUICtrlSetOnEvent(-1, "chkOneGemBoostFr")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	$y += 55
@@ -821,7 +819,6 @@ Func CreateBoostSubTab()
 	$g_hChkOneGemBoostG = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkOneGemBoostG_Info_01", "One Gem Boost"), $x + 260, $y, -1, -1)
 	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostG_Info_02", "Enable this function for Check one gem boost."))
 	GUICtrlSetState(-1, $GUI_UNCHECKED)
-    GUICtrlSetOnEvent(-1, "chkOneGemBoostG")
 
 	$y += 25
 	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnQueenBoost, $x - 10, $y - 2, 24, 24)
