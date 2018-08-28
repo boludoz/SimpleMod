@@ -18,7 +18,10 @@ Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
 Func OneGemBoost()
 	checkMainScreen()
 	CheckHeroOneGem()
+	CheckArmyCamp(True, False)
 	CheckTroopsOneGem()
+	CheckSpellsOneGem()
+	CheckArmyCamp(False, True)
 EndFunc   ;==>OneGemBoost
 
 Func CheckOneGem()
@@ -76,11 +79,10 @@ Func CheckHeroOneGem()
 EndFunc   ;==>CheckHeroOneGem
 
 Func CheckTroopsOneGem()
-	Local $bBoostcord
-	CheckArmyCamp(True, False)
 	OpenTroopsTab(True, "CheckTroopsOneGem()")
 	Local $aBoostBtn = findButton("BoostBarrack")
 	If IsArray($aBoostBtn) Then
+		If Not CheckOneGem() Then Return
 		ClickP($aBoostBtn)
 		_Sleep($DELAYBOOSTBARRACKS1)
 		Local $aGemWindowBtn = findButton("GEM")
@@ -92,9 +94,14 @@ Func CheckTroopsOneGem()
 			EndIf
 		EndIf
 	EndIf
+
+EndFunc   ;==>CheckTroopsOneGem
+
+Func CheckSpellsOneGem()
 	OpenSpellsTab(True, "CheckTroopsOneGem()")
 	Local $aBoostBtn = findButton("BoostBarrack")
 	If IsArray($aBoostBtn) Then
+		If Not CheckOneGem() Then Return
 		ClickP($aBoostBtn)
 		_Sleep($DELAYBOOSTBARRACKS1)
 		Local $aGemWindowBtn = findButton("GEM")
@@ -106,6 +113,4 @@ Func CheckTroopsOneGem()
 			EndIf
 		EndIf
 	EndIf
-	CheckArmyCamp(False, True)
-
-EndFunc   ;==>CheckTroopsOneGem
+EndFunc   ;==>CheckSpellsOneGem
