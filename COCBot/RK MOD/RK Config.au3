@@ -265,7 +265,7 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 
 	_Ini_Add("Chatbot", "ChkChatGlobal", $g_iChkChatGlobal ? 1 : 0)
 	_Ini_Add("Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)  
-    _Ini_Add("Chatbot", "ChkDelayTime", $g_bDelayTime)
+    _Ini_Add("Chatbot", "ChkDelayTime", $g_bDelayTime ? 1 : 0)
     _Ini_Add("Chatbot", "txtDelayTimerun", $g_iTxtDelayTimerun)
     _Ini_Add("Chatbot", "ChkSwitchLang", $g_iChkSwitchLang ? 1 : 0)
 	_Ini_Add("Chatbot", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmbLang))
