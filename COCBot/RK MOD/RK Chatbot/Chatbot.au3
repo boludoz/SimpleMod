@@ -719,7 +719,7 @@ EndFunc ;==>_Encoding_JavaUnicodeDecode
 ;============================================
 
 Func DelayTime($sendTimer, $chatType)
-	Local $TimeDiff = __TimerDiff(($sendTimer *60)/1000)  
+	Local $TimeDiff = __TimerDiff(($sendTimer *60)*1000) 
 
     If $chatType = "GLOBAL" Then
 	    If $TimeDiff > $g_iTxtDelayTimerun Then
