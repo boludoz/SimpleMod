@@ -238,7 +238,7 @@ EndFunc   ;==>ChatbotChatGlobalInput
 
 ;============================================
 ;+++++++++++++Kychera Modified +++++++++++++++
-Func ChatbotChatInput($message)
+Func ChatbotChatInput($g_sMessage)
     If _Sleep(1000) Then Return
 	Click(33, 707, 1)
     If $g_iChkRusLang = 1 Then
@@ -251,11 +251,11 @@ Func ChatbotChatInput($message)
 		_Sleep(500)
 	;Opt("SendKeyDelay", 1000)
 	AutoItSetOption("SendKeyDelay", 50)
-	  _SendExEx($message)
+	  _SendExEx($g_sMessage)
 	   SendKeepActive("")
     Else
 	 _Sleep(500)
- 	 SendText($message)
+ 	 SendText($g_sMessage)
 	EndIf
 	Return True
 EndFunc   ;==>ChatbotChatInput
@@ -523,16 +523,19 @@ Func ChatGlobal()
 		If Not ChatbotChatOpen() Then Return
 		SetLog("Chatbot: Sending chats to global", $COLOR_GREEN)
 		; assemble a message
-		Global $message[2]
-		$message[0] = $g_iChkGlobalMessages1[Random(0, UBound($g_iChkGlobalMessages1) - 1, 1)]
-		$message[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
+
+		Global $g_sMessage
+		Global $g_sRandomMsg[2]
+		$g_sRandomMsg[0] = $g_iChkGlobalMessages1[Random(0, UBound($g_iChkGlobalMessages1) - 1, 1)]
+		$g_sRandomMsg[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
+		$g_sMessage = $g_sRandomMsg[Random(0,1)]
 		If $g_iChkScrambleGlobal Then
-			_ArrayShuffle($message)
+			_ArrayShuffle($g_sMessage)
 		EndIf
 		; Send the message
 		If Not ChatbotSelectGlobalChat() Then Return
 		If Not ChatbotChatGlobalInput() Then Return
-		If Not ChatbotChatInput(_ArrayToString($message, " ")) Then Return
+		If Not ChatbotChatInput(_ArrayToString($g_sMessage, " ")) Then Return
 		If Not ChatbotChatSendGlobal() Then Return
 		If Not ChatbotChatClose() Then Return
 ;==================kychera modified===============================================
@@ -672,7 +675,7 @@ EndFunc   ;==>ChatbotMessage
 ; Returns the response from cleverbot or simsimi, if any
 Func runHelper($msg, $g_iChkCleverbot) ; run a script to get a response from cleverbot.com or simsimi.com
  Local $command, $DOS, $HelperStartTime, $Time_Difference, $sString
- Dim $DOS, $Message = ''
+ Dim $DOS, $g_sMessage = ''
 
    $command = ' /c "phantomjs.exe phantom-cleverbot-helper.js '
 
@@ -690,14 +693,14 @@ Func runHelper($msg, $g_iChkCleverbot) ; run a script to get a response from cle
 		 Return ""
 	  EndIf
    WEnd
-   $Message = ''
+   $g_sMessage = ''
    While 1
-	  $Message &= StdoutRead($DOS)
+	  $g_sMessage &= StdoutRead($DOS)
 	  If @error Then
 		 ExitLoop
 	  EndIf
    WEnd
-   Return StringStripWS($Message, 7)
+   Return StringStripWS($g_sMessage, 7)
 EndFunc
 
 ;===========Addied kychera=================

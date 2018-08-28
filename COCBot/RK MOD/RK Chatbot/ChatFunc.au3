@@ -26,31 +26,31 @@ Local $g_bChkExtraAlphabets = True, $g_bChkExtraChinese = True, $g_bChkExtraKore
 
 	Local $iLoopCount = 0
 	Local $iCount = 0
-	While 1
-		;If Clan tab is selected.
-		ForceCaptureRegion()
-		_CaptureRegion()
-		If _ColorCheck(_GetPixelColor(189, 24, False), Hex(0x706C50, 6), 20) Then ; color med gray
-			ExitLoop
-		EndIf
-		;If Global tab is selected.
-		If _ColorCheck(_GetPixelColor(189, 24, False), Hex(0x383828, 6), 20) Then ; Darker gray
-			ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
-		EndIf
-		;counter for time approx 3 sec max allowed for tab to open
-		$iLoopCount += 1
-		If $iLoopCount >= 5 Then ; allows for up to a sleep of 3000
-			SetLog("Cannot switch to Clan Chat Tab")
-			AndroidPageError("Chat read")
-			Local $aButtonChatClose[4] = [330, 352 + $g_iMidOffsetY, 0xFFFFFF, 20]
-			   If _ColorCheck(_GetPixelColor($aButtonChatClose[0], $aButtonChatClose[1], True), Hex($aButtonChatClose[2], 6), $aButtonChatClose[3]) Then
-				  Click($aButtonChatClose[0], $aButtonChatClose[1], 1)
-				  waitMainScreen()
-			   EndIf
-			Return False
-		EndIf
-		If _Sleep($DELAYDONATECC1) Then Return ; delay Allow 15x
-	WEnd
+	;While 1
+	;	;If Clan tab is selected.
+	;	ForceCaptureRegion()
+	;	_CaptureRegion()
+	;	If _ColorCheck(_GetPixelColor(189, 24, False), Hex(0x706C50, 6), 20) Then ; color med gray
+	;		ExitLoop
+	;	EndIf
+	;	;If Global tab is selected.
+	;	If _ColorCheck(_GetPixelColor(189, 24, False), Hex(0x383828, 6), 20) Then ; Darker gray
+	;		ClickP($aClanTab, 1, 0, "#0169") ; clicking clan tab
+	;	EndIf
+	;	;counter for time approx 3 sec max allowed for tab to open
+	;	$iLoopCount += 1
+	;	If $iLoopCount >= 5 Then ; allows for up to a sleep of 3000
+	;		SetLog("Cannot switch to Clan Chat Tab")
+	;		AndroidPageError("Chat read")
+	;		Local $aButtonChatClose[4] = [330, 352 + $g_iMidOffsetY, 0xFFFFFF, 20]
+	;		   If _ColorCheck(_GetPixelColor($aButtonChatClose[0], $aButtonChatClose[1], True), Hex($aButtonChatClose[2], 6), $aButtonChatClose[3]) Then
+	;			  Click($aButtonChatClose[0], $aButtonChatClose[1], 1)
+	;			  waitMainScreen()
+	;		   EndIf
+	;		Return False
+	;	EndIf
+	;	If _Sleep($DELAYDONATECC1) Then Return ; delay Allow 15x
+	;WEnd
 
 
 		ForceCaptureRegion()
