@@ -35,9 +35,9 @@ Func CreateSwitchOptions()
 
 	GUISwitch($g_hGUI_SWITCH_OPTIONS)
 	$g_hGUI_SWITCH_OPTIONS_TAB = GUICtrlCreateTab(0, 0, $g_iSizeWGrpTab2 + 2, $g_iSizeHGrpTab4 + 5, BitOR($TCS_MULTILINE, $TCS_RIGHTJUSTIFY))
-	$g_hGUI_SWITCH_OPTIONS_TAB_ITEM1 = GUICtrlCreateTabItem("Switch Accounts")
+	$g_hGUI_SWITCH_OPTIONS_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_20_STab_01", "Switch Accounts"))
 		CreateSwitchAccount()
-	$g_hGUI_SWITCH_OPTIONS_TAB_ITEM2 = GUICtrlCreateTabItem("Farming Schedule")
+	$g_hGUI_SWITCH_OPTIONS_TAB_ITEM2 = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_21_STab_01", "Farming Schedule"))
 		CreateFarmSchedule()
 
 	; This dummy is used in btnStart and btnStop to disable/enable all labels, text, buttons etc. on all tabs.
@@ -112,7 +112,7 @@ Func CreateSwitchAccount()
 
 	$y += 7
 		For $i = 0 To UBound($g_ahChkAccount) - 1
-			$g_ahChkAccount[$i] = GUICtrlCreateCheckbox("Acc " & $i + 1 & ".", $x, $y + ($i) * 25, -1, -1)
+			$g_ahChkAccount[$i] = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "ChkAccount", "Acc ") & $i + 1 & ".", $x, $y + ($i) * 25, -1, -1)
 			GUICtrlSetOnEvent(-1, "chkAccountX")
 			$g_ahCmbProfile[$i] = GUICtrlCreateCombo("", $x + 65, $y + ($i) * 25, 110, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetOnEvent(-1, "cmbSwitchAccProfileX")
@@ -127,9 +127,9 @@ EndFunc   ;==>CreateSwitchAccount
 Func CreateFarmSchedule()
 
 	Local $x = 10, $y = 30
-	GUICtrlCreateLabel("Account", $x - 5, $y, 60, -1, $SS_CENTER)
-	GUICtrlCreateLabel("Farm Schedule 1", $x + 80, $y, 150, -1, $SS_CENTER)
-	GUICtrlCreateLabel("Farm Schedule 2", $x + 260, $y, 150, -1, $SS_CENTER)
+	GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "Label_10", "Account"), $x - 5, $y, 60, -1, $SS_CENTER)
+	GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "Label_11", "Farm Schedule 1"), $x + 80, $y, 150, -1, $SS_CENTER)
+	GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "Label_12", "Farm Schedule 2"), $x + 260, $y, 150, -1, $SS_CENTER)
 
 	$y += 18
 	GUICtrlCreateGraphic($x, $y, 425, 1, $SS_GRAYRECT)
@@ -137,12 +137,12 @@ Func CreateFarmSchedule()
 	$y += 8
 	For $i = 0 To 7
 		$x = 10
-		$g_ahChkSetFarm[$i] = GUICtrlCreateCheckbox("Acc " & $i + 1 & ".", $x, $y + $i * 30, -1, -1)
+		$g_ahChkSetFarm[$i] = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "SetFarm", "Acc ") & $i + 1 & ".", $x, $y + $i * 30, -1, -1)
 			GUICtrlSetOnEvent(-1, "chkSetFarmSchedule")
-		$g_ahCmbAction1[$i] = GUICtrlCreateCombo("Turn...", $x + 60, $y + $i * 30, 58, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_ahCmbAction1[$i] = GUICtrlCreateCombo(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "Action1", "Turn..."), $x + 60, $y + $i * 30, 58, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, "Idle|Donate|Active")
 			GUICtrlSetBkColor(-1, $COLOR_WHITE)
-		$g_ahCmbCriteria1[$i] = GUICtrlCreateCombo("when...", $x + 123, $y + $i * 30, 62, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_ahCmbCriteria1[$i] = GUICtrlCreateCombo(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "Criteria1", "when..."), $x + 123, $y + $i * 30, 62, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, "Gold >|Elixir >|DarkE >|Trop. >|Time:")
 			GUICtrlSetBkColor(-1, $COLOR_WHITE)
 			GUICtrlSetOnEvent(-1, "cmbCriteria1")
@@ -153,10 +153,10 @@ Func CreateFarmSchedule()
 			GUICtrlSetState(-1, $GUI_HIDE)
 
 		$x = 248 + 10 - 60
-		$g_ahCmbAction2[$i] = GUICtrlCreateCombo("Turn...", $x + 60, $y + $i * 30, 58, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_ahCmbAction2[$i] = GUICtrlCreateCombo(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "Action2", "Turn..."), $x + 60, $y + $i * 30, 58, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, "Idle|Donate|Active")
 			GUICtrlSetBkColor(-1, $COLOR_WHITE)
-		$g_ahCmbCriteria2[$i] = GUICtrlCreateCombo("when...", $x + 123, $y + $i * 30, 62, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_ahCmbCriteria2[$i] = GUICtrlCreateCombo(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "Criteria2", "when..."), $x + 123, $y + $i * 30, 62, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, "Gold <|Elixir <|DarkE <|Trop. <|Time:")
 			GUICtrlSetBkColor(-1, $COLOR_WHITE)
 			GUICtrlSetOnEvent(-1, "cmbCriteria2")
