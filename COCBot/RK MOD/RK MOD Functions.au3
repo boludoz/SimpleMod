@@ -76,6 +76,8 @@
 #include "RK UpgradesMgmt.au3"
 
 #include "RK CheckHeroBoost.au3"
+#include "RK TNRQT.au3"
+#include "RK CheckOneGem.au3"
 
 #include "RK Debug GUI Control.au3"
 

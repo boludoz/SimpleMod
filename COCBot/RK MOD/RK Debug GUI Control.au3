@@ -88,3 +88,31 @@ Func btnTestClanChatBot()
 	$g_iChkChatClan = $wasChkChatClan
 
 EndFunc   ;==>btnTestClanChatBot
+
+Func btnTestTNRQT()
+	SetLog("Test Hero Time OCR", $COLOR_DEBUG)
+
+	Local $wasRunState = $g_bRunState
+
+	;For Debug Purpose set run state to true temporarily
+	$g_bRunState = True
+
+	TNRQT()
+
+	;Reset to orignal state
+	$g_bRunState = $wasRunState
+EndFunc
+
+Func btnTestCheckOneGem()
+	SetLog("Test Check One Gem Boost", $COLOR_DEBUG)
+
+	Local $wasRunState = $g_bRunState
+
+	;For Debug Purpose set run state to true temporarily
+	$g_bRunState = True
+
+	OneGemBoost()
+
+	;Reset to orignal state
+	$g_bRunState = $wasRunState
+EndFunc

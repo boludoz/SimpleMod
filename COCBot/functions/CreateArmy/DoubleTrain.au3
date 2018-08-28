@@ -1,8 +1,8 @@
 
 ; #FUNCTION# ====================================================================================================================
 ; Name ..........: Double Train
-; Description ...: 
-; Syntax ........: 
+; Description ...:
+; Syntax ........:
 ; Parameters ....: None
 ; Return values .: None
 ; Author ........: Demen
@@ -46,7 +46,7 @@ Func DoubleTrain($bQuickTrain = False)
 		If $bSetlog Then SetLog("Checking Troop tab: " & $TroopCamp[0] & "/" & $TroopCamp[1] * 2)
 		If $TroopCamp[1] = 0 Then ExitLoop
 		If $bSetlog And $TroopCamp[1] <> $g_iTotalCampSpace Then _
-			SetLog("Incorrect Troop combo: " & $g_iTotalCampSpace & " vs Total camp: " & $TroopCamp[1] & @CRLF & "                 Double train may not work well", $COLOR_DEBUG)
+				SetLog("Incorrect Troop combo: " & $g_iTotalCampSpace & " vs Total camp: " & $TroopCamp[1] & @CRLF & "                 Double train may not work well", $COLOR_DEBUG)
 
 		If $TroopCamp[0] < $TroopCamp[1] Then ; <280/280
 			If $g_bDonationEnabled And $g_bChkDonate And MakingDonatedTroops("Troops") Then
@@ -96,7 +96,7 @@ Func DoubleTrain($bQuickTrain = False)
 			If $bDebug Then SetLog("$TotalSpellsToBrewInGUI = " & $TotalSpellsToBrewInGUI & ", $g_iTotalSpellValue = " & $g_iTotalSpellValue & ", _Min = " & $TotalSpell, $COLOR_DEBUG)
 			If $SpellCamp[1] <> $TotalSpellsToBrewInGUI Or $SpellCamp[1] <> $g_iTotalSpellValue Then
 				If $bSetlog And Not $g_bForceBrewSpells Then SetLog("Incorrect Spell combo: " & $TotalSpellsToBrewInGUI & "/" & $g_iTotalSpellValue & _
-																	" vs Total camp: " & $SpellCamp[1] & @CRLF & "                 Double train may not work well", $COLOR_DEBUG)
+						" vs Total camp: " & $SpellCamp[1] & @CRLF & "                 Double train may not work well", $COLOR_DEBUG)
 				If $g_bForceBrewSpells And $SpellCamp[1] > $TotalSpell Then $SpellCamp[1] = $TotalSpell
 			EndIf ;
 
@@ -201,13 +201,13 @@ Func TrainFullQueue($bSpellOnly = False, $bSetlog = True)
 		EndIf
 	Next
 
-	If $ToReturn[0][0] = "Arch" And $ToReturn[0][1] = 0 Then Return False; Error
+	If $ToReturn[0][0] = "Arch" And $ToReturn[0][1] = 0 Then Return False ; Error
 
 	Local $bIsFullArmywithHeroesAndSpells = $g_bIsFullArmywithHeroesAndSpells
 	$g_bIsFullArmywithHeroesAndSpells = True
 
 	TrainUsingWhatToTrain($ToReturn, $bSpellOnly)
-	If _Sleep(1000) Then Return; was _Sleep($bSpellOnly ? 1000 : 500) EDITED By RK MOD
+	If _Sleep(1000) Then Return ; was _Sleep($bSpellOnly ? 1000 : 500) EDITED By RK MOD
 
 	$g_bIsFullArmywithHeroesAndSpells = $bIsFullArmywithHeroesAndSpells
 
@@ -431,7 +431,7 @@ EndFunc   ;==>CheckQueueSpellAndTrainRemain
 
 Func DoubleTrainSiege($bDebug)
 	Local $iSiege = $eSiegeWallWrecker
-	If $g_iTotalTrainSpaceSiege < 1 Then Return; train no siege
+	If $g_iTotalTrainSpaceSiege < 1 Then Return ; train no siege
 	If $g_aiArmyCompSiegeMachine[$eSiegeWallWrecker] > 0 And $g_aiArmyCompSiegeMachine[$eSiegeBattleBlimp] > 0 Then ; train both types of siege
 		If $bDebug Then SetLog("Army has both types of siege. Double train siege might cause unbalance.", $COLOR_DEBUG)
 	Else
