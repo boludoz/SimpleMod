@@ -198,3 +198,7 @@ Global Const $g_iLimitBreakDE[12] = [0, 0, 0, 0, 0, 0, 18000, 72000, 171000, 180
 ; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 
 Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 5
+
+; ================================================== One Gem Boost by RK MOD ================================= ;
+
+Global $g_bChkOneGemBoostBr = False, $g_bChkOneGemBoostFr = False, $g_bChkOneGemBoostG = False

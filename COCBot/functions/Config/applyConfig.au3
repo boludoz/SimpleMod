@@ -952,7 +952,14 @@ Func ApplyConfig_600_22($TypeReadSave)
 			chkBoostCMagic()
 			BoostClMagic()
 			
+			; ================================================== One Gem Boost by RK MOD ================================= ;
+			
+			GUICtrlSetState($g_hChkOneGemBoostBr, $g_bChkOneGemBoostBr ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkOneGemBoostFr, $g_bChkOneGemBoostFr ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkOneGemBoostG, $g_bChkOneGemBoostG ? $GUI_CHECKED : $GUI_UNCHECKED)
+			
 		Case "Save"
+		
 			$g_iCmbBoostBarracks = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBarracks)
 			$g_iCmbBoostSpellFactory = _GUICtrlComboBox_GetCurSel($g_hCmbBoostSpellFactory)
 			$g_iCmbBoostBarbarianKing = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBarbarianKing)
@@ -967,6 +974,13 @@ Func ApplyConfig_600_22($TypeReadSave)
 			$g_iCmbBoostBrMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic)
 			$g_iChkBoostCMagic = GUICtrlRead($g_hChkBoostCMagic) = $GUI_CHECKED ? 1 : 0
 			$g_iCmbBoostClMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic)
+			
+			; ================================================== One Gem Boost by RK MOD ================================= ;
+			
+			$g_bChkOneGemBoostBr = (GUICtrlRead($g_hChkOneGemBoostBr) = $GUI_CHECKED)
+			$g_bChkOneGemBoostFr = (GUICtrlRead($g_hChkOneGemBoostFr) = $GUI_CHECKED)
+			$g_bChkOneGemBoostG = (GUICtrlRead($g_hChkOneGemBoostG) = $GUI_CHECKED)
+			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_22
 

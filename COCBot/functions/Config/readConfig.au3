@@ -794,12 +794,18 @@ Func ReadConfig_600_22()
 	Next
 	; Note: These global variables are not stored to the ini file, to prevent automatic boosting (and spending of gems) when the bot is started:
 	; $g_iCmbBoostBarracks, $g_iCmbBoostSpellFactory, $g_iCmbBoostBarbarianKing, $g_iCmbBoostArcherQueen, $g_iCmbBoostWarden
+	
 	; ================================================== Boost for Magic Spell by RK MOD ================================= ;
 
 	IniReadS($g_iChkBoostBMagic, $g_sProfileConfigPath, "boost", "chkBoostBMagic", $g_iChkBoostBMagic, "Int")
 	IniReadS($g_iCmbBoostBrMagic, $g_sProfileConfigPath, "boost", "CmbBoostBrMagic", 0, "int")
     IniReadS($g_iChkBoostCMagic, $g_sProfileConfigPath, "boost", "chkBoostCMagic", $g_iChkBoostCMagic, "Int")
 	IniReadS($g_iCmbBoostClMagic, $g_sProfileConfigPath, "boost", "CmbBoostClMagic", 0, "int")
+	; ================================================== One Gem Boost by RK MOD ================================= ;
+	IniReadS($g_bChkOneGemBoostBr, $g_sProfileConfigPath, "boost", "ChkOneGemBoostBr", False, "Bool")
+	IniReadS($g_bChkOneGemBoostFr, $g_sProfileConfigPath, "boost", "ChkOneGemBoostFr", False, "Bool")
+    IniReadS($g_bChkOneGemBoostG, $g_sProfileConfigPath, "boost", "ChkOneGemBoostG", False, "Bool")
+	
 	For $i = 0 To 2
 		IniReadS($g_iLastTime[$i], $g_sProfileBuildingPath, "other", "LastTimeCollectors" & $i, 0, "int")
 	Next
