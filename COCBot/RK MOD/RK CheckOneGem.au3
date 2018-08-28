@@ -79,10 +79,33 @@ Func CheckTroopsOneGem()
 	Local $bBoostcord
 	CheckArmyCamp(True, False)
 	OpenTroopsTab(True, "CheckTroopsOneGem()")
-	$bBoostcord = QuickMis("CX", $bBoostimage, 688, 304, 688 + 85, 304 + 46)
-	OpenSpellsTab(True, "DeleteQueued()")
-	$bBoostcord = QuickMis("CX", $bBoostimage, 688, 304, 688 + 85, 304 + 46)
+	Local $aBoostBtn = findButton("BoostBarrack")
+	If IsArray($aBoostBtn) Then
+		ClickP($aBoostBtn)
+		_Sleep($DELAYBOOSTBARRACKS1)
+		Local $aGemWindowBtn = findButton("GEM")
+		If IsArray($aGemWindowBtn) Then
+			ClickP($aGemWindowBtn)
+			_Sleep($DELAYBOOSTBARRACKS2)
+			If IsArray(findButton("EnterShop")) Then
+				SetLog("Not enough gems to boost " & $sName, $COLOR_ERROR)
+			EndIf
+		EndIf
+	EndIf
+	OpenSpellsTab(True, "CheckTroopsOneGem()")
+	Local $aBoostBtn = findButton("BoostBarrack")
+	If IsArray($aBoostBtn) Then
+		ClickP($aBoostBtn)
+		_Sleep($DELAYBOOSTBARRACKS1)
+		Local $aGemWindowBtn = findButton("GEM")
+		If IsArray($aGemWindowBtn) Then
+			ClickP($aGemWindowBtn)
+			_Sleep($DELAYBOOSTBARRACKS2)
+			If IsArray(findButton("EnterShop")) Then
+				SetLog("Not enough gems to boost " & $sName, $COLOR_ERROR)
+			EndIf
+		EndIf
+	EndIf
 	CheckArmyCamp(False, True)
 
 EndFunc   ;==>CheckTroopsOneGem
-
