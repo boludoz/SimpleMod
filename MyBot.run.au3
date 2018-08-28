@@ -792,7 +792,8 @@ Func runBot() ;Bot that runs everything in order
 			EndIf
 			;------------------ADDED By RK MOD - END------------------			
 			If IsSearchAttackEnabled() Then ; if attack is disabled skip reporting, requesting, donating, training, and boosting
-				Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'BoostAll']; EDITED By RK MOD
+				
+				Local $aRndFuncList = ['ReplayShare', 'NotifyReport', 'DonateCC,Train', 'RequestCC', 'CollectFreeMagicItems', 'HeroT']; EDITED By RK MOD
 				While 1
 					If $g_bRunState = False Then Return
 					If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
@@ -808,7 +809,7 @@ Func runBot() ;Bot that runs everything in order
 					If CheckAndroidReboot() = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
 				WEnd
 				;BoostEverything() ; 1st Check if is to use Training Potion ; REMOVED By RK MOD
-				Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden']; EDITED By RK MOD
+				Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'BoostAll']; EDITED By RK MOD
 				While 1
 					If $g_bRunState = False Then Return
 					If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
