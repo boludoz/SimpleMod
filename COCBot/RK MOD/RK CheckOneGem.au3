@@ -29,13 +29,13 @@ EndFunc   ;==>OneGemBoost
 Func CheckOneGem()
 	$bGemOcr = QuickMis("OCR", $bBoostocr, 370, 420, 370 + 130, 420 + 50)
 	$bGemOcr = StringReplace($bGemOcr, " ", "")
-	SetLog("$bGemOcr = " & $bGemOcr, $COLOR_INFO)
+	If $g_bDebugSetlog Then SetLog("$bGemOcr = " & $bGemOcr, $COLOR_INFO)
 	If $bGemOcr <> "none" Then
 		If $bGemOcr = 1 Then
 			Return True
 		EndIf
 	Else
-		SetLog("Not Found", $COLOR_INFO)
+		SetLog("$bGemOcr Not Found", $COLOR_ERROR)
 	EndIf
 	Return False
 EndFunc   ;==>CheckOneGem
@@ -45,15 +45,15 @@ Func CheckHeroOneGem()
 	For $index = 0 To 2
 		If $index = 0 Then
 			If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
-				SetLog("Please Locate " & $sHeroName[$index], $COLOR_INFO)
+				SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
 			EndIf
 		ElseIf $index = 1 Then
 			If $g_aiQueenAltarPos[0] = "" Or $g_aiQueenAltarPos[0] = -1 Then
-				SetLog("Please Locate " & $sHeroName[$index], $COLOR_INFO)
+				SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
 			EndIf
 		ElseIf $index = 2 Then
 			If $g_aiWardenAltarPos[0] = "" Or $g_aiWardenAltarPos[0] = -1 Then
-				SetLog("Please Locate " & $sHeroName[$index], $COLOR_INFO)
+				SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
 			EndIf
 		EndIf
 

@@ -27,9 +27,9 @@ Func CheckHeroBoost()
 			$CurrHeroBTime[$index] = $HeroTime[$g_iCurAccount][$index]
 		EndIf
 
-		Local $i_heroTime = (_DateDiff("n", $CTime[$g_iCurAccount][$index], _NowCalc())))
+		Local $i_heroTime = ($CurrHeroBTime[$index] -(_DateDiff("n", $CTime[$g_iCurAccount][$index], _NowCalc())))
 
-		If $g_bFirstStart Or ($CurrHeroBTime[$index] - $i_heroTime < 0 Or $CTime[$g_iCurAccount][$index] = "" Then
+		If $g_bFirstStart Or  $i_heroTime < 0 Or $CTime[$g_iCurAccount][$index] = "" Then
 
 			If $index = 0 Then
 				If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
@@ -117,9 +117,9 @@ Func CheckHeroBoost()
 			If $g_bDebugSetlog Then SetLog("-------------------------------------------", $COLOR_INFO)
 		Else
 			If $g_bDebugSetlog Then
-				SetLog("$CurrHeroBTime = " & $CurrHeroBTime[$index], $COLOR_INFO)
-				SetLog("$CTime[" & $index & "] = " & $CTime[$g_iCurAccount][$index], $COLOR_INFO)
-				SetLog("Time Diff HeroTime = " & $i_heroTime, $COLOR_INFO)
+				SetLog("$CurrHeroBTime = " & $CurrHeroBTime[$index], $COLOR_ERROR)
+				SetLog("$CTime[" & $index & "] = " & $CTime[$g_iCurAccount][$index], $COLOR_ERROR)
+				SetLog("Time Diff HeroTime = " & $i_heroTime, $COLOR_ERROR)
 			EndIf
 		EndIf
 	Next
