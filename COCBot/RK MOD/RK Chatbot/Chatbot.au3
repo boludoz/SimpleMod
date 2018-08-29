@@ -545,7 +545,7 @@ Func ChatGlobal()
 			Endif
 			
 		If $g_iChkScrambleGlobal Then
-			_ArrayShuffle($g_Message)
+			_ArrayShuffle($g_sMessage)
 		EndIf
 		; Send the message
 		If Not ChatbotSelectGlobalChat() Then Return
