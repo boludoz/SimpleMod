@@ -1280,15 +1280,15 @@ Func _RunFunction($action)
 			EndIf
 		;------------------CUSTOM LOGIC By RK MOD - START------------------
 		Case "BoostBarracks"
-			If Not $g_hChkOneGemBoostBr Then BoostBarracks()
+			If Not $g_bChkOnlyOneGemBoost Then BoostBarracks()
 		Case "BoostSpellFactory"
-			If Not $g_hChkOneGemBoostFr Then BoostSpellFactory()
+			If Not $g_bChkOnlyOneGemBoost Then BoostSpellFactory()
 		Case "BoostKing"
-			If Not $g_hChkOneGemBoostG Then BoostKing()
+			If Not $g_bChkOnlyOneGemBoost Then BoostKing()
 		Case "BoostQueen"
-			If Not $g_hChkOneGemBoostG Then BoostQueen()
+			If Not $g_bChkOnlyOneGemBoost Then BoostQueen()
 		Case "BoostWarden"
-			If Not $g_hChkOneGemBoostG Then BoostWarden()
+			If Not $g_bChkOnlyOneGemBoost Then BoostWarden()
 		Case "BoostAll" ; EDITED By RK MOD
 			BoostAllWithMagicSpell() ; EDITED By RK MOD
 		Case "LabCheck"
