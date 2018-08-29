@@ -56,8 +56,8 @@ Func CheckHeroBoost()
 		If $index = 1 Then BuildingClickP($g_aiQueenAltarPos, "#0462")
 		If $index = 2 Then BuildingClickP($g_aiWardenAltarPos, "#0462")
 
-		_Sleep($DELAYBOOSTHEROES5) ; Delay for 1300ms Atleast So OCR can take picture of the screen correctly otherwise it will fail
-
+		_Sleep($DELAYBOOSTHEROES1) 
+		
 		If $index = 0 Or $index = 1 Then
 			If $g_bDebugSetlog Then SetLog("In Index " & $index, $COLOR_INFO)
 
