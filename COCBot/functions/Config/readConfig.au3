@@ -805,6 +805,7 @@ Func ReadConfig_600_22()
 	IniReadS($g_bChkOneGemBoostBr, $g_sProfileConfigPath, "boost", "ChkOneGemBoostBr", False, "Bool")
 	IniReadS($g_bChkOneGemBoostFr, $g_sProfileConfigPath, "boost", "ChkOneGemBoostFr", False, "Bool")
     IniReadS($g_bChkOneGemBoostG, $g_sProfileConfigPath, "boost", "ChkOneGemBoostG", False, "Bool")
+	IniReadS($g_bChkOnlyOneGemBoost, $g_sProfileConfigPath, "boost", "ChkOnlyOneGemBoost", False, "Bool")
 	
 	For $i = 0 To 2
 		IniReadS($g_iLastTime[$i], $g_sProfileBuildingPath, "other", "LastTimeCollectors" & $i, 0, "int")

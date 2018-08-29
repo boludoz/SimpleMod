@@ -56,7 +56,7 @@ Global $g_hChkBoostBMagic  = 0, $g_hCmbBoostBrMagic = 0, $g_hChkBoostCMagic = 0,
 Global $g_hChkCheckWardenMode = 0, $g_hCmbCheckWardenMode = 0
 
 ; One Gem Boost - by RK MOD
-Global $g_hChkOneGemBoostBr = 0, $g_hChkOneGemBoostFr = 0, $g_hChkOneGemBoostG = 0
+Global $g_hChkOneGemBoostBr = 0, $g_hChkOneGemBoostFr = 0, $g_hChkOneGemBoostG = 0, $g_hChkOnlyOneGemBoost = 0
 ;------------------ADDED By RK MOD - END------------------
 
 ; Train Order sub-tab
@@ -822,6 +822,10 @@ Func CreateBoostSubTab()
 	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostG_Info_02", "Enable this function for Check one gem boost."))
 	GUICtrlSetState(-1, $GUI_UNCHECKED)
 	GUICtrlSetOnEvent(-1, "CheckHeroOneGem")
+	
+	$g_hChkOnlyOneGemBoost = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkOnlyOneGBoost_Info_01", "Only One Gem Boost"), $x + 260, $y + 25 , -1, -1)
+	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOnlyOneGBoost_Info_02", "Enable this function for Check only one gem boost."))
+	GUICtrlSetState(-1, $GUI_UNCHECKED)
 
 	$y += 25
 	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnQueenBoost, $x - 10, $y - 2, 24, 24)

@@ -957,6 +957,7 @@ Func ApplyConfig_600_22($TypeReadSave)
 			GUICtrlSetState($g_hChkOneGemBoostBr, $g_bChkOneGemBoostBr ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkOneGemBoostFr, $g_bChkOneGemBoostFr ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkOneGemBoostG, $g_bChkOneGemBoostG ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkOnlyOneGemBoost, $g_bChkOnlyOneGemBoost ? $GUI_CHECKED : $GUI_UNCHECKED)
 			
 		Case "Save"
 		
@@ -980,6 +981,7 @@ Func ApplyConfig_600_22($TypeReadSave)
 			$g_bChkOneGemBoostBr = (GUICtrlRead($g_hChkOneGemBoostBr) = $GUI_CHECKED)
 			$g_bChkOneGemBoostFr = (GUICtrlRead($g_hChkOneGemBoostFr) = $GUI_CHECKED)
 			$g_bChkOneGemBoostG = (GUICtrlRead($g_hChkOneGemBoostG) = $GUI_CHECKED)
+			$g_bChkOnlyOneGemBoost = (GUICtrlRead($g_hChkOnlyOneGemBoost) = $GUI_CHECKED)
 			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_22
