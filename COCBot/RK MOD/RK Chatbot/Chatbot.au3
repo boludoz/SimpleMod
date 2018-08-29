@@ -558,11 +558,11 @@ EndFunc
 
 Func ChatbotMessage() ; run the chatbot
 	
-	If $g_bDelayTime = False and $g_iChkChatGlobal Then 
+	If $g_bDelayTime = False And $g_iChkChatGlobal Then 
 	ChatGlobal()
 	EndIf
 	
-	If $g_bDelayTime = True and $g_iChkChatGlobal Then 
+	If $g_bDelayTime = True And $g_iChkChatGlobal Then 
     Local $iSendChatGlobalDelay = DelayTime($startDelayTimer, "GLOBAL")
 		If $iSendChatGlobalDelay = True Then
 		ChatGlobal()
