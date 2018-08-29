@@ -141,7 +141,11 @@ Func ReadConfig_RKMod()
 	; ==================================================  Upgrade Management - Added by RK MOD ==================== ;
 
 	IniReadS($g_ibUpdateNewUpgradesOnly, $g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly, "int")
-
+	
+	; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
+	
+	IniReadS($g_bChkBB_DropTrophies, $g_sProfileConfigPath, "other", "ChkBB_DropTrophies", $g_bChkBB_DropTrophies, "Int")
+	IniReadS($g_iTxtBB_DropTrophies, $g_sProfileConfigPath, "other", "TxtBB_DropTrophies", $g_iTxtBB_DropTrophies, "Int")
 EndFunc   ;==>ReadConfig_RKMod
 
 Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
@@ -282,7 +286,11 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 
 	_Ini_Add("upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly ? 1 : 0)
 
-
+	; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
+	
+	_Ini_Add("other", "ChkBB_DropTrophies", $g_bChkBB_DropTrophies)
+	_Ini_Add("other", "TxtBB_DropTrophies", $g_iTxtBB_DropTrophies)
+	
 EndFunc   ;==>SaveConfig_RKMod
 
 Func ApplyConfig_RKMod($TypeReadSave)
@@ -419,6 +427,11 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			; ================================================== Upgrade Management - Added by RK MOD ============================= ;
 
 			$g_ibUpdateNewUpgradesOnly = GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED ? 1 : 0
+			
+			; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
+			
+			$g_bChkBB_DropTrophies = (GUICtrlRead($g_hChkBB_DropTrophies) = $GUI_CHECKED) ? 1 : 0
+			$g_iTxtBB_DropTrophies = GUICtrlRead($g_hTxtBB_DropTrophies)
 
 		Case "Read"
 
@@ -578,6 +591,12 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
             chkUpdateNewUpgradesOnly()
 
+			; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
+					
+			GUICtrlSetState($g_hChkBB_DropTrophies, $g_bChkBB_DropTrophies = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtBB_DropTrophies, $g_iTxtBB_DropTrophies)
+			ChkBB_DropTrophies()
+			TxtBB_DropTrophies()
 	EndSwitch
 
 EndFunc   ;==>ApplyConfig_RKMod

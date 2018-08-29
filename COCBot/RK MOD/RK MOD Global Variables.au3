@@ -202,3 +202,11 @@ Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 5
 ; ================================================== One Gem Boost by RK MOD ================================= ;
 
 Global $g_bChkOneGemBoostBr = False, $g_bChkOneGemBoostFr = False, $g_bChkOneGemBoostG = False
+
+; --------------------------------------------
+; Builder Base Drop Trophies (ID70)
+; --------------------------------------------
+Global $g_iTxtBB_DropTrophies = 0
+Global $g_bChkBB_DropTrophies = False
+Global $aBB_FindMatchButton[4] = [555, 240 + $g_iBottomOffsetY, 0xFFC346, 10]
+Global $aBB_FindMatchButtonRND[4] = [545, 230 + $g_iMidOffsetY, 565, 250 + $g_iMidOffsetY]

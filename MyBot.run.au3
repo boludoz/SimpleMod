@@ -1319,6 +1319,7 @@ Func _RunFunction($action)
 				BuilderBaseReport()
 				StartClockTowerBoost()
 				MainSuggestedUpgradeCode()
+				BB_DropTrophies() ;------------------ADDED By RK MOD - by Chacal GYN - Drop Trophies (ID70) ------------------
 				; switch back to normal village
 				SwitchBetweenBases()
 			EndIf

@@ -82,3 +82,9 @@
 #include "RK Debug GUI Control.au3"
 
 #include "RK Config.au3"
+
+; --------------------------------------------
+; Builder Base Drop Trophies (ID70)
+; --------------------------------------------
+#include "RK BB\BB_DropTrophies.au3"
+#include "RK BB\BB_PrepareAttack.au3"
