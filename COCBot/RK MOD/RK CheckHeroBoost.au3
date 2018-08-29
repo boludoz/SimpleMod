@@ -27,7 +27,9 @@ Func CheckHeroBoost()
 			$CurrHeroBTime[$index] = $HeroTime[$g_iCurAccount][$index]
 		EndIf
 
-		If $g_bFirstStart Or ($CurrHeroBTime[$index] - (_DateDiff("n", $CTime[$g_iCurAccount][$index], _NowCalc()))) < 0 or $CTime[$g_iCurAccount][$index] = "" Then
+		Local $i_heroTime = (_DateDiff("n", $CTime[$g_iCurAccount][$index], _NowCalc())))
+
+		If $g_bFirstStart Or ($CurrHeroBTime[$index] - $i_heroTime < 0 Or $CTime[$g_iCurAccount][$index] = "" Then
 
 			If $index = 0 Then
 				If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
@@ -113,6 +115,12 @@ Func CheckHeroBoost()
 			EndIf
 
 			If $g_bDebugSetlog Then SetLog("-------------------------------------------", $COLOR_INFO)
+		Else
+			If $g_bDebugSetlog Then
+				SetLog("$CurrHeroBTime = " & $CurrHeroBTime[$index], $COLOR_INFO)
+				SetLog("$CTime[" & $index & "] = " & $CTime[$g_iCurAccount][$index], $COLOR_INFO)
+				SetLog("Time Diff HeroTime = " & $i_heroTime, $COLOR_INFO)
+			EndIf
 		EndIf
 	Next
 	ClickP($aAway, 2, 0, "#0000") ;Click Away
