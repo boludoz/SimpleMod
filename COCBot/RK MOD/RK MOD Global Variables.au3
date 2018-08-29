@@ -135,7 +135,7 @@ Global $glb2
 Global $cResp
 Global $cGeneric
 Global $ChatbotStartTime
-Global $message = ""
+Global $g_sMessage = ""
 
 ;=============================================== Russian Request - by RK MOD ======================================== ;
 
