@@ -27,7 +27,7 @@ Func CheckHeroBoost()
 			$CurrHeroBTime[$index] = $HeroTime[$g_iCurAccount][$index]
 		EndIf
 
-		If $g_bFirstStart Or (_DateDiff("n", $CTime[$g_iCurAccount][$i], _NowCalc())) > 1 or $CTime[$g_iCurAccount][$i] = "" Then
+		If $g_bFirstStart Or ($CurrHeroBTime[$i] - (_DateDiff("n", $CTime[$g_iCurAccount][$i], _NowCalc()))) < 0 or $CTime[$g_iCurAccount][$i] = "" Then
 
 			If $index = 0 Then
 				If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
