@@ -16,13 +16,17 @@ Local $bBoostimage = @ScriptDir & "\imgxml\boost\BoostC\BoostCCheck"
 Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
 
 Func OneGemBoost()
-	checkMainScreen()
-	If $g_bChkOneGemBoostG Then CheckHeroOneGem()
-	If $g_bChkOneGemBoostBr Or $g_bChkOneGemBoostFr Then
-		OpenArmyOverview(True, "OneGemBoost()")
-		If $g_bChkOneGemBoostBr Then CheckTroopsOneGem()
-		If $g_bChkOneGemBoostFr Then CheckSpellsOneGem()
-		ClickP($aAway, 1, 0, "#0161")
+	Local $initBoostTime
+	If $g_bFirstStart Or (_DateDiff("h", $initBoostTime, _NowCalc())) > 1 Then
+		checkMainScreen()
+		If $g_bChkOneGemBoostG Then CheckHeroOneGem()
+		If $g_bChkOneGemBoostBr Or $g_bChkOneGemBoostFr Then
+			OpenArmyOverview(True, "OneGemBoost()")
+			If $g_bChkOneGemBoostBr Then CheckTroopsOneGem()
+			If $g_bChkOneGemBoostFr Then CheckSpellsOneGem()
+			ClickP($aAway, 1, 0, "#0161")
+		EndIf
+		$initBoostTime = _NowCalc()
 	EndIf
 EndFunc   ;==>OneGemBoost
 
