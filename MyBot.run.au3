@@ -1398,6 +1398,7 @@ Func FirstCheck()
 		If Not $g_bRunState Then Return
 		SetDebugLog("Are you ready? " & String($g_bIsFullArmywithHeroesAndSpells))
 		If $g_bIsFullArmywithHeroesAndSpells Then
+			OneGemBoost() ;------------------ADDED By RK MOD-------------------
 			; Just in case of new profile! or BotDetectFirstTime() failed on Initiate()
 			If (isInsideDiamond($g_aiTownHallPos) = False) Then
 				BotDetectFirstTime()
