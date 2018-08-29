@@ -10,7 +10,7 @@
 #Au3Stripper_Off
 #Au3Stripper_On
 Global $g_sBotVersion = "v7.6.2"
-Global $g_sModversion = "v3.0.5 r7 beta"
+Global $g_sModversion = "v3.0.5 r8 beta"
 Global $g_sModSupportUrl = "https://github.com/rulesss2/MyBot-MBR_v7.6.1_RK_MOD/releases"
 Opt("MustDeclareVars", 1)
 Global $g_sBotTitle = ""
@@ -106,6 +106,7 @@ Global Const $SWP_NOREPOSITION = 0x0200
 Global Const $SWP_NOSENDCHANGING = 0x0400
 Global Const $ASSIGN_EXISTFAIL = 4
 Global Const $DIR_REMOVE= 1
+Global Const $NUMBER_DOUBLE = 3
 Global Const $FC_NOOVERWRITE = 0
 Global Const $FC_OVERWRITE = 1
 Global Const $FC_CREATEPATH = 8
@@ -142,6 +143,8 @@ Global Const $FLTA_FOLDERS = 2
 Global Const $FLTAR_FILESFOLDERS = 0
 Global Const $FLTAR_FILES = 1
 Global Const $FLTAR_NOHIDDEN = 4
+Global Const $FLTAR_NOSYSTEM = 8
+Global Const $FLTAR_NOLINK = 16
 Global Const $FLTAR_NORECUR = 0
 Global Const $FLTAR_RECUR = 1
 Global Const $FLTAR_NOSORT = 0
@@ -162,6 +165,21 @@ Global Const $SE_PRIVILEGE_ENABLED = 0x00000002
 Global Enum $SECURITYANONYMOUS = 0, $SECURITYIDENTIFICATION, $SECURITYIMPERSONATION, $SECURITYDELEGATION
 Global Const $TOKEN_QUERY = 0x00000008
 Global Const $TOKEN_ADJUST_PRIVILEGES = 0x00000020
+Global Const $STR_NOCASESENSE = 0
+Global Const $STR_CASESENSE = 1
+Global Const $STR_NOCASESENSEBASIC = 2
+Global Const $STR_STRIPLEADING = 1
+Global Const $STR_STRIPTRAILING = 2
+Global Const $STR_STRIPSPACES = 4
+Global Const $STR_STRIPALL = 8
+Global Const $STR_CHRSPLIT = 0
+Global Const $STR_ENTIRESPLIT = 1
+Global Const $STR_NOCOUNT = 2
+Global Const $STR_REGEXPMATCH = 0
+Global Const $STR_REGEXPARRAYMATCH = 1
+Global Const $STR_REGEXPARRAYGLOBALMATCH = 3
+Global Const $STR_ENDISSTART = 0
+Global Const $STR_ENDNOTSTART = 1
 Func _WinAPI_GetLastError(Const $_iCurrentError = @error, Const $_iCurrentExtended = @extended)
 Local $aResult = DllCall("kernel32.dll", "dword", "GetLastError")
 Return SetError($_iCurrentError, $_iCurrentExtended, $aResult[0])
@@ -170,7 +188,7 @@ Func _WinAPI_SetLastError($iErrorCode, Const $_iCurrentError = @error, Const $_i
 DllCall("kernel32.dll", "none", "SetLastError", "dword", $iErrorCode)
 Return SetError($_iCurrentError, $_iCurrentExtended, Null)
 EndFunc
-Func __COMErrorFormating($oCOMError, $sPrefix = @TAB)
+Func __COMErrorFormating(ByRef $oCOMError, $sPrefix = @TAB)
 Local Const $STR_STRIPTRAILING = 2
 Local $sError = "COM Error encountered in " & @ScriptName & " (" & $oCOMError.Scriptline & ") :" & @CRLF & $sPrefix & "Number        " & @TAB & "= 0x" & Hex($oCOMError.Number, 8) & " (" & $oCOMError.Number & ")" & @CRLF & $sPrefix & "WinDescription" & @TAB & "= " & StringStripWS($oCOMError.WinDescription, $STR_STRIPTRAILING) & @CRLF & $sPrefix & "Description   " & @TAB & "= " & StringStripWS($oCOMError.Description, $STR_STRIPTRAILING) & @CRLF & $sPrefix & "Source        " & @TAB & "= " & $oCOMError.Source & @CRLF & $sPrefix & "HelpFile      " & @TAB & "= " & $oCOMError.HelpFile & @CRLF & $sPrefix & "HelpContext   " & @TAB & "= " & $oCOMError.HelpContext & @CRLF & $sPrefix & "LastDllError  " & @TAB & "= " & $oCOMError.LastDllError & @CRLF & $sPrefix & "Retcode       " & @TAB & "= 0x" & Hex($oCOMError.retcode)
 Return $sError
@@ -241,21 +259,6 @@ If @error Then Return SetError(@error, @extended, "")
 If $iReturn >= 0 And $iReturn <= 4 Then Return $aResult[$iReturn]
 Return $aResult
 EndFunc
-Global Const $STR_NOCASESENSE = 0
-Global Const $STR_CASESENSE = 1
-Global Const $STR_NOCASESENSEBASIC = 2
-Global Const $STR_STRIPLEADING = 1
-Global Const $STR_STRIPTRAILING = 2
-Global Const $STR_STRIPSPACES = 4
-Global Const $STR_STRIPALL = 8
-Global Const $STR_CHRSPLIT = 0
-Global Const $STR_ENTIRESPLIT = 1
-Global Const $STR_NOCOUNT = 2
-Global Const $STR_REGEXPMATCH = 0
-Global Const $STR_REGEXPARRAYMATCH = 1
-Global Const $STR_REGEXPARRAYGLOBALMATCH = 3
-Global Const $STR_ENDISSTART = 0
-Global Const $STR_ENDNOTSTART = 1
 Global Const $tagPOINT = "struct;long X;long Y;endstruct"
 Global Const $tagRECT = "struct;long Left;long Top;long Right;long Bottom;endstruct"
 Global Const $tagSIZE = "struct;long X;long Y;endstruct"
@@ -268,6 +271,7 @@ Global Const $tagGDIPENCODERPARAMS = "uint Count;" & $tagGDIPENCODERPARAM
 Global Const $tagGDIPRECTF = "struct;float X;float Y;float Width;float Height;endstruct"
 Global Const $tagGDIPSTARTUPINPUT = "uint Version;ptr Callback;bool NoThread;bool NoCodecs"
 Global Const $tagGDIPIMAGECODECINFO = "byte CLSID[16];byte FormatID[16];ptr CodecName;ptr DllName;ptr FormatDesc;ptr FileExt;" & "ptr MimeType;dword Flags;dword Version;dword SigCount;dword SigSize;ptr SigPattern;ptr SigMask"
+Global Const $tagLVITEM = "struct;uint Mask;int Item;int SubItem;uint State;uint StateMask;ptr Text;int TextMax;int Image;lparam Param;" & "int Indent;int GroupID;uint Columns;ptr pColumns;ptr piColFmt;int iGroup;endstruct"
 Global Const $tagMENUITEMINFO = "uint Size;uint Mask;uint Type;uint State;uint ID;handle SubMenu;handle BmpChecked;handle BmpUnchecked;" & "ulong_ptr ItemData;ptr TypeData;uint CCH;handle BmpItem"
 Global Const $tagREBARBANDINFO = "uint cbSize;uint fMask;uint fStyle;dword clrFore;dword clrBack;ptr lpText;uint cch;" & "int iImage;hwnd hwndChild;uint cxMinChild;uint cyMinChild;uint cx;handle hbmBack;uint wID;uint cyChild;uint cyMaxChild;" & "uint cyIntegral;uint cxIdeal;lparam lParam;uint cxHeader" &((@OSVersion = "WIN_XP") ? "" : ";" & $tagRECT & ";uint uChevronState")
 Global Const $tagBITMAPINFOHEADER = "struct;dword biSize;long biWidth;long biHeight;word biPlanes;word biBitCount;" & "dword biCompression;dword biSizeImage;long biXPelsPerMeter;long biYPelsPerMeter;dword biClrUsed;dword biClrImportant;endstruct"
@@ -281,7 +285,6 @@ Global Const $tagSECURITY_ATTRIBUTES = "dword Length;ptr Descriptor;bool Inherit
 Global Const $tagTEXTMETRIC = "long tmHeight;long tmAscent;long tmDescent;long tmInternalLeading;long tmExternalLeading;" & "long tmAveCharWidth;long tmMaxCharWidth;long tmWeight;long tmOverhang;long tmDigitizedAspectX;long tmDigitizedAspectY;" & "wchar tmFirstChar;wchar tmLastChar;wchar tmDefaultChar;wchar tmBreakChar;byte tmItalic;byte tmUnderlined;byte tmStruckOut;" & "byte tmPitchAndFamily;byte tmCharSet"
 Global Const $HGDI_ERROR = Ptr(-1)
 Global Const $INVALID_HANDLE_VALUE = Ptr(-1)
-Global Const $DEFAULT_GUI_FONT = 17
 Global Const $ULW_ALPHA = 0x02
 Global Const $WH_CBT = 5
 Global Const $KF_EXTENDED = 0x0100
@@ -290,73 +293,15 @@ Global Const $KF_UP = 0x8000
 Global Const $LLKHF_EXTENDED = BitShift($KF_EXTENDED, 8)
 Global Const $LLKHF_ALTDOWN = BitShift($KF_ALTDOWN, 8)
 Global Const $LLKHF_UP = BitShift($KF_UP, 8)
-Global Const $DI_MASK = 0x0001
-Global Const $DI_IMAGE = 0x0002
-Global Const $DI_NORMAL = 0x0003
-Global Const $DI_COMPAT = 0x0004
-Global Const $DI_DEFAULTSIZE = 0x0008
-Global Const $DI_NOMIRROR = 0x0010
-Global Const $GW_HWNDNEXT = 2
-Global Const $GW_CHILD = 5
-Global Const $GWL_WNDPROC = 0xFFFFFFFC
-Global Const $GWL_HWNDPARENT = 0xFFFFFFF8
-Global Const $GWL_STYLE = 0xFFFFFFF0
-Global Const $GWL_EXSTYLE = 0xFFFFFFEC
-Global Const $IMAGE_ICON = 1
-Global Const $LOAD_LIBRARY_AS_DATAFILE = 0x02
 Global Const $S_OK = 0x00000000
+Global $__g_vEnum, $__g_vExt = 0
+Global $__g_iRGBMode = 1
+Global Const $tagOSVERSIONINFO = 'struct;dword OSVersionInfoSize;dword MajorVersion;dword MinorVersion;dword BuildNumber;dword PlatformId;wchar CSDVersion[128];endstruct'
+Global Const $IMAGE_ICON = 1
 Global Const $LR_DEFAULTCOLOR = 0x0000
 Global Const $LR_LOADFROMFILE = 0x0010
-Global $__g_aInProcess_WinAPI[64][2] = [[0, 0]]
-Global $__g_aWinList_WinAPI[64][2] = [[0, 0]]
-Global Const $__WINAPICONSTANT_WM_SETFONT = 0x0030
-Global Const $__WINAPICONSTANT_FW_NORMAL = 400
-Global Const $__WINAPICONSTANT_DEFAULT_CHARSET = 1
-Global Const $__WINAPICONSTANT_OUT_DEFAULT_PRECIS = 0
-Global Const $__WINAPICONSTANT_CLIP_DEFAULT_PRECIS = 0
-Global Const $__WINAPICONSTANT_DEFAULT_QUALITY = 0
-Global Const $tagCURSORINFO = "dword Size;dword Flags;handle hCursor;" & $tagPOINT
-Global Const $tagICONINFO = "bool Icon;dword XHotSpot;dword YHotSpot;handle hMask;handle hColor"
-Func _WinAPI_BitBlt($hDestDC, $iXDest, $iYDest, $iWidth, $iHeight, $hSrcDC, $iXSrc, $iYSrc, $iROP)
-Local $aResult = DllCall("gdi32.dll", "bool", "BitBlt", "handle", $hDestDC, "int", $iXDest, "int", $iYDest, "int", $iWidth, "int", $iHeight, "handle", $hSrcDC, "int", $iXSrc, "int", $iYSrc, "dword", $iROP)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_CallNextHookEx($hHook, $iCode, $wParam, $lParam)
-Local $aResult = DllCall("user32.dll", "lresult", "CallNextHookEx", "handle", $hHook, "int", $iCode, "wparam", $wParam, "lparam", $lParam)
-If @error Then Return SetError(@error, @extended, -1)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_CallWindowProc($pPrevWndFunc, $hWnd, $iMsg, $wParam, $lParam)
-Local $aResult = DllCall("user32.dll", "lresult", "CallWindowProc", "ptr", $pPrevWndFunc, "hwnd", $hWnd, "uint", $iMsg, "wparam", $wParam, "lparam", $lParam)
-If @error Then Return SetError(@error, @extended, -1)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_ClientToScreen($hWnd, ByRef $tPoint)
-Local $aRet = DllCall("user32.dll", "bool", "ClientToScreen", "hwnd", $hWnd, "struct*", $tPoint)
-If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
-Return $tPoint
-EndFunc
-Func _WinAPI_CloseHandle($hObject)
-Local $aResult = DllCall("kernel32.dll", "bool", "CloseHandle", "handle", $hObject)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_CopyIcon($hIcon)
-Local $aResult = DllCall("user32.dll", "handle", "CopyIcon", "handle", $hIcon)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_CreateCompatibleBitmap($hDC, $iWidth, $iHeight)
-Local $aResult = DllCall("gdi32.dll", "handle", "CreateCompatibleBitmap", "handle", $hDC, "int", $iWidth, "int", $iHeight)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_CreateCompatibleDC($hDC)
-Local $aResult = DllCall("gdi32.dll", "handle", "CreateCompatibleDC", "handle", $hDC)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
+Global Const $__tagCURSORINFO = "dword Size;dword Flags;handle hCursor;" & "struct;long X;long Y;endstruct"
+Global Const $__WINVER = __WINVER()
 Func _WinAPI_CreateFile($sFileName, $iCreation, $iAccess = 4, $iShare = 0, $iAttributes = 0, $tSecurity = 0)
 Local $iDA = 0, $iSM = 0, $iCD = 0, $iFA = 0
 If BitAND($iAccess, 1) <> 0 Then $iDA = BitOR($iDA, $GENERIC_EXECUTE)
@@ -382,112 +327,7 @@ If BitAND($iAttributes, 2) <> 0 Then $iFA = BitOR($iFA, $FILE_ATTRIBUTE_HIDDEN)
 If BitAND($iAttributes, 4) <> 0 Then $iFA = BitOR($iFA, $FILE_ATTRIBUTE_READONLY)
 If BitAND($iAttributes, 8) <> 0 Then $iFA = BitOR($iFA, $FILE_ATTRIBUTE_SYSTEM)
 Local $aResult = DllCall("kernel32.dll", "handle", "CreateFileW", "wstr", $sFileName, "dword", $iDA, "dword", $iSM, "struct*", $tSecurity, "dword", $iCD, "dword", $iFA, "ptr", 0)
-If @error Or($aResult[0] = $INVALID_HANDLE_VALUE) Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_CreateFont($iHeight, $iWidth, $iEscape = 0, $iOrientn = 0, $iWeight = $__WINAPICONSTANT_FW_NORMAL, $bItalic = False, $bUnderline = False, $bStrikeout = False, $iCharset = $__WINAPICONSTANT_DEFAULT_CHARSET, $iOutputPrec = $__WINAPICONSTANT_OUT_DEFAULT_PRECIS, $iClipPrec = $__WINAPICONSTANT_CLIP_DEFAULT_PRECIS, $iQuality = $__WINAPICONSTANT_DEFAULT_QUALITY, $iPitch = 0, $sFace = 'Arial')
-Local $aResult = DllCall("gdi32.dll", "handle", "CreateFontW", "int", $iHeight, "int", $iWidth, "int", $iEscape, "int", $iOrientn, "int", $iWeight, "dword", $bItalic, "dword", $bUnderline, "dword", $bStrikeout, "dword", $iCharset, "dword", $iOutputPrec, "dword", $iClipPrec, "dword", $iQuality, "dword", $iPitch, "wstr", $sFace)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_CreateFontIndirect($tLogFont)
-Local $aResult = DllCall("gdi32.dll", "handle", "CreateFontIndirectW", "struct*", $tLogFont)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_CreateWindowEx($iExStyle, $sClass, $sName, $iStyle, $iX, $iY, $iWidth, $iHeight, $hParent, $hMenu = 0, $hInstance = 0, $pParam = 0)
-If $hInstance = 0 Then $hInstance = _WinAPI_GetModuleHandle("")
-Local $aResult = DllCall("user32.dll", "hwnd", "CreateWindowExW", "dword", $iExStyle, "wstr", $sClass, "wstr", $sName, "dword", $iStyle, "int", $iX, "int", $iY, "int", $iWidth, "int", $iHeight, "hwnd", $hParent, "handle", $hMenu, "handle", $hInstance, "struct*", $pParam)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_DeleteDC($hDC)
-Local $aResult = DllCall("gdi32.dll", "bool", "DeleteDC", "handle", $hDC)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_DeleteObject($hObject)
-Local $aResult = DllCall("gdi32.dll", "bool", "DeleteObject", "handle", $hObject)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_DestroyIcon($hIcon)
-Local $aResult = DllCall("user32.dll", "bool", "DestroyIcon", "handle", $hIcon)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_DestroyWindow($hWnd)
-Local $aResult = DllCall("user32.dll", "bool", "DestroyWindow", "hwnd", $hWnd)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_DrawIcon($hDC, $iX, $iY, $hIcon)
-Local $aResult = DllCall("user32.dll", "bool", "DrawIcon", "handle", $hDC, "int", $iX, "int", $iY, "handle", $hIcon)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_DrawIconEx($hDC, $iX, $iY, $hIcon, $iWidth = 0, $iHeight = 0, $iStep = 0, $hBrush = 0, $iFlags = 3)
-Local $iOptions
-Switch $iFlags
-Case 1
-$iOptions = $DI_MASK
-Case 2
-$iOptions = $DI_IMAGE
-Case 3
-$iOptions = $DI_NORMAL
-Case 4
-$iOptions = $DI_COMPAT
-Case 5
-$iOptions = $DI_DEFAULTSIZE
-Case Else
-$iOptions = $DI_NOMIRROR
-EndSwitch
-Local $aResult = DllCall("user32.dll", "bool", "DrawIconEx", "handle", $hDC, "int", $iX, "int", $iY, "handle", $hIcon, "int", $iWidth, "int", $iHeight, "uint", $iStep, "handle", $hBrush, "uint", $iOptions)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_EnableWindow($hWnd, $bEnable = True)
-Local $aResult = DllCall("user32.dll", "bool", "EnableWindow", "hwnd", $hWnd, "bool", $bEnable)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func __WinAPI_EnumWindowsAdd($hWnd, $sClass = "")
-If $sClass = "" Then $sClass = _WinAPI_GetClassName($hWnd)
-$__g_aWinList_WinAPI[0][0] += 1
-Local $iCount = $__g_aWinList_WinAPI[0][0]
-If $iCount >= $__g_aWinList_WinAPI[0][1] Then
-ReDim $__g_aWinList_WinAPI[$iCount + 64][2]
-$__g_aWinList_WinAPI[0][1] += 64
-EndIf
-$__g_aWinList_WinAPI[$iCount][0] = $hWnd
-$__g_aWinList_WinAPI[$iCount][1] = $sClass
-EndFunc
-Func __WinAPI_EnumWindowsInit()
-ReDim $__g_aWinList_WinAPI[64][2]
-$__g_aWinList_WinAPI[0][0] = 0
-$__g_aWinList_WinAPI[0][1] = 64
-EndFunc
-Func _WinAPI_EnumWindowsTop()
-__WinAPI_EnumWindowsInit()
-Local $hWnd = _WinAPI_GetWindow(_WinAPI_GetDesktopWindow(), $GW_CHILD)
-While $hWnd <> 0
-If _WinAPI_IsWindowVisible($hWnd) Then __WinAPI_EnumWindowsAdd($hWnd)
-$hWnd = _WinAPI_GetWindow($hWnd, $GW_HWNDNEXT)
-WEnd
-Return $__g_aWinList_WinAPI
-EndFunc
-Func _WinAPI_ExtractIconEx($sFilePath, $iIndex, $paLarge, $paSmall, $iIcons)
-Local $aResult = DllCall("shell32.dll", "uint", "ExtractIconExW", "wstr", $sFilePath, "int", $iIndex, "struct*", $paLarge, "struct*", $paSmall, "uint", $iIcons)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_FatalAppExit($sMessage)
-DllCall("kernel32.dll", "none", "FatalAppExitW", "uint", 0, "wstr", $sMessage)
-If @error Then Return SetError(@error, @extended)
-EndFunc
-Func _WinAPI_FindWindow($sClassName, $sWindowName)
-Local $aResult = DllCall("user32.dll", "hwnd", "FindWindowW", "wstr", $sClassName, "wstr", $sWindowName)
-If @error Then Return SetError(@error, @extended, 0)
+If @error Or($aResult[0] = Ptr(-1)) Then Return SetError(@error, @extended, 0)
 Return $aResult[0]
 EndFunc
 Func _WinAPI_FreeLibrary($hModule)
@@ -495,45 +335,8 @@ Local $aResult = DllCall("kernel32.dll", "bool", "FreeLibrary", "handle", $hModu
 If @error Then Return SetError(@error, @extended, False)
 Return $aResult[0]
 EndFunc
-Func _WinAPI_GetAncestor($hWnd, $iFlags = 1)
-Local $aResult = DllCall("user32.dll", "hwnd", "GetAncestor", "hwnd", $hWnd, "uint", $iFlags)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_GetClassName($hWnd)
-If Not IsHWnd($hWnd) Then $hWnd = GUICtrlGetHandle($hWnd)
-Local $aResult = DllCall("user32.dll", "int", "GetClassNameW", "hwnd", $hWnd, "wstr", "", "int", 4096)
-If @error Or Not $aResult[0] Then Return SetError(@error, @extended, '')
-Return SetExtended($aResult[0], $aResult[2])
-EndFunc
-Func _WinAPI_GetClientHeight($hWnd)
-Local $tRECT = _WinAPI_GetClientRect($hWnd)
-If @error Then Return SetError(@error, @extended, 0)
-Return DllStructGetData($tRECT, "Bottom") - DllStructGetData($tRECT, "Top")
-EndFunc
-Func _WinAPI_GetClientWidth($hWnd)
-Local $tRECT = _WinAPI_GetClientRect($hWnd)
-If @error Then Return SetError(@error, @extended, 0)
-Return DllStructGetData($tRECT, "Right") - DllStructGetData($tRECT, "Left")
-EndFunc
-Func _WinAPI_GetClientRect($hWnd)
-Local $tRECT = DllStructCreate($tagRECT)
-Local $aRet = DllCall("user32.dll", "bool", "GetClientRect", "hwnd", $hWnd, "struct*", $tRECT)
-If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
-Return $tRECT
-EndFunc
-Func _WinAPI_GetCurrentProcess()
-Local $aResult = DllCall("kernel32.dll", "handle", "GetCurrentProcess")
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_GetCurrentThreadId()
-Local $aResult = DllCall("kernel32.dll", "dword", "GetCurrentThreadId")
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
 Func _WinAPI_GetCursorInfo()
-Local $tCursor = DllStructCreate($tagCURSORINFO)
+Local $tCursor = DllStructCreate($__tagCURSORINFO)
 Local $iCursor = DllStructGetSize($tCursor)
 DllStructSetData($tCursor, "Size", $iCursor)
 Local $aRet = DllCall("user32.dll", "bool", "GetCursorInfo", "struct*", $tCursor)
@@ -546,59 +349,10 @@ $aCursor[3] = DllStructGetData($tCursor, "X")
 $aCursor[4] = DllStructGetData($tCursor, "Y")
 Return $aCursor
 EndFunc
-Func _WinAPI_GetDC($hWnd)
-Local $aResult = DllCall("user32.dll", "handle", "GetDC", "hwnd", $hWnd)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_GetDesktopWindow()
-Local $aResult = DllCall("user32.dll", "hwnd", "GetDesktopWindow")
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_GetDeviceCaps($hDC, $iIndex)
-Local $aResult = DllCall("gdi32.dll", "int", "GetDeviceCaps", "handle", $hDC, "int", $iIndex)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
 Func _WinAPI_GetDlgCtrlID($hWnd)
 Local $aResult = DllCall("user32.dll", "int", "GetDlgCtrlID", "hwnd", $hWnd)
 If @error Then Return SetError(@error, @extended, 0)
 Return $aResult[0]
-EndFunc
-Func _WinAPI_GetFileSizeEx($hFile)
-Local $aResult = DllCall("kernel32.dll", "bool", "GetFileSizeEx", "handle", $hFile, "int64*", 0)
-If @error Or Not $aResult[0] Then Return SetError(@error, @extended, -1)
-Return $aResult[2]
-EndFunc
-Func _WinAPI_GetFocus()
-Local $aResult = DllCall("user32.dll", "hwnd", "GetFocus")
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_GetForegroundWindow()
-Local $aResult = DllCall("user32.dll", "hwnd", "GetForegroundWindow")
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_GetGuiResources($iFlag = 0, $hProcess = -1)
-If $hProcess = -1 Then $hProcess = _WinAPI_GetCurrentProcess()
-Local $aResult = DllCall("user32.dll", "dword", "GetGuiResources", "handle", $hProcess, "dword", $iFlag)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_GetIconInfo($hIcon)
-Local $tInfo = DllStructCreate($tagICONINFO)
-Local $aRet = DllCall("user32.dll", "bool", "GetIconInfo", "handle", $hIcon, "struct*", $tInfo)
-If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
-Local $aIcon[6]
-$aIcon[0] = True
-$aIcon[1] = DllStructGetData($tInfo, "Icon") <> 0
-$aIcon[2] = DllStructGetData($tInfo, "XHotSpot")
-$aIcon[3] = DllStructGetData($tInfo, "YHotSpot")
-$aIcon[4] = DllStructGetData($tInfo, "hMask")
-$aIcon[5] = DllStructGetData($tInfo, "hColor")
-Return $aIcon
 EndFunc
 Func _WinAPI_GetModuleHandle($sModuleName)
 Local $sModuleNameType = "wstr"
@@ -610,55 +364,113 @@ Local $aResult = DllCall("kernel32.dll", "handle", "GetModuleHandleW", $sModuleN
 If @error Then Return SetError(@error, @extended, 0)
 Return $aResult[0]
 EndFunc
-Func _WinAPI_GetObject($hObject, $iSize, $pObject)
-Local $aResult = DllCall("gdi32.dll", "int", "GetObjectW", "handle", $hObject, "int", $iSize, "struct*", $pObject)
+Func _WinAPI_LoadImage($hInstance, $sImage, $iType, $iXDesired, $iYDesired, $iLoad)
+Local $aResult, $sImageType = "int"
+If IsString($sImage) Then $sImageType = "wstr"
+$aResult = DllCall("user32.dll", "handle", "LoadImageW", "handle", $hInstance, $sImageType, $sImage, "uint", $iType, "int", $iXDesired, "int", $iYDesired, "uint", $iLoad)
 If @error Then Return SetError(@error, @extended, 0)
 Return $aResult[0]
 EndFunc
-Func _WinAPI_GetParent($hWnd)
-Local $aResult = DllCall("user32.dll", "hwnd", "GetParent", "hwnd", $hWnd)
+Func _WinAPI_ReadFile($hFile, $pBuffer, $iToRead, ByRef $iRead, $tOverlapped = 0)
+Local $aResult = DllCall("kernel32.dll", "bool", "ReadFile", "handle", $hFile, "struct*", $pBuffer, "dword", $iToRead, "dword*", 0, "struct*", $tOverlapped)
+If @error Then Return SetError(@error, @extended, False)
+$iRead = $aResult[4]
+Return $aResult[0]
+EndFunc
+Func _WinAPI_StrLen($pString, $bUnicode = True)
+Local $W = ''
+If $bUnicode Then $W = 'W'
+Local $aRet = DllCall('kernel32.dll', 'int', 'lstrlen' & $W, 'struct*', $pString)
 If @error Then Return SetError(@error, @extended, 0)
+Return $aRet[0]
+EndFunc
+Func _WinAPI_SwitchColor($iColor)
+If $iColor = -1 Then Return $iColor
+Return BitOR(BitAND($iColor, 0x00FF00), BitShift(BitAND($iColor, 0x0000FF), -16), BitShift(BitAND($iColor, 0xFF0000), 16))
+EndFunc
+Func _WinAPI_WriteFile($hFile, $pBuffer, $iToWrite, ByRef $iWritten, $tOverlapped = 0)
+Local $aResult = DllCall("kernel32.dll", "bool", "WriteFile", "handle", $hFile, "struct*", $pBuffer, "dword", $iToWrite, "dword*", 0, "struct*", $tOverlapped)
+If @error Then Return SetError(@error, @extended, False)
+$iWritten = $aResult[4]
 Return $aResult[0]
 EndFunc
-Func _WinAPI_GetStockObject($iObject)
-Local $aResult = DllCall("gdi32.dll", "handle", "GetStockObject", "int", $iObject)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Func __CheckErrorArrayBounds(Const ByRef $aData, ByRef $iStart, ByRef $iEnd, $nDim = 1, $iDim = $UBOUND_DIMENSIONS)
+If Not IsArray($aData) Then Return SetError(1, 0, 1)
+If UBound($aData, $iDim) <> $nDim Then Return SetError(2, 0, 1)
+If $iStart < 0 Then $iStart = 0
+Local $iUBound = UBound($aData) - 1
+If $iEnd < 1 Or $iEnd > $iUBound Then $iEnd = $iUBound
+If $iStart > $iEnd Then Return SetError(4, 0, 1)
+Return 0
 EndFunc
-Func _WinAPI_GetStdHandle($iStdHandle)
-If $iStdHandle < 0 Or $iStdHandle > 2 Then Return SetError(2, 0, -1)
-Local Const $aHandle[3] = [-10, -11, -12]
-Local $aResult = DllCall("kernel32.dll", "handle", "GetStdHandle", "dword", $aHandle[$iStdHandle])
-If @error Then Return SetError(@error, @extended, -1)
-Return $aResult[0]
+Func __CheckErrorCloseHandle($aRet, $hFile, $bLastError = False, $iCurErr = @error, $iCurExt = @extended)
+If Not $iCurErr And Not $aRet[0] Then $iCurErr = 10
+Local $aLastError = DllCall("kernel32.dll", "dword", "GetLastError")
+DllCall("kernel32.dll", "bool", "CloseHandle", "handle", $hFile)
+If $iCurErr Then DllCall("kernel32.dll", "none", "SetLastError", "dword", $aLastError[0])
+If $bLastError Then $iCurExt = $aLastError[0]
+Return SetError($iCurErr, $iCurExt, $iCurErr)
 EndFunc
-Func _WinAPI_GetSystemMetrics($iIndex)
-Local $aResult = DllCall("user32.dll", "int", "GetSystemMetrics", "int", $iIndex)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Func __EnumWindowsProc($hWnd, $bVisible)
+Local $aResult
+If $bVisible Then
+$aResult = DllCall("user32.dll", "bool", "IsWindowVisible", "hwnd", $hWnd)
+If Not $aResult[0] Then
+Return 1
+EndIf
+EndIf
+__Inc($__g_vEnum)
+$__g_vEnum[$__g_vEnum[0][0]][0] = $hWnd
+$aResult = DllCall("user32.dll", "int", "GetClassNameW", "hwnd", $hWnd, "wstr", "", "int", 4096)
+$__g_vEnum[$__g_vEnum[0][0]][1] = $aResult[2]
+Return 1
 EndFunc
-Func _WinAPI_GetWindow($hWnd, $iCmd)
-Local $aResult = DllCall("user32.dll", "hwnd", "GetWindow", "hwnd", $hWnd, "uint", $iCmd)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Func __FatalExit($iCode, $sText = '')
+If $sText Then MsgBox($MB_SYSTEMMODAL, 'AutoIt', $sText)
+DllCall('kernel32.dll', 'none', 'FatalExit', 'int', $iCode)
 EndFunc
-Func _WinAPI_GetWindowDC($hWnd)
-Local $aResult = DllCall("user32.dll", "handle", "GetWindowDC", "hwnd", $hWnd)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
+Func __Inc(ByRef $aData, $iIncrement = 100)
+Select
+Case UBound($aData, $UBOUND_COLUMNS)
+If $iIncrement < 0 Then
+ReDim $aData[$aData[0][0] + 1][UBound($aData, $UBOUND_COLUMNS)]
+Else
+$aData[0][0] += 1
+If $aData[0][0] > UBound($aData) - 1 Then
+ReDim $aData[$aData[0][0] + $iIncrement][UBound($aData, $UBOUND_COLUMNS)]
+EndIf
+EndIf
+Case UBound($aData, $UBOUND_ROWS)
+If $iIncrement < 0 Then
+ReDim $aData[$aData[0] + 1]
+Else
+$aData[0] += 1
+If $aData[0] > UBound($aData) - 1 Then
+ReDim $aData[$aData[0] + $iIncrement]
+EndIf
+EndIf
+Case Else
+Return 0
+EndSelect
+Return 1
 EndFunc
-Func _WinAPI_GetWindowLong($hWnd, $iIndex)
-Local $sFuncName = "GetWindowLongW"
-If @AutoItX64 Then $sFuncName = "GetWindowLongPtrW"
-Local $aResult = DllCall("user32.dll", "long_ptr", $sFuncName, "hwnd", $hWnd, "int", $iIndex)
-If @error Or Not $aResult[0] Then Return SetError(@error + 10, @extended, 0)
-Return $aResult[0]
+Func __RGB($iColor)
+If $__g_iRGBMode Then
+$iColor = _WinAPI_SwitchColor($iColor)
+EndIf
+Return $iColor
 EndFunc
-Func _WinAPI_GetWindowThreadProcessId($hWnd, ByRef $iPID)
-Local $aResult = DllCall("user32.dll", "dword", "GetWindowThreadProcessId", "hwnd", $hWnd, "dword*", 0)
-If @error Then Return SetError(@error, @extended, 0)
-$iPID = $aResult[2]
-Return $aResult[0]
+Func __WINVER()
+Local $tOSVI = DllStructCreate($tagOSVERSIONINFO)
+DllStructSetData($tOSVI, 1, DllStructGetSize($tOSVI))
+Local $aRet = DllCall('kernel32.dll', 'bool', 'GetVersionExW', 'struct*', $tOSVI)
+If @error Or Not $aRet[0] Then Return SetError(@error, @extended, 0)
+Return BitOR(BitShift(DllStructGetData($tOSVI, 2), -8), DllStructGetData($tOSVI, 3))
+EndFunc
+Func _WinAPI_ClientToScreen($hWnd, ByRef $tPoint)
+Local $aRet = DllCall("user32.dll", "bool", "ClientToScreen", "hwnd", $hWnd, "struct*", $tPoint)
+If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
+Return $tPoint
 EndFunc
 Func _WinAPI_GetXYFromPoint(ByRef $tPoint, ByRef $iX, ByRef $iY)
 $iX = DllStructGetData($tPoint, "X")
@@ -678,96 +490,11 @@ EndFunc
 Func _WinAPI_HiWord($iLong)
 Return BitShift($iLong, 16)
 EndFunc
-Func _WinAPI_InProcess($hWnd, ByRef $hLastWnd)
-If $hWnd = $hLastWnd Then Return True
-For $iI = $__g_aInProcess_WinAPI[0][0] To 1 Step -1
-If $hWnd = $__g_aInProcess_WinAPI[$iI][0] Then
-If $__g_aInProcess_WinAPI[$iI][1] Then
-$hLastWnd = $hWnd
-Return True
-Else
-Return False
-EndIf
-EndIf
-Next
-Local $iPID
-_WinAPI_GetWindowThreadProcessId($hWnd, $iPID)
-Local $iCount = $__g_aInProcess_WinAPI[0][0] + 1
-If $iCount >= 64 Then $iCount = 1
-$__g_aInProcess_WinAPI[0][0] = $iCount
-$__g_aInProcess_WinAPI[$iCount][0] = $hWnd
-$__g_aInProcess_WinAPI[$iCount][1] =($iPID = @AutoItPID)
-Return $__g_aInProcess_WinAPI[$iCount][1]
-EndFunc
-Func _WinAPI_IsClassName($hWnd, $sClassName)
-Local $sSeparator = Opt("GUIDataSeparatorChar")
-Local $aClassName = StringSplit($sClassName, $sSeparator)
-If Not IsHWnd($hWnd) Then $hWnd = GUICtrlGetHandle($hWnd)
-Local $sClassCheck = _WinAPI_GetClassName($hWnd)
-For $x = 1 To UBound($aClassName) - 1
-If StringUpper(StringMid($sClassCheck, 1, StringLen($aClassName[$x]))) = StringUpper($aClassName[$x]) Then Return True
-Next
-Return False
-EndFunc
-Func _WinAPI_IsWindow($hWnd)
-Local $aResult = DllCall("user32.dll", "bool", "IsWindow", "hwnd", $hWnd)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_IsWindowVisible($hWnd)
-Local $aResult = DllCall("user32.dll", "bool", "IsWindowVisible", "hwnd", $hWnd)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_InvalidateRect($hWnd, $tRECT = 0, $bErase = True)
-Local $aResult = DllCall("user32.dll", "bool", "InvalidateRect", "hwnd", $hWnd, "struct*", $tRECT, "bool", $bErase)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_LoadImage($hInstance, $sImage, $iType, $iXDesired, $iYDesired, $iLoad)
-Local $aResult, $sImageType = "int"
-If IsString($sImage) Then $sImageType = "wstr"
-$aResult = DllCall("user32.dll", "handle", "LoadImageW", "handle", $hInstance, $sImageType, $sImage, "uint", $iType, "int", $iXDesired, "int", $iYDesired, "uint", $iLoad)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_LoadLibraryEx($sFileName, $iFlags = 0)
-Local $aResult = DllCall("kernel32.dll", "handle", "LoadLibraryExW", "wstr", $sFileName, "ptr", 0, "dword", $iFlags)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
 Func _WinAPI_LoWord($iLong)
 Return BitAND($iLong, 0xFFFF)
 EndFunc
 Func _WinAPI_MakeLong($iLo, $iHi)
 Return BitOR(BitShift($iHi, -16), BitAND($iLo, 0xFFFF))
-EndFunc
-Func _WinAPI_OpenProcess($iAccess, $bInherit, $iPID, $bDebugPriv = False)
-Local $aResult = DllCall("kernel32.dll", "handle", "OpenProcess", "dword", $iAccess, "bool", $bInherit, "dword", $iPID)
-If @error Then Return SetError(@error, @extended, 0)
-If $aResult[0] Then Return $aResult[0]
-If Not $bDebugPriv Then Return SetError(100, 0, 0)
-Local $hToken = _Security__OpenThreadTokenEx(BitOR($TOKEN_ADJUST_PRIVILEGES, $TOKEN_QUERY))
-If @error Then Return SetError(@error + 10, @extended, 0)
-_Security__SetPrivilege($hToken, "SeDebugPrivilege", True)
-Local $iError = @error
-Local $iExtended = @extended
-Local $iRet = 0
-If Not @error Then
-$aResult = DllCall("kernel32.dll", "handle", "OpenProcess", "dword", $iAccess, "bool", $bInherit, "dword", $iPID)
-$iError = @error
-$iExtended = @extended
-If $aResult[0] Then $iRet = $aResult[0]
-_Security__SetPrivilege($hToken, "SeDebugPrivilege", False)
-If @error Then
-$iError = @error + 20
-$iExtended = @extended
-EndIf
-Else
-$iError = @error + 30
-EndIf
-_WinAPI_CloseHandle($hToken)
-Return SetError($iError, $iExtended, $iRet)
 EndFunc
 Func _WinAPI_PointFromRect(ByRef $tRECT, $bCenter = True)
 Local $iX1 = DllStructGetData($tRECT, "Left")
@@ -783,181 +510,36 @@ DllStructSetData($tPoint, "X", $iX1)
 DllStructSetData($tPoint, "Y", $iY1)
 Return $tPoint
 EndFunc
-Func _WinAPI_PostMessage($hWnd, $iMsg, $wParam, $lParam)
-Local $aResult = DllCall("user32.dll", "bool", "PostMessage", "hwnd", $hWnd, "uint", $iMsg, "wparam", $wParam, "lparam", $lParam)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_ReadFile($hFile, $pBuffer, $iToRead, ByRef $iRead, $tOverlapped = 0)
-Local $aResult = DllCall("kernel32.dll", "bool", "ReadFile", "handle", $hFile, "struct*", $pBuffer, "dword", $iToRead, "dword*", 0, "struct*", $tOverlapped)
-If @error Then Return SetError(@error, @extended, False)
-$iRead = $aResult[4]
-Return $aResult[0]
-EndFunc
-Func _WinAPI_RedrawWindow($hWnd, $tRECT = 0, $hRegion = 0, $iFlags = 5)
-Local $aResult = DllCall("user32.dll", "bool", "RedrawWindow", "hwnd", $hWnd, "struct*", $tRECT, "handle", $hRegion, "uint", $iFlags)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_RegisterWindowMessage($sMessage)
-Local $aResult = DllCall("user32.dll", "uint", "RegisterWindowMessageW", "wstr", $sMessage)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_ReleaseDC($hWnd, $hDC)
-Local $aResult = DllCall("user32.dll", "int", "ReleaseDC", "hwnd", $hWnd, "handle", $hDC)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_SelectObject($hDC, $hGDIObj)
-Local $aResult = DllCall("gdi32.dll", "handle", "SelectObject", "handle", $hDC, "handle", $hGDIObj)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_SetFilePointer($hFile, $iPos, $iMethod = 0)
-Local $aResult = DllCall("kernel32.dll", "INT", "SetFilePointer", "handle", $hFile, "long", $iPos, "ptr", 0, "long", $iMethod)
-If @error Then Return SetError(@error, @extended, -1)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_SetFocus($hWnd)
-Local $aResult = DllCall("user32.dll", "hwnd", "SetFocus", "hwnd", $hWnd)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_SetFont($hWnd, $hFont, $bRedraw = True)
-_SendMessage($hWnd, $__WINAPICONSTANT_WM_SETFONT, $hFont, $bRedraw, 0, "hwnd")
-EndFunc
-Func _WinAPI_SetHandleInformation($hObject, $iMask, $iFlags)
-Local $aResult = DllCall("kernel32.dll", "bool", "SetHandleInformation", "handle", $hObject, "dword", $iMask, "dword", $iFlags)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_SetParent($hWndChild, $hWndParent)
-Local $aResult = DllCall("user32.dll", "hwnd", "SetParent", "hwnd", $hWndChild, "hwnd", $hWndParent)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_SetProcessAffinityMask($hProcess, $iMask)
-Local $aResult = DllCall("kernel32.dll", "bool", "SetProcessAffinityMask", "handle", $hProcess, "ulong_ptr", $iMask)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_SetWindowLong($hWnd, $iIndex, $iValue)
-_WinAPI_SetLastError(0)
-Local $sFuncName = "SetWindowLongW"
-If @AutoItX64 Then $sFuncName = "SetWindowLongPtrW"
-Local $aResult = DllCall("user32.dll", "long_ptr", $sFuncName, "hwnd", $hWnd, "int", $iIndex, "long_ptr", $iValue)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_SetWindowPos($hWnd, $hAfter, $iX, $iY, $iCX, $iCY, $iFlags)
-Local $aResult = DllCall("user32.dll", "bool", "SetWindowPos", "hwnd", $hWnd, "hwnd", $hAfter, "int", $iX, "int", $iY, "int", $iCX, "int", $iCY, "uint", $iFlags)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_SetWindowsHookEx($iHook, $pProc, $hDll, $iThreadId = 0)
-Local $aResult = DllCall("user32.dll", "handle", "SetWindowsHookEx", "int", $iHook, "ptr", $pProc, "handle", $hDll, "dword", $iThreadId)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_SetWindowText($hWnd, $sText)
-Local $aResult = DllCall("user32.dll", "bool", "SetWindowTextW", "hwnd", $hWnd, "wstr", $sText)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_ShowWindow($hWnd, $iCmdShow = 5)
-Local $aResult = DllCall("user32.dll", "bool", "ShowWindow", "hwnd", $hWnd, "int", $iCmdShow)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
 Func _WinAPI_StringFromGUID($tGUID)
 Local $aResult = DllCall("ole32.dll", "int", "StringFromGUID2", "struct*", $tGUID, "wstr", "", "int", 40)
 If @error Or Not $aResult[0] Then Return SetError(@error, @extended, "")
 Return SetExtended($aResult[0], $aResult[2])
 EndFunc
-Func _WinAPI_UnhookWindowsHookEx($hHook)
-Local $aResult = DllCall("user32.dll", "bool", "UnhookWindowsHookEx", "handle", $hHook)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_UpdateLayeredWindow($hWnd, $hDestDC, $tPTDest, $tSize, $hSrcDC, $tPTSrce, $iRGB, $tBlend, $iFlags)
-Local $aResult = DllCall("user32.dll", "bool", "UpdateLayeredWindow", "hwnd", $hWnd, "handle", $hDestDC, "struct*", $tPTDest, "struct*", $tSize, "handle", $hSrcDC, "struct*", $tPTSrce, "dword", $iRGB, "struct*", $tBlend, "dword", $iFlags)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_UpdateWindow($hWnd)
-Local $aResult = DllCall("user32.dll", "bool", "UpdateWindow", "hwnd", $hWnd)
-If @error Then Return SetError(@error, @extended, False)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_WaitForSingleObject($hHandle, $iTimeout = -1)
-Local $aResult = DllCall("kernel32.dll", "INT", "WaitForSingleObject", "handle", $hHandle, "dword", $iTimeout)
-If @error Then Return SetError(@error, @extended, -1)
-Return $aResult[0]
-EndFunc
-Func _WinAPI_WideCharToMultiByte($vUnicode, $iCodePage = 0, $bRetString = True)
+Func _WinAPI_WideCharToMultiByte($vUnicode, $iCodePage = 0, $bRetNoStruct = True, $bRetBinary = False)
 Local $sUnicodeType = "wstr"
 If Not IsString($vUnicode) Then $sUnicodeType = "struct*"
 Local $aResult = DllCall("kernel32.dll", "int", "WideCharToMultiByte", "uint", $iCodePage, "dword", 0, $sUnicodeType, $vUnicode, "int", -1, "ptr", 0, "int", 0, "ptr", 0, "ptr", 0)
 If @error Or Not $aResult[0] Then Return SetError(@error + 20, @extended, "")
-Local $tMultiByte = DllStructCreate("char[" & $aResult[0] & "]")
+Local $tMultiByte = DllStructCreate((($bRetBinary) ?("byte") :("char")) & "[" & $aResult[0] & "]")
 $aResult = DllCall("kernel32.dll", "int", "WideCharToMultiByte", "uint", $iCodePage, "dword", 0, $sUnicodeType, $vUnicode, "int", -1, "struct*", $tMultiByte, "int", $aResult[0], "ptr", 0, "ptr", 0)
 If @error Or Not $aResult[0] Then Return SetError(@error + 10, @extended, "")
-If $bRetString Then Return DllStructGetData($tMultiByte, 1)
+If $bRetNoStruct Then Return DllStructGetData($tMultiByte, 1)
 Return $tMultiByte
 EndFunc
-Func _WinAPI_WriteFile($hFile, $pBuffer, $iToWrite, ByRef $iWritten, $tOverlapped = 0)
-Local $aResult = DllCall("kernel32.dll", "bool", "WriteFile", "handle", $hFile, "struct*", $pBuffer, "dword", $iToWrite, "dword*", 0, "struct*", $tOverlapped)
-If @error Then Return SetError(@error, @extended, False)
-$iWritten = $aResult[4]
-Return $aResult[0]
+Global Const $__DLG_WM_USER = 0x400
+Func _WinAPI_CreateStreamOnHGlobal($hGlobal = 0, $bDeleteOnRelease = True)
+Local $aReturn = DllCall('ole32.dll', 'long', 'CreateStreamOnHGlobal', 'handle', $hGlobal, 'bool', $bDeleteOnRelease, 'ptr*', 0)
+If @error Then Return SetError(@error, @extended, 0)
+If $aReturn[0] Then Return SetError(10, $aReturn[0], 0)
+Return $aReturn[3]
 EndFunc
-Global Const $HANDLE_FLAG_INHERIT = 0x00000001
-Global Const $MAPVK_VK_TO_CHAR = 2
-Global Const $HSHELL_WINDOWACTIVATED = 4
-Global $__g_vEnum, $__g_vExt = 0
-Global $__g_hHeap = 0, $__g_iRGBMode = 1
-Global Const $tagOSVERSIONINFO = 'struct;dword OSVersionInfoSize;dword MajorVersion;dword MinorVersion;dword BuildNumber;dword PlatformId;wchar CSDVersion[128];endstruct'
-Global Const $__WINVER = __WINVER()
-Func _WinAPI_CreatePoint($iX, $iY)
-Local $tPOINT = DllStructCreate($tagPOINT)
-DllStructSetData($tPOINT, 1, $iX)
-DllStructSetData($tPOINT, 2, $iY)
-Return $tPOINT
+Func _WinAPI_ReleaseStream($pStream)
+Local $aReturn = DllCall('oleaut32.dll', 'long', 'DispCallFunc', 'ptr', $pStream, 'ulong_ptr', 8 *(1 + @AutoItX64), 'uint', 4, 'ushort', 23, 'uint', 0, 'ptr', 0, 'ptr', 0, 'str', '')
+If @error Then Return SetError(@error, @extended, 0)
+If $aReturn[0] Then Return SetError(10, $aReturn[0], 0)
+Return 1
 EndFunc
-Func _WinAPI_CreateRect($iLeft, $iTop, $iRight, $iBottom)
-Local $tRECT = DllStructCreate($tagRECT)
-DllStructSetData($tRECT, 1, $iLeft)
-DllStructSetData($tRECT, 2, $iTop)
-DllStructSetData($tRECT, 3, $iRight)
-DllStructSetData($tRECT, 4, $iBottom)
-Return $tRECT
-EndFunc
-Func _WinAPI_CreateRectEx($iX, $iY, $iWidth, $iHeight)
-Local $tRECT = DllStructCreate($tagRECT)
-DllStructSetData($tRECT, 1, $iX)
-DllStructSetData($tRECT, 2, $iY)
-DllStructSetData($tRECT, 3, $iX + $iWidth)
-DllStructSetData($tRECT, 4, $iY + $iHeight)
-Return $tRECT
-EndFunc
-Func _WinAPI_CreateSize($iWidth, $iHeight)
-Local $tSIZE = DllStructCreate($tagSIZE)
-DllStructSetData($tSIZE, 1, $iWidth)
-DllStructSetData($tSIZE, 2, $iHeight)
-Return $tSIZE
-EndFunc
-Func _WinAPI_FatalExit($iCode)
-DllCall('kernel32.dll', 'none', 'FatalExit', 'int', $iCode)
-If @error Then Return SetError(@error, @extended)
-EndFunc
-Func _WinAPI_GetBitmapDimension($hBitmap)
-Local Const $tagBITMAP = 'struct;long bmType;long bmWidth;long bmHeight;long bmWidthBytes;ushort bmPlanes;ushort bmBitsPixel;ptr bmBits;endstruct'
-Local $tObj = DllStructCreate($tagBITMAP)
-Local $aRet = DllCall('gdi32.dll', 'int', 'GetObject', 'handle', $hBitmap, 'int', DllStructGetSize($tObj), 'struct*', $tObj)
-If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
-Return _WinAPI_CreateSize(DllStructGetData($tObj, 'bmWidth'), DllStructGetData($tObj, 'bmHeight'))
-EndFunc
+Global $__g_hHeap = 0
 Func _WinAPI_IsBadReadPtr($pAddress, $iLength)
 Local $aRet = DllCall('kernel32.dll', 'bool', 'IsBadReadPtr', 'struct*', $pAddress, 'uint_ptr', $iLength)
 If @error Then Return SetError(@error, @extended, False)
@@ -975,57 +557,11 @@ DllCall('ntdll.dll', 'none', 'RtlMoveMemory', 'struct*', $pDestination, 'struct*
 If @error Then Return SetError(@error, @extended, 0)
 Return 1
 EndFunc
-Func _WinAPI_StrLen($pString, $bUnicode = True)
-Local $W = ''
-If $bUnicode Then $W = 'W'
-Local $aRet = DllCall('kernel32.dll', 'int', 'lstrlen' & $W, 'struct*', $pString)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aRet[0]
-EndFunc
-Func _WinAPI_SwitchColor($iColor)
-If $iColor = -1 Then Return $iColor
-Return BitOR(BitAND($iColor, 0x00FF00), BitShift(BitAND($iColor, 0x0000FF), -16), BitShift(BitAND($iColor, 0xFF0000), 16))
-EndFunc
 Func _WinAPI_ZeroMemory($pMemory, $iLength)
 If _WinAPI_IsBadWritePtr($pMemory, $iLength) Then Return SetError(11, @extended, 0)
 DllCall('ntdll.dll', 'none', 'RtlZeroMemory', 'struct*', $pMemory, 'ulong_ptr', $iLength)
 If @error Then Return SetError(@error, @extended, 0)
 Return 1
-EndFunc
-Func __CheckErrorArrayBounds(Const ByRef $aData, ByRef $iStart, ByRef $iEnd, $nDim = 1, $iDim = $UBOUND_DIMENSIONS)
-If Not IsArray($aData) Then Return SetError(1, 0, 1)
-If UBound($aData, $iDim) <> $nDim Then Return SetError(2, 0, 1)
-If $iStart < 0 Then $iStart = 0
-Local $iUBound = UBound($aData) - 1
-If $iEnd < 1 Or $iEnd > $iUBound Then $iEnd = $iUBound
-If $iStart > $iEnd Then Return SetError(4, 0, 1)
-Return 0
-EndFunc
-Func __CheckErrorCloseHandle($aRet, $hFile, $bLastError = 0, $iCurErr = @error, $iCurExt = @extended)
-If Not $iCurErr And Not $aRet[0] Then $iCurErr = 10
-Local $iLastError = _WinAPI_GetLastError()
-DllCall("kernel32.dll", "bool", "CloseHandle", "handle", $hFile)
-If $iCurErr Then _WinAPI_SetLastError($iLastError)
-If $bLastError Then $iCurExt = $iLastError
-Return SetError($iCurErr, $iCurExt, $iCurErr)
-EndFunc
-Func __EnumWindowsProc($hWnd, $bVisible)
-Local $aResult
-If $bVisible Then
-$aResult = DllCall("user32.dll", "bool", "IsWindowVisible", "hwnd", $hWnd)
-If Not $aResult[0] Then
-Return 1
-EndIf
-EndIf
-__Inc($__g_vEnum)
-$__g_vEnum[$__g_vEnum[0][0]][0] = $hWnd
-$aResult = DllCall("user32.dll", "int", "GetClassNameW", "hwnd", $hWnd, "wstr", "", "int", 4096)
-$__g_vEnum[$__g_vEnum[0][0]][1] = $aResult[2]
-Return 1
-EndFunc
-Func __FatalExit($iCode, $sText = '')
-If $sText Then MsgBox($MB_SYSTEMMODAL, 'AutoIt', $sText)
-_WinAPI_FatalExit($iCode)
 EndFunc
 Func __HeapAlloc($iSize, $bAbort = False)
 Local $aRet
@@ -1069,33 +605,290 @@ Local $aRet = DllCall('kernel32.dll', 'int', 'HeapValidate', 'handle', $__g_hHea
 If @error Then Return SetError(@error, @extended, False)
 Return $aRet[0]
 EndFunc
-Func __Inc(ByRef $aData, $iIncrement = 100)
-Select
-Case UBound($aData, $UBOUND_COLUMNS)
-If $iIncrement < 0 Then
-ReDim $aData[$aData[0][0] + 1][UBound($aData, $UBOUND_COLUMNS)]
-Else
-$aData[0][0] += 1
-If $aData[0][0] > UBound($aData) - 1 Then
-ReDim $aData[$aData[0][0] + $iIncrement][UBound($aData, $UBOUND_COLUMNS)]
-EndIf
-EndIf
-Case UBound($aData, $UBOUND_ROWS)
-If $iIncrement < 0 Then
-ReDim $aData[$aData[0] + 1]
-Else
-$aData[0] += 1
-If $aData[0] > UBound($aData) - 1 Then
-ReDim $aData[$aData[0] + $iIncrement]
-EndIf
-EndIf
-Case Else
-Return 0
-EndSelect
-Return 1
+Func _WinAPI_CreatePoint($iX, $iY)
+Local $tPOINT = DllStructCreate($tagPOINT)
+DllStructSetData($tPOINT, 1, $iX)
+DllStructSetData($tPOINT, 2, $iY)
+Return $tPOINT
 EndFunc
-Func __Iif($bTest, $vTrue, $vFalse)
-Return $bTest ? $vTrue : $vFalse
+Func _WinAPI_CreateRect($iLeft, $iTop, $iRight, $iBottom)
+Local $tRECT = DllStructCreate($tagRECT)
+DllStructSetData($tRECT, 1, $iLeft)
+DllStructSetData($tRECT, 2, $iTop)
+DllStructSetData($tRECT, 3, $iRight)
+DllStructSetData($tRECT, 4, $iBottom)
+Return $tRECT
+EndFunc
+Func _WinAPI_CreateRectEx($iX, $iY, $iWidth, $iHeight)
+Local $tRECT = DllStructCreate($tagRECT)
+DllStructSetData($tRECT, 1, $iX)
+DllStructSetData($tRECT, 2, $iY)
+DllStructSetData($tRECT, 3, $iX + $iWidth)
+DllStructSetData($tRECT, 4, $iY + $iHeight)
+Return $tRECT
+EndFunc
+Func _WinAPI_CreateSize($iWidth, $iHeight)
+Local $tSIZE = DllStructCreate($tagSIZE)
+DllStructSetData($tSIZE, 1, $iWidth)
+DllStructSetData($tSIZE, 2, $iHeight)
+Return $tSIZE
+EndFunc
+Global Const $HANDLE_FLAG_INHERIT = 0x00000001
+Global Const $MAPVK_VK_TO_CHAR = 2
+Global Const $HSHELL_WINDOWACTIVATED = 4
+Global Const $DEFAULT_GUI_FONT = 17
+Func _WinAPI_CloseHandle($hObject)
+Local $aResult = DllCall("kernel32.dll", "bool", "CloseHandle", "handle", $hObject)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_DeleteObject($hObject)
+Local $aResult = DllCall("gdi32.dll", "bool", "DeleteObject", "handle", $hObject)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetCurrentProcess()
+Local $aResult = DllCall("kernel32.dll", "handle", "GetCurrentProcess")
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetObject($hObject, $iSize, $pObject)
+Local $aResult = DllCall("gdi32.dll", "int", "GetObjectW", "handle", $hObject, "int", $iSize, "struct*", $pObject)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetStdHandle($iStdHandle)
+If $iStdHandle < 0 Or $iStdHandle > 2 Then Return SetError(2, 0, -1)
+Local Const $aHandle[3] = [-10, -11, -12]
+Local $aResult = DllCall("kernel32.dll", "handle", "GetStdHandle", "dword", $aHandle[$iStdHandle])
+If @error Then Return SetError(@error, @extended, -1)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetStockObject($iObject)
+Local $aResult = DllCall("gdi32.dll", "handle", "GetStockObject", "int", $iObject)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_SelectObject($hDC, $hGDIObj)
+Local $aResult = DllCall("gdi32.dll", "handle", "SelectObject", "handle", $hDC, "handle", $hGDIObj)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_SetHandleInformation($hObject, $iMask, $iFlags)
+Local $aResult = DllCall("kernel32.dll", "bool", "SetHandleInformation", "handle", $hObject, "dword", $iMask, "dword", $iFlags)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Global Const $tagBITMAP = 'struct;long bmType;long bmWidth;long bmHeight;long bmWidthBytes;ushort bmPlanes;ushort bmBitsPixel;ptr bmBits;endstruct'
+Global Const $tagBITMAPV5HEADER = 'struct;dword bV5Size;long bV5Width;long bV5Height;ushort bV5Planes;ushort bV5BitCount;dword bV5Compression;dword bV5SizeImage;long bV5XPelsPerMeter;long bV5YPelsPerMeter;dword bV5ClrUsed;dword bV5ClrImportant;dword bV5RedMask;dword bV5GreenMask;dword bV5BlueMask;dword bV5AlphaMask;dword bV5CSType;int bV5Endpoints[9];dword bV5GammaRed;dword bV5GammaGreen;dword bV5GammaBlue;dword bV5Intent;dword bV5ProfileData;dword bV5ProfileSize;dword bV5Reserved;endstruct'
+Global Const $tagDIBSECTION = $tagBITMAP & ';' & $tagBITMAPINFOHEADER & ';dword dsBitfields[3];ptr dshSection;dword dsOffset'
+Global Const $__WINAPICONSTANT_FW_NORMAL = 400
+Global Const $__WINAPICONSTANT_DEFAULT_CHARSET = 1
+Global Const $__WINAPICONSTANT_OUT_DEFAULT_PRECIS = 0
+Global Const $__WINAPICONSTANT_CLIP_DEFAULT_PRECIS = 0
+Global Const $__WINAPICONSTANT_DEFAULT_QUALITY = 0
+Func _WinAPI_BitBlt($hDestDC, $iXDest, $iYDest, $iWidth, $iHeight, $hSrcDC, $iXSrc, $iYSrc, $iROP)
+Local $aResult = DllCall("gdi32.dll", "bool", "BitBlt", "handle", $hDestDC, "int", $iXDest, "int", $iYDest, "int", $iWidth, "int", $iHeight, "handle", $hSrcDC, "int", $iXSrc, "int", $iYSrc, "dword", $iROP)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_CopyBitmap($hBitmap)
+$hBitmap = _WinAPI_CopyImage($hBitmap, 0, 0, 0, 0x2000)
+Return SetError(@error, @extended, $hBitmap)
+EndFunc
+Func _WinAPI_CopyImage($hImage, $iType = 0, $iXDesiredPixels = 0, $iYDesiredPixels = 0, $iFlags = 0)
+Local $aRet = DllCall('user32.dll', 'handle', 'CopyImage', 'handle', $hImage, 'uint', $iType, 'int', $iXDesiredPixels, 'int', $iYDesiredPixels, 'uint', $iFlags)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aRet[0]
+EndFunc
+Func _WinAPI_CreateANDBitmap($hBitmap)
+Local $iError = 0, $hDib = 0
+$hBitmap = _WinAPI_CopyBitmap($hBitmap)
+If Not $hBitmap Then Return SetError(@error + 20, @extended, 0)
+Do
+Local $atDIB[2]
+$atDIB[0] = DllStructCreate($tagDIBSECTION)
+If(Not _WinAPI_GetObject($hBitmap, DllStructGetSize($atDIB[0]), $atDIB[0])) Or(DllStructGetData($atDIB[0], 'bmBitsPixel') <> 32) Or(DllStructGetData($atDIB[0], 'biCompression')) Then
+$iError = 10
+ExitLoop
+EndIf
+$atDIB[1] = DllStructCreate($tagBITMAP)
+$hDib = _WinAPI_CreateDIB(DllStructGetData($atDIB[0], 'bmWidth'), DllStructGetData($atDIB[0], 'bmHeight'), 1)
+If Not _WinAPI_GetObject($hDib, DllStructGetSize($atDIB[1]), $atDIB[1]) Then
+$iError = 11
+ExitLoop
+EndIf
+Local $aRet = DllCall('user32.dll', 'lresult', 'CallWindowProc', 'ptr', __ANDProc(), 'ptr', 0, 'uint', 0, 'wparam', DllStructGetPtr($atDIB[0]), 'lparam', DllStructGetPtr($atDIB[1]))
+If @error Then
+$iError = @error
+ExitLoop
+EndIf
+If Not $aRet[0] Then
+$iError = 12
+ExitLoop
+EndIf
+$iError = 0
+Until 1
+_WinAPI_DeleteObject($hBitmap)
+If $iError Then
+If $hDib Then
+_WinAPI_DeleteObject($hDib)
+EndIf
+$hDib = 0
+EndIf
+Return SetError($iError, 0, $hDib)
+EndFunc
+Func _WinAPI_CreateCompatibleBitmap($hDC, $iWidth, $iHeight)
+Local $aResult = DllCall("gdi32.dll", "handle", "CreateCompatibleBitmap", "handle", $hDC, "int", $iWidth, "int", $iHeight)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_CreateDIB($iWidth, $iHeight, $iBitsPerPel = 32, $tColorTable = 0, $iColorCount = 0)
+Local $aRGBQ[2], $iColors, $tagRGBQ
+Switch $iBitsPerPel
+Case 1
+$iColors = 2
+Case 4
+$iColors = 16
+Case 8
+$iColors = 256
+Case Else
+$iColors = 0
+EndSwitch
+If $iColors Then
+If Not IsDllStruct($tColorTable) Then
+Switch $iBitsPerPel
+Case 1
+$aRGBQ[0] = 0
+$aRGBQ[1] = 0xFFFFFF
+$tColorTable = _WinAPI_CreateDIBColorTable($aRGBQ)
+Case Else
+EndSwitch
+Else
+If $iColors > $iColorCount Then
+$iColors = $iColorCount
+EndIf
+If(Not $iColors) Or((4 * $iColors) > DllStructGetSize($tColorTable)) Then
+Return SetError(20, 0, 0)
+EndIf
+EndIf
+$tagRGBQ = ';dword aRGBQuad[' & $iColors & ']'
+Else
+$tagRGBQ = ''
+EndIf
+Local $tBITMAPINFO = DllStructCreate($tagBITMAPINFOHEADER & $tagRGBQ)
+DllStructSetData($tBITMAPINFO, 'biSize', 40)
+DllStructSetData($tBITMAPINFO, 'biWidth', $iWidth)
+DllStructSetData($tBITMAPINFO, 'biHeight', $iHeight)
+DllStructSetData($tBITMAPINFO, 'biPlanes', 1)
+DllStructSetData($tBITMAPINFO, 'biBitCount', $iBitsPerPel)
+DllStructSetData($tBITMAPINFO, 'biCompression', 0)
+DllStructSetData($tBITMAPINFO, 'biSizeImage', 0)
+DllStructSetData($tBITMAPINFO, 'biXPelsPerMeter', 0)
+DllStructSetData($tBITMAPINFO, 'biYPelsPerMeter', 0)
+DllStructSetData($tBITMAPINFO, 'biClrUsed', $iColors)
+DllStructSetData($tBITMAPINFO, 'biClrImportant', 0)
+If $iColors Then
+If IsDllStruct($tColorTable) Then
+_WinAPI_MoveMemory(DllStructGetPtr($tBITMAPINFO, 'aRGBQuad'), $tColorTable, 4 * $iColors)
+Else
+_WinAPI_ZeroMemory(DllStructGetPtr($tBITMAPINFO, 'aRGBQuad'), 4 * $iColors)
+EndIf
+EndIf
+Local $hBitmap = _WinAPI_CreateDIBSection(0, $tBITMAPINFO, 0, $__g_vExt)
+If Not $hBitmap Then Return SetError(@error, @extended, 0)
+Return $hBitmap
+EndFunc
+Func _WinAPI_CreateDIBSection($hDC, $tBITMAPINFO, $iUsage, ByRef $pBits, $hSection = 0, $iOffset = 0)
+$pBits = 0
+Local $aRet = DllCall('gdi32.dll', 'handle', 'CreateDIBSection', 'handle', $hDC, 'struct*', $tBITMAPINFO, 'uint', $iUsage, 'ptr*', 0, 'handle', $hSection, 'dword', $iOffset)
+If @error Or Not $aRet[0] Then Return SetError(@error, @extended, 0)
+$pBits = $aRet[4]
+Return $aRet[0]
+EndFunc
+Func _WinAPI_CreateDIBColorTable(Const ByRef $aColorTable, $iStart = 0, $iEnd = -1)
+If __CheckErrorArrayBounds($aColorTable, $iStart, $iEnd) Then Return SetError(@error + 10, @extended, 0)
+Local $tColorTable = DllStructCreate('dword[' &($iEnd - $iStart + 1) & ']')
+Local $iCount = 1
+For $i = $iStart To $iEnd
+DllStructSetData($tColorTable, 1, _WinAPI_SwitchColor(__RGB($aColorTable[$i])), $iCount)
+$iCount += 1
+Next
+Return $tColorTable
+EndFunc
+Func _WinAPI_CreateFont($iHeight, $iWidth, $iEscape = 0, $iOrientn = 0, $iWeight = $__WINAPICONSTANT_FW_NORMAL, $bItalic = False, $bUnderline = False, $bStrikeout = False, $iCharset = $__WINAPICONSTANT_DEFAULT_CHARSET, $iOutputPrec = $__WINAPICONSTANT_OUT_DEFAULT_PRECIS, $iClipPrec = $__WINAPICONSTANT_CLIP_DEFAULT_PRECIS, $iQuality = $__WINAPICONSTANT_DEFAULT_QUALITY, $iPitch = 0, $sFace = 'Arial')
+Local $aResult = DllCall("gdi32.dll", "handle", "CreateFontW", "int", $iHeight, "int", $iWidth, "int", $iEscape, "int", $iOrientn, "int", $iWeight, "dword", $bItalic, "dword", $bUnderline, "dword", $bStrikeout, "dword", $iCharset, "dword", $iOutputPrec, "dword", $iClipPrec, "dword", $iQuality, "dword", $iPitch, "wstr", $sFace)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_CreateFontIndirect($tLogFont)
+Local $aResult = DllCall("gdi32.dll", "handle", "CreateFontIndirectW", "struct*", $tLogFont)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetBitmapDimension($hBitmap)
+Local $tObj = DllStructCreate($tagBITMAP)
+Local $aRet = DllCall('gdi32.dll', 'int', 'GetObject', 'handle', $hBitmap, 'int', DllStructGetSize($tObj), 'struct*', $tObj)
+If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
+Return _WinAPI_CreateSize(DllStructGetData($tObj, 'bmWidth'), DllStructGetData($tObj, 'bmHeight'))
+EndFunc
+Func _WinAPI_IsAlphaBitmap($hBitmap)
+$hBitmap = _WinAPI_CopyBitmap($hBitmap)
+If Not $hBitmap Then Return SetError(@error + 20, @extended, 0)
+Local $aRet, $iError = 0
+Do
+Local $tDIB = DllStructCreate($tagDIBSECTION)
+If(Not _WinAPI_GetObject($hBitmap, DllStructGetSize($tDIB), $tDIB)) Or(DllStructGetData($tDIB, 'bmBitsPixel') <> 32) Or(DllStructGetData($tDIB, 'biCompression')) Then
+$iError = 1
+ExitLoop
+EndIf
+$aRet = DllCall('user32.dll', 'int', 'CallWindowProc', 'ptr', __AlphaProc(), 'ptr', 0, 'uint', 0, 'struct*', $tDIB, 'ptr', 0)
+If @error Or($aRet[0] = -1) Then
+$iError = @error + 10
+ExitLoop
+EndIf
+Until 1
+_WinAPI_DeleteObject($hBitmap)
+If $iError Then Return SetError($iError, 0, 0)
+Return $aRet[0]
+EndFunc
+Func _WinAPI_RedrawWindow($hWnd, $tRECT = 0, $hRegion = 0, $iFlags = 5)
+Local $aResult = DllCall("user32.dll", "bool", "RedrawWindow", "hwnd", $hWnd, "struct*", $tRECT, "handle", $hRegion, "uint", $iFlags)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func __AlphaProc()
+Static $pProc = 0
+If Not $pProc Then
+If @AutoItX64 Then
+$pProc = __Init(Binary( '0x48894C240848895424104C894424184C894C24205541574831C050504883EC28' & '48837C24600074054831C0EB0748C7C0010000004821C0751F488B6C24604883' & '7D180074054831C0EB0748C7C0010000004821C07502EB0948C7C001000000EB' & '034831C04821C0740C48C7C0FFFFFFFF4863C0EB6F48C744242800000000488B' & '6C24604C637D04488B6C2460486345084C0FAFF849C1E7024983C7FC4C3B7C24' & '287C36488B6C24604C8B7D184C037C24284983C7034C897C2430488B6C243080' & '7D0000740C48C7C0010000004863C0EB1348834424280471A54831C04863C0EB' & '034831C04883C438415F5DC3'))
+Else
+$pProc = __Init(Binary( '0x555331C05050837C241C00740431C0EB05B80100000021C075198B6C241C837D' & '1400740431C0EB05B80100000021C07502EB07B801000000EB0231C021C07407' & 'B8FFFFFFFFEB4FC70424000000008B6C241C8B5D048B6C241C0FAF5D08C1E302' & '83C3FC3B1C247C288B6C241C8B5D14031C2483C303895C24048B6C2404807D00' & '007407B801000000EB0C8304240471BE31C0EB0231C083C4085B5DC21000'))
+EndIf
+EndIf
+Return $pProc
+EndFunc
+Func __ANDProc()
+Static $pProc = 0
+If Not $pProc Then
+If @AutoItX64 Then
+$pProc = __Init(Binary( '0x48894C240848895424104C894424184C894C2420554157415648C7C009000000' & '4883EC0848C704240000000048FFC875EF4883EC284883BC24A0000000007405' & '4831C0EB0748C7C0010000004821C00F85840000004883BC24A8000000007405' & '4831C0EB0748C7C0010000004821C07555488BAC24A000000048837D18007405' & '4831C0EB0748C7C0010000004821C07522488BAC24A800000048837D18007405' & '4831C0EB0748C7C0010000004821C07502EB0948C7C001000000EB034831C048' & '21C07502EB0948C7C001000000EB034831C04821C07502EB0948C7C001000000' & 'EB034831C04821C0740B4831C04863C0E9D701000048C74424280000000048C7' & '44243000000000488BAC24A00000004C637D0849FFCF4C3B7C24300F8C9C0100' & '0048C74424380000000048C74424400000000048C744244800000000488BAC24' & 'A00000004C637D0449FFCF4C3B7C24480F8CDB000000488BAC24A00000004C8B' & '7D184C037C24284983C7034C897C2450488B6C2450807D000074264C8B7C2440' & '4C8B74243849F7DE4983C61F4C89F148C7C00100000048D3E04909C74C897C24' & '4048FF4424384C8B7C24384983FF1F7E6F4C8B7C244049F7D74C897C244048C7' & '442458180000004831C0483B4424587F3D488BAC24A80000004C8B7D184C037C' & '24604C897C24504C8B7C2440488B4C245849D3FF4C89F850488B6C2458588845' & '0048FF4424604883442458F871B948C74424380000000048C744244000000000' & '48834424280448FF4424480F810BFFFFFF48837C24380074794C8B7C244049F7' & 'D74C8B74243849F7DE4983C6204C89F148C7C0FFFFFFFF48D3E04921C74C897C' & '244048C7442458180000004831C0483B4424587F3D488BAC24A80000004C8B7D' & '184C037C24604C897C24504C8B7C2440488B4C245849D3FF4C89F850488B6C24' & '585888450048FF4424604883442458F871B948FF4424300F814AFEFFFF48C7C0' & '010000004863C0EB034831C04883C470415E415F5DC3'))
+Else
+$pProc = __Init(Binary( '0x555357BA0800000083EC04C70424000000004A75F3837C243800740431C0EB05' & 'B80100000021C07562837C243C00740431C0EB05B80100000021C0753F8B6C24' & '38837D1400740431C0EB05B80100000021C075198B6C243C837D1400740431C0' & 'EB05B80100000021C07502EB07B801000000EB0231C021C07502EB07B8010000' & '00EB0231C021C07502EB07B801000000EB0231C021C0740731C0E969010000C7' & '042400000000C7442404000000008B6C24388B5D084B3B5C24040F8C3F010000' & 'C744240800000000C744240C00000000C7442410000000008B6C24388B5D044B' & '3B5C24100F8CA90000008B6C24388B5D14031C2483C303895C24148B6C241480' & '7D0000741C8B5C240C8B7C2408F7DF83C71F89F9B801000000D3E009C3895C24' & '0CFF4424088B5C240883FB1F7E578B5C240CF7D3895C240CC744241818000000' & '31C03B4424187F2D8B6C243C8B5D14035C241C895C24148B5C240C8B4C2418D3' & 'FB538B6C241858884500FF44241C83442418F871CBC744240800000000C74424' & '0C0000000083042404FF4424100F8145FFFFFF837C240800745B8B5C240CF7D3' & '8B7C2408F7DF83C72089F9B8FFFFFFFFD3E021C3895C240CC744241818000000' & '31C03B4424187F2D8B6C243C8B5D14035C241C895C24148B5C240C8B4C2418D3' & 'FB538B6C241858884500FF44241C83442418F871CBFF4424040F81AFFEFFFFB8' & '01000000EB0231C083C4205F5B5DC21000'))
+EndIf
+EndIf
+Return $pProc
+EndFunc
+Func __XORProc()
+Static $pProc = 0
+If Not $pProc Then
+If @AutoItX64 Then
+$pProc = __Init(Binary( '0x48894C240848895424104C894424184C894C24205541574831C050504883EC28' & '48837C24600074054831C0EB0748C7C0010000004821C0751B48837C24680074' & '054831C0EB0748C7C0010000004821C07502EB0948C7C001000000EB034831C0' & '4821C074084831C04863C0EB7748C7442428000000004C637C24584983C7FC4C' & '3B7C24287C4F4C8B7C24604C037C24284C897C2430488B6C2430807D00007405' & '4831C0EB0748C7C0010000004821C0741C4C8B7C24684C037C24284983C7034C' & '897C2430488B6C2430C64500FF48834424280471A148C7C0010000004863C0EB' & '034831C04883C438415F5DC3'))
+Else
+$pProc = __Init(Binary( '0x555331C05050837C241C00740431C0EB05B80100000021C07516837C24200074' & '0431C0EB05B80100000021C07502EB07B801000000EB0231C021C0740431C0EB' & '5AC70424000000008B5C241883C3FC3B1C247C3E8B5C241C031C24895C24048B' & '6C2404807D0000740431C0EB05B80100000021C074168B5C2420031C2483C303' & '895C24048B6C2404C64500FF8304240471B6B801000000EB0231C083C4085B5D' & 'C21000'))
+EndIf
+EndIf
+Return $pProc
 EndFunc
 Func __Init($dData)
 Local $iLength = BinaryLen($dData)
@@ -1105,23 +898,421 @@ Local $tData = DllStructCreate('byte[' & $iLength & "]", $aRet[0])
 DllStructSetData($tData, 1, $dData)
 Return $aRet[0]
 EndFunc
-Func __RGB($iColor)
-If $__g_iRGBMode Then
-$iColor = _WinAPI_SwitchColor($iColor)
-EndIf
-Return $iColor
+Global Const $DI_MASK = 0x0001
+Global Const $DI_IMAGE = 0x0002
+Global Const $DI_NORMAL = 0x0003
+Global Const $DI_COMPAT = 0x0004
+Global Const $DI_DEFAULTSIZE = 0x0008
+Global Const $DI_NOMIRROR = 0x0010
+Func _WinAPI_CreateCompatibleDC($hDC)
+Local $aResult = DllCall("gdi32.dll", "handle", "CreateCompatibleDC", "handle", $hDC)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
 EndFunc
-Func __WINVER()
-Local $tOSVI = DllStructCreate($tagOSVERSIONINFO)
-DllStructSetData($tOSVI, 1, DllStructGetSize($tOSVI))
-Local $aRet = DllCall('kernel32.dll', 'bool', 'GetVersionExW', 'struct*', $tOSVI)
-If @error Or Not $aRet[0] Then Return SetError(@error, @extended, 0)
-Return BitOR(BitShift(DllStructGetData($tOSVI, 2), -8), DllStructGetData($tOSVI, 3))
+Func _WinAPI_DeleteDC($hDC)
+Local $aResult = DllCall("gdi32.dll", "bool", "DeleteDC", "handle", $hDC)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_DrawIcon($hDC, $iX, $iY, $hIcon)
+Local $aResult = DllCall("user32.dll", "bool", "DrawIcon", "handle", $hDC, "int", $iX, "int", $iY, "handle", $hIcon)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_DrawIconEx($hDC, $iX, $iY, $hIcon, $iWidth = 0, $iHeight = 0, $iStep = 0, $hBrush = 0, $iFlags = 3)
+Local $iOptions
+Switch $iFlags
+Case 1
+$iOptions = $DI_MASK
+Case 2
+$iOptions = $DI_IMAGE
+Case 3
+$iOptions = $DI_NORMAL
+Case 4
+$iOptions = $DI_COMPAT
+Case 5
+$iOptions = $DI_DEFAULTSIZE
+Case Else
+$iOptions = $DI_NOMIRROR
+EndSwitch
+Local $aResult = DllCall("user32.dll", "bool", "DrawIconEx", "handle", $hDC, "int", $iX, "int", $iY, "handle", $hIcon, "int", $iWidth, "int", $iHeight, "uint", $iStep, "handle", $hBrush, "uint", $iOptions)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetDC($hWnd)
+Local $aResult = DllCall("user32.dll", "handle", "GetDC", "hwnd", $hWnd)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetDeviceCaps($hDC, $iIndex)
+Local $aResult = DllCall("gdi32.dll", "int", "GetDeviceCaps", "handle", $hDC, "int", $iIndex)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetWindowDC($hWnd)
+Local $aResult = DllCall("user32.dll", "handle", "GetWindowDC", "hwnd", $hWnd)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_ReleaseDC($hWnd, $hDC)
+Local $aResult = DllCall("user32.dll", "int", "ReleaseDC", "hwnd", $hWnd, "handle", $hDC)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Global Const $tagICONINFO = "bool Icon;dword XHotSpot;dword YHotSpot;handle hMask;handle hColor"
+Func _WinAPI_CopyIcon($hIcon)
+Local $aResult = DllCall("user32.dll", "handle", "CopyIcon", "handle", $hIcon)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_Create32BitHICON($hIcon, $bDelete = False)
+Local $ahBitmap[2], $hResult = 0
+Local $aDIB[2][2] = [[0, 0], [0, 0]]
+Local $tICONINFO = DllStructCreate($tagICONINFO)
+Local $aRet = DllCall('user32.dll', 'bool', 'GetIconInfo', 'handle', $hIcon, 'struct*', $tICONINFO)
+If @error Then Return SetError(@error, @extended, 0)
+If Not $aRet[0] Then Return SetError(10, 0, 0)
+For $i = 0 To 1
+$ahBitmap[$i] = DllStructGetData($tICONINFO, $i + 4)
+Next
+If _WinAPI_IsAlphaBitmap($ahBitmap[1]) Then
+$aDIB[0][0] = _WinAPI_CreateANDBitmap($ahBitmap[1])
+If Not @error Then
+$hResult = _WinAPI_CreateIconIndirect($ahBitmap[1], $aDIB[0][0])
+EndIf
+Else
+Local $tSIZE = _WinAPI_GetBitmapDimension($ahBitmap[1])
+Local $aSize[2]
+For $i = 0 To 1
+$aSize[$i] = DllStructGetData($tSIZE, $i + 1)
+Next
+Local $hSrcDC = _WinAPI_CreateCompatibleDC(0)
+Local $hDstDC = _WinAPI_CreateCompatibleDC(0)
+Local $hSrcSv, $hDstSv
+For $i = 0 To 1
+$aDIB[$i][0] = _WinAPI_CreateDIB($aSize[0], $aSize[1])
+$aDIB[$i][1] = $__g_vExt
+$hSrcSv = _WinAPI_SelectObject($hSrcDC, $ahBitmap[$i])
+$hDstSv = _WinAPI_SelectObject($hDstDC, $aDIB[$i][0])
+_WinAPI_BitBlt($hDstDC, 0, 0, $aSize[0], $aSize[1], $hSrcDC, 0, 0, 0x00C000CA)
+_WinAPI_SelectObject($hSrcDC, $hSrcSv)
+_WinAPI_SelectObject($hDstDC, $hDstSv)
+Next
+_WinAPI_DeleteDC($hSrcDC)
+_WinAPI_DeleteDC($hDstDC)
+$aRet = DllCall('user32.dll', 'lresult', 'CallWindowProc', 'ptr', __XORProc(), 'ptr', 0, 'uint', $aSize[0] * $aSize[1] * 4, 'wparam', $aDIB[0][1], 'lparam', $aDIB[1][1])
+If Not @error And $aRet[0] Then
+$hResult = _WinAPI_CreateIconIndirect($aDIB[1][0], $ahBitmap[0])
+EndIf
+EndIf
+For $i = 0 To 1
+_WinAPI_DeleteObject($ahBitmap[$i])
+If $aDIB[$i][0] Then
+_WinAPI_DeleteObject($aDIB[$i][0])
+EndIf
+Next
+If Not $hResult Then Return SetError(11, 0, 0)
+If $bDelete Then
+_WinAPI_DestroyIcon($hIcon)
+EndIf
+Return $hResult
+EndFunc
+Func _WinAPI_CreateIconIndirect($hBitmap, $hMask, $iXHotspot = 0, $iYHotspot = 0, $bIcon = True)
+Local $tICONINFO = DllStructCreate($tagICONINFO)
+DllStructSetData($tICONINFO, 1, $bIcon)
+DllStructSetData($tICONINFO, 2, $iXHotspot)
+DllStructSetData($tICONINFO, 3, $iYHotspot)
+DllStructSetData($tICONINFO, 4, $hMask)
+DllStructSetData($tICONINFO, 5, $hBitmap)
+Local $aRet = DllCall('user32.dll', 'handle', 'CreateIconIndirect', 'struct*', $tICONINFO)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aRet[0]
+EndFunc
+Func _WinAPI_DestroyIcon($hIcon)
+Local $aResult = DllCall("user32.dll", "bool", "DestroyIcon", "handle", $hIcon)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_ExtractIconEx($sFilePath, $iIndex, $paLarge, $paSmall, $iIcons)
+Local $aResult = DllCall("shell32.dll", "uint", "ExtractIconExW", "wstr", $sFilePath, "int", $iIndex, "struct*", $paLarge, "struct*", $paSmall, "uint", $iIcons)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetIconInfo($hIcon)
+Local $tInfo = DllStructCreate($tagICONINFO)
+Local $aRet = DllCall("user32.dll", "bool", "GetIconInfo", "handle", $hIcon, "struct*", $tInfo)
+If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
+Local $aIcon[6]
+$aIcon[0] = True
+$aIcon[1] = DllStructGetData($tInfo, "Icon") <> 0
+$aIcon[2] = DllStructGetData($tInfo, "XHotSpot")
+$aIcon[3] = DllStructGetData($tInfo, "YHotSpot")
+$aIcon[4] = DllStructGetData($tInfo, "hMask")
+$aIcon[5] = DllStructGetData($tInfo, "hColor")
+Return $aIcon
+EndFunc
+Global $__g_aInProcess_WinAPI[64][2] = [[0, 0]]
+Global $__g_aWinList_WinAPI[64][2] = [[0, 0]]
+Global Const $GW_HWNDNEXT = 2
+Global Const $GW_CHILD = 5
+Global Const $GWL_WNDPROC = 0xFFFFFFFC
+Global Const $GWL_HWNDPARENT = 0xFFFFFFF8
+Global Const $GWL_STYLE = 0xFFFFFFF0
+Global Const $GWL_EXSTYLE = 0xFFFFFFEC
+Global Const $__WINAPICONSTANT_WM_SETFONT = 0x0030
+Func _WinAPI_CreateWindowEx($iExStyle, $sClass, $sName, $iStyle, $iX, $iY, $iWidth, $iHeight, $hParent, $hMenu = 0, $hInstance = 0, $pParam = 0)
+If $hInstance = 0 Then $hInstance = _WinAPI_GetModuleHandle("")
+Local $aResult = DllCall("user32.dll", "hwnd", "CreateWindowExW", "dword", $iExStyle, "wstr", $sClass, "wstr", $sName, "dword", $iStyle, "int", $iX, "int", $iY, "int", $iWidth, "int", $iHeight, "hwnd", $hParent, "handle", $hMenu, "handle", $hInstance, "struct*", $pParam)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetClientRect($hWnd)
+Local $tRECT = DllStructCreate($tagRECT)
+Local $aRet = DllCall("user32.dll", "bool", "GetClientRect", "hwnd", $hWnd, "struct*", $tRECT)
+If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
+Return $tRECT
+EndFunc
+Func _WinAPI_GetDesktopWindow()
+Local $aResult = DllCall("user32.dll", "hwnd", "GetDesktopWindow")
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_DestroyWindow($hWnd)
+Local $aResult = DllCall("user32.dll", "bool", "DestroyWindow", "hwnd", $hWnd)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_EnableWindow($hWnd, $bEnable = True)
+Local $aResult = DllCall("user32.dll", "bool", "EnableWindow", "hwnd", $hWnd, "bool", $bEnable)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_EnumWindowsTop()
+__WinAPI_EnumWindowsInit()
+Local $hWnd = _WinAPI_GetWindow(_WinAPI_GetDesktopWindow(), $GW_CHILD)
+While $hWnd <> 0
+If _WinAPI_IsWindowVisible($hWnd) Then __WinAPI_EnumWindowsAdd($hWnd)
+$hWnd = _WinAPI_GetWindow($hWnd, $GW_HWNDNEXT)
+WEnd
+Return $__g_aWinList_WinAPI
+EndFunc
+Func _WinAPI_GetClassName($hWnd)
+If Not IsHWnd($hWnd) Then $hWnd = GUICtrlGetHandle($hWnd)
+Local $aResult = DllCall("user32.dll", "int", "GetClassNameW", "hwnd", $hWnd, "wstr", "", "int", 4096)
+If @error Or Not $aResult[0] Then Return SetError(@error, @extended, '')
+Return SetExtended($aResult[0], $aResult[2])
+EndFunc
+Func _WinAPI_GetFocus()
+Local $aResult = DllCall("user32.dll", "hwnd", "GetFocus")
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetParent($hWnd)
+Local $aResult = DllCall("user32.dll", "hwnd", "GetParent", "hwnd", $hWnd)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetSystemMetrics($iIndex)
+Local $aResult = DllCall("user32.dll", "int", "GetSystemMetrics", "int", $iIndex)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetWindow($hWnd, $iCmd)
+Local $aResult = DllCall("user32.dll", "hwnd", "GetWindow", "hwnd", $hWnd, "uint", $iCmd)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetWindowLong($hWnd, $iIndex)
+Local $sFuncName = "GetWindowLongW"
+If @AutoItX64 Then $sFuncName = "GetWindowLongPtrW"
+Local $aResult = DllCall("user32.dll", "long_ptr", $sFuncName, "hwnd", $hWnd, "int", $iIndex)
+If @error Or Not $aResult[0] Then Return SetError(@error + 10, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetWindowThreadProcessId($hWnd, ByRef $iPID)
+Local $aResult = DllCall("user32.dll", "dword", "GetWindowThreadProcessId", "hwnd", $hWnd, "dword*", 0)
+If @error Then Return SetError(@error, @extended, 0)
+$iPID = $aResult[2]
+Return $aResult[0]
+EndFunc
+Func _WinAPI_InProcess($hWnd, ByRef $hLastWnd)
+If $hWnd = $hLastWnd Then Return True
+For $iI = $__g_aInProcess_WinAPI[0][0] To 1 Step -1
+If $hWnd = $__g_aInProcess_WinAPI[$iI][0] Then
+If $__g_aInProcess_WinAPI[$iI][1] Then
+$hLastWnd = $hWnd
+Return True
+Else
+Return False
+EndIf
+EndIf
+Next
+Local $iPID
+_WinAPI_GetWindowThreadProcessId($hWnd, $iPID)
+Local $iCount = $__g_aInProcess_WinAPI[0][0] + 1
+If $iCount >= 64 Then $iCount = 1
+$__g_aInProcess_WinAPI[0][0] = $iCount
+$__g_aInProcess_WinAPI[$iCount][0] = $hWnd
+$__g_aInProcess_WinAPI[$iCount][1] =($iPID = @AutoItPID)
+Return $__g_aInProcess_WinAPI[$iCount][1]
+EndFunc
+Func _WinAPI_InvalidateRect($hWnd, $tRECT = 0, $bErase = True)
+Local $aResult = DllCall("user32.dll", "bool", "InvalidateRect", "hwnd", $hWnd, "struct*", $tRECT, "bool", $bErase)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_IsClassName($hWnd, $sClassName)
+Local $sSeparator = Opt("GUIDataSeparatorChar")
+Local $aClassName = StringSplit($sClassName, $sSeparator)
+If Not IsHWnd($hWnd) Then $hWnd = GUICtrlGetHandle($hWnd)
+Local $sClassCheck = _WinAPI_GetClassName($hWnd)
+For $x = 1 To UBound($aClassName) - 1
+If StringUpper(StringMid($sClassCheck, 1, StringLen($aClassName[$x]))) = StringUpper($aClassName[$x]) Then Return True
+Next
+Return False
+EndFunc
+Func _WinAPI_IsWindow($hWnd)
+Local $aResult = DllCall("user32.dll", "bool", "IsWindow", "hwnd", $hWnd)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_IsWindowVisible($hWnd)
+Local $aResult = DllCall("user32.dll", "bool", "IsWindowVisible", "hwnd", $hWnd)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_SetFocus($hWnd)
+Local $aResult = DllCall("user32.dll", "hwnd", "SetFocus", "hwnd", $hWnd)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_SetFont($hWnd, $hFont, $bRedraw = True)
+_SendMessage($hWnd, $__WINAPICONSTANT_WM_SETFONT, $hFont, $bRedraw, 0, "hwnd")
+EndFunc
+Func _WinAPI_SetParent($hWndChild, $hWndParent)
+Local $aResult = DllCall("user32.dll", "hwnd", "SetParent", "hwnd", $hWndChild, "hwnd", $hWndParent)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_SetWindowPos($hWnd, $hAfter, $iX, $iY, $iCX, $iCY, $iFlags)
+Local $aResult = DllCall("user32.dll", "bool", "SetWindowPos", "hwnd", $hWnd, "hwnd", $hAfter, "int", $iX, "int", $iY, "int", $iCX, "int", $iCY, "uint", $iFlags)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_SetWindowText($hWnd, $sText)
+Local $aResult = DllCall("user32.dll", "bool", "SetWindowTextW", "hwnd", $hWnd, "wstr", $sText)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_ShowWindow($hWnd, $iCmdShow = 5)
+Local $aResult = DllCall("user32.dll", "bool", "ShowWindow", "hwnd", $hWnd, "int", $iCmdShow)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_UpdateWindow($hWnd)
+Local $aResult = DllCall("user32.dll", "bool", "UpdateWindow", "hwnd", $hWnd)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func __WinAPI_EnumWindowsAdd($hWnd, $sClass = "")
+If $sClass = "" Then $sClass = _WinAPI_GetClassName($hWnd)
+$__g_aWinList_WinAPI[0][0] += 1
+Local $iCount = $__g_aWinList_WinAPI[0][0]
+If $iCount >= $__g_aWinList_WinAPI[0][1] Then
+ReDim $__g_aWinList_WinAPI[$iCount + 64][2]
+$__g_aWinList_WinAPI[0][1] += 64
+EndIf
+$__g_aWinList_WinAPI[$iCount][0] = $hWnd
+$__g_aWinList_WinAPI[$iCount][1] = $sClass
+EndFunc
+Func __WinAPI_EnumWindowsInit()
+ReDim $__g_aWinList_WinAPI[64][2]
+$__g_aWinList_WinAPI[0][0] = 0
+$__g_aWinList_WinAPI[0][1] = 64
+EndFunc
+Func _WinAPI_CallWindowProc($pPrevWndFunc, $hWnd, $iMsg, $wParam, $lParam)
+Local $aResult = DllCall("user32.dll", "lresult", "CallWindowProc", "ptr", $pPrevWndFunc, "hwnd", $hWnd, "uint", $iMsg, "wparam", $wParam, "lparam", $lParam)
+If @error Then Return SetError(@error, @extended, -1)
+Return $aResult[0]
 EndFunc
 Func _WinAPI_DeregisterShellHookWindow($hWnd)
 Local $aRet = DllCall('user32.dll', 'bool', 'DeregisterShellHookWindow', 'hwnd', $hWnd)
 If @error Then Return SetError(@error, @extended, False)
 Return $aRet[0]
+EndFunc
+Func _WinAPI_FindWindow($sClassName, $sWindowName)
+Local $aResult = DllCall("user32.dll", "hwnd", "FindWindowW", "wstr", $sClassName, "wstr", $sWindowName)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetAncestor($hWnd, $iFlags = 1)
+Local $aResult = DllCall("user32.dll", "hwnd", "GetAncestor", "hwnd", $hWnd, "uint", $iFlags)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetClientHeight($hWnd)
+Local $tRECT = _WinAPI_GetClientRect($hWnd)
+If @error Then Return SetError(@error, @extended, 0)
+Return DllStructGetData($tRECT, "Bottom") - DllStructGetData($tRECT, "Top")
+EndFunc
+Func _WinAPI_GetClientWidth($hWnd)
+Local $tRECT = _WinAPI_GetClientRect($hWnd)
+If @error Then Return SetError(@error, @extended, 0)
+Return DllStructGetData($tRECT, "Right") - DllStructGetData($tRECT, "Left")
+EndFunc
+Func _WinAPI_GetForegroundWindow()
+Local $aResult = DllCall("user32.dll", "hwnd", "GetForegroundWindow")
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_IsIconic($hWnd)
+Local $aRet = DllCall('user32.dll', 'bool', 'IsIconic', 'hwnd', $hWnd)
+If @error Then Return SetError(@error, @extended, False)
+Return $aRet[0]
+EndFunc
+Func _WinAPI_PostMessage($hWnd, $iMsg, $wParam, $lParam)
+Local $aResult = DllCall("user32.dll", "bool", "PostMessage", "hwnd", $hWnd, "uint", $iMsg, "wparam", $wParam, "lparam", $lParam)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_RegisterShellHookWindow($hWnd)
+Local $aRet = DllCall('user32.dll', 'bool', 'RegisterShellHookWindow', 'hwnd', $hWnd)
+If @error Then Return SetError(@error, @extended, False)
+Return $aRet[0]
+EndFunc
+Func _WinAPI_RegisterWindowMessage($sMessage)
+Local $aResult = DllCall("user32.dll", "uint", "RegisterWindowMessageW", "wstr", $sMessage)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_SetWindowLong($hWnd, $iIndex, $iValue)
+_WinAPI_SetLastError(0)
+Local $sFuncName = "SetWindowLongW"
+If @AutoItX64 Then $sFuncName = "SetWindowLongPtrW"
+Local $aResult = DllCall("user32.dll", "long_ptr", $sFuncName, "hwnd", $hWnd, "int", $iIndex, "long_ptr", $iValue)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_UpdateLayeredWindow($hWnd, $hDestDC, $tPTDest, $tSize, $hSrcDC, $tPTSrce, $iRGB, $tBlend, $iFlags)
+Local $aResult = DllCall("user32.dll", "bool", "UpdateLayeredWindow", "hwnd", $hWnd, "handle", $hDestDC, "struct*", $tPTDest, "struct*", $tSize, "handle", $hSrcDC, "struct*", $tPTSrce, "dword", $iRGB, "struct*", $tBlend, "dword", $iFlags)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func __EnumDefaultProc($pData, $lParam)
+#forceref $lParam
+Local $iLength = _WinAPI_StrLen($pData)
+__Inc($__g_vEnum)
+If $iLength Then
+$__g_vEnum[$__g_vEnum[0]] = DllStructGetData(DllStructCreate('wchar[' &($iLength + 1) & ']', $pData), 1)
+Else
+$__g_vEnum[$__g_vEnum[0]] = ''
+EndIf
+Return 1
+EndFunc
+Func _WinAPI_CallNextHookEx($hHook, $iCode, $wParam, $lParam)
+Local $aResult = DllCall("user32.dll", "lresult", "CallNextHookEx", "handle", $hHook, "int", $iCode, "wparam", $wParam, "lparam", $lParam)
+If @error Then Return SetError(@error, @extended, -1)
+Return $aResult[0]
 EndFunc
 Func _WinAPI_GetActiveWindow()
 Local $aRet = DllCall('user32.dll', 'hwnd', 'GetActiveWindow')
@@ -1129,12 +1320,7 @@ If @error Then Return SetError(@error, @extended, 0)
 Return $aRet[0]
 EndFunc
 Func _WinAPI_GetVersion()
-Return BitAND(BitShift($__WINVER, 8), 0xFF) & '.' & BitAND($__WINVER, 0xFF)
-EndFunc
-Func _WinAPI_IsIconic($hWnd)
-Local $aRet = DllCall('user32.dll', 'bool', 'IsIconic', 'hwnd', $hWnd)
-If @error Then Return SetError(@error, @extended, False)
-Return $aRet[0]
+Return Number(BitAND(BitShift($__WINVER, 8), 0xFF) & '.' & BitAND($__WINVER, 0xFF), $NUMBER_DOUBLE)
 EndFunc
 Func _WinAPI_LoadKeyboardLayout($iLanguage, $iFlag = 0)
 Local $aRet = DllCall('user32.dll', 'handle', 'LoadKeyboardLayoutW', 'wstr', Hex($iLanguage, 8), 'uint', $iFlag)
@@ -1156,11 +1342,6 @@ Local $aRet = DllCall('kernel32.dll', 'bool', 'QueryPerformanceFrequency', 'int6
 If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
 Return $aRet[1]
 EndFunc
-Func _WinAPI_RegisterShellHookWindow($hWnd)
-Local $aRet = DllCall('user32.dll', 'bool', 'RegisterShellHookWindow', 'hwnd', $hWnd)
-If @error Then Return SetError(@error, @extended, False)
-Return $aRet[0]
-EndFunc
 Func _WinAPI_SetKeyboardLayout($hWnd, $iLanguage, $iFlags = 0)
 If Not _WinAPI_IsWindow($hWnd) Then Return SetError(@error + 10, @extended, 0)
 Local $hLocale = 0
@@ -1173,16 +1354,15 @@ DllCall('user32.dll', 'none', 'SendMessage', 'hwnd', $hWnd, 'uint', $WM_INPUTLAN
 If @error Then Return SetError(@error, @extended, 0)
 Return 1
 EndFunc
-Func __EnumDefaultProc($pData, $lParam)
-#forceref $lParam
-Local $iLength = _WinAPI_StrLen($pData)
-__Inc($__g_vEnum)
-If $iLength Then
-$__g_vEnum[$__g_vEnum[0]] = DllStructGetData(DllStructCreate('wchar[' &($iLength + 1) & ']', $pData), 1)
-Else
-$__g_vEnum[$__g_vEnum[0]] = ''
-EndIf
-Return 1
+Func _WinAPI_SetWindowsHookEx($iHook, $pProc, $hDll, $iThreadId = 0)
+Local $aResult = DllCall("user32.dll", "handle", "SetWindowsHookEx", "int", $iHook, "ptr", $pProc, "handle", $hDll, "dword", $iThreadId)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_UnhookWindowsHookEx($hHook)
+Local $aResult = DllCall("user32.dll", "bool", "UnhookWindowsHookEx", "handle", $hHook)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
 EndFunc
 Func __EnumPageFilesProc($iSize, $pInfo, $pFile)
 Local $tEPFI = DllStructCreate('dword;dword;ulong_ptr;ulong_ptr;ulong_ptr', $pInfo)
@@ -1193,6 +1373,323 @@ $__g_vEnum[$__g_vEnum[0][0]][$i] = DllStructGetData($tEPFI, $i + 2) * $iSize
 Next
 Return 1
 EndFunc
+Global Const $tagNOTIFYICONDATA = 'struct;dword Size;hwnd hWnd;uint ID;uint Flags;uint CallbackMessage;ptr hIcon;wchar Tip[128];dword State;dword StateMask;wchar Info[256];uint Version;wchar InfoTitle[64];dword InfoFlags;endstruct'
+Func _WinAPI_GetFileSizeEx($hFile)
+Local $aResult = DllCall("kernel32.dll", "bool", "GetFileSizeEx", "handle", $hFile, "int64*", 0)
+If @error Or Not $aResult[0] Then Return SetError(@error, @extended, -1)
+Return $aResult[2]
+EndFunc
+Func _WinAPI_SetFilePointer($hFile, $iPos, $iMethod = 0)
+Local $aResult = DllCall("kernel32.dll", "INT", "SetFilePointer", "handle", $hFile, "long", $iPos, "ptr", 0, "long", $iMethod)
+If @error Then Return SetError(@error, @extended, -1)
+Return $aResult[0]
+EndFunc
+Global Const $DIB_RGB_COLORS = 0
+Global Const $BI_RGB = 0
+Func _WinAPI_Create32BitHBITMAP($hIcon, $bDib = False, $bDelete = False)
+Local $hBitmap = 0
+Local $aDIB[2] = [0, 0]
+Local $hTemp = _WinAPI_Create32BitHICON($hIcon)
+If @error Then Return SetError(@error, @extended, 0)
+Local $iError = 0
+Do
+Local $tICONINFO = DllStructCreate($tagICONINFO)
+Local $aRet = DllCall('user32.dll', 'bool', 'GetIconInfo', 'handle', $hTemp, 'struct*', $tICONINFO)
+If @error Or Not $aRet[0] Then
+$iError = @error + 10
+ExitLoop
+EndIf
+For $i = 0 To 1
+$aDIB[$i] = DllStructGetData($tICONINFO, $i + 4)
+Next
+Local $tBITMAP = DllStructCreate($tagBITMAP)
+If Not _WinAPI_GetObject($aDIB[0], DllStructGetSize($tBITMAP), $tBITMAP) Then
+$iError = @error + 20
+ExitLoop
+EndIf
+If $bDib Then
+$hBitmap = _WinAPI_CreateDIB(DllStructGetData($tBITMAP, 'bmWidth'), DllStructGetData($tBITMAP, 'bmHeight'))
+Local $hDC = _WinAPI_CreateCompatibleDC(0)
+Local $hSv = _WinAPI_SelectObject($hDC, $hBitmap)
+_WinAPI_DrawIconEx($hDC, 0, 0, $hTemp)
+_WinAPI_SelectObject($hDC, $hSv)
+_WinAPI_DeleteDC($hDC)
+Else
+$hBitmap = $aDIB[1]
+$aDIB[1] = 0
+EndIf
+Until 1
+For $i = 0 To 1
+If $aDIB[$i] Then
+_WinAPI_DeleteObject($aDIB[$i])
+EndIf
+Next
+_WinAPI_DestroyIcon($hTemp)
+If $iError Then Return SetError($iError, 0, 0)
+If Not $hBitmap Then Return SetError(12, 0, 0)
+If $bDelete Then
+_WinAPI_DestroyIcon($hIcon)
+EndIf
+Return $hBitmap
+EndFunc
+Func _WinAPI_DwmEnableComposition($bEnable)
+If $bEnable Then $bEnable = 1
+Local $aRet = DllCall('dwmapi.dll', 'long', 'DwmEnableComposition', 'uint', $bEnable)
+If @error Then Return SetError(@error, @extended, 0)
+If $aRet[0] Then Return SetError(10, $aRet[0], 0)
+Return 1
+EndFunc
+Func _WinAPI_DwmIsCompositionEnabled()
+Local $aRet = DllCall('dwmapi.dll', 'long', 'DwmIsCompositionEnabled', 'bool*', 0)
+If @error Then Return SetError(@error, @extended, 0)
+If $aRet[0] Then Return SetError(10, $aRet[0], 0)
+Return $aRet[1]
+EndFunc
+Func _WinAPI_DwmQueryThumbnailSourceSize($hThumbnail)
+Local $tSIZE = DllStructCreate($tagSIZE)
+Local $aRet = DllCall('dwmapi.dll', 'long', 'DwmQueryThumbnailSourceSize', 'handle', $hThumbnail, 'struct*', $tSIZE)
+If @error Then Return SetError(@error, @extended, 0)
+If $aRet[0] Then Return SetError(10, $aRet[0], 0)
+Return $tSIZE
+EndFunc
+Func _WinAPI_DwmRegisterThumbnail($hDestination, $hSource)
+Local $aRet = DllCall('dwmapi.dll', 'long', 'DwmRegisterThumbnail', 'hwnd', $hDestination, 'hwnd', $hSource, 'handle*', 0)
+If @error Then Return SetError(@error, @extended, 0)
+If $aRet[0] Then Return SetError(10, $aRet[0], 0)
+Return $aRet[3]
+EndFunc
+Func _WinAPI_DwmUnregisterThumbnail($hThumbnail)
+Local $aRet = DllCall('dwmapi.dll', 'long', 'DwmUnregisterThumbnail', 'handle', $hThumbnail)
+If @error Then Return SetError(@error, @extended, 0)
+If $aRet[0] Then Return SetError(10, $aRet[0], 0)
+Return 1
+EndFunc
+Func _WinAPI_DwmUpdateThumbnailProperties($hThumbnail, $bVisible = True, $bClientAreaOnly = False, $iOpacity = 255, $tRectDest = 0, $tRectSrc = 0)
+Local Const $tagDWM_THUMBNAIL_PROPERTIES = 'struct;dword dwFlags;int rcDestination[4];int rcSource[4];byte opacity;bool opacity;bool fSourceClientAreaOnly;endstruct'
+Local $tTHUMBNAILPROPERTIES = DllStructCreate($tagDWM_THUMBNAIL_PROPERTIES)
+Local $tSIZE, $iFlags = 0
+If Not IsDllStruct($tRectDest) Then
+$tSIZE = _WinAPI_DwmQueryThumbnailSourceSize($hThumbnail)
+If @error Then
+Return SetError(@error + 10, @extended, 0)
+EndIf
+$tRectDest = _WinAPI_CreateRectEx(0, 0, DllStructGetData($tSIZE, 1), DllStructGetData($tSIZE, 2))
+EndIf
+For $i = 1 To 4
+DllStructSetData($tTHUMBNAILPROPERTIES, 2, DllStructGetData($tRectDest, $i), $i)
+Next
+If IsDllStruct($tRectSrc) Then
+$iFlags += 2
+For $i = 1 To 4
+DllStructSetData($tTHUMBNAILPROPERTIES, 3, DllStructGetData($tRectSrc, $i), $i)
+Next
+EndIf
+DllStructSetData($tTHUMBNAILPROPERTIES, 1, BitOR($iFlags, 0x1D))
+DllStructSetData($tTHUMBNAILPROPERTIES, 4, $iOpacity)
+DllStructSetData($tTHUMBNAILPROPERTIES, 5, $bVisible)
+DllStructSetData($tTHUMBNAILPROPERTIES, 6, $bClientAreaOnly)
+Local $aRet = DllCall('dwmapi.dll', 'long', 'DwmUpdateThumbnailProperties', 'handle', $hThumbnail, 'struct*', $tTHUMBNAILPROPERTIES)
+If @error Then Return SetError(@error, @extended, 0)
+If $aRet[0] Then Return SetError(10, $aRet[0], 0)
+Return 1
+EndFunc
+Func _WinAPI_GetPixel($hDC, $iX, $iY)
+Local $aRet = DllCall('gdi32.dll', 'dword', 'GetPixel', 'handle', $hDC, 'int', $iX, 'int', $iY)
+If @error Or($aRet[0] = 4294967295) Then Return SetError(@error, @extended, -1)
+Return __RGB($aRet[0])
+EndFunc
+Func _WinAPI_PtInRectEx($iX, $iY, $iLeft, $iTop, $iRight, $iBottom)
+Local $tRECT = _WinAPI_CreateRect($iLeft, $iTop, $iRight, $iBottom)
+Local $tPOINT = _WinAPI_CreatePoint($iX, $iY)
+Local $aRet = DllCall('user32.dll', 'bool', 'PtInRect', 'struct*', $tRECT, 'struct', $tPOINT)
+If @error Then Return SetError(@error, @extended, False)
+Return $aRet[0]
+EndFunc
+Func _WinAPI_CreateMutex($sMutex, $bInitial = True, $tSecurity = 0)
+Local $aRet = DllCall('kernel32.dll', 'handle', 'CreateMutexW', 'struct*', $tSecurity, 'bool', $bInitial, 'wstr', $sMutex)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aRet[0]
+EndFunc
+Func _WinAPI_CreateSemaphore($sSemaphore, $iInitial, $iMaximum, $tSecurity = 0)
+Local $aRet = DllCall('kernel32.dll', 'handle', 'CreateSemaphoreW', 'struct*', $tSecurity, 'long', $iInitial, 'long', $iMaximum, 'wstr', $sSemaphore)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aRet[0]
+EndFunc
+Func _WinAPI_EmptyWorkingSet($iPID = 0)
+If Not $iPID Then $iPID = @AutoItPID
+Local $hProcess = DllCall('kernel32.dll', 'handle', 'OpenProcess', 'dword',(($__WINVER < 0x0600) ? 0x00000500 : 0x00001100), 'bool', 0, 'dword', $iPID)
+If @error Or Not $hProcess[0] Then Return SetError(@error + 20, @extended, 0)
+Local $aRet = DllCall(@SystemDir & '\psapi.dll', 'bool', 'EmptyWorkingSet', 'handle', $hProcess[0])
+If __CheckErrorCloseHandle($aRet, $hProcess[0]) Then Return SetError(@error, @extended, 0)
+Return 1
+EndFunc
+Func _WinAPI_EnumProcessThreads($iPID = 0)
+If Not $iPID Then $iPID = @AutoItPID
+Local $hSnapshot = DllCall('kernel32.dll', 'handle', 'CreateToolhelp32Snapshot', 'dword', 0x00000004, 'dword', 0)
+If @error Or Not $hSnapshot[0] Then Return SetError(@error + 10, @extended, 0)
+Local Const $tagTHREADENTRY32 = 'dword Size;dword Usage;dword ThreadID;dword OwnerProcessID;long BasePri;long DeltaPri;dword Flags'
+Local $tTHREADENTRY32 = DllStructCreate($tagTHREADENTRY32)
+Local $aResult[101] = [0]
+$hSnapshot = $hSnapshot[0]
+DllStructSetData($tTHREADENTRY32, 'Size', DllStructGetSize($tTHREADENTRY32))
+Local $aRet = DllCall('kernel32.dll', 'bool', 'Thread32First', 'handle', $hSnapshot, 'struct*', $tTHREADENTRY32)
+While Not @error And $aRet[0]
+If DllStructGetData($tTHREADENTRY32, 'OwnerProcessID') = $iPID Then
+__Inc($aResult)
+$aResult[$aResult[0]] = DllStructGetData($tTHREADENTRY32, 'ThreadID')
+EndIf
+$aRet = DllCall('kernel32.dll', 'bool', 'Thread32Next', 'handle', $hSnapshot, 'struct*', $tTHREADENTRY32)
+WEnd
+DllCall("kernel32.dll", "bool", "CloseHandle", "handle", $hSnapshot)
+If Not $aResult[0] Then Return SetError(1, 0, 0)
+__Inc($aResult, -1)
+Return $aResult
+EndFunc
+Func _WinAPI_EnumProcessWindows($iPID = 0, $bVisible = True)
+Local $aThreads = _WinAPI_EnumProcessThreads($iPID)
+If @error Then Return SetError(@error, @extended, 0)
+Local $hEnumProc = DllCallbackRegister('__EnumWindowsProc', 'bool', 'hwnd;lparam')
+Dim $__g_vEnum[101][2] = [[0]]
+For $i = 1 To $aThreads[0]
+DllCall('user32.dll', 'bool', 'EnumThreadWindows', 'dword', $aThreads[$i], 'ptr', DllCallbackGetPtr($hEnumProc), 'lparam', $bVisible)
+If @error Then
+ExitLoop
+EndIf
+Next
+DllCallbackFree($hEnumProc)
+If Not $__g_vEnum[0][0] Then Return SetError(11, 0, 0)
+__Inc($__g_vEnum, -1)
+Return $__g_vEnum
+EndFunc
+Func _WinAPI_FatalAppExit($sMessage)
+DllCall("kernel32.dll", "none", "FatalAppExitW", "uint", 0, "wstr", $sMessage)
+If @error Then Return SetError(@error, @extended)
+EndFunc
+Func _WinAPI_GetCurrentThreadId()
+Local $aResult = DllCall("kernel32.dll", "dword", "GetCurrentThreadId")
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_GetExitCodeProcess($hProcess)
+Local $aRet = DllCall('kernel32.dll', 'bool', 'GetExitCodeProcess', 'handle', $hProcess, 'dword*', 0)
+If @error Or Not $aRet[0] Then Return SetError(@error, @extended, 0)
+Return $aRet[2]
+EndFunc
+Func _WinAPI_GetGuiResources($iFlag = 0, $hProcess = -1)
+If $hProcess = -1 Then $hProcess = _WinAPI_GetCurrentProcess()
+Local $aResult = DllCall("user32.dll", "dword", "GetGuiResources", "handle", $hProcess, "dword", $iFlag)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_OpenProcess($iAccess, $bInherit, $iPID, $bDebugPriv = False)
+Local $aResult = DllCall("kernel32.dll", "handle", "OpenProcess", "dword", $iAccess, "bool", $bInherit, "dword", $iPID)
+If @error Then Return SetError(@error, @extended, 0)
+If $aResult[0] Then Return $aResult[0]
+If Not $bDebugPriv Then Return SetError(100, 0, 0)
+Local $hToken = _Security__OpenThreadTokenEx(BitOR($TOKEN_ADJUST_PRIVILEGES, $TOKEN_QUERY))
+If @error Then Return SetError(@error + 10, @extended, 0)
+_Security__SetPrivilege($hToken, "SeDebugPrivilege", True)
+Local $iError = @error
+Local $iExtended = @extended
+Local $iRet = 0
+If Not @error Then
+$aResult = DllCall("kernel32.dll", "handle", "OpenProcess", "dword", $iAccess, "bool", $bInherit, "dword", $iPID)
+$iError = @error
+$iExtended = @extended
+If $aResult[0] Then $iRet = $aResult[0]
+_Security__SetPrivilege($hToken, "SeDebugPrivilege", False)
+If @error Then
+$iError = @error + 20
+$iExtended = @extended
+EndIf
+Else
+$iError = @error + 30
+EndIf
+DllCall("kernel32.dll", "bool", "CloseHandle", "handle", $hToken)
+Return SetError($iError, $iExtended, $iRet)
+EndFunc
+Func _WinAPI_ReleaseMutex($hMutex)
+Local $aRet = DllCall('kernel32.dll', 'bool', 'ReleaseMutex', 'handle', $hMutex)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aRet[0]
+EndFunc
+Func _WinAPI_ReleaseSemaphore($hSemaphore, $iIncrease = 1)
+Local $aRet = DllCall('kernel32.dll', 'bool', 'ReleaseSemaphore', 'handle', $hSemaphore, 'long', $iIncrease, 'long*', 0)
+If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
+Return $aRet[3]
+EndFunc
+Func _WinAPI_SetProcessAffinityMask($hProcess, $iMask)
+Local $aResult = DllCall("kernel32.dll", "bool", "SetProcessAffinityMask", "handle", $hProcess, "ulong_ptr", $iMask)
+If @error Then Return SetError(@error, @extended, False)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_WaitForSingleObject($hHandle, $iTimeout = -1)
+Local $aResult = DllCall("kernel32.dll", "INT", "WaitForSingleObject", "handle", $hHandle, "dword", $iTimeout)
+If @error Then Return SetError(@error, @extended, -1)
+Return $aResult[0]
+EndFunc
+Global Const $LOCALE_SDATE = 0x001D
+Global Const $LOCALE_STIME = 0x001E
+Global Const $LOCALE_SSHORTDATE = 0x001F
+Global Const $LOCALE_SLONGDATE = 0x0020
+Global Const $LOCALE_STIMEFORMAT = 0x1003
+Global Const $LOCALE_S1159 = 0x0028
+Global Const $LOCALE_S2359 = 0x0029
+Global Const $LOCALE_INVARIANT = 0x007F
+Global Const $LOCALE_USER_DEFAULT = 0x0400
+Global Const $LOAD_LIBRARY_AS_DATAFILE = 0x02
+Func _WinAPI_GetFileVersionInfo($sFilePath, ByRef $pBuffer, $iFlags = 0)
+Local $aRet
+If $__WINVER >= 0x0600 Then
+$aRet = DllCall('version.dll', 'dword', 'GetFileVersionInfoSizeExW', 'dword', BitAND($iFlags, 0x03), 'wstr', $sFilePath, 'ptr', 0)
+Else
+$aRet = DllCall('version.dll', 'dword', 'GetFileVersionInfoSizeW', 'wstr', $sFilePath, 'ptr', 0)
+EndIf
+If @error Or Not $aRet[0] Then Return SetError(@error, @extended, 0)
+$pBuffer = __HeapReAlloc($pBuffer, $aRet[0], 1)
+If @error Then Return SetError(@error + 100, @extended, 0)
+Local $iNbByte = $aRet[0]
+If $__WINVER >= 0x0600 Then
+$aRet = DllCall('version.dll', 'bool', 'GetFileVersionInfoExW', 'dword', BitAND($iFlags, 0x07), 'wstr', $sFilePath, 'dword', 0, 'dword', $iNbByte, 'ptr', $pBuffer)
+Else
+$aRet = DllCall('version.dll', 'bool', 'GetFileVersionInfoW', 'wstr', $sFilePath, 'dword', 0, 'dword', $iNbByte, 'ptr', $pBuffer)
+EndIf
+If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
+Return $iNbByte
+EndFunc
+Func _WinAPI_LoadLibraryEx($sFileName, $iFlags = 0)
+Local $aResult = DllCall("kernel32.dll", "handle", "LoadLibraryExW", "wstr", $sFileName, "ptr", 0, "dword", $iFlags)
+If @error Then Return SetError(@error, @extended, 0)
+Return $aResult[0]
+EndFunc
+Func _WinAPI_VerQueryValue($pData, $sValues = '')
+$sValues = StringRegExpReplace($sValues, '\A[\s\|]*|[\s\|]*\Z', '')
+If Not $sValues Then
+$sValues = 'Comments|CompanyName|FileDescription|FileVersion|InternalName|LegalCopyright|LegalTrademarks|OriginalFilename|ProductName|ProductVersion|PrivateBuild|SpecialBuild'
+EndIf
+$sValues = StringSplit($sValues, '|', $STR_NOCOUNT)
+Local $aRet = DllCall('version.dll', 'bool', 'VerQueryValueW', 'ptr', $pData, 'wstr', '\VarFileInfo\Translation', 'ptr*', 0, 'uint*', 0)
+If @error Or Not $aRet[0] Or Not $aRet[4] Then Return SetError(@error + 10, 0, 0)
+Local $iLength = Floor($aRet[4] / 4)
+Local $tLang = DllStructCreate('dword[' & $iLength & ']', $aRet[3])
+If @error Then Return SetError(@error + 20, 0, 0)
+Local $sCP, $aInfo[101][UBound($sValues) + 1] = [[0]]
+For $i = 1 To $iLength
+__Inc($aInfo)
+$aInfo[$aInfo[0][0]][0] = _WinAPI_LoWord(DllStructGetData($tLang, 1, $i))
+$sCP = Hex(_WinAPI_MakeLong(_WinAPI_HiWord(DllStructGetData($tLang, 1, $i)), _WinAPI_LoWord(DllStructGetData($tLang, 1, $i))), 8)
+For $j = 0 To UBound($sValues) - 1
+$aRet = DllCall('version.dll', 'bool', 'VerQueryValueW', 'ptr', $pData, 'wstr', '\StringFileInfo\' & $sCP & '\' & $sValues[$j], 'ptr*', 0, 'uint*', 0)
+If Not @error And $aRet[0] And $aRet[4] Then
+$aInfo[$aInfo[0][0]][$j + 1] = DllStructGetData(DllStructCreate('wchar[' & $aRet[4] & ']', $aRet[3]), 1)
+Else
+$aInfo[$aInfo[0][0]][$j + 1] = ''
+EndIf
+Next
+Next
+__Inc($aInfo, -1)
+Return $aInfo
+EndFunc
 Global Const $PROCESS_VM_OPERATION = 0x00000008
 Global Const $PROCESS_VM_READ = 0x00000010
 Global Const $PROCESS_VM_WRITE = 0x00000020
@@ -1200,8 +1697,8 @@ Global Const $PROCESS_QUERY_INFORMATION = 0x00000400
 Global Const $PROCESS_QUERY_LIMITED_INFORMATION = 0x1000
 Global Const $PROCESS_ALL_ACCESS = 0x001F0FFF
 Func _RunDos($sCommand)
-Local $nResult = RunWait(@ComSpec & " /C " & $sCommand, "", @SW_HIDE)
-Return SetError(@error, @extended, $nResult)
+Local $iResult = RunWait(@ComSpec & " /C " & $sCommand, "", @SW_HIDE)
+Return SetError(@error, @extended, $iResult)
 EndFunc
 Func _Max($iNum1, $iNum2)
 If Not IsNumber($iNum1) Then Return SetError(1, 0, 0)
@@ -1388,6 +1885,7 @@ Global Const $COLOR_MONEYGREEN = 0xC0DCC0
 Global Const $COLOR_NAVY = 0x000080
 Global Const $COLOR_PURPLE = 0x800080
 Global Const $COLOR_RED = 0xFF0000
+Global Const $COLOR_TEAL = 0x008080
 Global Const $COLOR_WHITE = 0xFFFFFF
 Global Const $COLOR_YELLOW = 0xFFFF00
 Global Const $ILC_MASK = 0x00000001
@@ -1548,32 +2046,32 @@ Local $aResult = DllCall("kernel32.dll", "bool", "VirtualFreeEx", "handle", $hPr
 If @error Then Return SetError(@error, @extended, False)
 Return $aResult[0]
 EndFunc
-Func __Mem_OpenProcess($iAccess, $bInherit, $iProcessID, $bDebugPriv = False)
-Local $aResult = DllCall("kernel32.dll", "handle", "OpenProcess", "dword", $iAccess, "bool", $bInherit, "dword", $iProcessID)
-If @error Then Return SetError(@error + 10, @extended, 0)
+Func __Mem_OpenProcess($iAccess, $bInherit, $iPID, $bDebugPriv = False)
+Local $aResult = DllCall("kernel32.dll", "handle", "OpenProcess", "dword", $iAccess, "bool", $bInherit, "dword", $iPID)
+If @error Then Return SetError(@error, @extended, 0)
 If $aResult[0] Then Return $aResult[0]
-If Not $bDebugPriv Then Return 0
+If Not $bDebugPriv Then Return SetError(100, 0, 0)
 Local $hToken = _Security__OpenThreadTokenEx(BitOR($TOKEN_ADJUST_PRIVILEGES, $TOKEN_QUERY))
-If @error Then Return SetError(@error + 20, @extended, 0)
+If @error Then Return SetError(@error + 10, @extended, 0)
 _Security__SetPrivilege($hToken, "SeDebugPrivilege", True)
 Local $iError = @error
-Local $iLastError = @extended
+Local $iExtended = @extended
 Local $iRet = 0
 If Not @error Then
-$aResult = DllCall("kernel32.dll", "handle", "OpenProcess", "dword", $iAccess, "bool", $bInherit, "dword", $iProcessID)
+$aResult = DllCall("kernel32.dll", "handle", "OpenProcess", "dword", $iAccess, "bool", $bInherit, "dword", $iPID)
 $iError = @error
-$iLastError = @extended
+$iExtended = @extended
 If $aResult[0] Then $iRet = $aResult[0]
 _Security__SetPrivilege($hToken, "SeDebugPrivilege", False)
 If @error Then
-$iError = @error + 30
-$iLastError = @extended
+$iError = @error + 20
+$iExtended = @extended
 EndIf
 Else
-$iError = @error + 40
+$iError = @error + 30
 EndIf
 DllCall("kernel32.dll", "bool", "CloseHandle", "handle", $hToken)
-Return SetError($iError, $iLastError, $iRet)
+Return SetError($iError, $iExtended, $iRet)
 EndFunc
 Global Const $__STATUSBARCONSTANT_WM_USER = 0X400
 Global Const $SB_GETUNICODEFORMAT = 0x2000 + 6
@@ -1646,33 +2144,41 @@ EndFunc
 Func _GUICtrlStatusBar_Resize($hWnd)
 _SendMessage($hWnd, $__STATUSBARCONSTANT_WM_SIZE)
 EndFunc
-Func _GUICtrlStatusBar_SetParts($hWnd, $aParts = -1, $aPartWidth = 25)
-Local $tParts, $iParts = 1
-If IsArray($aParts) <> 0 Then
-$aParts[UBound($aParts) - 1] = -1
-$iParts = UBound($aParts)
+Func _GUICtrlStatusBar_SetParts($hWnd, $vPartEdge = -1, $vPartWidth = 25)
+If IsArray($vPartEdge) And IsArray($vPartWidth) Then Return False
+Local $tParts, $iParts
+If IsArray($vPartEdge) Then
+$vPartEdge[UBound($vPartEdge) - 1] = -1
+$iParts = UBound($vPartEdge)
 $tParts = DllStructCreate("int[" & $iParts & "]")
 For $x = 0 To $iParts - 2
-DllStructSetData($tParts, 1, $aParts[$x], $x + 1)
-Next
-DllStructSetData($tParts, 1, -1, $iParts)
-ElseIf IsArray($aPartWidth) <> 0 Then
-$iParts = UBound($aPartWidth)
-$tParts = DllStructCreate("int[" & $iParts & "]")
-For $x = 0 To $iParts - 2
-DllStructSetData($tParts, 1, $aPartWidth[$x], $x + 1)
-Next
-DllStructSetData($tParts, 1, -1, $iParts)
-ElseIf $aParts > 1 Then
-$iParts = $aParts
-$tParts = DllStructCreate("int[" & $iParts & "]")
-For $x = 1 To $iParts - 1
-DllStructSetData($tParts, 1, $aPartWidth * $x, $x)
+DllStructSetData($tParts, 1, $vPartEdge[$x], $x + 1)
 Next
 DllStructSetData($tParts, 1, -1, $iParts)
 Else
+If $vPartEdge < -1 Then Return False
+If IsArray($vPartWidth) Then
+$iParts = UBound($vPartWidth)
+$tParts = DllStructCreate("int[" & $iParts & "]")
+Local $iPartRightEdge = 0
+For $x = 0 To $iParts - 2
+$iPartRightEdge += $vPartWidth[$x]
+If $vPartWidth[$x] <= 0 Then Return False
+DllStructSetData($tParts, 1, $iPartRightEdge, $x + 1)
+Next
+DllStructSetData($tParts, 1, -1, $iParts)
+ElseIf $vPartEdge > 1 Then
+$iParts = $vPartEdge
+$tParts = DllStructCreate("int[" & $iParts & "]")
+For $x = 1 To $iParts - 1
+DllStructSetData($tParts, 1, $vPartWidth * $x, $x)
+Next
+DllStructSetData($tParts, 1, -1, $iParts)
+Else
+$iParts = 1
 $tParts = DllStructCreate("int")
-DllStructSetData($tParts, $iParts, -1)
+DllStructSetData($tParts, 1, -1)
+EndIf
 EndIf
 If _WinAPI_InProcess($hWnd, $__g_hSBLastWnd) Then
 _SendMessage($hWnd, $SB_SETPARTS, $iParts, $tParts, 0, "wparam", "struct*")
@@ -1935,504 +2441,6 @@ Global Const $TCCM_FIRST = 0X2000
 Global Const $TCM_GETITEMRECT =($TCM_FIRST + 10)
 Global Const $TCM_SETCURFOCUS =($TCM_FIRST + 48)
 Global Const $TCM_SETIMAGELIST = $TCM_FIRST + 3
-Func _WinAPI_CreateStreamOnHGlobal($hGlobal = 0, $bDeleteOnRelease = True)
-Local $aReturn = DllCall('ole32.dll', 'long', 'CreateStreamOnHGlobal', 'handle', $hGlobal, 'bool', $bDeleteOnRelease, 'ptr*', 0)
-If @error Then Return SetError(@error, @extended, 0)
-If $aReturn[0] Then Return SetError(10, $aReturn[0], 0)
-Return $aReturn[3]
-EndFunc
-Func _WinAPI_ReleaseStream($pStream)
-Local $aReturn = DllCall('oleaut32.dll', 'long', 'DispCallFunc', 'ptr', $pStream, 'ulong_ptr', 8 *(1 + @AutoItX64), 'uint', 4, 'ushort', 23, 'uint', 0, 'ptr', 0, 'ptr', 0, 'str', '')
-If @error Then Return SetError(@error, @extended, 0)
-If $aReturn[0] Then Return SetError(10, $aReturn[0], 0)
-Return 1
-EndFunc
-Func _WinAPI_CreateMutex($sMutex, $bInitial = True, $tSecurity = 0)
-Local $aRet = DllCall('kernel32.dll', 'handle', 'CreateMutexW', 'struct*', $tSecurity, 'bool', $bInitial, 'wstr', $sMutex)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aRet[0]
-EndFunc
-Func _WinAPI_CreateSemaphore($sSemaphore, $iInitial, $iMaximum, $tSecurity = 0)
-Local $aRet = DllCall('kernel32.dll', 'handle', 'CreateSemaphoreW', 'struct*', $tSecurity, 'long', $iInitial, 'long', $iMaximum, 'wstr', $sSemaphore)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aRet[0]
-EndFunc
-Func _WinAPI_EmptyWorkingSet($iPID = 0)
-If Not $iPID Then $iPID = @AutoItPID
-Local $hProcess = DllCall('kernel32.dll', 'handle', 'OpenProcess', 'dword', __Iif($__WINVER < 0x0600, 0x00000500, 0x00001100), 'bool', 0, 'dword', $iPID)
-If @error Or Not $hProcess[0] Then Return SetError(@error + 20, @extended, 0)
-Local $aRet = DllCall(@SystemDir & '\psapi.dll', 'bool', 'EmptyWorkingSet', 'handle', $hProcess[0])
-If __CheckErrorCloseHandle($aRet, $hProcess[0]) Then Return SetError(@error, @extended, 0)
-Return 1
-EndFunc
-Func _WinAPI_EnumProcessThreads($iPID = 0)
-If Not $iPID Then $iPID = @AutoItPID
-Local $hSnapshot = DllCall('kernel32.dll', 'handle', 'CreateToolhelp32Snapshot', 'dword', 0x00000004, 'dword', 0)
-If @error Or Not $hSnapshot[0] Then Return SetError(@error + 10, @extended, 0)
-Local Const $tagTHREADENTRY32 = 'dword Size;dword Usage;dword ThreadID;dword OwnerProcessID;long BasePri;long DeltaPri;dword Flags'
-Local $tTHREADENTRY32 = DllStructCreate($tagTHREADENTRY32)
-Local $aResult[101] = [0]
-$hSnapshot = $hSnapshot[0]
-DllStructSetData($tTHREADENTRY32, 'Size', DllStructGetSize($tTHREADENTRY32))
-Local $aRet = DllCall('kernel32.dll', 'bool', 'Thread32First', 'handle', $hSnapshot, 'struct*', $tTHREADENTRY32)
-While Not @error And $aRet[0]
-If DllStructGetData($tTHREADENTRY32, 'OwnerProcessID') = $iPID Then
-__Inc($aResult)
-$aResult[$aResult[0]] = DllStructGetData($tTHREADENTRY32, 'ThreadID')
-EndIf
-$aRet = DllCall('kernel32.dll', 'bool', 'Thread32Next', 'handle', $hSnapshot, 'struct*', $tTHREADENTRY32)
-WEnd
-DllCall("kernel32.dll", "bool", "CloseHandle", "handle", $hSnapshot)
-If Not $aResult[0] Then Return SetError(1, 0, 0)
-__Inc($aResult, -1)
-Return $aResult
-EndFunc
-Func _WinAPI_EnumProcessWindows($iPID = 0, $bVisible = True)
-Local $aThreads = _WinAPI_EnumProcessThreads($iPID)
-If @error Then Return SetError(@error, @extended, 0)
-Local $hEnumProc = DllCallbackRegister('__EnumWindowsProc', 'bool', 'hwnd;lparam')
-Dim $__g_vEnum[101][2] = [[0]]
-For $i = 1 To $aThreads[0]
-DllCall('user32.dll', 'bool', 'EnumThreadWindows', 'dword', $aThreads[$i], 'ptr', DllCallbackGetPtr($hEnumProc), 'lparam', $bVisible)
-If @error Then
-ExitLoop
-EndIf
-Next
-DllCallbackFree($hEnumProc)
-If Not $__g_vEnum[0][0] Then Return SetError(11, 0, 0)
-__Inc($__g_vEnum, -1)
-Return $__g_vEnum
-EndFunc
-Func _WinAPI_GetExitCodeProcess($hProcess)
-Local $aRet = DllCall('kernel32.dll', 'bool', 'GetExitCodeProcess', 'handle', $hProcess, 'dword*', 0)
-If @error Or Not $aRet[0] Then Return SetError(@error, @extended, 0)
-Return $aRet[2]
-EndFunc
-Func _WinAPI_ReleaseMutex($hMutex)
-Local $aRet = DllCall('kernel32.dll', 'bool', 'ReleaseMutex', 'handle', $hMutex)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aRet[0]
-EndFunc
-Func _WinAPI_ReleaseSemaphore($hSemaphore, $iIncrease = 1)
-Local $aRet = DllCall('kernel32.dll', 'bool', 'ReleaseSemaphore', 'handle', $hSemaphore, 'long', $iIncrease, 'long*', 0)
-If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
-Return $aRet[3]
-EndFunc
-Global Const $LOCALE_SDATE = 0x001D
-Global Const $LOCALE_STIME = 0x001E
-Global Const $LOCALE_SSHORTDATE = 0x001F
-Global Const $LOCALE_SLONGDATE = 0x0020
-Global Const $LOCALE_STIMEFORMAT = 0x1003
-Global Const $LOCALE_S1159 = 0x0028
-Global Const $LOCALE_S2359 = 0x0029
-Global Const $LOCALE_INVARIANT = 0x007F
-Global Const $LOCALE_USER_DEFAULT = 0x0400
-Global Const $DIB_RGB_COLORS = 0
-Global Const $BI_RGB = 0
-Global Const $tagBITMAP = 'struct;long bmType;long bmWidth;long bmHeight;long bmWidthBytes;ushort bmPlanes;ushort bmBitsPixel;ptr bmBits;endstruct'
-Global Const $tagBITMAPV5HEADER = 'struct;dword bV5Size;long bV5Width;long bV5Height;ushort bV5Planes;ushort bV5BitCount;dword bV5Compression;dword bV5SizeImage;long bV5XPelsPerMeter;long bV5YPelsPerMeter;dword bV5ClrUsed;dword bV5ClrImportant;dword bV5RedMask;dword bV5GreenMask;dword bV5BlueMask;dword bV5AlphaMask;dword bV5CSType;int bV5Endpoints[9];dword bV5GammaRed;dword bV5GammaGreen;dword bV5GammaBlue;dword bV5Intent;dword bV5ProfileData;dword bV5ProfileSize;dword bV5Reserved;endstruct'
-Global Const $tagDIBSECTION = $tagBITMAP & ';' & $tagBITMAPINFOHEADER & ';dword dsBitfields[3];ptr dshSection;dword dsOffset'
-Func _WinAPI_CopyBitmap($hBitmap)
-$hBitmap = _WinAPI_CopyImage($hBitmap, 0, 0, 0, 0x2000)
-Return SetError(@error, @extended, $hBitmap)
-EndFunc
-Func _WinAPI_CopyImage($hImage, $iType = 0, $iXDesiredPixels = 0, $iYDesiredPixels = 0, $iFlags = 0)
-Local $aRet = DllCall('user32.dll', 'handle', 'CopyImage', 'handle', $hImage, 'uint', $iType, 'int', $iXDesiredPixels, 'int', $iYDesiredPixels, 'uint', $iFlags)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aRet[0]
-EndFunc
-Func _WinAPI_Create32BitHBITMAP($hIcon, $bDib = False, $bDelete = False)
-Local $hBitmap = 0
-Local $aDIB[2] = [0, 0]
-Local $hTemp = _WinAPI_Create32BitHICON($hIcon)
-If @error Then Return SetError(@error, @extended, 0)
-Local $iError = 0
-Do
-Local $tICONINFO = DllStructCreate($tagICONINFO)
-Local $aRet = DllCall('user32.dll', 'bool', 'GetIconInfo', 'handle', $hTemp, 'struct*', $tICONINFO)
-If @error Or Not $aRet[0] Then
-$iError = @error + 10
-ExitLoop
-EndIf
-For $i = 0 To 1
-$aDIB[$i] = DllStructGetData($tICONINFO, $i + 4)
-Next
-Local $tBITMAP = DllStructCreate($tagBITMAP)
-If Not _WinAPI_GetObject($aDIB[0], DllStructGetSize($tBITMAP), $tBITMAP) Then
-$iError = @error + 20
-ExitLoop
-EndIf
-If $bDib Then
-$hBitmap = _WinAPI_CreateDIB(DllStructGetData($tBITMAP, 'bmWidth'), DllStructGetData($tBITMAP, 'bmHeight'))
-Local $hDC = _WinAPI_CreateCompatibleDC(0)
-Local $hSv = _WinAPI_SelectObject($hDC, $hBitmap)
-_WinAPI_DrawIconEx($hDC, 0, 0, $hTemp)
-_WinAPI_SelectObject($hDC, $hSv)
-_WinAPI_DeleteDC($hDC)
-Else
-$hBitmap = $aDIB[1]
-$aDIB[1] = 0
-EndIf
-Until 1
-For $i = 0 To 1
-If $aDIB[$i] Then
-_WinAPI_DeleteObject($aDIB[$i])
-EndIf
-Next
-_WinAPI_DestroyIcon($hTemp)
-If $iError Then Return SetError($iError, 0, 0)
-If Not $hBitmap Then Return SetError(12, 0, 0)
-If $bDelete Then
-_WinAPI_DestroyIcon($hIcon)
-EndIf
-Return $hBitmap
-EndFunc
-Func _WinAPI_Create32BitHICON($hIcon, $bDelete = False)
-Local $ahBitmap[2], $hResult = 0
-Local $aDIB[2][2] = [[0, 0], [0, 0]]
-Local $tICONINFO = DllStructCreate($tagICONINFO)
-Local $aRet = DllCall('user32.dll', 'bool', 'GetIconInfo', 'handle', $hIcon, 'struct*', $tICONINFO)
-If @error Then Return SetError(@error, @extended, 0)
-If Not $aRet[0] Then Return SetError(10, 0, 0)
-For $i = 0 To 1
-$ahBitmap[$i] = DllStructGetData($tICONINFO, $i + 4)
-Next
-If _WinAPI_IsAlphaBitmap($ahBitmap[1]) Then
-$aDIB[0][0] = _WinAPI_CreateANDBitmap($ahBitmap[1])
-If Not @error Then
-$hResult = _WinAPI_CreateIconIndirect($ahBitmap[1], $aDIB[0][0])
-EndIf
-Else
-Local $tSIZE = _WinAPI_GetBitmapDimension($ahBitmap[1])
-Local $aSize[2]
-For $i = 0 To 1
-$aSize[$i] = DllStructGetData($tSIZE, $i + 1)
-Next
-Local $hSrcDC = _WinAPI_CreateCompatibleDC(0)
-Local $hDstDC = _WinAPI_CreateCompatibleDC(0)
-Local $hSrcSv, $hDstSv
-For $i = 0 To 1
-$aDIB[$i][0] = _WinAPI_CreateDIB($aSize[0], $aSize[1])
-$aDIB[$i][1] = $__g_vExt
-$hSrcSv = _WinAPI_SelectObject($hSrcDC, $ahBitmap[$i])
-$hDstSv = _WinAPI_SelectObject($hDstDC, $aDIB[$i][0])
-_WinAPI_BitBlt($hDstDC, 0, 0, $aSize[0], $aSize[1], $hSrcDC, 0, 0, 0x00C000CA)
-_WinAPI_SelectObject($hSrcDC, $hSrcSv)
-_WinAPI_SelectObject($hDstDC, $hDstSv)
-Next
-_WinAPI_DeleteDC($hSrcDC)
-_WinAPI_DeleteDC($hDstDC)
-$aRet = DllCall('user32.dll', 'lresult', 'CallWindowProc', 'ptr', __XORProc(), 'ptr', 0, 'uint', $aSize[0] * $aSize[1] * 4, 'wparam', $aDIB[0][1], 'lparam', $aDIB[1][1])
-If Not @error And $aRet[0] Then
-$hResult = _WinAPI_CreateIconIndirect($aDIB[1][0], $ahBitmap[0])
-EndIf
-EndIf
-For $i = 0 To 1
-_WinAPI_DeleteObject($ahBitmap[$i])
-If $aDIB[$i][0] Then
-_WinAPI_DeleteObject($aDIB[$i][0])
-EndIf
-Next
-If Not $hResult Then Return SetError(11, 0, 0)
-If $bDelete Then
-_WinAPI_DestroyIcon($hIcon)
-EndIf
-Return $hResult
-EndFunc
-Func _WinAPI_CreateANDBitmap($hBitmap)
-Local $iError = 0, $hDib = 0
-$hBitmap = _WinAPI_CopyBitmap($hBitmap)
-If Not $hBitmap Then Return SetError(@error + 20, @extended, 0)
-Do
-Local $atDIB[2]
-$atDIB[0] = DllStructCreate($tagDIBSECTION)
-If(Not _WinAPI_GetObject($hBitmap, DllStructGetSize($atDIB[0]), $atDIB[0])) Or(DllStructGetData($atDIB[0], 'bmBitsPixel') <> 32) Or(DllStructGetData($atDIB[0], 'biCompression')) Then
-$iError = 10
-ExitLoop
-EndIf
-$atDIB[1] = DllStructCreate($tagBITMAP)
-$hDib = _WinAPI_CreateDIB(DllStructGetData($atDIB[0], 'bmWidth'), DllStructGetData($atDIB[0], 'bmHeight'), 1)
-If Not _WinAPI_GetObject($hDib, DllStructGetSize($atDIB[1]), $atDIB[1]) Then
-$iError = 11
-ExitLoop
-EndIf
-Local $aRet = DllCall('user32.dll', 'lresult', 'CallWindowProc', 'ptr', __ANDProc(), 'ptr', 0, 'uint', 0, 'wparam', DllStructGetPtr($atDIB[0]), 'lparam', DllStructGetPtr($atDIB[1]))
-If @error Then
-$iError = @error
-ExitLoop
-EndIf
-If Not $aRet[0] Then
-$iError = 12
-ExitLoop
-EndIf
-$iError = 0
-Until 1
-_WinAPI_DeleteObject($hBitmap)
-If $iError Then
-If $hDib Then
-_WinAPI_DeleteObject($hDib)
-EndIf
-$hDib = 0
-EndIf
-Return SetError($iError, 0, $hDib)
-EndFunc
-Func _WinAPI_CreateDIB($iWidth, $iHeight, $iBitsPerPel = 32, $tColorTable = 0, $iColorCount = 0)
-Local $aRGBQ[2], $iColors, $tagRGBQ
-Switch $iBitsPerPel
-Case 1
-$iColors = 2
-Case 4
-$iColors = 16
-Case 8
-$iColors = 256
-Case Else
-$iColors = 0
-EndSwitch
-If $iColors Then
-If Not IsDllStruct($tColorTable) Then
-Switch $iBitsPerPel
-Case 1
-$aRGBQ[0] = 0
-$aRGBQ[1] = 0xFFFFFF
-$tColorTable = _WinAPI_CreateDIBColorTable($aRGBQ)
-Case Else
-EndSwitch
-Else
-If $iColors > $iColorCount Then
-$iColors = $iColorCount
-EndIf
-If(Not $iColors) Or((4 * $iColors) > DllStructGetSize($tColorTable)) Then
-Return SetError(20, 0, 0)
-EndIf
-EndIf
-$tagRGBQ = ';dword aRGBQuad[' & $iColors & ']'
-Else
-$tagRGBQ = ''
-EndIf
-Local $tBITMAPINFO = DllStructCreate($tagBITMAPINFOHEADER & $tagRGBQ)
-DllStructSetData($tBITMAPINFO, 'biSize', 40)
-DllStructSetData($tBITMAPINFO, 'biWidth', $iWidth)
-DllStructSetData($tBITMAPINFO, 'biHeight', $iHeight)
-DllStructSetData($tBITMAPINFO, 'biPlanes', 1)
-DllStructSetData($tBITMAPINFO, 'biBitCount', $iBitsPerPel)
-DllStructSetData($tBITMAPINFO, 'biCompression', 0)
-DllStructSetData($tBITMAPINFO, 'biSizeImage', 0)
-DllStructSetData($tBITMAPINFO, 'biXPelsPerMeter', 0)
-DllStructSetData($tBITMAPINFO, 'biYPelsPerMeter', 0)
-DllStructSetData($tBITMAPINFO, 'biClrUsed', $iColors)
-DllStructSetData($tBITMAPINFO, 'biClrImportant', 0)
-If $iColors Then
-If IsDllStruct($tColorTable) Then
-_WinAPI_MoveMemory(DllStructGetPtr($tBITMAPINFO, 'aRGBQuad'), $tColorTable, 4 * $iColors)
-Else
-_WinAPI_ZeroMemory(DllStructGetPtr($tBITMAPINFO, 'aRGBQuad'), 4 * $iColors)
-EndIf
-EndIf
-Local $hBitmap = _WinAPI_CreateDIBSection(0, $tBITMAPINFO, 0, $__g_vExt)
-If Not $hBitmap Then Return SetError(@error, @extended, 0)
-Return $hBitmap
-EndFunc
-Func _WinAPI_CreateDIBColorTable(Const ByRef $aColorTable, $iStart = 0, $iEnd = -1)
-If __CheckErrorArrayBounds($aColorTable, $iStart, $iEnd) Then Return SetError(@error + 10, @extended, 0)
-Local $tColorTable = DllStructCreate('dword[' &($iEnd - $iStart + 1) & ']')
-Local $iCount = 1
-For $i = $iStart To $iEnd
-DllStructSetData($tColorTable, 1, _WinAPI_SwitchColor(__RGB($aColorTable[$i])), $iCount)
-$iCount += 1
-Next
-Return $tColorTable
-EndFunc
-Func _WinAPI_CreateDIBSection($hDC, $tBITMAPINFO, $iUsage, ByRef $pBits, $hSection = 0, $iOffset = 0)
-$pBits = 0
-Local $aRet = DllCall('gdi32.dll', 'handle', 'CreateDIBSection', 'handle', $hDC, 'struct*', $tBITMAPINFO, 'uint', $iUsage, 'ptr*', 0, 'handle', $hSection, 'dword', $iOffset)
-If @error Or Not $aRet[0] Then Return SetError(@error, @extended, 0)
-$pBits = $aRet[4]
-Return $aRet[0]
-EndFunc
-Func _WinAPI_CreateIconIndirect($hBitmap, $hMask, $iXHotspot = 0, $iYHotspot = 0, $bIcon = True)
-Local $tICONINFO = DllStructCreate($tagICONINFO)
-DllStructSetData($tICONINFO, 1, $bIcon)
-DllStructSetData($tICONINFO, 2, $iXHotspot)
-DllStructSetData($tICONINFO, 3, $iYHotspot)
-DllStructSetData($tICONINFO, 4, $hMask)
-DllStructSetData($tICONINFO, 5, $hBitmap)
-Local $aRet = DllCall('user32.dll', 'handle', 'CreateIconIndirect', 'struct*', $tICONINFO)
-If @error Then Return SetError(@error, @extended, 0)
-Return $aRet[0]
-EndFunc
-Func _WinAPI_DwmEnableComposition($bEnable)
-If $bEnable Then $bEnable = 1
-Local $aRet = DllCall('dwmapi.dll', 'long', 'DwmEnableComposition', 'uint', $bEnable)
-If @error Then Return SetError(@error, @extended, 0)
-If $aRet[0] Then Return SetError(10, $aRet[0], 0)
-Return 1
-EndFunc
-Func _WinAPI_DwmIsCompositionEnabled()
-Local $aRet = DllCall('dwmapi.dll', 'long', 'DwmIsCompositionEnabled', 'bool*', 0)
-If @error Then Return SetError(@error, @extended, 0)
-If $aRet[0] Then Return SetError(10, $aRet[0], 0)
-Return $aRet[1]
-EndFunc
-Func _WinAPI_DwmQueryThumbnailSourceSize($hThumbnail)
-Local $tSIZE = DllStructCreate($tagSIZE)
-Local $aRet = DllCall('dwmapi.dll', 'long', 'DwmQueryThumbnailSourceSize', 'handle', $hThumbnail, 'struct*', $tSIZE)
-If @error Then Return SetError(@error, @extended, 0)
-If $aRet[0] Then Return SetError(10, $aRet[0], 0)
-Return $tSIZE
-EndFunc
-Func _WinAPI_DwmRegisterThumbnail($hDestination, $hSource)
-Local $aRet = DllCall('dwmapi.dll', 'long', 'DwmRegisterThumbnail', 'hwnd', $hDestination, 'hwnd', $hSource, 'handle*', 0)
-If @error Then Return SetError(@error, @extended, 0)
-If $aRet[0] Then Return SetError(10, $aRet[0], 0)
-Return $aRet[3]
-EndFunc
-Func _WinAPI_DwmUnregisterThumbnail($hThumbnail)
-Local $aRet = DllCall('dwmapi.dll', 'long', 'DwmUnregisterThumbnail', 'handle', $hThumbnail)
-If @error Then Return SetError(@error, @extended, 0)
-If $aRet[0] Then Return SetError(10, $aRet[0], 0)
-Return 1
-EndFunc
-Func _WinAPI_DwmUpdateThumbnailProperties($hThumbnail, $bVisible = True, $bClientAreaOnly = False, $iOpacity = 255, $tRectDest = 0, $tRectSrc = 0)
-Local Const $tagDWM_THUMBNAIL_PROPERTIES = 'struct;dword dwFlags;int rcDestination[4];int rcSource[4];byte opacity;bool opacity;bool fSourceClientAreaOnly;endstruct'
-Local $tTHUMBNAILPROPERTIES = DllStructCreate($tagDWM_THUMBNAIL_PROPERTIES)
-Local $tSIZE, $iFlags = 0
-If Not IsDllStruct($tRectDest) Then
-$tSIZE = _WinAPI_DwmQueryThumbnailSourceSize($hThumbnail)
-If @error Then
-Return SetError(@error + 10, @extended, 0)
-EndIf
-$tRectDest = _WinAPI_CreateRectEx(0, 0, DllStructGetData($tSIZE, 1), DllStructGetData($tSIZE, 2))
-EndIf
-For $i = 1 To 4
-DllStructSetData($tTHUMBNAILPROPERTIES, 2, DllStructGetData($tRectDest, $i), $i)
-Next
-If IsDllStruct($tRectSrc) Then
-$iFlags += 2
-For $i = 1 To 4
-DllStructSetData($tTHUMBNAILPROPERTIES, 3, DllStructGetData($tRectSrc, $i), $i)
-Next
-EndIf
-DllStructSetData($tTHUMBNAILPROPERTIES, 1, BitOR($iFlags, 0x1D))
-DllStructSetData($tTHUMBNAILPROPERTIES, 4, $iOpacity)
-DllStructSetData($tTHUMBNAILPROPERTIES, 5, $bVisible)
-DllStructSetData($tTHUMBNAILPROPERTIES, 6, $bClientAreaOnly)
-Local $aRet = DllCall('dwmapi.dll', 'long', 'DwmUpdateThumbnailProperties', 'handle', $hThumbnail, 'struct*', $tTHUMBNAILPROPERTIES)
-If @error Then Return SetError(@error, @extended, 0)
-If $aRet[0] Then Return SetError(10, $aRet[0], 0)
-Return 1
-EndFunc
-Func _WinAPI_GetPixel($hDC, $iX, $iY)
-Local $aRet = DllCall('gdi32.dll', 'dword', 'GetPixel', 'handle', $hDC, 'int', $iX, 'int', $iY)
-If @error Or($aRet[0] = 4294967295) Then Return SetError(@error, @extended, -1)
-Return __RGB($aRet[0])
-EndFunc
-Func _WinAPI_IsAlphaBitmap($hBitmap)
-$hBitmap = _WinAPI_CopyBitmap($hBitmap)
-If Not $hBitmap Then Return SetError(@error + 20, @extended, 0)
-Local $aRet, $iError = 0
-Do
-Local $tDIB = DllStructCreate($tagDIBSECTION)
-If(Not _WinAPI_GetObject($hBitmap, DllStructGetSize($tDIB), $tDIB)) Or(DllStructGetData($tDIB, 'bmBitsPixel') <> 32) Or(DllStructGetData($tDIB, 'biCompression')) Then
-$iError = 1
-ExitLoop
-EndIf
-$aRet = DllCall('user32.dll', 'int', 'CallWindowProc', 'ptr', __AlphaProc(), 'ptr', 0, 'uint', 0, 'struct*', $tDIB, 'ptr', 0)
-If @error Or($aRet[0] = -1) Then
-$iError = @error + 10
-ExitLoop
-EndIf
-Until 1
-_WinAPI_DeleteObject($hBitmap)
-If $iError Then Return SetError($iError, 0, 0)
-Return $aRet[0]
-EndFunc
-Func _WinAPI_PtInRectEx($iX, $iY, $iLeft, $iTop, $iRight, $iBottom)
-Local $tRECT = _WinAPI_CreateRect($iLeft, $iTop, $iRight, $iBottom)
-Local $tPOINT = _WinAPI_CreatePoint($iX, $iY)
-Local $aRet = DllCall('user32.dll', 'bool', 'PtInRect', 'struct*', $tRECT, 'struct', $tPOINT)
-If @error Then Return SetError(@error, @extended, False)
-Return $aRet[0]
-EndFunc
-Func __AlphaProc()
-Static $pProc = 0
-If Not $pProc Then
-If @AutoItX64 Then
-$pProc = __Init(Binary( '0x48894C240848895424104C894424184C894C24205541574831C050504883EC28' & '48837C24600074054831C0EB0748C7C0010000004821C0751F488B6C24604883' & '7D180074054831C0EB0748C7C0010000004821C07502EB0948C7C001000000EB' & '034831C04821C0740C48C7C0FFFFFFFF4863C0EB6F48C744242800000000488B' & '6C24604C637D04488B6C2460486345084C0FAFF849C1E7024983C7FC4C3B7C24' & '287C36488B6C24604C8B7D184C037C24284983C7034C897C2430488B6C243080' & '7D0000740C48C7C0010000004863C0EB1348834424280471A54831C04863C0EB' & '034831C04883C438415F5DC3'))
-Else
-$pProc = __Init(Binary( '0x555331C05050837C241C00740431C0EB05B80100000021C075198B6C241C837D' & '1400740431C0EB05B80100000021C07502EB07B801000000EB0231C021C07407' & 'B8FFFFFFFFEB4FC70424000000008B6C241C8B5D048B6C241C0FAF5D08C1E302' & '83C3FC3B1C247C288B6C241C8B5D14031C2483C303895C24048B6C2404807D00' & '007407B801000000EB0C8304240471BE31C0EB0231C083C4085B5DC21000'))
-EndIf
-EndIf
-Return $pProc
-EndFunc
-Func __ANDProc()
-Static $pProc = 0
-If Not $pProc Then
-If @AutoItX64 Then
-$pProc = __Init(Binary( '0x48894C240848895424104C894424184C894C2420554157415648C7C009000000' & '4883EC0848C704240000000048FFC875EF4883EC284883BC24A0000000007405' & '4831C0EB0748C7C0010000004821C00F85840000004883BC24A8000000007405' & '4831C0EB0748C7C0010000004821C07555488BAC24A000000048837D18007405' & '4831C0EB0748C7C0010000004821C07522488BAC24A800000048837D18007405' & '4831C0EB0748C7C0010000004821C07502EB0948C7C001000000EB034831C048' & '21C07502EB0948C7C001000000EB034831C04821C07502EB0948C7C001000000' & 'EB034831C04821C0740B4831C04863C0E9D701000048C74424280000000048C7' & '44243000000000488BAC24A00000004C637D0849FFCF4C3B7C24300F8C9C0100' & '0048C74424380000000048C74424400000000048C744244800000000488BAC24' & 'A00000004C637D0449FFCF4C3B7C24480F8CDB000000488BAC24A00000004C8B' & '7D184C037C24284983C7034C897C2450488B6C2450807D000074264C8B7C2440' & '4C8B74243849F7DE4983C61F4C89F148C7C00100000048D3E04909C74C897C24' & '4048FF4424384C8B7C24384983FF1F7E6F4C8B7C244049F7D74C897C244048C7' & '442458180000004831C0483B4424587F3D488BAC24A80000004C8B7D184C037C' & '24604C897C24504C8B7C2440488B4C245849D3FF4C89F850488B6C2458588845' & '0048FF4424604883442458F871B948C74424380000000048C744244000000000' & '48834424280448FF4424480F810BFFFFFF48837C24380074794C8B7C244049F7' & 'D74C8B74243849F7DE4983C6204C89F148C7C0FFFFFFFF48D3E04921C74C897C' & '244048C7442458180000004831C0483B4424587F3D488BAC24A80000004C8B7D' & '184C037C24604C897C24504C8B7C2440488B4C245849D3FF4C89F850488B6C24' & '585888450048FF4424604883442458F871B948FF4424300F814AFEFFFF48C7C0' & '010000004863C0EB034831C04883C470415E415F5DC3'))
-Else
-$pProc = __Init(Binary( '0x555357BA0800000083EC04C70424000000004A75F3837C243800740431C0EB05' & 'B80100000021C07562837C243C00740431C0EB05B80100000021C0753F8B6C24' & '38837D1400740431C0EB05B80100000021C075198B6C243C837D1400740431C0' & 'EB05B80100000021C07502EB07B801000000EB0231C021C07502EB07B8010000' & '00EB0231C021C07502EB07B801000000EB0231C021C0740731C0E969010000C7' & '042400000000C7442404000000008B6C24388B5D084B3B5C24040F8C3F010000' & 'C744240800000000C744240C00000000C7442410000000008B6C24388B5D044B' & '3B5C24100F8CA90000008B6C24388B5D14031C2483C303895C24148B6C241480' & '7D0000741C8B5C240C8B7C2408F7DF83C71F89F9B801000000D3E009C3895C24' & '0CFF4424088B5C240883FB1F7E578B5C240CF7D3895C240CC744241818000000' & '31C03B4424187F2D8B6C243C8B5D14035C241C895C24148B5C240C8B4C2418D3' & 'FB538B6C241858884500FF44241C83442418F871CBC744240800000000C74424' & '0C0000000083042404FF4424100F8145FFFFFF837C240800745B8B5C240CF7D3' & '8B7C2408F7DF83C72089F9B8FFFFFFFFD3E021C3895C240CC744241818000000' & '31C03B4424187F2D8B6C243C8B5D14035C241C895C24148B5C240C8B4C2418D3' & 'FB538B6C241858884500FF44241C83442418F871CBFF4424040F81AFFEFFFFB8' & '01000000EB0231C083C4205F5B5DC21000'))
-EndIf
-EndIf
-Return $pProc
-EndFunc
-Func __XORProc()
-Static $pProc = 0
-If Not $pProc Then
-If @AutoItX64 Then
-$pProc = __Init(Binary( '0x48894C240848895424104C894424184C894C24205541574831C050504883EC28' & '48837C24600074054831C0EB0748C7C0010000004821C0751B48837C24680074' & '054831C0EB0748C7C0010000004821C07502EB0948C7C001000000EB034831C0' & '4821C074084831C04863C0EB7748C7442428000000004C637C24584983C7FC4C' & '3B7C24287C4F4C8B7C24604C037C24284C897C2430488B6C2430807D00007405' & '4831C0EB0748C7C0010000004821C0741C4C8B7C24684C037C24284983C7034C' & '897C2430488B6C2430C64500FF48834424280471A148C7C0010000004863C0EB' & '034831C04883C438415F5DC3'))
-Else
-$pProc = __Init(Binary( '0x555331C05050837C241C00740431C0EB05B80100000021C07516837C24200074' & '0431C0EB05B80100000021C07502EB07B801000000EB0231C021C0740431C0EB' & '5AC70424000000008B5C241883C3FC3B1C247C3E8B5C241C031C24895C24048B' & '6C2404807D0000740431C0EB05B80100000021C074168B5C2420031C2483C303' & '895C24048B6C2404C64500FF8304240471B6B801000000EB0231C083C4085B5D' & 'C21000'))
-EndIf
-EndIf
-Return $pProc
-EndFunc
-Func _WinAPI_GetFileVersionInfo($sFilePath, ByRef $pBuffer, $iFlags = 0)
-Local $aRet
-If $__WINVER >= 0x0600 Then
-$aRet = DllCall('version.dll', 'dword', 'GetFileVersionInfoSizeExW', 'dword', BitAND($iFlags, 0x03), 'wstr', $sFilePath, 'ptr', 0)
-Else
-$aRet = DllCall('version.dll', 'dword', 'GetFileVersionInfoSizeW', 'wstr', $sFilePath, 'ptr', 0)
-EndIf
-If @error Or Not $aRet[0] Then Return SetError(@error, @extended, 0)
-$pBuffer = __HeapReAlloc($pBuffer, $aRet[0], 1)
-If @error Then Return SetError(@error + 100, @extended, 0)
-Local $iNbByte = $aRet[0]
-If $__WINVER >= 0x0600 Then
-$aRet = DllCall('version.dll', 'bool', 'GetFileVersionInfoExW', 'dword', BitAND($iFlags, 0x07), 'wstr', $sFilePath, 'dword', 0, 'dword', $iNbByte, 'ptr', $pBuffer)
-Else
-$aRet = DllCall('version.dll', 'bool', 'GetFileVersionInfoW', 'wstr', $sFilePath, 'dword', 0, 'dword', $iNbByte, 'ptr', $pBuffer)
-EndIf
-If @error Or Not $aRet[0] Then Return SetError(@error + 10, @extended, 0)
-Return $iNbByte
-EndFunc
-Func _WinAPI_VerQueryValue($pData, $sValues = '')
-$sValues = StringRegExpReplace($sValues, '\A[\s\|]*|[\s\|]*\Z', '')
-If Not $sValues Then
-$sValues = 'Comments|CompanyName|FileDescription|FileVersion|InternalName|LegalCopyright|LegalTrademarks|OriginalFilename|ProductName|ProductVersion|PrivateBuild|SpecialBuild'
-EndIf
-$sValues = StringSplit($sValues, '|', $STR_NOCOUNT)
-Local $aRet = DllCall('version.dll', 'bool', 'VerQueryValueW', 'ptr', $pData, 'wstr', '\VarFileInfo\Translation', 'ptr*', 0, 'uint*', 0)
-If @error Or Not $aRet[0] Or Not $aRet[4] Then Return SetError(@error + 10, 0, 0)
-Local $iLength = Floor($aRet[4] / 4)
-Local $tLang = DllStructCreate('dword[' & $iLength & ']', $aRet[3])
-If @error Then Return SetError(@error + 20, 0, 0)
-Local $sCP, $aInfo[101][UBound($sValues) + 1] = [[0]]
-For $i = 1 To $iLength
-__Inc($aInfo)
-$aInfo[$aInfo[0][0]][0] = _WinAPI_LoWord(DllStructGetData($tLang, 1, $i))
-$sCP = Hex(_WinAPI_MakeLong(_WinAPI_HiWord(DllStructGetData($tLang, 1, $i)), _WinAPI_LoWord(DllStructGetData($tLang, 1, $i))), 8)
-For $j = 0 To UBound($sValues) - 1
-$aRet = DllCall('version.dll', 'bool', 'VerQueryValueW', 'ptr', $pData, 'wstr', '\StringFileInfo\' & $sCP & '\' & $sValues[$j], 'ptr*', 0, 'uint*', 0)
-If Not @error And $aRet[0] And $aRet[4] Then
-$aInfo[$aInfo[0][0]][$j + 1] = DllStructGetData(DllStructCreate('wchar[' & $aRet[4] & ']', $aRet[3]), 1)
-Else
-$aInfo[$aInfo[0][0]][$j + 1] = ''
-EndIf
-Next
-Next
-__Inc($aInfo, -1)
-Return $aInfo
-EndFunc
 Global Const $GDIP_EPGCOLORDEPTH = '{66087055-AD66-4C7C-9A18-38A2310B8337}'
 Global Const $GDIP_EPGCOMPRESSION = '{E09D739D-CCD4-44EE-8EBA-3FBF8BE4FC58}'
 Global Const $GDIP_EPGQUALITY = '{1D5BE4B5-FA4A-452D-9CDD-5DB35105E7EB}'
@@ -2912,7 +2920,7 @@ Func __GDIPlus_LastDelimiter($sDelimiters, $sString)
 Local $sDelimiter, $iN
 For $iI = 1 To StringLen($sDelimiters)
 $sDelimiter = StringMid($sDelimiters, $iI, 1)
-$iN = StringInStr($sString, $sDelimiter, 0, -1)
+$iN = StringInStr($sString, $sDelimiter, $STR_NOCASESENSEBASIC, -1)
 If $iN > 0 Then Return $iN
 Next
 EndFunc
@@ -3007,7 +3015,56 @@ If $bFreeBmp Then _WinAPI_DeleteObject($hBitmap)
 _GDIPlus_Shutdown()
 Return SetError($bRet = False, 0, $bRet)
 EndFunc
-Global Enum $ARRAYFILL_FORCE_DEFAULT, $ARRAYFILL_FORCE_SINGLEITEM, $ARRAYFILL_FORCE_INT, $ARRAYFILL_FORCE_NUMBER, $ARRAYFILL_FORCE_PTR, $ARRAYFILL_FORCE_HWND, $ARRAYFILL_FORCE_STRING
+Global Const $_ARRAYCONSTANT_SORTINFOSIZE = 11
+Global $__g_aArrayDisplay_SortInfo[$_ARRAYCONSTANT_SORTINFOSIZE]
+Global Const $_ARRAYCONSTANT_tagLVITEM = "struct;uint Mask;int Item;int SubItem;uint State;uint StateMask;ptr Text;int TextMax;int Image;lparam Param;" & "int Indent;int GroupID;uint Columns;ptr pColumns;ptr piColFmt;int iGroup;endstruct"
+#Au3Stripper_Ignore_Funcs=__ArrayDisplay_SortCallBack
+Func __ArrayDisplay_SortCallBack($nItem1, $nItem2, $hWnd)
+If $__g_aArrayDisplay_SortInfo[3] = $__g_aArrayDisplay_SortInfo[4] Then
+If Not $__g_aArrayDisplay_SortInfo[7] Then
+$__g_aArrayDisplay_SortInfo[5] *= -1
+$__g_aArrayDisplay_SortInfo[7] = 1
+EndIf
+Else
+$__g_aArrayDisplay_SortInfo[7] = 1
+EndIf
+$__g_aArrayDisplay_SortInfo[6] = $__g_aArrayDisplay_SortInfo[3]
+Local $sVal1 = __ArrayDisplay_GetItemText($hWnd, $nItem1, $__g_aArrayDisplay_SortInfo[3])
+Local $sVal2 = __ArrayDisplay_GetItemText($hWnd, $nItem2, $__g_aArrayDisplay_SortInfo[3])
+If $__g_aArrayDisplay_SortInfo[8] = 1 Then
+If(StringIsFloat($sVal1) Or StringIsInt($sVal1)) Then $sVal1 = Number($sVal1)
+If(StringIsFloat($sVal2) Or StringIsInt($sVal2)) Then $sVal2 = Number($sVal2)
+EndIf
+Local $nResult
+If $__g_aArrayDisplay_SortInfo[8] < 2 Then
+$nResult = 0
+If $sVal1 < $sVal2 Then
+$nResult = -1
+ElseIf $sVal1 > $sVal2 Then
+$nResult = 1
+EndIf
+Else
+$nResult = DllCall('shlwapi.dll', 'int', 'StrCmpLogicalW', 'wstr', $sVal1, 'wstr', $sVal2)[0]
+EndIf
+$nResult = $nResult * $__g_aArrayDisplay_SortInfo[5]
+Return $nResult
+EndFunc
+Func __ArrayDisplay_GetItemText($hWnd, $iIndex, $iSubItem = 0)
+Local $tBuffer = DllStructCreate("wchar Text[4096]")
+Local $pBuffer = DllStructGetPtr($tBuffer)
+Local $tItem = DllStructCreate($_ARRAYCONSTANT_tagLVITEM)
+DllStructSetData($tItem, "SubItem", $iSubItem)
+DllStructSetData($tItem, "TextMax", 4096)
+DllStructSetData($tItem, "Text", $pBuffer)
+If IsHWnd($hWnd) Then
+DllCall("user32.dll", "lresult", "SendMessageW", "hwnd", $hWnd, "uint", 0x1073, "wparam", $iIndex, "struct*", $tItem)
+Else
+Local $pItem = DllStructGetPtr($tItem)
+GUICtrlSendMsg($hWnd, 0x1073, $iIndex, $pItem)
+EndIf
+Return DllStructGetData($tBuffer, "Text")
+EndFunc
+Global Enum $ARRAYFILL_FORCE_DEFAULT, $ARRAYFILL_FORCE_SINGLEITEM, $ARRAYFILL_FORCE_INT, $ARRAYFILL_FORCE_NUMBER, $ARRAYFILL_FORCE_PTR, $ARRAYFILL_FORCE_HWND, $ARRAYFILL_FORCE_STRING, $ARRAYFILL_FORCE_BOOLEAN
 Func _ArrayAdd(ByRef $aArray, $vValue, $iStart = 0, $sDelim_Item = "|", $sDelim_Row = @CRLF, $iForce = $ARRAYFILL_FORCE_DEFAULT)
 If $iStart = Default Then $iStart = 0
 If $sDelim_Item = Default Then $sDelim_Item = "|"
@@ -3027,6 +3084,8 @@ Case $ARRAYFILL_FORCE_HWND
 $hDataType = Hwnd
 Case $ARRAYFILL_FORCE_STRING
 $hDataType = String
+Case $ARRAYFILL_FORCE_BOOLEAN
+$hDataType = "Boolean"
 EndSwitch
 Switch UBound($aArray, $UBOUND_DIMENSIONS)
 Case 1
@@ -3048,7 +3107,14 @@ EndIf
 Local $iAdd = UBound($vValue, $UBOUND_ROWS)
 ReDim $aArray[$iDim_1 + $iAdd]
 For $i = 0 To $iAdd - 1
-If IsFunc($hDataType) Then
+If String($hDataType) = "Boolean" Then
+Switch $vValue[$i]
+Case "True", "1"
+$aArray[$iDim_1 + $i] = True
+Case "False", "0", ""
+$aArray[$iDim_1 + $i] = False
+EndSwitch
+ElseIf IsFunc($hDataType) Then
 $aArray[$iDim_1 + $i] = $hDataType($vValue[$i])
 Else
 $aArray[$iDim_1 + $i] = $vValue[$i]
@@ -3090,7 +3156,14 @@ $aArray[$iWriteTo_Index + $iDim_1][$j] = ""
 ElseIf $j - $iStart > $iValDim_2 - 1 Then
 $aArray[$iWriteTo_Index + $iDim_1][$j] = ""
 Else
-If IsFunc($hDataType) Then
+If String($hDataType) = "Boolean" Then
+Switch $vValue[$iWriteTo_Index][$j - $iStart]
+Case "True", "1"
+$aArray[$iWriteTo_Index + $iDim_1][$j] = True
+Case "False", "0", ""
+$aArray[$iWriteTo_Index + $iDim_1][$j] = False
+EndSwitch
+ElseIf IsFunc($hDataType) Then
 $aArray[$iWriteTo_Index + $iDim_1][$j] = $hDataType($vValue[$iWriteTo_Index][$j - $iStart])
 Else
 $aArray[$iWriteTo_Index + $iDim_1][$j] = $vValue[$iWriteTo_Index][$j - $iStart]
@@ -3384,7 +3457,7 @@ If Not $iCompare Then
 If Not $iCase Then
 For $i = $iStart To $iEnd Step $iStep
 If $bRow Then
-If $bCompType And VarGetType($aArray[$j][$j]) <> VarGetType($vValue) Then ContinueLoop
+If $bCompType And VarGetType($aArray[$j][$i]) <> VarGetType($vValue) Then ContinueLoop
 If $aArray[$j][$i] = $vValue Then Return $i
 Else
 If $bCompType And VarGetType($aArray[$i][$j]) <> VarGetType($vValue) Then ContinueLoop
@@ -3482,9 +3555,6 @@ If $iEnd = Default Then $iEnd = 0
 If $iEnd < 1 Or $iEnd > $iUBound Or $iEnd = Default Then $iEnd = $iUBound
 If $iStart < 0 Or $iStart = Default Then $iStart = 0
 If $iStart > $iEnd Then Return SetError(2, 0, 0)
-If $iDescending = Default Then $iDescending = 0
-If $iPivot = Default Then $iPivot = 0
-If $iSubItem = Default Then $iSubItem = 0
 Switch UBound($aArray, $UBOUND_DIMENSIONS)
 Case 1
 If $iPivot Then
@@ -4460,10 +4530,10 @@ EndFunc
 Global Const $FW_MEDIUM = 500
 Global Const $FW_BOLD = 700
 Global Const $CLEARTYPE_QUALITY = 5
-Func _IsPressed($sHexKey, $vDLL = 'user32.dll')
-Local $a_R = DllCall($vDLL, "short", "GetAsyncKeyState", "int", '0x' & $sHexKey)
+Func _IsPressed($sHexKey, $vDLL = "user32.dll")
+Local $aReturn = DllCall($vDLL, "short", "GetAsyncKeyState", "int", "0x" & $sHexKey)
 If @error Then Return SetError(@error, @extended, False)
-Return BitAND($a_R[0], 0x8000) <> 0
+Return BitAND($aReturn[0], 0x8000) <> 0
 EndFunc
 Func _VersionCompare($sVersion1, $sVersion2)
 If $sVersion1 = $sVersion2 Then Return 0
@@ -4564,20 +4634,20 @@ EndIf
 Local $asFolderSearchList[100] = [1]
 $asFolderSearchList[1] = $sFilePath
 Local $iHide_HS = 0, $sHide_HS = ""
-If BitAND($iReturn, 4) Then
+If BitAND($iReturn, $FLTAR_NOHIDDEN) Then
 $iHide_HS += 2
 $sHide_HS &= "H"
-$iReturn -= 4
+$iReturn -= $FLTAR_NOHIDDEN
 EndIf
-If BitAND($iReturn, 8) Then
+If BitAND($iReturn, $FLTAR_NOSYSTEM) Then
 $iHide_HS += 4
 $sHide_HS &= "S"
-$iReturn -= 8
+$iReturn -= $FLTAR_NOSYSTEM
 EndIf
 Local $iHide_Link = 0
-If BitAND($iReturn, 16) Then
+If BitAND($iReturn, $FLTAR_NOLINK) Then
 $iHide_Link = 0x400
-$iReturn -= 16
+$iReturn -= $FLTAR_NOLINK
 EndIf
 Local $iMaxLevel = 0
 If $iRecur < 0 Then
@@ -4841,25 +4911,21 @@ EndIf
 EndFunc
 Func __FLTAR_ListToMask(ByRef $sMask, $sList)
 If StringRegExp($sList, "\\|/|:|\<|\>|\|") Then Return 0
-$sList = StringReplace(StringStripWS(StringRegExpReplace($sList, "\s*;\s*", ";"), $STR_STRIPLEADING + $STR_STRIPTRAILING), ";", "|")
+$sList = StringReplace(StringStripWS(StringRegExpReplace($sList, "\s*;\s*", ";"), BitOR($STR_STRIPLEADING, $STR_STRIPTRAILING)), ";", "|")
 $sList = StringReplace(StringReplace(StringRegExpReplace($sList, "[][$^.{}()+\-]", "\\$0"), "?", "."), "*", ".*?")
 $sMask = "(?i)^(" & $sList & ")\z"
 Return 1
 EndFunc
 Func _FileWriteLog($sLogPath, $sLogMsg, $iFlag = -1)
 Local $iOpenMode = $FO_APPEND
-Local $sDateNow = @YEAR & "-" & @MON & "-" & @MDAY
-Local $sTimeNow = @HOUR & ":" & @MIN & ":" & @SEC
-Local $sMsg = $sDateNow & " " & $sTimeNow & " : " & $sLogMsg
+Local $sMsg = @YEAR & "-" & @MON & "-" & @MDAY & " " & @HOUR & ":" & @MIN & ":" & @SEC & " : " & $sLogMsg
 If $iFlag = Default Then $iFlag = -1
 If $iFlag <> -1 Then
 $iOpenMode = $FO_OVERWRITE
 $sMsg &= @CRLF & FileRead($sLogPath)
 EndIf
 Local $hFileOpen = $sLogPath
-If IsString($sLogPath) Then
-$hFileOpen = FileOpen($sLogPath, $iOpenMode)
-EndIf
+If IsString($sLogPath) Then $hFileOpen = FileOpen($sLogPath, $iOpenMode)
 If $hFileOpen = -1 Then Return SetError(1, 0, 0)
 Local $iReturn = FileWriteLine($hFileOpen, $sMsg)
 If IsString($sLogPath) Then $iReturn = FileClose($hFileOpen)
@@ -5197,15 +5263,16 @@ EndIf
 If Not $iRet Then Return SetError(700, 0, False)
 Return True
 EndFunc
-Func _GUICtrlRichEdit_StreamFromFile($hWnd, $sFileSpec)
+Func _GUICtrlRichEdit_StreamFromFile($hWnd, $sFileSpec, $iFileEncoding = Default)
 If Not _WinAPI_IsClassName($hWnd, $__g_sRTFClassName) Then Return SetError(101, 0, False)
 Local $tEditStream = DllStructCreate($tagEDITSTREAM)
 DllStructSetData($tEditStream, "pfnCallback", DllCallbackGetPtr($__g_pGRC_StreamFromFileCallback))
-Local $hFile = FileOpen($sFileSpec, $FO_READ)
+If $iFileEncoding = Default Then $iFileEncoding = 0
+Local $hFile = FileOpen($sFileSpec, $FO_READ + $iFileEncoding)
 If $hFile = -1 Then Return SetError(1021, 0, False)
 Local $sBuf = FileRead($hFile, 5)
 FileClose($hFile)
-$hFile = FileOpen($sFileSpec, $FO_READ)
+$hFile = FileOpen($sFileSpec, $FO_READ + $iFileEncoding)
 DllStructSetData($tEditStream, "dwCookie", $hFile)
 Local $wParam =($sBuf == "{\rtf" Or $sBuf == "{urtf") ? $SF_RTF : $SF_TEXT
 $wParam = BitOR($wParam, $SFF_SELECTION)
@@ -5215,7 +5282,7 @@ EndIf
 Local $iQchs = _SendMessage($hWnd, $EM_STREAMIN, $wParam, $tEditStream, 0, "wparam", "struct*")
 FileClose($hFile)
 Local $iError = DllStructGetData($tEditStream, "dwError")
-If $iError <> 1 Then SetError(700, $iError, False)
+If $iError <> 0 Then Return SetError(700, $iError, False)
 If $iQchs = 0 Then
 If FileGetSize($sFileSpec) = 0 Then Return SetError(1022, 0, False)
 Return SetError(700, $iError, False)
@@ -5505,8 +5572,13 @@ EndFunc
 Global Const $LVM_FIRST = 0x1000
 Global Const $LVM_GETHEADER =($LVM_FIRST + 31)
 Global Const $LVM_GETITEMRECT =($LVM_FIRST + 14)
+Global Const $LVM_GETITEMTEXTA =($LVM_FIRST + 45)
+Global Const $LVM_GETITEMTEXTW =($LVM_FIRST + 115)
+Global Const $LVM_GETUNICODEFORMAT = 0x2000 + 6
 Global Const $LVN_FIRST = -100
 Global $__g_hLVLastWnd
+Global Const $__LISTVIEWCONSTANT_SORTINFOSIZE = 11
+Global $__g_aListViewSortInfo[1][$__LISTVIEWCONSTANT_SORTINFOSIZE]
 Func _GUICtrlListView_GetHeader($hWnd)
 If IsHWnd($hWnd) Then
 Return HWnd(_SendMessage($hWnd, $LVM_GETHEADER))
@@ -5542,6 +5614,92 @@ Else
 GUICtrlSendMsg($hWnd, $LVM_GETITEMRECT, $iIndex, DllStructGetPtr($tRECT))
 EndIf
 Return $tRECT
+EndFunc
+Func _GUICtrlListView_GetItemText($hWnd, $iIndex, $iSubItem = 0)
+Local $bUnicode = _GUICtrlListView_GetUnicodeFormat($hWnd)
+Local $tBuffer
+If $bUnicode Then
+$tBuffer = DllStructCreate("wchar Text[4096]")
+Else
+$tBuffer = DllStructCreate("char Text[4096]")
+EndIf
+Local $pBuffer = DllStructGetPtr($tBuffer)
+Local $tItem = DllStructCreate($tagLVITEM)
+DllStructSetData($tItem, "SubItem", $iSubItem)
+DllStructSetData($tItem, "TextMax", 4096)
+If IsHWnd($hWnd) Then
+If _WinAPI_InProcess($hWnd, $__g_hLVLastWnd) Then
+DllStructSetData($tItem, "Text", $pBuffer)
+_SendMessage($hWnd, $LVM_GETITEMTEXTW, $iIndex, $tItem, 0, "wparam", "struct*")
+Else
+Local $iItem = DllStructGetSize($tItem)
+Local $tMemMap
+Local $pMemory = _MemInit($hWnd, $iItem + 4096, $tMemMap)
+Local $pText = $pMemory + $iItem
+DllStructSetData($tItem, "Text", $pText)
+_MemWrite($tMemMap, $tItem, $pMemory, $iItem)
+If $bUnicode Then
+_SendMessage($hWnd, $LVM_GETITEMTEXTW, $iIndex, $pMemory, 0, "wparam", "ptr")
+Else
+_SendMessage($hWnd, $LVM_GETITEMTEXTA, $iIndex, $pMemory, 0, "wparam", "ptr")
+EndIf
+_MemRead($tMemMap, $pText, $tBuffer, 4096)
+_MemFree($tMemMap)
+EndIf
+Else
+Local $pItem = DllStructGetPtr($tItem)
+DllStructSetData($tItem, "Text", $pBuffer)
+If $bUnicode Then
+GUICtrlSendMsg($hWnd, $LVM_GETITEMTEXTW, $iIndex, $pItem)
+Else
+GUICtrlSendMsg($hWnd, $LVM_GETITEMTEXTA, $iIndex, $pItem)
+EndIf
+EndIf
+Return DllStructGetData($tBuffer, "Text")
+EndFunc
+Func _GUICtrlListView_GetUnicodeFormat($hWnd)
+If IsHWnd($hWnd) Then
+Return _SendMessage($hWnd, $LVM_GETUNICODEFORMAT) <> 0
+Else
+Return GUICtrlSendMsg($hWnd, $LVM_GETUNICODEFORMAT, 0, 0) <> 0
+EndIf
+EndFunc
+#Au3Stripper_Ignore_Funcs=__GUICtrlListView_Sort
+Func __GUICtrlListView_Sort($nItem1, $nItem2, $hWnd)
+Local $iIndex, $sVal1, $sVal2, $nResult
+For $x = 1 To $__g_aListViewSortInfo[0][0]
+If $hWnd = $__g_aListViewSortInfo[$x][1] Then
+$iIndex = $x
+ExitLoop
+EndIf
+Next
+If $__g_aListViewSortInfo[$iIndex][3] = $__g_aListViewSortInfo[$iIndex][4] Then
+If Not $__g_aListViewSortInfo[$iIndex][7] Then
+$__g_aListViewSortInfo[$iIndex][5] *= -1
+$__g_aListViewSortInfo[$iIndex][7] = 1
+EndIf
+Else
+$__g_aListViewSortInfo[$iIndex][7] = 1
+EndIf
+$__g_aListViewSortInfo[$iIndex][6] = $__g_aListViewSortInfo[$iIndex][3]
+$sVal1 = _GUICtrlListView_GetItemText($hWnd, $nItem1, $__g_aListViewSortInfo[$iIndex][3])
+$sVal2 = _GUICtrlListView_GetItemText($hWnd, $nItem2, $__g_aListViewSortInfo[$iIndex][3])
+If $__g_aListViewSortInfo[$iIndex][8] = 1 Then
+If(StringIsFloat($sVal1) Or StringIsInt($sVal1)) Then $sVal1 = Number($sVal1)
+If(StringIsFloat($sVal2) Or StringIsInt($sVal2)) Then $sVal2 = Number($sVal2)
+EndIf
+If $__g_aListViewSortInfo[$iIndex][8] < 2 Then
+$nResult = 0
+If $sVal1 < $sVal2 Then
+$nResult = -1
+ElseIf $sVal1 > $sVal2 Then
+$nResult = 1
+EndIf
+Else
+$nResult = DllCall('shlwapi.dll', 'int', 'StrCmpLogicalW', 'wstr', $sVal1, 'wstr', $sVal2)[0]
+EndIf
+$nResult = $nResult * $__g_aListViewSortInfo[$iIndex][5]
+Return $nResult
 EndFunc
 Global $__g_hTTLastWnd
 Global Const $_TOOLTIPCONSTANTS_ClassName = "tooltips_class32"
@@ -5629,12 +5787,13 @@ Global $__g_aCryptInternalData[3]
 Func _Crypt_Startup()
 If __Crypt_RefCount() = 0 Then
 Local $hAdvapi32 = DllOpen("Advapi32.dll")
-If $hAdvapi32 = -1 Then Return SetError(1, 0, False)
+If $hAdvapi32 = -1 Then Return SetError(1001, 0, False)
 __Crypt_DllHandleSet($hAdvapi32)
 Local $iProviderID = $PROV_RSA_AES
 Local $aRet = DllCall(__Crypt_DllHandle(), "bool", "CryptAcquireContext", "handle*", 0, "ptr", 0, "ptr", 0, "dword", $iProviderID, "dword", $CRYPT_VERIFYCONTEXT)
 If @error Or Not $aRet[0] Then
-Local $iError = @error + 10, $iExtended = @extended
+Local $iError = @error + 1002, $iExtended = @extended
+If Not $aRet[0] Then $iExtended = _WinAPI_GetLastError()
 DllClose(__Crypt_DllHandle())
 Return SetError($iError, $iExtended, False)
 Else
@@ -5652,25 +5811,28 @@ DllClose(__Crypt_DllHandle())
 EndIf
 EndFunc
 Func _Crypt_HashData($vData, $iAlgID, $bFinal = True, $hCryptHash = 0)
-Local $aRet = 0, $hBuff = 0, $iError = 0, $iExtended = 0, $iHashSize = 0, $vReturn = 0
+Local $aRet = 0, $tBuff = 0, $iError = 0, $iExtended = 0, $iHashSize = 0, $vReturn = 0
 _Crypt_Startup()
+If @error Then Return SetError(@error, @extended, -1)
 Do
 If $hCryptHash = 0 Then
 $aRet = DllCall(__Crypt_DllHandle(), "bool", "CryptCreateHash", "handle", __Crypt_Context(), "uint", $iAlgID, "ptr", 0, "dword", 0, "handle*", 0)
 If @error Or Not $aRet[0] Then
 $iError = @error + 10
 $iExtended = @extended
+If Not $aRet[0] Then $iExtended = _WinAPI_GetLastError()
 $vReturn = -1
 ExitLoop
 EndIf
 $hCryptHash = $aRet[5]
 EndIf
-$hBuff = DllStructCreate("byte[" & BinaryLen($vData) & "]")
-DllStructSetData($hBuff, 1, $vData)
-$aRet = DllCall(__Crypt_DllHandle(), "bool", "CryptHashData", "handle", $hCryptHash, "struct*", $hBuff, "dword", DllStructGetSize($hBuff), "dword", $CRYPT_USERDATA)
+$tBuff = DllStructCreate("byte[" & BinaryLen($vData) & "]")
+DllStructSetData($tBuff, 1, $vData)
+$aRet = DllCall(__Crypt_DllHandle(), "bool", "CryptHashData", "handle", $hCryptHash, "struct*", $tBuff, "dword", DllStructGetSize($tBuff), "dword", $CRYPT_USERDATA)
 If @error Or Not $aRet[0] Then
 $iError = @error + 20
 $iExtended = @extended
+If Not $aRet[0] Then $iExtended = _WinAPI_GetLastError()
 $vReturn = -1
 ExitLoop
 EndIf
@@ -5679,19 +5841,21 @@ $aRet = DllCall(__Crypt_DllHandle(), "bool", "CryptGetHashParam", "handle", $hCr
 If @error Or Not $aRet[0] Then
 $iError = @error + 30
 $iExtended = @extended
+If Not $aRet[0] Then $iExtended = _WinAPI_GetLastError()
 $vReturn = -1
 ExitLoop
 EndIf
 $iHashSize = $aRet[3]
-$hBuff = DllStructCreate("byte[" & $iHashSize & "]")
-$aRet = DllCall(__Crypt_DllHandle(), "bool", "CryptGetHashParam", "handle", $hCryptHash, "dword", $HP_HASHVAL, "struct*", $hBuff, "dword*", DllStructGetSize($hBuff), "dword", 0)
+$tBuff = DllStructCreate("byte[" & $iHashSize & "]")
+$aRet = DllCall(__Crypt_DllHandle(), "bool", "CryptGetHashParam", "handle", $hCryptHash, "dword", $HP_HASHVAL, "struct*", $tBuff, "dword*", $iHashSize, "dword", 0)
 If @error Or Not $aRet[0] Then
 $iError = @error + 40
 $iExtended = @extended
+If Not $aRet[0] Then $iExtended = _WinAPI_GetLastError()
 $vReturn = -1
 ExitLoop
 EndIf
-$vReturn = DllStructGetData($hBuff, 1)
+$vReturn = DllStructGetData($tBuff, 1)
 Else
 $vReturn = $hCryptHash
 EndIf
@@ -6742,17 +6906,6 @@ Global $ichkForecastHopingSwitchMax = 0, $icmbForecastHopingSwitchMax = 0 , $itx
 Global $icmbSwLang = 0
 Global $cmbSwLang = 0
 Global $g_bReqCCFirst = False
-Global $g_DebugLogAF = 0
-Global $g_DebugImageAF = 0
-Global $g_SwitchSCIDAccFatalErrorAF = False
-Global $g_ClkSCIDDisConnBtnAF[4] = [370,215,500,230]
-Global $g_ClkSCIDLogOutBtnAF[4] = [605,285,710,310]
-Global $g_ClkSCIDConfirmBtnAF[4] = [455,430,615,455]
-Global $g_ClkSCIDLoginBtnAF[4] = [120,675,405,700]
-Global Const $g_sImgSCIDCross = @ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgMIS\Cross"
-Global Const $g_sImgSCIDAccs = @ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgAccs"
-Global Const $g_sImgSCIDOr = @ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgMIS\Or"
-Global $g_bChkAltuFaltuSCID = False
 Global $g_iChkAutoCamp = 0
 Global $g_bStopForWar
 Global $g_iStopTime, $g_bStopBeforeBattle, $g_iReturnTime
@@ -6787,17 +6940,21 @@ Global $g_iChkUseNotify = 0
 Global $g_iChkPbSendNew = 0
 Global $g_iChkRusLang = 0
 Global $g_iCmbLang = 9
+Global $g_iChkCleverbot = 0
+Global $g_bDelayTime = 0
+Global $g_iTxtDelayTimerun = 10
 Global $g_iChkClanMessages = ""
 Global $g_iChkClanResponses = ""
 Global $g_iChkClanResponses0
 Global $g_iChkGlobalMessages1 = ""
 Global $g_iChkGlobalMessages2 = ""
+Global $startDelayTimer = TimerInit()
+Global $sendTimer = TimerInit()
 Global $glb1
 Global $glb2
 Global $cResp
 Global $cGeneric
 Global $ChatbotStartTime
-Global $message = ""
 Global $g_iChkRusLang2 = 0
 Global $g_bTrainLogoutMaxTime = False, $g_iTrainLogoutMaxTime = 4
 Global $g_bRequestCCDefense, $g_sRequestCCDefenseText, $g_bRequestCCDefenseWhenPB, $g_iRequestDefenseTime
@@ -6823,6 +6980,11 @@ Global $g_iChkUpgrPriority = 0, $g_iCmbUpgrdPriority = 0
 Global Const $g_iLimitBreakGE[12] = [2250, 6300, 90000, 450000, 900000, 1800000, 3600000, 5400000, 7200000, 7650000, 9000000, 10800000]
 Global Const $g_iLimitBreakDE[12] = [0, 0, 0, 0, 0, 0, 18000, 72000, 171000, 180000, 180000, 216000]
 Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 5
+Global $g_bChkOneGemBoostBr = False, $g_bChkOneGemBoostFr = False, $g_bChkOneGemBoostG = False
+Global $g_iTxtBB_DropTrophies = 0
+Global $g_bChkBB_DropTrophies = False
+Global $aBB_FindMatchButton[4] = [555, 240 + $g_iBottomOffsetY, 0xFFC346, 10]
+Global $aBB_FindMatchButtonRND[4] = [545, 230 + $g_iMidOffsetY, 565, 250 + $g_iMidOffsetY]
 Global $g_bChkClanGamesDestruction = 0
 Global $g_bChkClanGamesAirTroop = 0
 Global $g_bChkClanGamesGroundTroop = 0
@@ -7109,7 +7271,7 @@ $g_hSplashTimer = 0
 EndIf
 Local $sSplashImg = $g_sLogoPath
 Local $hImage, $iX, $iY
-Local $iT = 20
+Local $iT = 0
 Local $iB = 10
 Switch $g_iGuiMode
 Case 0
@@ -7260,7 +7422,6 @@ Global $aButtonVillageOkay[4] = [500, 170 + $g_iMidOffsetY, 0x81CA2D, 20]
 Global $aButtonConnectedSCID[4] = [430, 205 + $g_iMidOffsetY, 0x6EB730, 20]
 Global $aButtonLogOutSCID[4] = [700, 285 + $g_iMidOffsetY, 0x308AFB, 20]
 Global $aButtonConfirmSCID[4] = [460, 410 + $g_iMidOffsetY, 0x328AFB, 20]
-Global $aListAccountSCID[4] = [490, 185 + $g_iMidOffsetY, 0x000000, 10]
 Global $aCloseTabSCID[4] = [732, 145]
 Global $aTrainBarb[4] = [-1, -1, -1, -1]
 Global $aTrainArch[4] = [-1, -1, -1, -1]
@@ -7369,6 +7530,9 @@ Global $g_sImgEasyBuildings = @ScriptDir & "\imgxml\easybuildings"
 Global Const $g_sImgLoginWithSupercellID = @ScriptDir & "\imgxml\other\SwitchAccounts\LoginWithSupercellID*"
 Global Const $g_sImgGoogleSelectAccount = @ScriptDir & "\imgxml\other\SwitchAccounts\GoogleSelectAccount*"
 Global Const $g_sImgGoogleSelectEmail = @ScriptDir & "\imgxml\other\SwitchAccounts\GoogleSelectEmail*"
+Global Const $g_sImgLogOutButton = @ScriptDir & "\imgxml\other\SwitchAccounts\LogOutButton"
+Global Const $g_sImgConfirmButton = @ScriptDir & "\imgxml\other\SwitchAccounts\ConfirmButton"
+Global Const $g_sImgListAccounts = @ScriptDir & "\imgxml\other\SwitchAccounts\ListAccounts"
 Global $g_sImgGrandWardenHeal = @ScriptDir & "\imgxml\other\GrandWardenMode\GrandWardenHeal"
 Global $g_sImgGrandWardenMode = @ScriptDir & "\imgxml\other\GrandWardenMode\GrandWardenAir"
 Global Const $g_sImgCaravan = @ScriptDir & "\imgxml\Resources\ClanGamesImages\MainLoop\Caravan"
@@ -11638,6 +11802,8 @@ Global $g_alblBldBaseStats[4] = ["", "", ""]
 Global $g_hChkCollectBuilderBase = 0, $g_hChkStartClockTowerBoost = 0, $g_hChkCTBoostBlderBz = 0
 Global $g_hChkBBSuggestedUpgrades = 0, $g_hChkBBSuggestedUpgradesIgnoreGold = 0 , $g_hChkBBSuggestedUpgradesIgnoreElixir , $g_hChkBBSuggestedUpgradesIgnoreHall = 0
 Global $g_hChkPlacingNewBuildings = 0
+Global $g_hChkBB_DropTrophies = 0
+Global $g_hTxtBB_DropTrophies = 0
 Global $g_hChkClanGamesAir = 0, $g_hChkClanGamesGround = 0, $g_hChkClanGamesMisc = 0
 Global $g_hChkClanGamesEnabled = 0 , $g_hChkClanGames60 = 0
 Global $g_hChkClanGamesLoot = 0 , $g_hChkClanGamesBattle =0 , $g_hChkClanGamesDestruction = 0 , $g_hChkClanGamesAirTroop = 0 , $g_hChkClanGamesGroundTroop = 0 , $g_hChkClanGamesMiscellaneous = 0
@@ -11711,7 +11877,7 @@ _GUICtrlCreateIcon($g_sLibIconPath, $eIcnInferno, $x + 57, $y, 24, 24)
 $g_hChkTrap = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Misc", "ChkTrap", "Rearm Traps && Reload Xbows and Infernos"), $x + 100, $y + 4, -1, -1)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Misc", "ChkTrap_Info_01", "Check this to automatically Rearm Traps, Reload Xbows and Infernos (if any) in your Village."))
 GUICtrlSetState(-1, $GUI_CHECKED)
-$y += 35
+$y += 32
 _GUICtrlCreateIcon($g_sLibIconPath, $eIcnMine, $x - 5, $y, 24, 24)
 _GUICtrlCreateIcon($g_sLibIconPath, $eIcnCollector, $x + 20, $y, 24, 24)
 _GUICtrlCreateIcon($g_sLibIconPath, $eIcnDrill, $x + 45, $y, 24, 24)
@@ -11839,7 +12005,7 @@ GUICtrlCreateGroup("", -99, -99, 1, 1)
 EndFunc
 Func CreateMiscBuilderBaseSubTab()
 Local $x = 15, $y = 45
-GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Village - Misc", "Group_05", "Builders Base Stats"), $x - 10, $y - 20, $g_iSizeWGrpTab3, 50)
+GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Village - Misc", "Group_05", "Builders Base Stats"), $x - 10, $y - 20, $g_iSizeWGrpTab3, 50 + 48)
 _GUICtrlCreatePic($g_sIcnBldGold, $x, $y - 2, 24, 24)
 $g_alblBldBaseStats[$eLootGoldBB] = GUICtrlCreateLabel("---", $x + 35, $y + 2, 100, -1)
 GUICtrlSetFont(-1, 9, $FW_BOLD, Default, "Arial", $CLEARTYPE_QUALITY)
@@ -11849,8 +12015,13 @@ GUICtrlSetFont(-1, 9, $FW_BOLD, Default, "Arial", $CLEARTYPE_QUALITY)
 _GUICtrlCreatePic($g_sIcnBldTrophy, $x + 280, $y - 2, 24, 24)
 $g_alblBldBaseStats[$eLootTrophyBB] = GUICtrlCreateLabel("---", $x + 315, $y + 2, 100, -1)
 GUICtrlSetFont(-1, 9, $FW_BOLD, Default, "Arial", $CLEARTYPE_QUALITY)
+$g_hChkBB_DropTrophies = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Misc", "ChkBB_DropTrophies", "Drop Trophies and limit it to:"), $x + 100, $y + 46, -1, -1)
+GUICtrlSetOnEvent(-1, "ChkBB_DropTrophies")
+$g_hTxtBB_DropTrophies = GUICtrlCreateInput("0", $x + 260, $y + 48, 32, 18, BitOR($SS_RIGHT, $ES_NUMBER))
+GUICtrlSetOnEvent(-1, "TxtBB_DropTrophies")
+GUICtrlSetLimit(-1, 6000)
 GUICtrlCreateGroup("", -99, -99, 1, 1)
-Local $x = 15, $y = 100
+Local $x = 15, $y = 100 + 50
 GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Village - Misc", "Group_04", "Collect && Activate"), $x - 10, $y - 20, $g_iSizeWGrpTab3, 80)
 GUICtrlCreateIcon($g_sLibIconPath, $eIcnGoldMineL5, $x + 7, $y, 24, 24)
 GUICtrlCreateIcon($g_sLibIconPath, $eIcnElixirCollectorL5, $x + 32, $y, 24, 24)
@@ -11866,8 +12037,8 @@ $g_hChkCTBoostBlderBz = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Desi
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Misc", "ChkCTBoostBlderBz_Info_01", "boost only when the builder is busy"))
 GUICtrlSetState(-1, $GUI_DISABLE)
 GUICtrlCreateGroup("", -99, -99, 1, 1)
-Local $x = 15, $y = 190
-GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Village - Misc", "Group_06", "Suggested Upgrades"), $x - 10, $y - 20, $g_iSizeWGrpTab3, 233)
+Local $x = 15, $y = 190 + 48
+GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Village - Misc", "Group_06", "Suggested Upgrades"), $x - 10, $y - 20, $g_iSizeWGrpTab3, 233 - 48)
 _GUICtrlCreatePic($g_sIcnMBisland, $x , $y , 64, 64)
 $g_hChkBBSuggestedUpgrades = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Misc", "ChkBBSuggestedUpgrades", "Suggested Upgrades"), $x + 70, $y + 25, -1, -1)
 GUICtrlSetOnEvent(-1, "chkActivateBBSuggestedUpgrades")
@@ -11877,7 +12048,7 @@ $g_hChkBBSuggestedUpgradesIgnoreElixir = GUICtrlCreateCheckbox(GetTranslatedFile
 GUICtrlSetOnEvent(-1, "chkActivateBBSuggestedUpgradesElixir")
 $g_hChkBBSuggestedUpgradesIgnoreHall = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Misc", "ChkBBSuggestedUpgradesIgnore_03", "Ignore Builder Hall"), $x + 315, $y + 28, -1, -1)
 GUICtrlSetOnEvent(-1, "chkActivateBBSuggestedUpgradesGold")
-Local $x = 15, $y = 200
+Local $x = 15, $y = 200 + 48
 $g_hChkPlacingNewBuildings = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Misc", "ChkPlacingNewBuildings", "Build 'New' tagged buildings"), $x + 70, $y + 60, -1, -1)
 GUICtrlSetOnEvent(-1, "chkPlacingNewBuildings")
 GUICtrlCreateGroup("", -99, -99, 1, 1)
@@ -14718,6 +14889,7 @@ Global $g_hChkBoostBarracksHours[24] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Global $g_hChkTrainLogoutMaxTime = 0, $g_hTxtTrainLogoutMaxTime = 4, $g_hLblTrainLogoutMaxTime
 Global $g_hChkBoostBMagic = 0, $g_hCmbBoostBrMagic = 0, $g_hChkBoostCMagic = 0, $g_hCmbBoostClMagic = 0
 Global $g_hChkCheckWardenMode = 0, $g_hCmbCheckWardenMode = 0
+Global $g_hChkOneGemBoostBr = 0, $g_hChkOneGemBoostFr = 0, $g_hChkOneGemBoostG = 0
 Func LoadTranslatedTrainTroopsOrderList()
 Global $g_asTroopOrderList = ["", GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtBarbarians", "Barbarians"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtArchers", "Archers"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtGiants", "Giants"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtGoblins", "Goblins"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtWallBreakers", "Wall Breakers"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtBalloons", "Balloons"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtWizards", "Wizards"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtHealers", "Healers"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtDragons", "Dragons"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtPekkas", "Pekkas"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtBabyDragons", "Baby Dragons"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtMiners", "Miners"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtElectroDragons", "Electro Dragons"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtMinions", "Minions"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtHogRiders", "Hog Riders"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtValkyries", "Valkyries"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtGolems", "Golems"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtWitches", "Witches"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtLavaHounds", "Lava Hounds"), GetTranslatedFileIni("MBR Global GUI Design Names Troops", "TxtBowlers", "Bowlers")]
 EndFunc
@@ -15298,6 +15470,9 @@ _GUICtrlSetTip(-1, $sTxtTip)
 $g_hCmbBoostBarracks = GUICtrlCreateCombo("", $x + 140 + 45, $y + 7, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|No limit", "0")
 _GUICtrlSetTip(-1, $sTxtTip)
+$g_hChkOneGemBoostBr = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostBr_Info_01", "One Gem Boost"), $x + 260, $y + 7, -1, -1)
+_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostBr_Info_02", "Enable this function for Check one gem boost."))
+GUICtrlSetState(-1, $GUI_UNCHECKED)
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 $y += 65
 GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_02", "Boost Spell Factories"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 50)
@@ -15309,6 +15484,9 @@ _GUICtrlSetTip(-1, $sTxtTip)
 $g_hCmbBoostSpellFactory = GUICtrlCreateCombo("", $x + 185, $y, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|No limit", "0")
 _GUICtrlSetTip(-1, $sTxtTip)
+$g_hChkOneGemBoostFr = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostFr_Info_01", "One Gem Boost"), $x + 260, $y, -1, -1)
+_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostFr_Info_02", "Enable this function for Check one gem boost."))
+GUICtrlSetState(-1, $GUI_UNCHECKED)
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 $y += 55
 GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_03", "Boost Heroes"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 98)
@@ -15320,6 +15498,9 @@ $g_hCmbBoostBarbarianKing = GUICtrlCreateCombo("", $x + 185, $y, 60, 25, BitOR($
 GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|No limit", "0")
 _GUICtrlSetTip(-1, $sTxtTip)
 GUICtrlSetOnEvent(-1, "chkUpgradeKing")
+$g_hChkOneGemBoostG = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostG_Info_01", "One Gem Boost"), $x + 260, $y, -1, -1)
+_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostG_Info_02", "Enable this function for Check one gem boost."))
+GUICtrlSetState(-1, $GUI_UNCHECKED)
 $y += 25
 _GUICtrlCreateIcon($g_sLibIconPath, $eIcnQueenBoost, $x - 10, $y - 2, 24, 24)
 GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design Names Troops", "Queen", -1) & " " & $sTextBoostLeft, $x + 20, $y + 4, -1, -1)
@@ -19420,18 +19601,17 @@ $y -= $yNext
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 EndFunc
 Global $g_hCmbProfile = 0, $g_hTxtVillageName = 0, $g_hBtnAddProfile = 0, $g_hBtnConfirmAddProfile = 0, $g_hBtnConfirmRenameProfile = 0, $g_hChkOnlySCIDAccounts = 0, $g_hCmbWhatSCIDAccount2Use = 0 , $g_hBtnDeleteProfile = 0, $g_hBtnCancelProfileChange = 0, $g_hBtnRenameProfile = 0, $g_hBtnPullSharedPrefs = 0, $g_hBtnPushSharedPrefs = 0 , $g_hBtnSaveprofile = 0
-Global $g_hRadAltuFaltuSCID = 0, $btnScanSCIDAcc = 0
 Func CreateBotProfiles()
 Local $x = 25, $y = 45
 GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "Group_01", "Switch Profiles"), $x - 20, $y - 20, $g_iSizeWGrpTab2, 55)
-$x -= 10
+$x -= 5
 $g_hCmbProfile = GUICtrlCreateCombo("", $x - 3, $y + 1, 115, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "CmbProfile_Info_01", "Use this to switch to a different profile")& @CRLF & GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "CmbProfile_Info_02", "Your profiles can be found in") & ": " & @CRLF & $g_sProfilePath)
 setupProfileComboBox()
 PopulatePresetComboBox()
 GUICtrlSetState(-1, $GUI_SHOW)
 GUICtrlSetOnEvent(-1, "cmbProfile")
-$g_hTxtVillageName = GUICtrlCreateInput(GetTranslatedFileIni("MBR Popups", "MyVillage", "MyVillage"), $x - 3, $y, 115, 22, $ES_AUTOHSCROLL)
+$g_hTxtVillageName = GUICtrlCreateInput(GetTranslatedFileIni("MBR Popups", "MyVillage", "MyVillage"), $x - 3, $y, 130, 22, $ES_AUTOHSCROLL)
 GUICtrlSetLimit(-1, 100, 0)
 GUICtrlSetFont(-1, 9, 400, 1)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "TxtVillageName_Info_01", "Your village/profile's name"))
@@ -19471,8 +19651,11 @@ If $bIconPull = 0 Then
 $bIconPull = _GUIImageList_Create(24, 24, 4)
 _GUIImageList_AddBitmap($bIconPull, @ScriptDir & "\images\Button\iconPull.bmp")
 EndIf
-Static $bIconSave = _GUIImageList_Create(24, 24, 4)
-_GUIImageList_AddBitmap($bIconSave, @ScriptDir & "\images\Button\iconConfirm.bmp")
+Static $bIconSave = 0
+If $bIconSave = 0 Then
+$bIconSave = _GUIImageList_Create(24, 24, 4)
+_GUIImageList_AddBitmap($bIconSave, @ScriptDir & "\images\Button\iconRecycle.bmp")
+EndIf
 $x -= 15
 $g_hBtnAddProfile = GUICtrlCreateButton("", $x + 135, $y, 24, 24)
 _GUICtrlButton_SetImageList($g_hBtnAddProfile, $bIconAdd, 4)
@@ -19514,15 +19697,12 @@ _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "
 $g_hBtnSaveprofile = GUICtrlCreateButton("", $x + 284, $y, 24, 24)
 _GUICtrlButton_SetImageList($g_hBtnSaveprofile, $bIconSave, 4)
 GUICtrlSetOnEvent(-1, "BtnSaveprofile")
-_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnSaveprofile_Info_01", "Save your current setting."))
-$x += 17
-$g_hChkOnlySCIDAccounts = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "ChkOnlySCIDAccounts", "SC_ID"), $x + 297, $y, -1, -1)
-_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "ChkOnlySCIDAccounts_Info_01", "Are you using SC_ID?"))
-GUICtrlSetOnEvent(-1, "OnlySCIDAccounts")
-$g_hCmbWhatSCIDAccount2Use = GUICtrlCreateCombo("", $x + 295 + 55, $y , 75, 10, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-GUICtrlSetData(-1, "Account 1|Account 2|Account 3|Account 4|Account 5", "Account 1")
-_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "WhatSCIDAccount2Use_Info_01", "Select the correct account from Login Window!"))
-GUICtrlSetOnEvent(-1, "WhatSCIDAccount2Use")
+_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnSaveprofile_Info_01", "Recycle Profile by removing all settings no longer suported that could lead to bad behaviour, and save."))
+If GUICtrlRead($g_hCmbProfile) = "<No Profiles>" Then
+GUICtrlSetState(-1, $GUI_DISABLE)
+Else
+GUICtrlSetState(-1, $GUI_ENABLE)
+EndIf
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 EndFunc
 Global $g_hGUI_STATS = 0, $g_hGUI_STATS_TAB = 0, $g_hGUI_STATS_TAB_ITEM1 = 0, $g_hGUI_STATS_TAB_ITEM2 = 0, $g_hGUI_STATS_TAB_ITEM3 = 0, $g_hGUI_STATS_TAB_ITEM4 = 0, $g_hGUI_STATS_TAB_ITEM5 = 0
@@ -20888,22 +21068,16 @@ $g_hCmbTotalAccount = GUICtrlCreateCombo("", $x + 345, $y - 1, 77, -1, BitOR($CB
 GUICtrlSetData(-1, "2 accounts|3 accounts|4 accounts|5 accounts|6 accounts|7 accounts|8 accounts", "2 accounts")
 GUICtrlSetOnEvent(-1, "cmbTotalAcc")
 GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "CmbTotalAccount", "Total CoC Accounts") & ": ", $x + 220, $y + 4, -1, -1)
-$g_hRadSwitchGooglePlay = GUICtrlCreateRadio(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "RadSwitchGooglePlay", "Google Play"), $x + 185, $y - 38, -1, -1)
+$g_hRadSwitchGooglePlay = GUICtrlCreateRadio(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "RadSwitchGooglePlay", "Google Play"), $x + 185, $y - 30, -1, -1)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "RadSwitchGooglePlay_Info_01", "Only support for all Google Play accounts"))
 GUICtrlSetState(-1, $GUI_CHECKED)
 GUICtrlSetOnEvent(-1, "chkAccSwitchMode")
-$g_hRadSwitchSuperCellID = GUICtrlCreateRadio(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "RadSwitchSuperCellID", "SuperCell ID"), $x + 265, $y - 38, -1, -1)
+$g_hRadSwitchSuperCellID = GUICtrlCreateRadio(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "RadSwitchSuperCellID", "SuperCell ID"), $x + 265, $y - 30, -1, -1)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "RadSwitchSuperCellID_Info_01", "Only support for all SuperCell ID accounts"))
 GUICtrlSetOnEvent(-1, "chkAccSwitchMode")
-$g_hRadSwitchSharedPrefs = GUICtrlCreateRadio(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "RadSwitchSharedPrefs", "Shared_prefs"), $x + 345, $y - 38, -1, -1)
+$g_hRadSwitchSharedPrefs = GUICtrlCreateRadio(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "RadSwitchSharedPrefs", "Shared_prefs"), $x + 345, $y - 30, -1, -1)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "RadSwitchSharedPrefs_Info_01", "Support for Google Play and SuperCell ID accounts"))
 GUICtrlSetOnEvent(-1, "chkAccSwitchMode")
-$g_hRadAltuFaltuSCID = GUICtrlCreateRadio(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "RadAltuFaltuSCID", "AltuFaltu SCID Click Ver_1.5"), $x + 185, $y - 20, -1, -1)
-_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "RadAltuFaltuSCID_Info_01", "Simple Click Methode to Switch SUPERCELL IDs."))
-GUICtrlSetOnEvent(-1, "chkAccSwitchMode")
-$btnScanSCIDAcc = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "ScanSCIDAcc", "AF Scan SCID"), $x + 345, $y - 20, -1, 18)
-_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnScanSCIDAcc_Info_01", "Use This Button to Scan Images of Your SCIDs Which are Updated in Mods ImgAccs Folder."))
-GUICtrlSetOnEvent(-1, "ScanSCIDAcc")
 $y += 23
 $g_hChkSmartSwitch = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "ChkSmartSwitch", "Smart switch"), $x, $y, -1, -1)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "ChkSmartSwitch_Info_01", "Switch to account with the shortest remain training time"))
@@ -21000,16 +21174,16 @@ ReDim $g_aiControlPrevState[$g_hLastControlToHide + 1]
 CreateBotStats()
 GUICtrlCreateTabItem("")
 EndFunc
-Global $g_hBtnTestHeroBoostOCR = 0, $g_hBtnTestBuilderTimeOCR = 0, $g_hBtnTestGlobalChatBot = 0, $g_hBtnTestClanChatBot = 0
+Global $g_hBtnTestHeroBoostOCR = 0, $g_hBtnTestBuilderTimeOCR = 0, $g_hBtnTestGlobalChatBot = 0, $g_hBtnTestClanChatBot = 0, $h_hbtnTestTNRQT = 0
 Global $g_hChkStopForWar = 0, $g_hCmbStopTime = 0, $g_CmbStopBeforeBattle = 0, $g_hCmbReturnTime = 0
 Global $g_hChkTrainWarTroop = 0, $g_hChkUseQuickTrainWar, $g_ahChkArmyWar[3], $g_hLblRemoveArmyWar, $g_ahTxtTrainWarTroopCount[20], $g_ahTxtTrainWarSpellCount[10]
 Global $g_hCalTotalWarTroops, $g_hLblTotalWarTroopsProgress, $g_hLblCountWarTroopsTotal
 Global $g_hCalTotalWarSpells, $g_hLblTotalWarSpellsProgress, $g_hLblCountWarSpellsTotal
 Global $g_hChkRequestCCForWar = 0, $g_hTxtRequestCCForWar = 0
-Global $grpSuperXP = 0 , $chkEnableSuperXP = 0 , $rbSXTraining = 0 , $lblLOCKEDSX = 0 , $rbSXIAttacking = 0 , $txtMaxXPtoGain = 0
-Global $chkSXBK = 0 , $chkSXAQ = 0 , $chkSXGW = 0
-Global $DocXP1 = 0 , $DocXP2 = 0 , $DocXP3 = 0 ,$DocXP4 = 0
-Global $lblXPatStart = 0 , $lblXPCurrent = 0 , $lblXPSXWon = 0 , $lblXPSXWonHour = 0
+Global $grpSuperXP = 0, $chkEnableSuperXP = 0, $rbSXTraining = 0, $lblLOCKEDSX = 0, $rbSXIAttacking = 0, $txtMaxXPtoGain = 0
+Global $chkSXBK = 0, $chkSXAQ = 0, $chkSXGW = 0
+Global $DocXP1 = 0, $DocXP2 = 0, $DocXP3 = 0, $DocXP4 = 0
+Global $lblXPatStart = 0, $lblXPCurrent = 0, $lblXPSXWon = 0, $lblXPSXWonHour = 0
 Global $g_chkUseBotHumanization = 0, $g_chkUseAltRClick = 0, $g_acmbPriority = 0, $g_challengeMessage = 0, $g_ahumanMessage
 Global $g_Label1 = 0, $g_Label2 = 0, $g_Label3 = 0, $g_Label4 = 0
 Global $g_Label5 = 0, $g_Label6 = 0, $g_Label7 = 0, $g_Label8 = 0
@@ -21021,12 +21195,12 @@ Global $g_acmbPriority[13] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Global $g_acmbMaxSpeed[2] = [0, 0]
 Global $g_acmbPause[2] = [0, 0]
 Global $g_ahumanMessage[2] = ["", ""]
-Global $g_hCmblang = 0
-Global $g_hChkGlobalChat = 0, $g_hChkGlobalScramble = 0, $g_hChkSwitchLang = 0, $g_hChkClanChat = 0
+Global $g_hCmblang = 0, $g_hChkDelayTime = 0, $g_hTxtDelayTimerun = 0
+Global $g_hChkGlobalChat = 0, $g_hChkGlobalScramble = 0, $g_hChkSwitchLang = 0, $g_hChkClanChat = 0, $g_hChkCleverbot = 0
 Global $g_hChkUseResponses = 0, $g_hChkUseGeneric = 0, $g_hChkChatNotify = 0, $g_hChkPbSendNewChats = 0, $g_hChkRusLang = 0
 Global $g_hTxtEditGlobalMessages1 = "", $g_hTxtEditGlobalMessages2 = ""
 Global $g_hTxtEditResponses = 0, $g_hTxtEditGeneric = 0, $ChatbotQueuedChats[0], $ChatbotReadQueued = False, $ChatbotReadInterval = 0, $ChatbotIsOnInterval = False, $TmpResp
-Global $g_alblAinGlobal, $g_alblSGchats, $g_alblSwitchlang, $g_alblChatclan, $g_alblUsecustomresp, $g_alblUsegenchats, $g_alblNotifyclanchat, $g_alblSwitchlang,$g_alblUseremotechat
+Global $g_alblAinGlobal, $g_alblSGchats, $g_alblSwitchlang, $g_alblChatclan, $g_alblUsecustomresp, $g_alblUsegenchats, $g_alblNotifyclanchat, $g_alblSwitchlang, $g_alblUseremotechat
 Global $g_hChkGoldSwitchMax = 0, $g_hCmbGoldMaxProfile = 0, $g_hTxtMaxGoldAmount = 0, $g_hChkGoldSwitchMin = 0, $g_hCmbGoldMinProfile = 0, $g_hTxtMinGoldAmount = 0, $g_hChkElixirSwitchMax = 0, $g_hCmbElixirMaxProfile = 0, $g_hTxtMaxElixirAmount = 0, $g_hChkElixirSwitchMin = 0, $g_hCmbElixirMinProfile = 0, $g_hTxtMinElixirAmount = 0, $g_hChkDESwitchMax = 0, $g_hCmbDEMaxProfile = 0, $g_hTxtMaxDEAmount = 0, $g_hChkDESwitchMin = 0, $g_hCmbDEMinProfile = 0, $g_hTxtMinDEAmount = 0, $g_hChkTrophySwitchMax = 0, $g_hCmbTrophyMaxProfile = 0, $g_hTxtMaxTrophyAmount = 0, $g_hChkTrophySwitchMin = 0, $g_hCmbTrophyMinProfile = 0, $g_hTxtMinTrophyAmount = 0
 Global $g_hGUI_MOD = 0
 Global $g_hGUI_MOD_TAB = 0, $g_hGUI_MOD_TAB_ITEM1 = 0, $g_hGUI_MOD_TAB_ITEM2 = 0, $g_hGUI_MOD_TAB_ITEM3 = 0, $g_hGUI_MOD_TAB_ITEM6 = 0, $g_hGUI_MOD_TAB_ITEM7 = 0, $g_hGUI_MOD_TAB_ITEM8 = 0, $g_hGUI_MOD_TAB_ITEM9 = 0
@@ -21147,7 +21321,7 @@ chkUseBotHumanization()
 EndFunc
 Func TabItem2()
 Local $aTroopsIcons[20] = [$eIcnBarbarian, $eIcnArcher, $eIcnGiant, $eIcnGoblin, $eIcnWallBreaker, $eIcnBalloon, $eIcnWizard, $eIcnHealer, $eIcnDragon, $eIcnPekka, $eIcnBabyDragon, $eIcnMiner, $eIcnElectroDragon, $eIcnMinion, $eIcnHogRider, $eIcnValkyrie, $eIcnGolem, $eIcnWitch, $eIcnLavaHound, $eIcnBowler]
-Local $aSpellsIcons[10] =[$eIcnLightSpell, $eIcnHealSpell, $eIcnRageSpell, $eIcnJumpSpell, $eIcnFreezeSpell, $eIcnCloneSpell, $eIcnPoisonSpell, $eIcnEarthQuakeSpell, $eIcnHasteSpell, $eIcnSkeletonSpell]
+Local $aSpellsIcons[10] = [$eIcnLightSpell, $eIcnHealSpell, $eIcnRageSpell, $eIcnJumpSpell, $eIcnFreezeSpell, $eIcnCloneSpell, $eIcnPoisonSpell, $eIcnEarthQuakeSpell, $eIcnHasteSpell, $eIcnSkeletonSpell]
 Local $x = 15, $y = 40
 GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design MOD - War preration", "Group", "War preration"), $x - 10, $y - 15, $g_iSizeWGrpTab3, $g_iSizeHGrpTab3)
 $g_hChkStopForWar = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - War preration", "chkStopForWar_01", "Pause farming for war"), $x, $y, -1, -1)
@@ -21155,15 +21329,15 @@ _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - War preration", "c
 GUICtrlSetOnEvent(-1, "ChkStopForWar")
 $g_hCmbStopTime = GUICtrlCreateCombo("", $x + 140, $y, 60, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 GUICtrlSetData(-1, GetTranslatedFileIni("MBR GUI Design MOD - War preration", "CmbStopTime_Info_01", "0 hr|1 hr|2 hrs|3 hrs|4 hrs|5 hrs|6 hrs|7 hrs|8 hrs|9 hrs|10 hrs|11 hrs|12 hrs |13 hrs|14 hrs|15 hrs|16 hrs|17 hrs|18 hrs|19 hrs|20 hrs|21 hrs|22 hrs|23 hrs"), "0 hr")
-GUICtrlSetOnEvent(-1,"CmbStopTime")
+GUICtrlSetOnEvent(-1, "CmbStopTime")
 $g_CmbStopBeforeBattle = GUICtrlCreateCombo("", $x + 220, $y, 120, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 GUICtrlSetData(-1, GetTranslatedFileIni("MBR GUI Design MOD - War preration", "CmbStopBeforeBattle", "before battle start|after battle start", "before battle start"))
-GUICtrlSetOnEvent(-1,"CmbStopTime")
+GUICtrlSetOnEvent(-1, "CmbStopTime")
 $y += 25
 GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design MOD - War preration", "Label_01", "Return to farm"), $x + 15, $y + 1, -1, -1)
 $g_hCmbReturnTime = GUICtrlCreateCombo("", $x + 140, $y, 60, -1, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 GUICtrlSetData(-1, GetTranslatedFileIni("MBR GUI Design MOD - War preration", "CmbReturnTime_Info_01", "0 hr|1 hr|2 hrs|3 hrs|4 hrs|5 hrs|6 hrs|7 hrs|8 hrs|9 hrs|10 hrs|11 hrs|12 hrs |13 hrs|14 hrs|15 hrs|16 hrs|17 hrs|18 hrs|19 hrs|20 hrs|21 hrs|22 hrs|23 hrs"), "0 hr")
-GUICtrlSetOnEvent(-1,"CmbReturnTime")
+GUICtrlSetOnEvent(-1, "CmbReturnTime")
 GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design MOD - War preration", "CmbReturnTime_02", "before battle finish"), $x + 220, $y + 1, -1, -1)
 $y += 25
 $g_hChkTrainWarTroop = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - War preration", "chkTrainWarTroop", "Delete all farming troops and train war troops before pausing"), $x, $y, -1, -1)
@@ -21236,6 +21410,13 @@ $g_hChkGlobalScramble = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Desi
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkGlobalScramble_02", "Scramble the message pieces defined in the textboxes below to be in a random order"))
 GUICtrlSetState(-1, $GUI_UNCHECKED)
 GUICtrlSetOnEvent(-1, "chkGlobalScramble")
+$g_hChkDelayTime = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - Chat", "ChkDelayTime_01", "Delay Time"), 80 - $x, 225 - $y, -1, -1)
+GUICtrlSetState(-1, $GUI_UNCHECKED)
+GUICtrlSetOnEvent(-1, "chkDelayTime")
+$g_hTxtDelayTimerun = GUICtrlCreateInput("10", 160 - $x, 226 - $y, 25, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+GUICtrlSetState(-1, $GUI_DISABLE)
+GUICtrlSetLimit(-1, 2)
+GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design MOD - Chat", "Label_15", "min"), 190 - $x, 228 - $y, -1, -1)
 $g_hChkSwitchLang = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkSwitchLang_01", "Switch languages"), 270 - $x, 184 - $y, 115, 17)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkSwitchLang_02", "Switch languages after spamming for a new global chatroom"))
 GUICtrlSetState(-1, $GUI_UNCHECKED)
@@ -21268,6 +21449,10 @@ $g_hChkUseGeneric = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design M
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkUseGeneric_02", "Use generic chats if reading the latest chat failed or there are no new chats"))
 GUICtrlSetState(-1, $GUI_UNCHECKED)
 GUICtrlSetOnEvent(-1, "chkUseGeneric")
+$g_hChkCleverbot = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkCleverbot_01", "Cleverbot"), 70 - $x, 450 - $y, 97, 17)
+_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkCleverbot_02", "Enabele on this function to communicate Cleverbot with your clan"))
+GUICtrlSetState(-1, $GUI_UNCHECKED)
+GUICtrlSetOnEvent(-1, "chkCleverbot")
 _GUICtrlCreateIcon($g_sLibIconPath, $eIcnTelegram, $x + 7, $y + 223, 32, 32)
 $g_hChkChatNotify = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkChatNotify_01", "Use remote for chatting"), 70 - $x, 480 - $y, 126, 17)
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkChatNotify_02", "Send and recieve chats via pushbullet or telegram." & @CRLF & "Use BOT <myvillage> GETCHATS <interval|NOW|STOP> to get the latest clan" & @CRLF & "chat as an image, and BOT <myvillage> SENDCHAT <chat message> to send a chat to your clan"))
@@ -21293,7 +21478,7 @@ GUICtrlSetOnEvent(-1, "chkEnableSuperXP")
 $rbSXTraining = GUICtrlCreateRadio(GetTranslatedFileIni("MBR GUI Design MOD - Goblin XP", "chkEnableSuperXP2_Info_01", "Farm XP during troops Training"), $x, $y + 25, 220, 17)
 GUICtrlSetState(-1, $GUI_CHECKED)
 GUICtrlSetOnEvent(-1, "chkEnableSuperXP2")
-$lblLOCKEDSX = GUICtrlCreateLabel( "LOCKED", $x + 210, $y + 35, 173, 50)
+$lblLOCKEDSX = GUICtrlCreateLabel("LOCKED", $x + 210, $y + 35, 173, 50)
 GUICtrlSetFont(-1, 30, 800, 0, "Arial")
 GUICtrlSetColor(-1, 0xFF0000)
 GUICtrlSetState(-1, $GUI_HIDE)
@@ -21355,7 +21540,7 @@ Func TabItem7()
 Local $sTxtTip = ""
 Local $xStart = 0, $yStart = 0
 Local $x = $xStart + 10, $y = $yStart + 25
-$ieForecast = GUICtrlCreateObj($oIE, $x , $y , 430, 310)
+$ieForecast = GUICtrlCreateObj($oIE, $x, $y, 430, 310)
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 $y += 100 + 220
 $chkForecastBoost = GUICtrlCreateCheckbox(GetTranslatedFileIni("MOD GUI Design - Forecast", "ForecastBoost", "Boost When >"), $x, $y, -1, -1)
@@ -21526,7 +21711,7 @@ EndFunc
 Func TabItem9()
 Local $x = 5, $y = 25
 Local $yNext = 30
-GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "Group_01", "RK Debug"), $x , $y , $g_iSizeWGrpTab2, $g_iSizeHGrpTab2)
+GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "Group_01", "RK Debug"), $x, $y, $g_iSizeWGrpTab2, $g_iSizeHGrpTab2)
 $x = 300
 $y = 40
 $g_hBtnTestHeroBoostOCR = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestHeroBoostOCR", "Check Hero Boost OCR"), $x, $y, 140, 25)
@@ -21540,6 +21725,12 @@ GUICtrlSetOnEvent(-1, "btnTestGlobalChatBot")
 $y += $yNext
 $g_hBtnTestClanChatBot = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestClanChatBot", "Test Clan Chat Bot"), $x, $y, 140, 25)
 GUICtrlSetOnEvent(-1, "btnTestClanChatBot")
+$y += $yNext
+$g_hBtnTestClanChatBot = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "btnTestTNRQT", "Test TNRQT"), $x, $y, 140, 25)
+GUICtrlSetOnEvent(-1, "btnTestTNRQT")
+$y += $yNext
+$g_hBtnTestClanChatBot = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "btnTestCheckOneGem", "Test Check Gem Boost"), $x, $y, 140, 25)
+GUICtrlSetOnEvent(-1, "btnTestCheckOneGem")
 EndFunc
 Global $g_hGUI_ABOUT = 0
 Global $g_hLblCreditsBckGrnd = 0, $g_hLblMyBotURL = 0, $g_hLblForumURL = 0
@@ -26778,27 +26969,18 @@ If GUICtrlRead($g_hRadSwitchGooglePlay) = $GUI_CHECKED Then
 $g_bChkGooglePlay = True
 $g_bChkSuperCellID = False
 $g_bChkSharedPrefs = False
-$g_bChkAltuFaltuSCID = False
 ElseIf GUICtrlRead($g_hRadSwitchSuperCellID) = $GUI_CHECKED Then
 $g_bChkGooglePlay = False
 $g_bChkSuperCellID = True
 $g_bChkSharedPrefs = False
-$g_bChkAltuFaltuSCID = False
 ElseIf GUICtrlRead($g_hRadSwitchSharedPrefs) = $GUI_CHECKED Then
 $g_bChkGooglePlay = False
 $g_bChkSuperCellID = False
 $g_bChkSharedPrefs = True
-$g_bChkAltuFaltuSCID = False
-ElseIf GUICtrlRead($g_hRadAltuFaltuSCID) = $GUI_CHECKED Then
-$g_bChkGooglePlay = False
-$g_bChkSuperCellID = False
-$g_bChkSharedPrefs = False
-$g_bChkAltuFaltuSCID = True
 Else
 $g_bChkGooglePlay = False
 $g_bChkSuperCellID = False
 $g_bChkSharedPrefs = False
-$g_bChkAltuFaltuSCID = False
 EndIf
 EndFunc
 Func chkSetFarmSchedule()
@@ -27723,7 +27905,8 @@ Func btnPushSharedPrefs()
 PushSharedPrefs()
 EndFunc
 Func BtnSaveprofile()
-Setlog("Saving your setting...", $COLOR_INFO)
+FileDelete($g_sProfileConfigPath)
+Setlog("Saving your clear setting...", $COLOR_INFO)
 SaveConfig()
 readConfig()
 applyConfig()
@@ -30884,6 +31067,21 @@ $bDownloadDLL = False
 ElseIf __SQLite_VersCmp(@WorkingDir & "\" & $sDll_Filename, $vInlineVersion) = $SQLITE_OK Then
 $sDll_Dirname = @WorkingDir & "\"
 $bDownloadDLL = False
+Else
+$sDll_Filename = StringReplace($sDll_Filename, ".dll", "") & "_" & $vInlineVersion & ".dll"
+If __SQLite_VersCmp(@ScriptDir & "\" & $sDll_Filename, $vInlineVersion) = $SQLITE_OK Then
+$sDll_Dirname = @ScriptDir & "\"
+$bDownloadDLL = False
+ElseIf __SQLite_VersCmp(@SystemDir & "\" & $sDll_Filename, $vInlineVersion) = $SQLITE_OK Then
+$sDll_Dirname = @SystemDir & "\"
+$bDownloadDLL = False
+ElseIf __SQLite_VersCmp(@WindowsDir & "\" & $sDll_Filename, $vInlineVersion) = $SQLITE_OK Then
+$sDll_Dirname = @WindowsDir & "\"
+$bDownloadDLL = False
+ElseIf __SQLite_VersCmp(@WorkingDir & "\" & $sDll_Filename, $vInlineVersion) = $SQLITE_OK Then
+$sDll_Dirname = @WorkingDir & "\"
+$bDownloadDLL = False
+EndIf
 EndIf
 EndIf
 If $bDownloadDLL Then
@@ -46408,11 +46606,9 @@ If $g_bOnlySCIDAccounts Then
 SetDebugLog("check Log in with Supercell ID login by Clicks")
 CheckLoginWithSupercellIDScreen()
 EndIf
-If $g_bChkAltuFaltuSCID = 0 Then
 If Not CheckGoogleSelectAccount() Then
 SetDebugLog("check Log in with Supercell ID login by shared_prefs")
 If CheckLoginWithSupercellID() Then Return True
-EndIf
 EndIf
 Return False
 EndFunc
@@ -47038,19 +47234,8 @@ If _CheckPixel($aIsMain, $g_bNoCapturePixel) Then
 If $g_bDebugSetlog Then SetDebugLog("Screen cleared, WaitMainScreen exit", $COLOR_DEBUG)
 Return
 Else
-If $g_bChkAltuFaltuSCID = 1 Then
-If WaitforVariousImages("SCIDLoginBtn",1,200) = True Then
-Setlog("AltuFaltu - MainScreen SuperCell ID Login Screen Detected",0x6E0DD0)
-If _Sleep(1000) Then Return
-RndClick_AF($g_ClkSCIDLoginBtnAF)
-If _Sleep(1000) Then Return
-Setlog("     5.Click on SuperCell ID Login Button",0xFF0099)
-_MainScreen_SCIDLogin()
-EndIf
-Else
 If Not TestCapture() And _Sleep($DELAYWAITMAINSCREEN1) Then Return
 If checkObstacles() Then $i = 0
-EndIf
 EndIf
 If Mod($i, 5) = 0 Then
 If $g_bDebugImageSave Then DebugImageSave("WaitMainScreen_", False)
@@ -47099,19 +47284,8 @@ If $g_bDebugSetlog Then SetDebugLog("waitMainScreenMini ChkObstl Loop = " & $i &
 $iCount += 1
 _CaptureRegion()
 If Not _CheckPixel($aIsMain, $g_bNoCapturePixel) Then
-If $g_bChkAltuFaltuSCID = 1 Then
-If WaitforVariousImages("SCIDLoginBtn",1,200) = True Then
-Setlog("AltuFaltu - MainScreen SuperCell ID Login Screen Detected",0x6E0DD0)
-If _Sleep(1000) Then Return
-RndClick_AF($g_ClkSCIDLoginBtnAF)
-If _Sleep(1000) Then Return
-Setlog("     5.Click on SuperCell ID Login Button",0xFF0099)
-_MainScreen_SCIDLogin()
-EndIf
-Else
 If Not TestCapture() And _Sleep(1000) Then Return
 If CheckObstacles() Then $i = 0
-EndIf
 Else
 SetLog("CoC main window took " & Round(__TimerDiff($hTimer) / 1000, 2) & " seconds", $COLOR_SUCCESS)
 Return
@@ -53636,19 +53810,19 @@ Func CheckVersion()
 If $g_bCheckVersion Then
 CheckVersionHTML()
 If $g_sLastModversion = "" Then
-SetLog("WE CANNOT OBTAIN MOD VERSION AT THIS TIME", $COLOR_ACTION)
+SetLog("WE CANNOT OBTAIN RK MOD VERSION AT THIS TIME", $COLOR_ACTION)
 CheckModVersion()
 ElseIf VersionNumFromVersionTXT($g_sModversion) < VersionNumFromVersionTXT($g_sLastModversion) Then
-SetLog("WARNING, YOUR MOD VERSION (" & $g_sModversion & ") IS OUT OF DATE.", $COLOR_ERROR)
+SetLog("WARNING, YOUR RK MOD VERSION (" & $g_sModversion & ") IS OUT OF DATE.", $COLOR_ERROR)
 SetLog("CHIEF, PLEASE DOWNLOAD THE LATEST (" & $g_sLastModversion & ")", $COLOR_ERROR)
 SetLog("FROM https://MyBot.run               ", $COLOR_ERROR)
 SetLog(" ")
 _PrintLogVersion($g_sOldModversmessage)
 CheckModVersion()
 ElseIf VersionNumFromVersionTXT($g_sModversion) > VersionNumFromVersionTXT($g_sLastModversion) Then
-SetLog("YOU ARE USING A FUTURE BY RK MOD VERSION CHIEF!", $COLOR_SUCCESS)
-SetLog("YOUR MOD VERSION: " & $g_sModversion, $COLOR_SUCCESS)
-SetLog("OFFICIAL MOD VERSION: " & $g_sLastModversion, $COLOR_SUCCESS)
+SetLog("YOU ARE USING A FUTURE VERSION OF RK MOD CHIEF!", $COLOR_SUCCESS)
+SetLog("YOUR RK MOD VERSION: " & $g_sModversion, $COLOR_SUCCESS)
+SetLog("OFFICIAL RK MOD VERSION: " & $g_sLastModversion, $COLOR_SUCCESS)
 SetLog(" ")
 Else
 SetLog("WELCOME CHIEF, YOU HAVE THE LATEST MOD VERSION", $COLOR_SUCCESS)
@@ -60569,7 +60743,7 @@ ClickP($aAway, 1, 0, "#0382")
 Return
 EndIf
 Local $sLabInfo = BuildingInfo(242, 520 + $g_iBottomOffsetY)
-If $sLabInfo[0] > 1 Or $sLabInfo[0] = "" Then
+If $sLabInfo[0] > 1 Or $sLabInfo[1] = "" Then
 If StringInStr($sLabInfo[1], "Lab") = 0 Then
 Local $sLocMsg =($sLabInfo[0] = "" ? "Nothing" : $sLabInfo[1])
 $iSilly += 1
@@ -65013,7 +65187,6 @@ $g_bInitiateSwitchAcc = False
 EndIf
 If $StartOnlineTime <> 0 And Not $g_bReMatchAcc Then SetSwitchAccLog(" - Acc " & $g_iCurAccount + 1 & ", online: " & Round(TimerDiff($StartOnlineTime) / 1000 / 60, 1) & "m")
 Local $bSharedPrefs = $g_bChkSharedPrefs And HaveSharedPrefs($g_asProfileName[$g_iNextAccount])
-If $g_bChkAltuFaltuSCID = False then
 If $bSharedPrefs And $g_PushedSharedPrefsProfile = $g_asProfileName[$g_iNextAccount] Then
 $bResult = True
 $bSharedPrefs = False
@@ -65083,13 +65256,6 @@ WEnd
 EndIf
 If _Sleep(500) Then Return
 EndIf
-Else
-If SwitchCOCAcc_SCID($NextAccount) = True Then
-$bResult = True
-Else
-$bResult = False
-EndIf
-EndIf
 If $bResult = True Then
 $iRetry = 0
 $g_bReMatchAcc = False
@@ -65141,7 +65307,6 @@ EndSwitch
 EndIf
 EndIf
 Else
-If $g_SwitchSCIDAccFatalErrorAF = False Then
 $iRetry += 1
 $g_bReMatchAcc = True
 SetLog("Switching account failed!", $COLOR_ERROR)
@@ -65156,15 +65321,9 @@ $iRetry = 0
 UniversalCloseWaitOpenCoC()
 EndIf
 EndIf
-EndIf
-If $g_SwitchSCIDAccFatalErrorAF = False Then
 waitMainScreen()
 If $g_bForceSinglePBLogoff Then $g_bGForcePBTUpdate = True
 runBot()
-Else
-$g_SwitchSCIDAccFatalErrorAF = False
-BtnStop()
-EndIf
 EndFunc
 Func SwitchCOCAcc_DisconnectConnect(ByRef $bResult, $bDisconnectOnly = $g_bChkSharedPrefs)
 For $i = 0 To 20
@@ -65324,7 +65483,7 @@ For $i = 0 To 20
 If _ColorCheck(_GetPixelColor($aButtonConnectedSCID[0], $aButtonConnectedSCID[1], True), Hex($aButtonConnectedSCID[2], 6), $aButtonConnectedSCID[3]) Then
 Click($aButtonConnectedSCID[0], $aButtonConnectedSCID[1], 1, 0, "Click Connected SC_ID")
 SetLog("   1. Click Connected Supercell ID")
-If _Sleep(2500) Then Return "Exit"
+If _Sleep(600) Then Return "Exit"
 Return "OK"
 EndIf
 SetDebugLog("Checking Green Connected button x:" & $aButtonConnectedSCID[0] & " y:" & $aButtonConnectedSCID[1] & " : " & _GetPixelColor($aButtonConnectedSCID[0], $aButtonConnectedSCID[1], True))
@@ -65337,35 +65496,26 @@ Next
 Return ""
 EndFunc
 Func SwitchCOCAcc_ConfirmSCID(ByRef $bResult)
-For $x = 0 To 20
-Local $AlternativeToMemuLogOut = [$aButtonLogOutSCID[0], 265, $aButtonLogOutSCID[2], $aButtonLogOutSCID[3]]
-Local $AlternativeToMemuConfirm = [410, $aButtonConfirmSCID[1], $aButtonConfirmSCID[2], $aButtonConfirmSCID[3]]
-Local $aToCheckLogOut[2] = [$AlternativeToMemuLogOut, $aButtonLogOutSCID]
-Local $aToCheckConfirm = [$AlternativeToMemuConfirm, $aButtonConfirmSCID]
-For $i = 0 To UBound($aToCheckLogOut) - 1
-Local $Pixel = $aToCheckLogOut[$i]
-If _ColorCheck(_GetPixelColor($Pixel[0], $Pixel[1], True), Hex($Pixel[2], 6), $Pixel[3]) Then
+For $i = 0 To 30
+If QuickMIS("BC1", $g_sImgLogOutButton, 620, 246, 693, 308) Then
 SetLog("   2. Click Log Out Supercell ID")
-Click($Pixel[0], $Pixel[1], 2, 500, "Click Log Out SC_ID")
+Click($g_iQuickMISX + 620, $g_iQuickMISY + 246, 2, 500, "Click Log Out SC_ID")
 If _Sleep(500) Then Return "Exit"
-Local $TempConfirm = $aToCheckConfirm[$i]
-For $j = 0 To 10
-If _ColorCheck(_GetPixelColor($TempConfirm[0], $TempConfirm[1], True), Hex($TempConfirm[2], 6), $TempConfirm[3]) Then
+For $j = 0 To 20
+If QuickMIS("BC1", $g_sImgConfirmButton, 400, 414, 586, 455) Then
 SetLog("   3. Click Confirm Supercell ID")
-Click($TempConfirm[0], $TempConfirm[1], 1, 0, "Click Confirm SC_ID")
+Click($g_iQuickMISX + 400, $g_iQuickMISY + 414, 1, 0, "Click Confirm SC_ID")
 If _Sleep(500) Then Return "Exit"
 Return "OK"
 EndIf
-If $j = 10 Then
+If $j = 20 Then
 $bResult = False
-If $i = 1 Then Return "Error"
+Return "Error"
 EndIf
 If _Sleep(900) Then Return "Exit"
 Next
 EndIf
-SetDebugLog("[" & $i & "] Checking LogOut & Confirm button x:" & $Pixel[0] & " y:" & $Pixel[1] & " : " & _GetPixelColor($Pixel[0], $Pixel[1], True))
-Next
-If $x = 20 Then
+If $i = 30 Then
 $bResult = False
 Return "Error"
 EndIf
@@ -65375,28 +65525,46 @@ Return ""
 EndFunc
 Func SwitchCOCAcc_ClickAccountSCID(ByRef $bResult, $NextAccount, $iStep = 4)
 Local $YCoord = Int(336 + 73.5 * $NextAccount)
+Local $DeltaTotal8Acc = $g_iTotalAcc = 7 ? 14 : 0
 Local $iRetryCloseSCIDTab = 0
-Local $g_sImgSCID = @ScriptDir & "\imgxml\SuperCellID\Accounts"
-Local $AccountsCoord[0][2]
 For $i = 0 To 30
 If _ColorCheck(_GetPixelColor($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], True), Hex($aLoginWithSupercellID[2], 6), $aLoginWithSupercellID[3]) And  _ColorCheck(_GetPixelColor($aLoginWithSupercellID2[0], $aLoginWithSupercellID2[1], True), Hex($aLoginWithSupercellID2[2], 6), $aLoginWithSupercellID2[3]) Then
 SetLog("   " & $iStep & ". Click Log in with Supercell ID")
 Click($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], 1, 0, "Click Log in with SC_ID")
-If _Sleep(3000) Then Return "Exit"
+If _Sleep(600) Then Return "Exit"
 For $j = 0 To 20
-If _ColorCheck(_GetPixelColor($aListAccountSCID[0], $aListAccountSCID[1], True), Hex($aListAccountSCID[2], 6), $aListAccountSCID[3]) Then
+If QuickMIS("BC1", $g_sImgListAccounts, 490, 201, 524, 232) Then
+Local $bDragDone = False
 If $NextAccount >= 4 Then
 $YCoord = Int(408 - 73.5 *($g_iTotalAcc - $NextAccount))
+SetLog("Dragging accounts")
 ClickDrag(700, 590, 700, 172, 2000)
-If _Sleep(500) Then Return "Exit"
+If _Sleep(250) Then Return "Exit"
+For $x = 0 To 5
+If QuickMIS("N1", $g_sImgListAccounts, 415, 470, 442, 487) = "OR" Then
+$bDragDone = True
+ExitLoop
 EndIf
-Click(270, $YCoord)
-SetLog("   " &($iStep + 1) & ". Click Account [" & $NextAccount + 1 & "] Supercell ID")
-If _Sleep(500) Then Return "Exit"
-SetLog("Please wait for loading CoC...!")
+If _Sleep(250) Then Return "Exit"
+Next
+EndIf
+If $NextAccount < 4 Or $bDragDone Then
+Click(270, $YCoord, 3, 1000)
+If _Sleep(250) Then Return "Exit"
 $bResult = True
+EndIf
+ElseIf QuickMIS("BC1", $g_sImgListAccounts, 470, 190, 497, 297) Then
+$YCoord = Int(359 - 16 *($g_iTotalAcc - 1) + 32 * $NextAccount) + $DeltaTotal8Acc
+Click(300, $YCoord, 3, 1000)
+If _Sleep(250) Then Return "Exit"
+$bResult = True
+EndIf
+If $bResult Then
+SetLog("   " &($iStep + 1) & ". Click Account [" & $NextAccount + 1 & "] Supercell ID")
+SetLog("Please wait for loading CoC...!")
 Return "OK"
-ElseIf $j = 10 Then
+EndIf
+If $j = 20 Then
 $iRetryCloseSCIDTab += 1
 If $iRetryCloseSCIDTab <= 3 Then
 SetLog("   " & $iStep & ".5 Click Close Tab Supercell ID")
@@ -65409,41 +65577,6 @@ $iRetryCloseSCIDTab = 0
 $bResult = False
 Return "Error"
 EndIf
-EndIf
-If _ColorCheck(_GetPixelColor(490, 275, True), Hex($aListAccountSCID[2], 6), $aListAccountSCID[3]) Then
-For $i = 0 To 10
-Local $XCoordinates = QuickMIS("CX", $g_sImgSCID, 550, 165, 690, 605, True, $g_bDebugImageSave)
-If UBound($XCoordinates) > 0 Then
-SetDebugLog("[SCID Accounts]: " & UBound($XCoordinates), $COLOR_DEBUG)
-ReDim $AccountsCoord[UBound($XCoordinates)][2]
-For $j = 0 To UBound($XCoordinates) - 1
-Local $Coordinates = StringSplit($XCoordinates[$j], ",", 2)
-$AccountsCoord[$j][0] = $Coordinates[0] + 550
-$AccountsCoord[$j][1] = $Coordinates[1] + 165
-Next
-_ArraySort($AccountsCoord, 0, 0, 0, 1)
-For $j = 0 To UBound($AccountsCoord) - 1
-SetDebugLog("[" & $j & "] Account coordinates: " & $AccountsCoord[$j][0] & "," & $AccountsCoord[$j][1] & " named: " & $g_asProfileName[$j])
-Next
-Setlog("SC_ID account number " & $NextAccount + 1 & " named: " & $g_asProfileName[$NextAccount])
-If $NextAccount + 1 > UBound($XCoordinates) Then
-SetLog("You selected a SCID undetected account!!", $COLOR_ERROR)
-ExitLoop
-EndIf
-Click($AccountsCoord[$NextAccount][0] - 150, $AccountsCoord[$NextAccount][1], 1)
-SetLog("Please wait for loading CoC...!")
-$bResult = True
-Return "OK"
-EndIf
-If $g_bRunState = False Then Return
-If _sleep(1000) Then Return
-Next
-Return "Error"
-EndIf
-SetDebugLog("Checking Account List x:" & $aListAccountSCID[0] & " y:" & $aListAccountSCID[1] & " : " & _GetPixelColor($aListAccountSCID[0], $aListAccountSCID[1], True))
-If $j = 20 Then
-$bResult = False
-Return "Error"
 EndIf
 If _Sleep(900) Then Return "Exit"
 Next
@@ -65617,7 +65750,6 @@ Return True
 Else
 If $g_bChkSuperCellID And ProfileSwitchAccountEnabled() Then
 Local $NextAccount = 0
-$bResult = True
 For $i = 0 To $g_iTotalAcc
 If $g_abAccountNo[$i] = True And SwitchAccountEnabled($i) And $g_asProfileName[$i] = $g_sProfileCurrentName Then $NextAccount = $i
 Next
@@ -65666,7 +65798,7 @@ SetDebugLog("[" & $j & "] Account coordinates: " & $AccountsCoord[$j][0] & "," &
 Next
 Setlog("SC_ID account number " & $acount + 1 & " named: " & $g_asProfileName[$acount])
 If $acount + 1 > UBound($XCoordinates) Then
-SetLog("You selected a SCID undetected account!!", $COLOR_ERROR)
+setlog("You selected a SCID undetected account!!", $COLOR_ERROR)
 ExitLoop
 EndIf
 Click($AccountsCoord[$acount][0] - 150, $AccountsCoord[$acount][1], 1)
@@ -68129,6 +68261,9 @@ GUICtrlSetState($g_hChkBoostCMagic, $g_iChkBoostCMagic = 1 ? $GUI_CHECKED : $GUI
 _GUICtrlComboBox_SetCurSel($g_hCmbBoostClMagic, $g_iCmbBoostClMagic)
 chkBoostCMagic()
 BoostClMagic()
+GUICtrlSetState($g_hChkOneGemBoostBr, $g_bChkOneGemBoostBr ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkOneGemBoostFr, $g_bChkOneGemBoostFr ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkOneGemBoostG, $g_bChkOneGemBoostG ? $GUI_CHECKED : $GUI_UNCHECKED)
 Case "Save"
 $g_iCmbBoostBarracks = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBarracks)
 $g_iCmbBoostSpellFactory = _GUICtrlComboBox_GetCurSel($g_hCmbBoostSpellFactory)
@@ -68142,6 +68277,9 @@ $g_iChkBoostBMagic = GUICtrlRead($g_hChkBoostBMagic) = $GUI_CHECKED ? 1 : 0
 $g_iCmbBoostBrMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic)
 $g_iChkBoostCMagic = GUICtrlRead($g_hChkBoostCMagic) = $GUI_CHECKED ? 1 : 0
 $g_iCmbBoostClMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic)
+$g_bChkOneGemBoostBr =(GUICtrlRead($g_hChkOneGemBoostBr) = $GUI_CHECKED)
+$g_bChkOneGemBoostFr =(GUICtrlRead($g_hChkOneGemBoostFr) = $GUI_CHECKED)
+$g_bChkOneGemBoostG =(GUICtrlRead($g_hChkOneGemBoostG) = $GUI_CHECKED)
 EndSwitch
 EndFunc
 Func ApplyConfig_600_26($TypeReadSave)
@@ -69261,25 +69399,16 @@ If $g_bChkGooglePlay Then
 GUICtrlSetState($g_hRadSwitchGooglePlay, $GUI_CHECKED)
 GUICtrlSetState($g_hRadSwitchSuperCellID, $GUI_UNCHECKED)
 GUICtrlSetState($g_hRadSwitchSharedPrefs, $GUI_UNCHECKED)
-GUICtrlSetState($g_hRadAltuFaltuSCID, $GUI_UNCHECKED)
 EndIf
 If $g_bChkSuperCellID Then
 GUICtrlSetState($g_hRadSwitchGooglePlay, $GUI_UNCHECKED)
 GUICtrlSetState($g_hRadSwitchSuperCellID, $GUI_CHECKED)
 GUICtrlSetState($g_hRadSwitchSharedPrefs, $GUI_UNCHECKED)
-GUICtrlSetState($g_hRadAltuFaltuSCID, $GUI_UNCHECKED)
 EndIf
 If $g_bChkSharedPrefs Then
 GUICtrlSetState($g_hRadSwitchGooglePlay, $GUI_UNCHECKED)
 GUICtrlSetState($g_hRadSwitchSuperCellID, $GUI_UNCHECKED)
 GUICtrlSetState($g_hRadSwitchSharedPrefs, $GUI_CHECKED)
-GUICtrlSetState($g_hRadAltuFaltuSCID, $GUI_UNCHECKED)
-EndIf
-If $g_bChkAltuFaltuSCID Then
-GUICtrlSetState($g_hRadSwitchGooglePlay, $GUI_UNCHECKED)
-GUICtrlSetState($g_hRadSwitchSuperCellID, $GUI_UNCHECKED)
-GUICtrlSetState($g_hRadSwitchSharedPrefs, $GUI_UNCHECKED)
-GUICtrlSetState($g_hRadAltuFaltuSCID, $GUI_CHECKED)
 EndIf
 GUICtrlSetState($g_hChkSmartSwitch, $g_bChkSmartSwitch ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetState($g_hChkDonateLikeCrazy, $g_bDonateLikeCrazy ? $GUI_CHECKED : $GUI_UNCHECKED)
@@ -69308,7 +69437,6 @@ $g_bChkSwitchAcc =(GUICtrlRead($g_hChkSwitchAcc) = $GUI_CHECKED)
 $g_bChkGooglePlay =(GUICtrlRead($g_hRadSwitchGooglePlay) = $GUI_CHECKED)
 $g_bChkSuperCellID =(GUICtrlRead($g_hRadSwitchSuperCellID) = $GUI_CHECKED)
 $g_bChkSharedPrefs =(GUICtrlRead($g_hRadSwitchSharedPrefs) = $GUI_CHECKED)
-$g_bChkAltuFaltuSCID =(GUICtrlRead($g_hRadAltuFaltuSCID) = $GUI_CHECKED)
 $g_bChkSmartSwitch =(GUICtrlRead($g_hChkSmartSwitch) = $GUI_CHECKED)
 $g_bDonateLikeCrazy =(GUICtrlRead($g_hChkDonateLikeCrazy) = $GUI_CHECKED)
 $g_iTotalAcc = _GUICtrlComboBox_GetCurSel($g_hCmbTotalAccount) + 1
@@ -70083,6 +70211,9 @@ IniReadS($g_iChkBoostBMagic, $g_sProfileConfigPath, "boost", "chkBoostBMagic", $
 IniReadS($g_iCmbBoostBrMagic, $g_sProfileConfigPath, "boost", "CmbBoostBrMagic", 0, "int")
 IniReadS($g_iChkBoostCMagic, $g_sProfileConfigPath, "boost", "chkBoostCMagic", $g_iChkBoostCMagic, "Int")
 IniReadS($g_iCmbBoostClMagic, $g_sProfileConfigPath, "boost", "CmbBoostClMagic", 0, "int")
+IniReadS($g_bChkOneGemBoostBr, $g_sProfileConfigPath, "boost", "ChkOneGemBoostBr", False, "Bool")
+IniReadS($g_bChkOneGemBoostFr, $g_sProfileConfigPath, "boost", "ChkOneGemBoostFr", False, "Bool")
+IniReadS($g_bChkOneGemBoostG, $g_sProfileConfigPath, "boost", "ChkOneGemBoostG", False, "Bool")
 For $i = 0 To 2
 IniReadS($g_iLastTime[$i], $g_sProfileBuildingPath, "other", "LastTimeCollectors" & $i, 0, "int")
 Next
@@ -70552,7 +70683,6 @@ $g_bChkSwitchAcc = IniRead($sSwitchAccFile, "SwitchAccount", "Enable", "0") = "1
 $g_bChkGooglePlay = IniRead($sSwitchAccFile, "SwitchAccount", "GooglePlay", "0") = "1"
 $g_bChkSuperCellID = IniRead($sSwitchAccFile, "SwitchAccount", "SuperCellID", "0") = "1"
 $g_bChkSharedPrefs = IniRead($sSwitchAccFile, "SwitchAccount", "SharedPrefs", "0") = "1"
-$g_bChkAltuFaltuSCID = IniRead($sSwitchAccFile, "SwitchAccount", "AltuFaltuSCID", "0") = "1"
 $g_bChkSmartSwitch = IniRead($sSwitchAccFile, "SwitchAccount", "SmartSwitch", "0") = "1"
 $g_bDonateLikeCrazy = IniRead($sSwitchAccFile, "SwitchAccount", "DonateLikeCrazy", "0") = "1"
 $g_iTotalAcc = Int(IniRead($sSwitchAccFile, "SwitchAccount", "TotalCocAccount", "-1"))
@@ -70560,7 +70690,7 @@ $g_iTrainTimeToSkip = Int(IniRead($sSwitchAccFile, "SwitchAccount", "TrainTimeTo
 For $i = 1 To 8
 $g_abAccountNo[$i - 1] = IniRead($sSwitchAccFile, "SwitchAccount", "AccountNo." & $i, "") = "1"
 $g_asProfileName[$i - 1] = IniRead($sSwitchAccFile, "SwitchAccount", "ProfileName." & $i, "")
-$g_abDonateOnly[$i - 1] = IniRead($sSwitchAccFile, "SwitchAccount", "DonateOnly." & $i, "0") = "1"
+$g_abDonateOnly[$i - 1] = $g_abAccountNo[$i - 1] And IniRead($sSwitchAccFile, "SwitchAccount", "DonateOnly." & $i, "0") = "1"
 $g_abChkSetFarm[$i - 1] = IniRead($sSwitchAccFile, "FarmStrategy", "ChkSetFarm" & $i, "0") = "1"
 $g_aiCmbAction1[$i - 1] = Int(IniRead($sSwitchAccFile, "FarmStrategy", "CmbAction1" & $i, 0))
 $g_aiCmbCriteria1[$i - 1] = Int(IniRead($sSwitchAccFile, "FarmStrategy", "CmbCriteria1" & $i, 0))
@@ -71129,6 +71259,9 @@ _Ini_Add("boost", "chkBoostBMagic", $g_iChkBoostBMagic ? 1 : 0)
 _Ini_Add("boost", "cmbBoostBrMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic))
 _Ini_Add("boost", "chkBoostCMagic", $g_iChkBoostCMagic ? 1 : 0)
 _Ini_Add("boost", "cmbBoostClMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic))
+_Ini_Add("boost", "ChkOneGemBoostBr", $g_bChkOneGemBoostBr ? 1 : 0)
+_Ini_Add("boost", "ChkOneGemBoostFr", $g_bChkOneGemBoostFr ? 1 : 0)
+_Ini_Add("boost", "ChkOneGemBoostG", $g_bChkOneGemBoostFr ? 1 : 0)
 For $i = 0 To 2
 _Ini_Add("boost", "LastTimeCollectors" & $i, $g_iLastTime[0])
 Next
@@ -71618,7 +71751,6 @@ IniWrite($sSwitchAccFile, "SwitchAccount", "Enable", $g_bChkSwitchAcc ? 1 : 0)
 IniWrite($sSwitchAccFile, "SwitchAccount", "GooglePlay", $g_bChkGooglePlay ? 1 : 0)
 IniWrite($sSwitchAccFile, "SwitchAccount", "SuperCellID", $g_bChkSuperCellID ? 1 : 0)
 IniWrite($sSwitchAccFile, "SwitchAccount", "SharedPrefs", $g_bChkSharedPrefs ? 1 : 0)
-IniWrite($sSwitchAccFile, "SwitchAccount", "AltuFaltuSCID", $g_bChkAltuFaltuSCID ? 1 : 0)
 IniWrite($sSwitchAccFile, "SwitchAccount", "SmartSwitch", $g_bChkSmartSwitch ? 1 : 0)
 IniWrite($sSwitchAccFile, "SwitchAccount", "DonateLikeCrazy", $g_bDonateLikeCrazy ? 1 : 0)
 IniWrite($sSwitchAccFile, "SwitchAccount", "TotalCocAccount", $g_iTotalAcc)
@@ -73409,521 +73541,6 @@ cmbProfile()
 EndIf
 EndIf
 EndIf
-EndFunc
-Func SwitchCOCAcc_SCID($NextAccount)
-Local $Success = False
-Setlog("***ALtuFaltu - Start SuperCell ID Switch Account Process***",0x6E0DD0)
-If _Sleep(500) Then Return
-If IsMainPage() Then Click($aButtonSetting[0], $aButtonSetting[1], 1, 0, "Click Setting")
-Setlog("     1.Click on Setting Button",0xFF0099)
-If _Sleep(500) Then Return
-If WaitforVariousImages("SCIDDisconnectBtn",30,1000) = False Then
-SetLog("Cannot load setting page, restart game...", $COLOR_RED)
-Else
-Setlog("     2.Click on SuperCell ID Disconnect Button",0xFF0099)
-If _Sleep(2000) Then Return
-RndClick_AF($g_ClkSCIDDisConnBtnAF)
-If _Sleep(500) Then Return
-If WaitforVariousImages("SCIDLogOutBtn",30,1000) = False Then
-SetLog("Cannot load SuperCell ID LogOut page, restart game...", $COLOR_RED)
-Else
-Setlog("     3.Click on SuperCell ID LogOut Button",0xFF0099)
-If _Sleep(2000) Then Return
-RndClick_AF($g_ClkSCIDLogOutBtnAF)
-If _Sleep(500) Then Return
-If WaitforVariousImages("SCIDLogOutConfirmBtn",30,1000) = False Then
-SetLog("Cannot Find SuperCell ID Confirm Button, restart game...", $COLOR_RED)
-Else
-Setlog("     4.Click on SuperCell ID LogOut Confirm Button",0xFF0099)
-If _Sleep(2000) Then Return
-RndClick_AF($g_ClkSCIDConfirmBtnAF)
-If _Sleep(500) Then Return
-If WaitforVariousImages("SCIDLoginBtn",30,1000) = False Then
-SetLog("Cannot Find SuperCell ID Login Button, restart game...", $COLOR_RED)
-Else
-Setlog("     5.Click on SuperCell ID Login Button",0xFF0099)
-If _Sleep(2000) Then Return
-RndClick_AF($g_ClkSCIDLoginBtnAF)
-If _Sleep(3000) Then Return
-If WaitforVariousImages("SCIDAccSelectPage",30,1000) = False Then
-If WaitforVariousImages("SCIDAccSelectPageSingleAcc",30,1000) = True Then
-SetLog("AltuFaltu - You have only one Acc. of SCID in Emulator and", 0x6E0DD0)
-SetLog("           	You Active Swithch Acc. Soo Funny.", 0x6E0DD0)
-SetLog("Solution - Disable Switch Acc.", 0x6E0DD0)
-BtnStop()
-$g_SwitchSCIDAccFatalErrorAF = True
-Else
-SetLog("Cannot Load SuperCell ID Select Account Page, restart game...", $COLOR_RED)
-EndIf
-Else
-Setlog("     6.Click on SuperCell ID Account No. - " & $NextAccount+1 & ".",0xFF0099)
-If SCIDClickOnAcc($NextAccount) = True Then
-$Success = True
-Wait4MainAF()
-Else
-Setlog(" - ******************* ERROR **************************",0x6E0DD0)
-SetLog(" - Terget Acc is Not Found. Please Check Manually.......", 0x6E0DD0)
-SetLog(" - Suggest to Rescan SCID Accounts........", 0x6E0DD0)
-SetLog("Bot is Stopping Now.", 0xFF0099)
-If Not GUICtrlGetState($btnScanSCIDAcc) Then
-GUICtrlSetState($btnScanSCIDAcc, $GUI_ENABLE)
-EndIf
-$g_SwitchSCIDAccFatalErrorAF = True
-EndIf
-EndIf
-EndIf
-EndIf
-EndIf
-EndIf
-Return $Success
-EndFunc
-Func _MainScreen_SCIDLogin()
-Local $CurrAccount = -1
-For $i = 0 to 7
-If GUICtrlRead($g_hCmbProfile,_GUICtrlComboBox_GetCurSel($g_hCmbProfile)) = GUICtrlRead($g_ahCmbProfile[$i],_GUICtrlComboBox_GetCurSel($g_ahCmbProfile[$i])) Then
-$CurrAccount = $i
-ExitLoop
-EndIf
-Next
-If $CurrAccount = -1 Then
-If WaitforVariousImages("SCIDAccSelectPageSingleAcc",30,1000) = False Then
-SetLog("AltuFaltu - Login into the Current Profile's Acc is failed.", 0x6E0DD0)
-SetLog("Problem  - You have multiple SCID Acc. in Emulator and ", 0x6E0DD0)
-SetLog("           You didn't specify the Slot of your Current Profile.", 0x6E0DD0)
-SetLog("           So Bot Don't know to Login into which Acc.", 0x6E0DD0)
-SetLog("Solution - Please, Arrange profiles as per Acc Slot in SwitchAcc Section", 0x6E0DD0)
-BtnStop()
-Else
-Setlog("     6.Click on SuperCell ID Single Account Slot.",0xFF0099)
-If _Sleep(2000) Then Return
-Click(380,375)
-If _Sleep(3000) Then Return
-Wait4MainAF()
-EndIf
-Else
-If WaitforVariousImages("SCIDAccSelectPage",30,1000) = False Then
-If WaitforVariousImages("SCIDAccSelectPageSingleAcc",30,1000) = True Then
-SetLog("AltuFaltu - You have only one Acc. of SCID. in Emulator.", 0x6E0DD0)
-SetLog("Warning   - Bot will login to that ID with selected Profile", 0x6E0DD0)
-Setlog("     6.Click on SuperCell ID Single Account Slot.",0xFF0099)
-If _Sleep(2000) Then Return
-Click(380,375)
-If _Sleep(3000) Then Return
-Else
-SetLog("Cannot Load SuperCell ID Select Account Page, restart game...", $COLOR_RED)
-EndIf
-Else
-Setlog("     6.Click on SuperCell ID Account Slot No. - " & $CurrAccount+1 & ".",0xFF0099)
-If SCIDClickOnAcc($CurrAccount) Then
-If _Sleep(3000) Then Return
-Wait4MainAF()
-Else
-Setlog(" - ******************* ERROR **************************",0x6E0DD0)
-SetLog(" - Terget Acc is Not Found. Please Check Manually.......", 0x6E0DD0)
-SetLog(" - Suggest to Rescan SCID Accounts........", 0x6E0DD0)
-SetLog("Bot is Stopping Now.", 0xFF0099)
-If Not GUICtrlGetState($btnScanSCIDAcc) Then
-GUICtrlSetState($btnScanSCIDAcc, $GUI_ENABLE)
-EndIf
-BtnStop()
-EndIf
-EndIf
-EndIf
-EndFunc
-Func Wait4MainAF($bBuilderBase = False)
-Local $iCount
-For $i = 0 To 105
-$iCount += 1
-If $iCount > 120 Then ExitLoop
-If $g_DebugLogAF = 1 Then Setlog("Wait4Main Loop = " & $i & "   ExitLoop = " & $iCount, $COLOR_DEBUG)
-ForceCaptureRegion()
-_CaptureRegion()
-If _CheckColorPixelAF($aIsMain[0], $aIsMain[1], $aIsMain[2], $aIsMain[3], $g_bNoCapturePixel, "aIsMain") Then
-If $g_DebugLogAF = 1 Then Setlog("Main Village - Screen cleared, Wait4Main exit", $COLOR_DEBUG)
-Return True
-ElseIf _CheckColorPixelAF($aIsOnBuilderBase[0], $aIsOnBuilderBase[1], $aIsOnBuilderBase[2], $aIsOnBuilderBase[3], $g_bNoCapturePixel, "aIsOnBuilderBase") Then
-If Not $bBuilderBase Then
-ZoomOut()
-SwitchBetweenBases()
-If $i <> 0 Then $i -= 1
-ContinueLoop
-EndIf
-If $g_DebugLogAF = 1 Then Setlog("Builder Base - Screen cleared, Wait4Main exit", $COLOR_DEBUG)
-Return True
-Else
-If TestCapture() = False And _Sleep($DELAYWAITMAINSCREEN1) Then Return
-If _ColorCheck(_GetPixelColor(402, 516, $g_bNoCapturePixel), Hex(0xFFFFFF, 6), 5) And _ColorCheck(_GetPixelColor(405, 537, $g_bNoCapturePixel), Hex(0x5EAC10, 6), 20) Then
-Click(625,30)
-If _Sleep(1000) Then Return
-Click(625,30)
-If _Sleep(1000) Then Return
-$g_abNotNeedAllTime[0] = True
-$g_abNotNeedAllTime[1] = True
-$g_bIsClientSyncError = False
-If _Sleep(500) Then Return True
-$i = 0
-ContinueLoop
-EndIf
-_CaptureRegion2Sync()
-If _checkObstacles($bBuilderBase) Then $i = 0
-EndIf
-Next
-Return False
-EndFunc
-Func ScanSCIDAcc()
-Local $currentRunState = $g_bRunState
-$g_bRunState = True
-GUICtrlSetState($btnScanSCIDAcc, $GUI_DISABLE)
-Local $SCIDPage = -1
-Setlog("*** ALtuFaltu - Start Scaning SuperCell ID Accounts ***",0x6E0DD0)
-If WaitforVariousImages("SCIDLoginBtn",5,1000) = False Then
-checkMainScreen()
-If _Sleep(500) Then Return
-If IsMainPage() Then Click($aButtonSetting[0], $aButtonSetting[1], 1, 0, "Click Setting")
-Setlog("     1.Click on Setting Button",0xFF0099)
-If _Sleep(500) Then Return
-If WaitforVariousImages("SCIDDisconnectBtn",30,1000) = False Then
-SetLog("Cannot load setting page, restart game...", $COLOR_RED)
-Else
-Setlog("     2.Click on SuperCell ID Disconnect Button",0xFF0099)
-If _Sleep(2000) Then Return
-RndClick_AF($g_ClkSCIDDisConnBtnAF)
-If _Sleep(500) Then Return
-If WaitforVariousImages("SCIDLogOutBtn",30,1000) = False Then
-SetLog("Cannot load SuperCell ID LogOut page, restart game...", $COLOR_RED)
-Else
-Setlog("     3.Click on SuperCell ID LogOut Button",0xFF0099)
-If _Sleep(2000) Then Return
-RndClick_AF($g_ClkSCIDLogOutBtnAF)
-If _Sleep(500) Then Return
-If WaitforVariousImages("SCIDLogOutConfirmBtn",30,1000) = False Then
-SetLog("Cannot Find SuperCell ID Confirm Button, restart game...", $COLOR_RED)
-Else
-Setlog("     4.Click on SuperCell ID LogOut Confirm Button",0xFF0099)
-If _Sleep(2000) Then Return
-RndClick_AF($g_ClkSCIDConfirmBtnAF)
-If _Sleep(500) Then Return
-If WaitforVariousImages("SCIDLoginBtn",30,1000) = False Then
-SetLog("Cannot Find SuperCell ID Login Button, restart game...", $COLOR_RED)
-Else
-Setlog("     5.Click on SuperCell ID Login Button",0xFF0099)
-If _Sleep(2000) Then Return
-RndClick_AF($g_ClkSCIDLoginBtnAF)
-If _Sleep(3000) Then Return
-If WaitforVariousImages("SCIDAccSelectPage",30,1000) = False Then
-If WaitforVariousImages("SCIDAccSelectPageSingleAcc",30,1000) = True Then
-$SCIDPage = 0
-Else
-SetLog("Cannot Load SuperCell ID Select Account Page, restart game...", $COLOR_RED)
-EndIf
-Else
-$SCIDPage = 1
-EndIf
-EndIf
-EndIf
-EndIf
-EndIf
-Else
-Setlog("     5.Click on SuperCell ID Login Button",0xFF0099)
-If _Sleep(2000) Then Return
-RndClick_AF($g_ClkSCIDLoginBtnAF)
-If _Sleep(3000) Then Return
-If WaitforVariousImages("SCIDAccSelectPage",30,1000) = False Then
-If WaitforVariousImages("SCIDAccSelectPageSingleAcc",30,1000) = True Then
-$SCIDPage = 0
-Else
-SetLog("Cannot Load SuperCell ID Select Account Page, restart game...", $COLOR_RED)
-EndIf
-Else
-$SCIDPage = 1
-EndIf
-EndIf
-If $SCIDPage = 1 Then
-SetLog("SuperCell ID Select Account Page Found - MultiAcc", $COLOR_SUCCESS1)
-ElseIf $SCIDPage = 0 Then
-SetLog("SuperCell ID Select Account Page Found - SingleAcc", $COLOR_WARNING)
-SetLog("  -  Scan Aborded")
-Return
-ElseIf $SCIDPage = 1 Then
-SetLog("SuperCell ID Select Account Page Not Found", $COLOR_ERROR)
-SetLog("  -  Scan Aborded")
-Return
-EndIf
-Local $CrossPosY = FindAccCrossMark()
-Local $TotalAccOnFirstPage = UBound($CrossPosY)
-SetLog("No. of Account found in first Page is - " & $TotalAccOnFirstPage & ". Accounts", $COLOR_INFO)
-For $i = 0 to $TotalAccOnFirstPage-1
-CaptureSCID($CrossPosY[$i],$i)
-Next
-If $TotalAccOnFirstPage > 3 Then
-Setlog("Lets Check If More Than 4 Account Exist", 0xFF0099)
-Local $NxtAcc = 4
-If _Sleep(500) Then Return
-ClickDrag(700, 561, 700, 485,2000)
-If _Sleep(2000) Then Return
-While SCIDAccEndScroll() = False
-$NxtAcc = $NxtAcc+1
-ReDim $CrossPosY[UBound($CrossPosY)+1]
-$CrossPosY = FindAccCrossMark()
-_ArraySort($CrossPosY,1)
-CaptureSCID($CrossPosY[0],$NxtAcc-1)
-If _Sleep(500) Then Return
-ClickDrag(700, 561, 700, 485,2000)
-If _Sleep(2000) Then Return
-If $NxtAcc = 8 Then
-ExitLoop
-EndIf
-WEnd
-Else
-$NxtAcc = $TotalAccOnFirstPage
-EndIf
-Setlog("You Have Total " & $NxtAcc & ". SUPERCELL ID Accounts.",0xFF0099)
-Setlog("*** ALtuFaltu - End Scaning SuperCell ID Accounts ***",0x6E0DD0)
-Click(742,140)
-GUICtrlSetState($btnScanSCIDAcc, $GUI_ENABLE)
-$g_bRunState = $currentRunState
-EndFunc
-Func FindAccCrossMark()
-Local $x = 198, $y = 291, $x1 = 662, $y1 = 608
-Local $Res = QuickMIS("CX", $g_sImgSCIDCross, $x, $y, $x1, $y1, True, True)
-Local $CrossPosY[UBound($Res)]
-For $i = 0 to UBound($Res)-1
-Local $Temp = StringSplit($Res[$i], ",", $STR_NOCOUNT)
-If $Temp[0]+$x > 632 and $Temp[0]+$x < 634 Then
-$CrossPosY[$i] = $Temp[1]+$y
-EndIf
-Next
-_ArraySort($CrossPosY)
-Return $CrossPosY
-EndFunc
-Func CaptureSCID($CrossPosY,$AccNo)
-$AccNo = $AccNo+1
-Local $Directory = $g_sImgSCIDAccs & "\Acc" & $AccNo
-If Not FileExists($Directory) And Not StringInStr(FileGetAttrib($Directory),"D") Then
-DirCreate($Directory)
-EndIf
-_CaptureRegion()
-Local $hCap = _GDIPlus_BitmapCloneArea($g_hBitmap, 227, $CrossPosY-7, 160, 17, $GDIP_PXF32RGB)
-_GDIPlus_ImageSaveToFile($hCap, $g_sImgSCIDAccs & "\Acc" & $AccNo & "\Account" & $AccNo & "_99.png")
-If FileExists($g_sImgSCIDAccs & "\Acc" & $AccNo & "\Account" & $AccNo & "_99.png") Then
-SetLog("Account" & $AccNo & "_99.png is Captured.", $COLOR_INFO)
-EndIf
-GdiDeleteHBitmap($hCap)
-EndFunc
-Func SCIDAccEndScroll()
-If QuickMIS("BC1", $g_sImgSCIDOr, 340, 525, 550, 580, True,True) Then
-Return True
-Setlog("SDID Account Scroll End is Found", $COLOR_INFO)
-Else
-Return False
-EndIf
-EndFunc
-Func SCIDClickOnAcc($NextAcc)
-If $NextAcc > 3 Then
-For $i = 0 to $NextAcc-4
-If _Sleep(500) Then Return
-ClickDrag(700, 561, 700, 485,2000)
-If _Sleep(2000) Then Return
-Next
-EndIf
-Local $CrossPosY = FindAccCrossMark()
-If $NextAcc < 4 Then
-If CheckSCIDAccImages($NextAcc, $CrossPosY[$NextAcc]) Then
-Click(360,$CrossPosY[$NextAcc])
-If $g_DebugImageAF = 1 Then Setlog("Click on Acc Slot - " & $NextAcc & ". At - " & $CrossPosY[$NextAcc])
-Return True
-Else
-Return False
-EndIf
-Else
-_ArraySort($CrossPosY,1)
-If CheckSCIDAccImages($NextAcc, $CrossPosY[0]) Then
-Click(360,$CrossPosY[0])
-If $g_DebugImageAF = 1 Then Setlog("Click on Acc Slot - " & $NextAcc & ". At - " & $CrossPosY[0])
-Return True
-Else
-Return False
-EndIf
-EndIf
-EndFunc
-Func _CheckColorPixelAF($x, $y, $sColor, $iColorVariation, $bFCapture = True, $sMsglog = Default)
-Local $hPixelColor = _GetPixelColor2AF($x, $y, $bFCapture)
-Local $bFound = _ColorCheck($hPixelColor, Hex($sColor,6), Int($iColorVariation))
-Local $COLORMSG =($bFound = True ? $COLOR_BLUE : $COLOR_RED)
-If $sMsglog <> Default And IsString($sMsglog) And $g_bDebugSetlog = True Then
-Local $String = $sMsglog & " - Ori Color: " & Hex($sColor,6) & " at X,Y: " & $x & "," & $y & " Found: " & $hPixelColor
-SetLog($String, $COLORMSG)
-EndIf
-Return $bFound
-EndFunc
-Func _GetPixelColor2AF($iX, $iY, $bNeedCapture = False)
-Local $aPixelColor = 0
-If $bNeedCapture = False Or $g_bRunState = False Then
-$aPixelColor = _GDIPlus_BitmapGetPixel($g_hBitmap, $iX, $iY)
-Else
-_CaptureRegion($iX - 1, $iY - 1, $iX + 1, $iY + 1)
-$aPixelColor = _GDIPlus_BitmapGetPixel($g_hBitmap, 1, 1)
-EndIf
-Return Hex($aPixelColor, 6)
-EndFunc
-Func RndClick_AF($Area)
-Local $x = Random($Area[0],$Area[2],1)
-Local $y = Random($Area[1],$Area[3],1)
-PureClick($x,$y)
-If $g_bDebugSetlog = 1 Then Setlog("Click On Position - (" & $x & "," & $y & ").")
-EndFunc
-Func WaitforVariousImages($terget,$try=1,$intval=1000)
-Local $Result = False
-Local $try1 = 0
-While 1
-If $try1 < $try Then
-If CheckVariousImages($terget,True) = True Then
-If $g_DebugLogAF = 1 Then Setlog("Wait for " & $terget & " - Success.")
-$Result = True
-ExitLoop
-Else
-If _Sleep($intval) Then Return
-EndIf
-Else
-If $g_DebugLogAF = 1 Then Setlog("Wait for " & $terget & " - Fails.")
-ExitLoop
-EndIf
-$try1 = $try1+1
-WEnd
-Return $Result
-EndFunc
-Func CheckVariousImages($terget = "", $forceCapture = False,$Retry = 1)
-Local $x, $y, $h, $w
-Local $img
-Local $Ret = False
-Switch $terget
-Case "SCIDDisconnectBtn"
-$x = 365
-$y = 210
-$h = 25
-$w = 140
-$img = @ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgCheck\Disconnect_92.png"
-Case "SCIDLogOutBtn"
-$x = 595
-$y = 275
-$h = 45
-$w = 125
-$img = @ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgCheck\Logout_92.png"
-Case "SCIDLogOutConfirmBtn"
-$x = 445
-$y = 425
-$h = 35
-$w = 180
-$img = @ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgCheck\LogoutCnf_92.png"
-Case "SCIDLoginBtn"
-$x = 120
-$y = 670
-$h = 35
-$w = 285
-$img = @ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgCheck\Login_92.png"
-Case "SCIDAccSelectPage"
-$x = 485
-$y = 200
-$h = 30
-$w = 40
-$img = @ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgCheck\IDMulti_92.png"
-Case "SCIDAccSelectPageSingleAcc"
-$x = 485
-$y = 235
-$h = 30
-$w = 40
-$img = @ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgCheck\IDSingle_92.png"
-EndSwitch
-Local $iImageNotMatchCount = 0
-While 1
-If $iImageNotMatchCount > 0 Or $forceCapture = true Then
-_CaptureRegion()
-EndIf
-If _Sleep(1000) Then Return
-Local $SearchArea = GetHHBitmapArea($g_hHBitmap,$x,$y,$x+$w,$y+$h)
-If $g_DebugImageAF = 1 Then _debugSaveHBitmapToImageAF($SearchArea,$terget,True)
-Local $result = DllCall($g_hLibMyBot, "str", "FindTile", "handle", $SearchArea, "str", $img, "str", "FV", "int", 1)
-If IsArray($result) Then
-If $g_DebugLogAF = 1 Then SetLog("DLL Call succeeded " & $result[0], $COLOR_ERROR)
-If $result[0] = "0" Or $result[0] = "" Then
-If $g_DebugLogAF = 1 Then SetLog("Image not found", $COLOR_ERROR)
-$iImageNotMatchCount += 1
-If $iImageNotMatchCount = $Retry Then
-$Ret = False
-ExitLoop
-EndIf
-ElseIf StringLeft($result[0], 2) = "-1" Then
-If $g_DebugLogAF = 1 Then SetLog("DLL Error: " & $result[0], $COLOR_ERROR)
-Else
-If $g_DebugLogAF = 1 Then SetLog("$result[0]: " & $result[0])
-Local $aCoor = StringSplit($result[0],"|",$STR_NOCOUNT)
-If IsArray($aCoor) Then
-If StringLeft($aCoor[1], 2) <> "-1" Then
-$Ret = True
-ExitLoop
-EndIf
-EndIf
-EndIf
-Else
-$Ret = False
-EndIf
-WEnd
-GdiDeleteHBitmap($SearchArea)
-Return $Ret
-EndFunc
-Func _debugSaveHBitmapToImageAF($hHBitmap, $sFilename, $bDateTime = False, $bSaveType = "ImgDebug")
-If $hHBitmap <> 0 Then
-Local $EditedImage = _GDIPlus_BitmapCreateFromHBITMAP($hHBitmap)
-If $bDateTime Then
-Local $Date = @MDAY & "." & @MON & "." & @YEAR
-Local $Time = @HOUR & "." & @MIN & "." & @SEC & "." & @MSEC
-$sFilename = $sFilename & "-" & $Date & "-" & $Time
-EndIf
-_GDIPlus_ImageSaveToFile($EditedImage, @ScriptDir & "\COCBot\AltuFaltu_Mod\Images\" & $bSaveType & "\" & $sFilename & ".png")
-_GDIPlus_BitmapDispose($EditedImage)
-EndIf
-EndFunc
-Func CheckSCIDAccImages($TergetAcc, $y)
-Local $x1 = 210, $y1 = $y - 32 , $x2 = 603, $y2 = $y + 32
-Local $img = $g_sImgSCIDAccs & "\Acc" & $TergetAcc+1 & "\Account" & $TergetAcc+1 & "_99.png"
-Local $Ret = False
-Local $iImageNotMatchCount = 0
-While 1
-If _Sleep(1000) Then Return
-_CaptureRegion()
-If _Sleep(1000) Then Return
-Local $SearchArea = GetHHBitmapArea($g_hHBitmap,$x1,$y1,$x2,$y2)
-If $g_DebugImageAF = 1 Then _debugSaveHBitmapToImageAF($SearchArea,"SCIDCheck",True)
-Local $result = DllCall($g_hLibMyBot, "str", "FindTile", "handle", $SearchArea, "str", $img, "str", "FV", "int", 1)
-If IsArray($result) Then
-If $g_DebugLogAF = 1 Then SetLog("SCIDCheck DLL Call succeeded " & $result[0], $COLOR_ERROR)
-If $result[0] = "0" Or $result[0] = "" Then
-If $g_DebugLogAF = 1 Then SetLog("SCIDCheck Image not found", $COLOR_ERROR)
-$iImageNotMatchCount += 1
-If $iImageNotMatchCount = 3 Then
-$Ret = False
-ExitLoop
-EndIf
-ElseIf StringLeft($result[0], 2) = "-1" Then
-If $g_DebugLogAF = 1 Then SetLog("SCIDCheck DLL Error: " & $result[0], $COLOR_ERROR)
-$Ret = False
-ExitLoop
-Else
-If $g_DebugLogAF = 1 Then SetLog("SCIDCheck $result[0]: " & $result[0])
-Local $aCoor = StringSplit($result[0],"|",$STR_NOCOUNT)
-If IsArray($aCoor) Then
-If StringLeft($aCoor[1], 2) <> "-1" Then
-$Ret = True
-ExitLoop
-EndIf
-EndIf
-EndIf
-Else
-$Ret = False
-EndIf
-WEnd
-GdiDeleteHBitmap($SearchArea)
-Return $Ret
 EndFunc
 Global $g_bFirstRun = False
 Func _getArmyCapacityOnTrainTroops($x_start, $y_start)
@@ -76377,9 +75994,6 @@ If $g_iSamM0dDebug = 1 And $g_iSamM0dDebugOCR = 1 Then SetLog("******** findMult
 Return ""
 EndIf
 EndFunc
-Global Const $tagNOTIFYICONDATA = 'struct;dword Size;hwnd hWnd;uint ID;uint Flags;uint CallbackMessage;ptr hIcon;wchar Tip[128];dword State;dword StateMask;wchar Info[256];uint Version;wchar InfoTitle[64];dword InfoFlags;endstruct'
-Global Const $__DLG_WM_USER = 0x400
-Global Const $tagPRINTDLG = __Iif(@AutoItX64, '', 'align 2;') & 'dword Size;hwnd hOwner;handle hDevMode;handle hDevNames;handle hDC;dword Flags;word FromPage;word ToPage;word MinPage;word MaxPage;word Copies;handle hInstance;lparam lParam;ptr PrintHook;ptr SetupHook;ptr PrintTemplateName;ptr SetupTemplateName;handle hPrintTemplate;handle hSetupTemplate'
 Func ChatbotReadSettings()
 $g_iChkClanMessages = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "genericMsgClan", "Testing on Chat|Hey all"), "|", 2)
 $g_iChkClanResponses0 = StringSplit(IniRead($g_sProfileConfigPath, "Chatbot", "responseMsgClan", "keyword:Response|hello:Hi, Welcome to the clan|hey:Hey, how's it going?"), "|", 2)
@@ -76414,6 +76028,7 @@ Func chkGlobalChat()
 $g_iChkChatGlobal = 1
 If GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED Then
 GUICtrlSetState($g_hChkGlobalScramble, $GUI_ENABLE)
+GUICtrlSetState($g_hChkDelayTime, $GUI_ENABLE)
 GUICtrlSetState($g_hChkSwitchLang, $GUI_ENABLE)
 GUICtrlSetState($g_hCmbLang, $GUI_SHOW)
 GUICtrlSetState($g_hChkRusLang, $GUI_ENABLE)
@@ -76423,6 +76038,7 @@ Else
 $g_iChkChatGlobal = 0
 GUICtrlSetState($g_hChkGlobalScramble, $GUI_DISABLE)
 GUICtrlSetState($g_hChkSwitchLang, $GUI_DISABLE)
+GUICtrlSetState($g_hChkDelayTime, $GUI_DISABLE)
 GUICtrlSetState($g_hCmbLang, $GUI_INDETERMINATE)
 GUICtrlSetState($g_hChkRusLang, $GUI_DISABLE)
 GUICtrlSetState($g_hTxtEditGlobalMessages1, $GUI_DISABLE)
@@ -76433,6 +76049,9 @@ GUICtrlSetState($g_hCmbLang, $GUI_ENABLE)
 Else
 GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
 EndIf
+EndFunc
+Func chkDelayTime()
+GUICtrlSetState($g_hTxtDelayTimerun, GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED ? $GUI_ENABLE : $GUI_DISABLE)
 EndFunc
 Func chkGlobalScramble()
 If GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED Then
@@ -76460,6 +76079,7 @@ GUICtrlSetState($g_hChkUseResponses, $GUI_ENABLE)
 GUICtrlSetState($g_hChkUseGeneric, $GUI_ENABLE)
 GUICtrlSetState($g_hChkChatNotify, $GUI_ENABLE)
 GUICtrlSetState($g_hChkPbSendNewChats, $GUI_ENABLE)
+GUICtrlSetState($g_hChkCleverbot, $GUI_ENABLE)
 GUICtrlSetState($g_hTxtEditResponses, $GUI_ENABLE)
 GUICtrlSetState($g_hTxtEditGeneric, $GUI_ENABLE)
 Else
@@ -76468,6 +76088,7 @@ GUICtrlSetState($g_hChkUseResponses, $GUI_DISABLE)
 GUICtrlSetState($g_hChkUseGeneric, $GUI_DISABLE)
 GUICtrlSetState($g_hChkChatNotify, $GUI_DISABLE)
 GUICtrlSetState($g_hChkPbSendNewChats, $GUI_DISABLE)
+GUICtrlSetState($g_hChkCleverbot, $GUI_DISABLE)
 GUICtrlSetState($g_hTxtEditResponses, $GUI_DISABLE)
 GUICtrlSetState($g_hTxtEditGeneric, $GUI_DISABLE)
 EndIf
@@ -76498,6 +76119,13 @@ If GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED Then
 $g_iChkPbSendNew = 1
 Else
 $g_iChkPbSendNew = 0
+EndIf
+EndFunc
+Func chkCleverbot()
+If GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED Then
+$g_iChkCleverbot = 1
+Else
+$g_iChkCleverbot = 0
 EndIf
 EndFunc
 Func chkRusLang()
@@ -76553,7 +76181,7 @@ Click(277, 706, 1)
 If _Sleep(1000) Then Return
 Return True
 EndFunc
-Func ChatbotChatInput($message)
+Func ChatbotChatInput($g_sMessage)
 If _Sleep(1000) Then Return
 Click(33, 707, 1)
 If $g_iChkRusLang = 1 Then
@@ -76565,11 +76193,11 @@ ControlFocus($g_hAndroidWindow, "", "")
 SendKeepActive($g_hAndroidWindow)
 _Sleep(500)
 AutoItSetOption("SendKeyDelay", 50)
-_SendExEx($message)
+_SendExEx($g_sMessage)
 SendKeepActive("")
 Else
 _Sleep(500)
-SendText($message)
+SendText($g_sMessage)
 EndIf
 Return True
 EndFunc
@@ -76751,13 +76379,20 @@ SetLog("Chatbot: Switching language TR", $COLOR_GREEN)
 Click(513, 426, 1)
 If _Sleep(1000) Then Return
 EndFunc
-Func ChatbotMessage()
-If $g_iChkChatGlobal Then
-SetLog("Chatbot: Sending some chats", $COLOR_GREEN)
-ElseIf $g_iChkChatClan Then
-SetLog("Chatbot: Sending some chats", $COLOR_GREEN)
+Func DelayTime($sendTimer, $chatType)
+Local $TimeDiff = 0
+Local $TimeDiff =(TimerDiff($sendTimer) / 1000) / 60
+If $chatType = "GLOBAL" Then
+If $TimeDiff > $g_iTxtDelayTimerun Then
+Return True
+Else
+SetLog("Chatbot: Skip sending chats to global chat", $COLOR_INFO)
+SetLog("Delay Time " & StringFormat("%.1f", $TimeDiff) & " minute(s)", $COLOR_INFO)
+Return False
 EndIf
-If $g_iChkChatGlobal Then
+EndIf
+EndFunc
+Func ChatGlobal()
 If $g_iChkSwitchLang = 1 Then
 Switch GUICtrlRead($g_hCmbLang)
 Case "FR"
@@ -76785,15 +76420,17 @@ waitMainScreen()
 EndIf
 If Not ChatbotChatOpen() Then Return
 SetLog("Chatbot: Sending chats to global", $COLOR_GREEN)
-Global $message[2]
-$message[0] = $g_iChkGlobalMessages1[Random(0, UBound($g_iChkGlobalMessages1) - 1, 1)]
-$message[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
+Global $g_sMessage
+Global $g_sRandomMsg[2]
+$g_sRandomMsg[0] = $g_iChkGlobalMessages1[Random(0, UBound($g_iChkGlobalMessages1) - 1, 1)]
+$g_sRandomMsg[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
+$g_sMessage = $g_sRandomMsg[Random(0,1)]
 If $g_iChkScrambleGlobal Then
-_ArrayShuffle($message)
+_ArrayShuffle($g_sMessage)
 EndIf
 If Not ChatbotSelectGlobalChat() Then Return
 If Not ChatbotChatGlobalInput() Then Return
-If Not ChatbotChatInput(_ArrayToString($message, " ")) Then Return
+If Not ChatbotChatInput(_ArrayToString($g_sMessage, " ")) Then Return
 If Not ChatbotChatSendGlobal() Then Return
 If Not ChatbotChatClose() Then Return
 If $g_iChkSwitchLang = 1 Then
@@ -76801,6 +76438,17 @@ ChangeLanguageToEN()
 _Sleep(3000)
 waitMainScreen()
 _Sleep(3000)
+EndIf
+EndFunc
+Func ChatbotMessage()
+If $g_bDelayTime = False and $g_iChkChatGlobal Then
+ChatGlobal()
+EndIf
+If $g_bDelayTime = True and $g_iChkChatGlobal Then
+Local $iSendChatGlobalDelay = DelayTime($startDelayTimer, "GLOBAL")
+If $iSendChatGlobalDelay = True Then
+ChatGlobal()
+$startDelayTimer = TimerInit()
 EndIf
 EndIf
 If $g_iChkChatClan Then
@@ -76830,13 +76478,13 @@ If Not ChatbotChatSendClan() Then Return
 Next
 Dim $Tmp[0]
 $ChatbotQueuedChats = $Tmp
-_sleep(2000)
+_Sleep(2000)
 ChatbotNotifySendChat()
 If Not ChatbotChatClose() Then Return
 SetLog("Chatbot: Done", $COLOR_GREEN)
 Return
 EndIf
-If not ChatbotIsLastChatNew() Then
+If Not ChatbotIsLastChatNew() Then
 Local $sLastChat = ReadChat()
 Local $ChatMsg = StringStripWS($sLastChat, 7)
 SetLog("Found chat message: " & $ChatMsg, $COLOR_GREEN)
@@ -76862,9 +76510,9 @@ ExitLoop
 EndIf
 Next
 EndIf
-If not $SentMessage Then
-Local $Response = runHelper($ChatMsg)
-If Not $Response = False Or not $ChatMsg = "" Or not $ChatMsg = " " Then
+If($g_iChkCleverbot = 1) And Not $SentMessage Then
+Local $Response = runHelper($ChatMsg, $g_iChkCleverbot)
+If Not $Response = False Or Not $ChatMsg = "" Or Not $ChatMsg = " " Then
 SetLog("Got cleverbot response: " & $Response, $COLOR_GREEN)
 If Not ChatbotChatClanInput() Then Return
 If Not ChatbotChatInput($Response) Then Return
@@ -76895,9 +76543,9 @@ ElseIf $g_iChkChatClan Then
 SetLog("Chatbot: Done chatting", $COLOR_GREEN)
 EndIf
 EndFunc
-Func runHelper($msg)
-Local $command, $DOS, $HelperStartTime, $Time_Difference
-Dim $DOS, $Message = ''
+Func runHelper($msg, $g_iChkCleverbot)
+Local $command, $DOS, $HelperStartTime, $Time_Difference, $sString
+Dim $DOS, $g_sMessage = ''
 $command = ' /c "phantomjs.exe phantom-cleverbot-helper.js '
 $DOS = Run(@ComSpec & $command & $msg & '"', "", @SW_HIDE, 8)
 $HelperStartTime = TimerInit()
@@ -76913,14 +76561,14 @@ _RunDos("taskkill -f -im phantomjs.exe")
 Return ""
 EndIf
 WEnd
-$Message = ''
+$g_sMessage = ''
 While 1
-$Message &= StdoutRead($DOS)
+$g_sMessage &= StdoutRead($DOS)
 If @error Then
 ExitLoop
 EndIf
 WEnd
-Return StringStripWS($Message, 7)
+Return StringStripWS($g_sMessage, 7)
 EndFunc
 Func _Encoding_JavaUnicodeDecode($sString)
 Local $iOld_Opt_EVS = Opt('ExpandVarStrings', 0)
@@ -76944,30 +76592,7 @@ Func ReadChat()
 Local $g_iChatDebug = 0
 Local $g_bChkExtraAlphabets = True, $g_bChkExtraChinese = True, $g_bChkExtraKorean = True
 Setlog("Checking Clan Chat", $COLOR_INFO)
-Local $iLoopCount = 0
 Local $iCount = 0
-While 1
-ForceCaptureRegion()
-_CaptureRegion()
-If _ColorCheck(_GetPixelColor(189, 24, False), Hex(0x706C50, 6), 20) Then
-ExitLoop
-EndIf
-If _ColorCheck(_GetPixelColor(189, 24, False), Hex(0x383828, 6), 20) Then
-ClickP($aClanTab, 1, 0, "#0169")
-EndIf
-$iLoopCount += 1
-If $iLoopCount >= 5 Then
-SetLog("Cannot switch to Clan Chat Tab")
-AndroidPageError("Chat read")
-Local $aButtonChatClose[4] = [330, 352 + $g_iMidOffsetY, 0xFFFFFF, 20]
-If _ColorCheck(_GetPixelColor($aButtonChatClose[0], $aButtonChatClose[1], True), Hex($aButtonChatClose[2], 6), $aButtonChatClose[3]) Then
-Click($aButtonChatClose[0], $aButtonChatClose[1], 1)
-waitMainScreen()
-EndIf
-Return False
-EndIf
-If _Sleep($DELAYDONATECC1) Then Return
-WEnd
 ForceCaptureRegion()
 _CaptureRegion2(260,85,272,624)
 Local $aLastResult[1][2]
@@ -78659,6 +78284,115 @@ Else
 Return $aResultHeroes
 EndIf
 EndFunc
+Func TNRQT()
+local $Troopsdetect = CheckQueueTroops()
+EndFunc
+Local $bGemOcr
+Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
+Func OneGemBoost()
+checkMainScreen()
+CheckHeroOneGem()
+OpenArmyOverview(True, "OneGemBoost()")
+CheckTroopsOneGem()
+CheckSpellsOneGem()
+ClickP($aAway, 1, 0, "#0161")
+EndFunc
+Func CheckOneGem()
+$bGemOcr = QuickMis("OCR", $bBoostocr, 370, 420, 370 + 130, 420 + 50)
+$bGemOcr = StringReplace($bGemOcr, " ", "")
+SetLog("$bGemOcr = " & $bGemOcr, $COLOR_INFO)
+If $bGemOcr <> "none" Then
+If $bGemOcr = 1 Then
+Return True
+EndIf
+Else
+SetLog("Not Found", $COLOR_INFO)
+EndIf
+Return False
+EndFunc
+Func CheckHeroOneGem()
+Local $sHeroName[3] = ["King", "Queen", "Warden"]
+For $index = 0 To 2
+If $index = 0 Then
+If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
+SetLog("Please Locate " & $sHeroName[$index], $COLOR_INFO)
+EndIf
+ElseIf $index = 1 Then
+If $g_aiQueenAltarPos[0] = "" Or $g_aiQueenAltarPos[0] = -1 Then
+SetLog("Please Locate " & $sHeroName[$index], $COLOR_INFO)
+EndIf
+ElseIf $index = 2 Then
+If $g_aiWardenAltarPos[0] = "" Or $g_aiWardenAltarPos[0] = -1 Then
+SetLog("Please Locate " & $sHeroName[$index], $COLOR_INFO)
+EndIf
+EndIf
+If $index = 0 Then BuildingClickP($g_aiKingAltarPos, "#0462")
+If $index = 1 Then BuildingClickP($g_aiQueenAltarPos, "#0462")
+If $index = 2 Then BuildingClickP($g_aiWardenAltarPos, "#0462")
+_Sleep($DELAYBOOSTHEROES1)
+Local $Boost = findButton("BoostOne")
+If IsArray($Boost) Then
+If $g_bDebugSetlog Then SetDebugLog("Boost Button X|Y = " & $Boost[0] & "|" & $Boost[1], $COLOR_DEBUG)
+Click($Boost[0], $Boost[1], 1, 0, "#0463")
+If _Sleep($DELAYBOOSTHEROES1) Then Return
+$Boost = findButton("GEM")
+If IsArray($Boost) Then
+If Not CheckOneGem() Then
+ClickP($aAway, 1, 0, "#0161")
+ContinueLoop
+EndIf
+Click($Boost[0], $Boost[1], 1, 0, "#0464")
+If _Sleep($DELAYBOOSTHEROES4) Then Return
+If IsArray(findButton("EnterShop")) Then
+SetLog("Not enough gems to boost " & $sHeroName[$index], $COLOR_ERROR)
+EndIf
+Else
+SetLog($sHeroName[$index] & " is already Boosted", $COLOR_SUCCESS)
+EndIf
+EndIf
+Next
+EndFunc
+Func CheckTroopsOneGem()
+OpenTroopsTab(True, "CheckTroopsOneGem()")
+Local $aBoostBtn = findButton("BoostBarrack")
+If IsArray($aBoostBtn) Then
+ClickP($aBoostBtn)
+_Sleep($DELAYBOOSTBARRACKS1)
+Local $aGemWindowBtn = findButton("GEM")
+If IsArray($aGemWindowBtn) Then
+If Not CheckOneGem() Then
+ClickP($aAway, 1, 0, "#0161")
+Return
+EndIf
+ClickP($aGemWindowBtn)
+_Sleep($DELAYBOOSTBARRACKS2)
+If IsArray(findButton("EnterShop")) Then
+SetLog("Not enough gems to boost ", $COLOR_ERROR)
+EndIf
+EndIf
+EndIf
+EndFunc
+Func CheckSpellsOneGem()
+OpenSpellsTab(True, "CheckSpellsOneGem()")
+Local $aBoostBtn = findButton("BoostBarrack")
+If IsArray($aBoostBtn) Then
+ClickP($aBoostBtn)
+_Sleep($DELAYBOOSTBARRACKS1)
+If Not CheckOneGem() Then
+ClickP($aAway, 1, 0, "#0161")
+Return
+EndIf
+Local $aGemWindowBtn = findButton("GEM")
+If IsArray($aGemWindowBtn) Then
+ClickP($aGemWindowBtn)
+_Sleep($DELAYBOOSTBARRACKS2)
+If IsArray(findButton("EnterShop")) Then
+SetLog("Not enough gems to boost ", $COLOR_ERROR)
+EndIf
+EndIf
+EndIf
+_Sleep(500)
+EndFunc
 Func btnTestHeroBoostOCR()
 SetLog("Test Hero Time OCR", $COLOR_DEBUG)
 Local $wasRunState = $g_bRunState
@@ -78705,6 +78439,20 @@ ChatbotMessage()
 $g_bRunState = $wasRunState
 $g_iChkChatGlobal = $wasChkChatGlobal
 $g_iChkChatClan = $wasChkChatClan
+EndFunc
+Func btnTestTNRQT()
+SetLog("Test Hero Time OCR", $COLOR_DEBUG)
+Local $wasRunState = $g_bRunState
+$g_bRunState = True
+TNRQT()
+$g_bRunState = $wasRunState
+EndFunc
+Func btnTestCheckOneGem()
+SetLog("Test Check One Gem Boost", $COLOR_DEBUG)
+Local $wasRunState = $g_bRunState
+$g_bRunState = True
+OneGemBoost()
+$g_bRunState = $wasRunState
 EndFunc
 Func ReadConfig_RKMod()
 IniReadS($icmbCSVSpeed[$LB], $g_sProfileConfigPath, "RK CSV Speed", "cmbCSVSpeed[LB]", 2, "Int")
@@ -78789,15 +78537,20 @@ IniReadS($g_iCmbTrophyMinProfile, $g_sProfileConfigPath, "profiles", "cmbTrophyM
 IniReadS($g_iTxtMinTrophyAmount, $g_sProfileConfigPath, "profiles", "txtMinTrophyAmount", 1000, "int")
 IniReadS($g_iChkChatGlobal, $g_sProfileConfigPath, "Chatbot", "ChkChatGlobal", $g_iChkChatGlobal, "int")
 IniReadS($g_iChkScrambleGlobal, $g_sProfileConfigPath, "Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal, "int")
+IniReadS($g_bDelayTime, $g_sProfileConfigPath, "Chatbot", "ChkDelayTime", False, "Bool")
+IniReadS($g_iTxtDelayTimerun, $g_sProfileConfigPath, "Chatbot", "txtDelayTimerun", 10, "int")
 IniReadS($g_iChkSwitchLang, $g_sProfileConfigPath, "Chatbot", "ChkSwitchLang", $g_iChkSwitchLang, "int")
 IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chatbot", "CmbLang", 9, "int")
+IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "int")
 IniReadS($g_iChkChatClan, $g_sProfileConfigPath, "Chatbot", "ChkChatClan", $g_iChkChatClan, "int")
 IniReadS($g_iChkClanUseResponses, $g_sProfileConfigPath, "Chatbot", "ChkUseResponses", $g_iChkClanUseResponses, "int")
 IniReadS($g_iChkClanAlwaysMsg, $g_sProfileConfigPath, "Chatbot", "ChkUseGeneric", $g_iChkClanAlwaysMsg, "int")
+IniReadS($g_iChkCleverbot, $g_sProfileConfigPath, "Chatbot", "ChkCleverbot", $g_iChkCleverbot, "int")
 IniReadS($g_iChkUseNotify, $g_sProfileConfigPath, "Chatbot", "ChkChatNotify", $g_iChkUseNotify, "int")
 IniReadS($g_iChkPbSendNew, $g_sProfileConfigPath, "Chatbot", "ChkPbSendNewChats", $g_iChkPbSendNew, "int")
-IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "int")
 IniReadS($g_ibUpdateNewUpgradesOnly, $g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly, "int")
+IniReadS($g_bChkBB_DropTrophies, $g_sProfileConfigPath, "other", "ChkBB_DropTrophies", $g_bChkBB_DropTrophies, "Int")
+IniReadS($g_iTxtBB_DropTrophies, $g_sProfileConfigPath, "other", "TxtBB_DropTrophies", $g_iTxtBB_DropTrophies, "Int")
 EndFunc
 Func SaveConfig_RKMod()
 ApplyConfig_RKMod(GetApplyConfigSaveAction())
@@ -78883,19 +78636,24 @@ _Ini_Add("profiles", "cmbTrophyMinProfile", $g_iCmbTrophyMinProfile)
 _Ini_Add("profiles", "txtMinTrophyAmount", $g_iTxtMinTrophyAmount)
 _Ini_Add("Chatbot", "ChkChatGlobal", $g_iChkChatGlobal ? 1 : 0)
 _Ini_Add("Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)
+_Ini_Add("Chatbot", "ChkDelayTime", $g_bDelayTime ? 1 : 0)
+_Ini_Add("Chatbot", "txtDelayTimerun", $g_iTxtDelayTimerun)
 _Ini_Add("Chatbot", "ChkSwitchLang", $g_iChkSwitchLang ? 1 : 0)
 _Ini_Add("Chatbot", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmbLang))
+_Ini_Add("Chatbot", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
 _Ini_Add("Chatbot", "ChkChatClan", $g_iChkChatClan ? 1 : 0)
 _Ini_Add("Chatbot", "ChkUseResponses", $g_iChkClanUseResponses ? 1 : 0)
 _Ini_Add("Chatbot", "ChkUseGeneric", $g_iChkClanAlwaysMsg ? 1 : 0)
+_Ini_Add("Chatbot", "ChkCleverbot", $g_iChkCleverbot ? 1 : 0)
 _Ini_Add("Chatbot", "ChkChatNotify", $g_iChkUseNotify ? 1 : 0)
 _Ini_Add("Chatbot", "ChkPbSendNewChats", $g_iChkPbSendNew ? 1 : 0)
-_Ini_Add("Chatbot", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
 _Ini_Add("Chatbot", "globalMsg1", $glb1)
 _Ini_Add("Chatbot", "globalMsg2", $glb2)
 _Ini_Add("Chatbot", "genericMsgClan", $cGeneric)
 _Ini_Add("Chatbot", "responseMsgClan", $cResp)
 _Ini_Add("upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly ? 1 : 0)
+_Ini_Add("other", "ChkBB_DropTrophies", $g_bChkBB_DropTrophies)
+_Ini_Add("other", "TxtBB_DropTrophies", $g_iTxtBB_DropTrophies)
 EndFunc
 Func ApplyConfig_RKMod($TypeReadSave)
 Switch $TypeReadSave
@@ -78983,15 +78741,20 @@ $g_iCmbTrophyMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbTrophyMinProfile)
 $g_iTxtMinTrophyAmount = GUICtrlRead($g_hTxtMinTrophyAmount)
 $g_iChkChatGlobal = GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED ? 1 : 0
 $g_iChkScrambleGlobal = GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED ? 1 : 0
+$g_bDelayTime =(GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED)
+$g_iTxtDelayTimerun = GUICtrlRead($g_hTxtDelayTimerun)
 $g_iChkSwitchLang = GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED ? 1 : 0
 $g_iCmbLang = _GUICtrlComboBox_GetCurSel($g_hCmbLang)
+$g_iChkRusLang = GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED ? 1 : 0
 $g_iChkChatClan = GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED ? 1 : 0
 $g_iChkClanUseResponses = GUICtrlRead($g_hChkUseResponses) = $GUI_CHECKED ? 1 : 0
 $g_iChkClanAlwaysMsg = GUICtrlRead($g_hChkUseGeneric) = $GUI_CHECKED ? 1 : 0
+$g_iChkCleverbot = GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED ? 1 : 0
 $g_iChkUseNotify = GUICtrlRead($g_hChkChatNotify) = $GUI_CHECKED ? 1 : 0
 $g_iChkPbSendNew = GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED ? 1 : 0
-$g_iChkRusLang = GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED ? 1 : 0
 $g_ibUpdateNewUpgradesOnly = GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED ? 1 : 0
+$g_bChkBB_DropTrophies =(GUICtrlRead($g_hChkBB_DropTrophies) = $GUI_CHECKED) ? 1 : 0
+$g_iTxtBB_DropTrophies = GUICtrlRead($g_hTxtBB_DropTrophies)
 Case "Read"
 _GUICtrlComboBox_SetCurSel($cmbCSVSpeed[$LB], $icmbCSVSpeed[$LB])
 _GUICtrlComboBox_SetCurSel($cmbCSVSpeed[$DB], $icmbCSVSpeed[$DB])
@@ -79088,17 +78851,21 @@ _GUICtrlComboBox_SetCurSel($g_hCmbTrophyMinProfile, $g_iCmbTrophyMinProfile)
 GUICtrlSetData($g_hTxtMinTrophyAmount, $g_iTxtMinTrophyAmount)
 GUICtrlSetState($g_hChkGlobalChat, $g_iChkChatGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetState($g_hChkGlobalScramble, $g_iChkScrambleGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkDelayTime, $g_bDelayTime ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetData($g_hTxtDelayTimerun, $g_iTxtDelayTimerun)
 GUICtrlSetState($g_hChkSwitchLang, $g_iChkSwitchLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 _GUICtrlComboBox_SetCurSel($g_hCmbLang, $g_iCmbLang)
+GUICtrlSetState($g_hChkRusLang, $g_iChkRusLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetState($g_hChkClanChat, $g_iChkChatClan = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetState($g_hChkUseResponses, $g_iChkClanUseResponses = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetState($g_hChkUseGeneric, $g_iChkClanAlwaysMsg = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkCleverbot, $g_iChkCleverbot = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetState($g_hChkChatNotify, $g_iChkUseNotify = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetState($g_hChkPbSendNewChats, $g_iChkPbSendNew = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-GUICtrlSetState($g_hChkRusLang, $g_iChkRusLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 chkRusLang()
 chkGlobalChat()
 chkGlobalScramble()
+chkCleverbot()
 chkSwitchLang()
 chkClanChat()
 chkUseResponses()
@@ -79106,9 +78873,213 @@ chkUseGeneric()
 chkChatNotify()
 chkPbSendNewChats()
 ChatGuiEditUpdate()
+chkDelayTime()
 GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 chkUpdateNewUpgradesOnly()
+GUICtrlSetState($g_hChkBB_DropTrophies, $g_bChkBB_DropTrophies = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetData($g_hTxtBB_DropTrophies, $g_iTxtBB_DropTrophies)
+ChkBB_DropTrophies()
+TxtBB_DropTrophies()
 EndSwitch
+EndFunc
+Func BB_DropTrophies()
+Local $i = 0
+Local $j = 0
+Local $cPixColor = ''
+Local $Nside = 1
+Local $SIDESNAMES = "TR|TL"
+Local $bDegug = False
+Local $bContinue = True
+Local $OkButtom[4] = [ 400, 495 + $g_iBottomOffsetY, 0xE2F98B, 10 ]
+Local $OkBatleEnd[4] = [ 630, 400 + $g_iBottomOffsetY, 0xDDF685, 10 ]
+Local $OkWaitBattle[4] = [ 400, 500 + $g_iBottomOffsetY, 0xF0F0F0, 10 ]
+Local $TroopSlot[4] = [ 40, 580 + $g_iBottomOffsetY, 0x404040, 10 ]
+Local $NextSlotActive[6] = [0x4C92D3, 0x5298E0, 0x4C92D3, 0x5598E0, 0x5498E0, 0x5198E0]
+Local $NextSlotOff[6] = [0x464646, 0x454545, 0x454545, 0x464646, 0x454545, 0x454545]
+Local $NextSlotAdd = 72
+Local $TroopsToDrop = 0
+If $g_bChkBB_DropTrophies Then
+If $g_iTxtBB_DropTrophies > 0 Then
+$i = $g_aiCurrentLootBB[$eLootTrophyBB] - $g_iTxtBB_DropTrophies
+Endif
+If $i > 0 Then
+If _Sleep($DELAYCHECKOBSTACLES1) Then Return
+If BB_PrepareAttack() Then
+If _Sleep($DELAYCHECKOBSTACLES3 * 2) Then Return
+Setlog(" ====== BB Attack ====== ", $COLOR_INFO)
+For $i = 0 to 5
+If($i > 0) Then
+$TroopSlot[0] += $NextSlotAdd
+$TroopSlot[2] = $NextSlotOff[$i]
+EndIf
+$j = 0
+$cPixColor = _GetPixelColor($TroopSlot[0], $TroopSlot[1], True)
+$TroopsToDrop = getTroopCountBig( $TroopSlot[0]+20, $TroopSlot[1]-10 )
+If($i > 0) Then
+If _Sleep($DELAYCHECKOBSTACLES2) Then Return
+IF _ColorCheck( $cPixColor, Hex($NextSlotActive[$i], 6), $TroopSlot[3]) Then
+If $bDegug Then SetLog("BB: Click Next Slot, code: 0x" & $cPixColor & " [ " & String( $i + 1 ) & " ]", $COLOR_DEBUG)
+ClickP($TroopSlot, 1, 0, "#0000")
+Else
+SetLog("BB: Can't Click Next Slot, code: 0x" & $cPixColor & " [ " & String( $i + 1 ) & " ]", $COLOR_DEBUG)
+If Not _ColorCheck( $cPixColor, Hex($TroopSlot[2], 6), $TroopSlot[3]) Then
+$bContinue = False
+EndIf
+EndIF
+EndIf
+If $bContinue Then
+While Not _ColorCheck( $cPixColor, Hex($TroopSlot[2], 6), $TroopSlot[3])
+BB_Attack($Nside, $SIDESNAMES, 8)
+If $bDegug Then SetLog("BB: Drop Troops - Slot[ " & String( $i + 1 ) & " ], code: 0x" & $cPixColor & " [ " & String( $j ) & " ] Num:[ " & $TroopsToDrop & " ]", $COLOR_DEBUG)
+If _Sleep($DELAYCHECKOBSTACLES2) Then Return
+$j += 1
+If $j > 5 Then ExitLoop
+$cPixColor = _GetPixelColor($TroopSlot[0], $TroopSlot[1], True)
+WEnd
+If $bDegug Then SetLog("BB: Last Slot Color [ " & String( $i + 1 ) & " ], code: 0x" & $cPixColor & " [ " & String( $i + 1 ) & " ]", $COLOR_DEBUG)
+EndIf
+Next
+Setlog("Will Wait End Battle for " & String( $DELAYCHECKOBSTACLES4 / 60000 / 2 ) & " minutes then continue", $COLOR_INFO)
+If _Sleep($DELAYCHECKOBSTACLES4 / 2 ) Then Return
+$cPixColor = _GetPixelColor($OkWaitBattle[0], $OkWaitBattle[1], True)
+If _ColorCheck( $cPixColor, Hex($OkWaitBattle[2], 6), $OkWaitBattle[3]) Then
+If $bDegug Then SetLog("BB: Click Okay Buttom for no wait battle end, code: 0x" & $cPixColor & " [ " & String( $j ) & " ]", $COLOR_DEBUG)
+ClickP($OkWaitBattle, 1, 0, "#0000")
+EndIf
+If _Sleep($DELAYCHECKOBSTACLES2) Then Return
+$j = 0
+$cPixColor = _GetPixelColor($OkButtom[0], $OkButtom[1], True)
+While Not _ColorCheck( $cPixColor, Hex($OkButtom[2], 6), $OkButtom[3])
+If $bDegug Then SetLog("BB: Click Okay Buttom. [Ok]. code: 0x" & $cPixColor & " [ " & String( $j ) & " ]", $COLOR_DEBUG)
+If _Sleep($DELAYCHECKOBSTACLES2) Then Return
+$j += 1
+If $j > 10 Then ExitLoop
+$cPixColor = _GetPixelColor($OkButtom[0], $OkButtom[1], True)
+WEnd
+If $j < 10 Then
+SetLog("BB: Click Okay Buttom. [Ok]. code: 0x" & $cPixColor & " [ " & String( $j ) & " ]", $COLOR_DEBUG)
+ClickP($OkButtom, 1, 0, "#0000")
+Else
+SetLog("BB: Can't Find Okay Buttom [Ok]. code: 0x" & $cPixColor, $COLOR_ERROR)
+EndIf
+If _Sleep($DELAYCHECKOBSTACLES2) Then Return
+If $j < 10 Then
+$j = 0
+$cPixColor = _GetPixelColor($OkBatleEnd[0], $OkBatleEnd[1], True)
+While Not _ColorCheck( $cPixColor, Hex($OkBatleEnd[2], 6), $OkBatleEnd[3])
+If $bDegug Then SetLog("BB: Try Click Okay Buttom [end], code: 0x" & $cPixColor & " [ " & String( $j ) & " ]", $COLOR_DEBUG)
+If _Sleep($DELAYCHECKOBSTACLES3) Then Return
+$j += 1
+If $j > 30 Then ExitLoop
+$cPixColor = _GetPixelColor($OkBatleEnd[0], $OkBatleEnd[1], True)
+WEnd
+If $j < 30 Then
+SetLog("BB: Click Okay Buttom [end], code: 0x" & $cPixColor & " [ " & String( $j ) & " ]", $COLOR_DEBUG)
+ClickP($OkBatleEnd, 1, 0, "#0000")
+Else
+SetLog("BB: Can't Find Okay Buttom [End]. code: 0x" & $cPixColor, $COLOR_ERROR)
+EndIf
+Else
+If _Sleep($DELAYCHECKOBSTACLES2) Then Return
+ClickP($aAway, 1, 0, "#0000")
+EndIf
+EndIf
+If _Sleep($DELAYCHECKOBSTACLES2) Then Return
+ClickP($aAway, 1, 0, "#0000")
+Else
+Setlog("Ignore BB Drop Trophies: [Not Needed] [ " & String( $g_iTxtBB_DropTrophies ) & " ]", $COLOR_INFO)
+EndIf
+Else
+Setlog("Ignore BB Drop Trophies [ Disabled ]", $COLOR_INFO)
+Endif
+EndFunc
+Func ChkBB_DropTrophies()
+$g_bChkBB_DropTrophies =(GUICtrlRead($g_hChkBB_DropTrophies) = $GUI_CHECKED) ? 1 : 0
+EndFunc
+Func TxtBB_DropTrophies()
+$g_iTxtBB_DropTrophies = GUICtrlRead($g_hTxtBB_DropTrophies)
+EndFunc
+Func BB_PrepareAttack()
+Local $Result = getAttackDisable(346, 182)
+Local $cPixColor = ""
+Local $j = 0
+Local $bCanAttack = False
+Local $TroopsOk[4] = [ 310, 355 + $g_iBottomOffsetY, 0xDAF482 , 10 ]
+Local $bDegug = False
+SetLog("BH: Going to Attack... [ " & String( $g_iTxtBB_DropTrophies ) & " ]", $COLOR_INFO)
+If IsMainPageBuilderBase() Then
+If $g_bUseRandomClick = False Then
+ClickP($aAttackButton, 1, 0, "#0149")
+Else
+ClickR($aAttackButtonRND, $aAttackButton[0], $aAttackButton[1], 1, 0)
+EndIf
+EndIf
+If _Sleep($DELAYPREPARESEARCH1) Then Return
+$cPixColor = _GetPixelColor($TroopsOk[0], $TroopsOk[1], True)
+If _ColorCheck( $cPixColor, Hex($TroopsOk[2], 6), $TroopsOk[3]) Then
+SetLog("BB: Troops Not Ready [Stop Attack], code: " & $cPixColor & " [ " & String( $j ) & " ]", $COLOR_DEBUG)
+Else
+SetLog("BB: Troops Ready, code: " & $cPixColor & " [ " & String( $j ) & " ]", $COLOR_DEBUG)
+$bCanAttack = True
+EndIf
+If _Sleep($DELAYCHECKFULLARMY1) Then Return
+If $bCanAttack Then
+$cPixColor = _GetPixelColor($aBB_FindMatchButton[0], $aBB_FindMatchButton[1], True)
+If _ColorCheck( $cPixColor, Hex($aBB_FindMatchButton[2], 6), $aBB_FindMatchButton[3]) Then
+If $bDegug Then SetLog("BB: aBB_FindMatchButton, code: [ " & $cPixColor & " ][ " & String( $j ) & " ]", $COLOR_DEBUG)
+If _Sleep($DELAYCHECKFULLARMY1) Then Return
+If $g_bUseRandomClick = False Then
+ClickP($aBB_FindMatchButton, 1, 0, "#0000")
+Else
+ClickR($aBB_FindMatchButtonRND, $aFindMatchButton[0], $aFindMatchButton[1], 1, 0)
+EndIf
+Else
+SetLog("BB: Can't Find Match Buttom. Color Was: 0x" & $cPixColor, $COLOR_ERROR)
+$bCanAttack = False
+EndIf
+If _Sleep($DELAYPREPARESEARCH2) Then Return
+checkAttackDisable($g_iTaBChkAttack, $Result)
+If $g_bDebugSetlog Then SetDebugLog("BB: PrepareAttack exit check $g_bRestart= " & $g_bRestart, $COLOR_DEBUG)
+If $g_bRestart Then
+$g_bIsClientSyncError = False
+Return
+EndIf
+Endif
+Return $bCanAttack
+EndFunc
+Func BB_Attack($Nside = 1, $SIDESNAMES = "TR|TL", $iTroopToDeploy = 4 )
+Local $aBB_DiamondTop[4] = [440, 30 + $g_iBottomOffsetY, 0x294949, 10]
+Local $aBB_DiamondRight[4] = [830, 330 + $g_iBottomOffsetY, 0x2F5351, 10]
+Local $aBB_LineCenter[2] = [ 0, 0]
+Local $i = 0
+Local $iHalf = 0
+Local $iRest = 0
+Local $aDropCoord[2] = [ 0, 0]
+Local $aDropPointX[4] = [ 0, 0, 0x294949, 10]
+Local $aDropPointY[4] = [ 0, 0, 0x294949, 10]
+If $iTroopToDeploy < 4 Then $iTroopToDeploy = 4
+If $iTroopToDeploy > 8 Then $iTroopToDeploy = 8
+$iHalf = INT( $iTroopToDeploy / 2 )
+$iRest = $iTroopToDeploy -($iHalf * 2 )
+$iHalf += $iRest
+SetLog("BB: Attacking on a single side", $COLOR_INFO)
+$aBB_LineCenter[0] = INT(($aBB_DiamondTop[0] + $aBB_DiamondRight[0] ) / 2 )
+$aBB_LineCenter[1] = INT(($aBB_DiamondTop[1] + $aBB_DiamondRight[1] ) / 2 )
+$aDropCoord[0] = INT((($aBB_LineCenter[0] - $aBB_DiamondTop[0] ) * 0.9 ) / $iHalf )
+$aDropCoord[1] = INT((($aBB_LineCenter[1] - $aBB_DiamondTop[1] ) * 0.9 ) / $iHalf )
+KeepClicks()
+For $i = $iHalf To 1 Step -1
+$aDropPointX[0] = $aBB_LineCenter[0] +($i * $aDropCoord[0] )
+$aDropPointX[1] = $aBB_LineCenter[1] +($i * $aDropCoord[1] )
+$aDropPointY[0] = $aBB_LineCenter[0] -($i * $aDropCoord[0] )
+$aDropPointY[1] = $aBB_LineCenter[1] -($i * $aDropCoord[1] )
+ClickP($aDropPointX, 1, 0, "#0000")
+If _Sleep($DELAYDROPTROOP1) Then Return
+AttackClick($aDropPointY[0], $aDropPointY[1], 1, SetSleep(0), 0, "#0000")
+If _Sleep($DELAYDROPTROOP2) Then Return
+Next
+ReleaseClicks()
+If _Sleep($DELAYDROPTROOP2) Then Return
 EndFunc
 Func GetTranslatedParsedText($sText, $var1 = Default, $var2 = Default, $var3 = Default)
 Local $s = StringReplace(StringReplace($sText, "\r\n", @CRLF), "\n", @CRLF)
@@ -80785,7 +80756,7 @@ Opt("TrayOnEventMode", 1)
 InitializeBot()
 MainLoop(CheckPrerequisites())
 Func UpdateBotTitle()
-Local $sTitle = "My Bot " & $g_sBotVersion & " RK MOD " & $g_sModversion & " -"
+Local $sTitle = "My Bot " & $g_sBotVersion & " RK MOD " & $g_sModversion
 Local $sConsoleTitle
 If $g_sBotTitle = "" Then
 $g_sBotTitle = $sTitle
@@ -81087,6 +81058,16 @@ Else
 SetDebugLog("Linked to GUI Process " & $g_iGuiPID)
 EndIf
 EndIf
+SetLog(" ", $COLOR_SUCCESS)
+SetLog("_________" & " [  MyBot RK MOD  ]" & "_________", $COLOR_MONEYGREEN, "Impact", 14)
+SetLog("                               » " & "Warning" & " «", $COLOR_TEAL, "Segoe UI Semibold", 12)
+SetLog("                                    » " & "Make a Fresh Config" & " «", $COLOR_TEAL, "Segoe UI Semibold", 9)
+SetLog("                                   » " & "Don't Use Old Profile" & " «", $COLOR_TEAL, "Segoe UI Semibold", 9)
+SetLog("-----------------------------------------------------------------------", $COLOR_MONEYGREEN)
+SetLog("            » " & "Thanks To ALL MyBot Developer's" & " «", $COLOR_TEAL, "Segoe Print", 9)
+SetLog("                        » " & "Based On: MyBot" & " " & $g_sBotVersion & " «", $COLOR_TEAL, "Segoe UI Semibold", 10)
+SetLog("-----------------------------------------------------------------------", $COLOR_MONEYGREEN)
+SetLog(" ", $COLOR_MEDGRAY)
 DestroySplashScreen()
 CheckVersion()
 UpdateMultiStats()
@@ -81138,7 +81119,7 @@ EndFunc
 Func runBot()
 Local $iWaitTime
 InitiateSwitchAcc()
-If ProfileSwitchAccountEnabled() And $g_bReMatchAcc And $g_bRunState Then
+If ProfileSwitchAccountEnabled() And $g_bReMatchAcc Then
 SetLog("Rematching Account [" & $g_iNextAccount + 1 & "] with Profile [" & GUICtrlRead($g_ahCmbProfile[$g_iNextAccount]) & "]")
 SwitchCoCAcc($g_iNextAccount)
 EndIf
@@ -81238,7 +81219,7 @@ If $iChkForecastPause = 1 Then
 $currentForecast = readCurrentForecast()
 EndIf
 If IsSearchAttackEnabled() Then
-Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'BoostAll']
+Local $aRndFuncList = ['ReplayShare', 'NotifyReport', 'DonateCC,Train', 'RequestCC', 'CollectFreeMagicItems', 'HeroT']
 While 1
 If $g_bRunState = False Then Return
 If $g_bRestart = True Then ContinueLoop 2
@@ -81253,7 +81234,7 @@ ExitLoop
 EndIf
 If CheckAndroidReboot() = True Then ContinueLoop 2
 WEnd
-Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden']
+Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'BoostAll']
 While 1
 If $g_bRunState = False Then Return
 If $g_bRestart = True Then ContinueLoop 2
@@ -81682,11 +81663,12 @@ _Sleep($DELAYRUNBOT3)
 AutoUpgrade()
 _Sleep($DELAYRUNBOT3)
 Case "BuilderBase"
-If isOnBuilderBase() Or(($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades) And SwitchBetweenBases()) Then
+If isOnBuilderBase() Or(($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades Or $g_bChkBB_DropTrophies) And SwitchBetweenBases()) Then
 CollectBuilderBase()
 BuilderBaseReport()
 StartClockTowerBoost()
 MainSuggestedUpgradeCode()
+BB_DropTrophies()
 SwitchBetweenBases()
 EndIf
 _Sleep($DELAYRUNBOT3)
@@ -81738,9 +81720,6 @@ If $g_iCommandStop <> 0 And $g_iCommandStop <> 3 Then
 SetDebugLog("-- FirstCheck on Train --")
 BoostAllWithMagicSpell()
 TrainSystem()
-If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
-ChatbotMessage()
-EndIf
 If Not $g_bRunState Then Return
 SetDebugLog("Are you ready? " & String($g_bIsFullArmywithHeroesAndSpells))
 If $g_bIsFullArmywithHeroesAndSpells Then
