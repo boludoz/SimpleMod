@@ -524,13 +524,6 @@ Func ChatGlobal()
 		SetLog("Chatbot: Sending chats to global", $COLOR_GREEN)
 		; assemble a message
 
-		Global $g_sMessage
-		Global $g_sRandomMsg[2]
-		$g_sRandomMsg[0] = $g_iChkGlobalMessages1[Random(0, UBound($g_iChkGlobalMessages1) - 1, 1)]
-		$g_sRandomMsg[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
-		$g_sMessage = $g_sRandomMsg[Random(0,1)]
-		If $g_iChkScrambleGlobal Then
-			_ArrayShuffle($g_sMessage)
 		Global $g_Message[2]
 		Local $i = 0
 			$i = Random(0, 1, 0) 
