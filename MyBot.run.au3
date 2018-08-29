@@ -16,8 +16,9 @@
 #AutoIt3Wrapper_UseX64=7n
 ;#AutoIt3Wrapper_Res_HiDpi=Y ; HiDpi will be set during run-time!
 ;#AutoIt3Wrapper_Run_AU3Check=n ; enable when running in folder with umlauts!
-#AutoIt3Wrapper_Run_Au3Stripper=y
+#AutoIt3Wrapper_Run_Au3Stripper=y ;Start the Stripping process below this line.
 #Au3Stripper_Parameters=/rsln /MI=3
+;#Au3Stripper_Parameters=/MO ;Marge Only in case of fast testing of error make strip file in a sec. NOTE : Please uncomment when making production strip file
 ;/SV=0
 
 ;#AutoIt3Wrapper_Change2CUI=y
@@ -67,7 +68,7 @@ InitializeBot()
 MainLoop(CheckPrerequisites())
 
 Func UpdateBotTitle()
-	Local $sTitle = "My Bot " & $g_sBotVersion & " RK MOD " & $g_sModversion & " -"
+	Local $sTitle = "My Bot " & $g_sBotVersion & " RK MOD " & $g_sModversion
 	Local $sConsoleTitle ; Console title has also Android Emulator Name
 	If $g_sBotTitle = "" Then
 		$g_sBotTitle = $sTitle
@@ -576,6 +577,19 @@ Func FinalInitialization(Const $sAI)
 		EndIf
 	EndIf
 
+	; Message - start
+	SetLog(" ", $COLOR_SUCCESS)
+	SetLog("_________" & " [  MyBot RK MOD  ]" & "_________", $COLOR_MONEYGREEN, "Impact", 14)
+	SetLog("                               » " & "Warning" & " «", $COLOR_TEAL, "Segoe UI Semibold", 12)
+	SetLog("                                    » " & "Make a Fresh Config" & " «", $COLOR_TEAL, "Segoe UI Semibold", 9)
+	SetLog("                                   » " & "Don't Use Old Profile" & " «", $COLOR_TEAL, "Segoe UI Semibold", 9)
+	SetLog("-----------------------------------------------------------------------", $COLOR_MONEYGREEN)
+	SetLog("            » " & "Thanks To ALL MyBot Developer's" & " «", $COLOR_TEAL, "Segoe Print", 9)
+	SetLog("                        » " & "Based On: MyBot" & " " & $g_sBotVersion & " «", $COLOR_TEAL, "Segoe UI Semibold", 10)
+	SetLog("-----------------------------------------------------------------------", $COLOR_MONEYGREEN)
+	SetLog(" ", $COLOR_MEDGRAY)
+	; Message - end
+
 	; destroy splash screen here (so we witness the 100% ;)
 	DestroySplashScreen()
 
@@ -673,7 +687,7 @@ Func runBot() ;Bot that runs everything in order
 		SetLog("Rematching Account [" & $g_iNextAccount + 1 & "] with Profile [" & GUICtrlRead($g_ahCmbProfile[$g_iNextAccount]) & "]")
 		SwitchCoCAcc($g_iNextAccount)
 	EndIf
-	
+
 	FirstCheck()
 
 	While 1
@@ -700,7 +714,7 @@ Func runBot() ;Bot that runs everything in order
 		chkShieldStatus()
 		If Not $g_bRunState Then Return
 		If $g_bRestart = True Then ContinueLoop
-		
+
 		checkObstacles() ; trap common error messages also check for reconnecting animation
 		If $g_bRestart = True Then ContinueLoop
 
@@ -718,14 +732,14 @@ Func runBot() ;Bot that runs everything in order
 			checkMainScreen(False)
 			If $g_bRestart = True Then ContinueLoop
 			If _Sleep($DELAYRUNBOT3) Then Return
-			;------------------CUSTOM LOGIC By RK MOD - START------------------			
+			;------------------CUSTOM LOGIC By RK MOD - START------------------
 			MainGTFO()
 			MainKickout()
-				
+
 			If Not $g_bFirstStart Then
 				VillageReport()
 			EndIf
-			
+
 			ProfileSwitch()
 			CheckFarmSchedule()
 			CheckStopForWar()
@@ -743,7 +757,7 @@ Func runBot() ;Bot that runs everything in order
 			If _Sleep($DELAYRUNBOT5) Then Return
 			checkMainScreen(False)
 			If $g_bRestart = True Then ContinueLoop
-			;------------------ADDED By RK MOD - START------------------			
+			;------------------ADDED By RK MOD - START------------------
 			;If $g_bFirstStart Then ProfileReport()
 			;If _Sleep($DELAYRUNBOT5) Then Return
 			;If $g_bFirstStart Then checkArmyCamp(True, True, False, True)
@@ -752,7 +766,7 @@ Func runBot() ;Bot that runs everything in order
 				RequestCC()
 				If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			EndIf
-			;------------------ADDED By RK MOD - END------------------			
+			;------------------ADDED By RK MOD - END------------------
 			Local $aRndFuncList = ['LabCheck', 'Collect', 'CheckTombs', 'ReArm', 'CleanYard']
 			While 1
 				If $g_bRunState = False Then Return
@@ -774,7 +788,7 @@ Func runBot() ;Bot that runs everything in order
 			AddIdleTime()
 			If $g_bRunState = False Then Return
 			If $g_bRestart = True Then ContinueLoop
-			;------------------ADDED By RK MOD - START------------------			
+			;------------------ADDED By RK MOD - START------------------
 			If $iChkForecastBoost = 1 Then
 				$currentForecast = readCurrentForecast()
 				If $currentForecast >= Number($iTxtForecastBoost, 3) Then
@@ -790,9 +804,9 @@ Func runBot() ;Bot that runs everything in order
 			If $iChkForecastPause = 1 Then
 				$currentForecast = readCurrentForecast()
 			EndIf
-			;------------------ADDED By RK MOD - END------------------			
+			;------------------ADDED By RK MOD - END------------------
 			If IsSearchAttackEnabled() Then ; if attack is disabled skip reporting, requesting, donating, training, and boosting
-				
+
 				Local $aRndFuncList = ['ReplayShare', 'NotifyReport', 'DonateCC,Train', 'RequestCC', 'CollectFreeMagicItems', 'HeroT']; EDITED By RK MOD
 				While 1
 					If $g_bRunState = False Then Return
@@ -1341,14 +1355,14 @@ Func FirstCheck()
 	$g_bRestart = False
 	$g_bFullArmy = False
 	$g_iCommandStop = -1
-	
+
 	;------------------CUSTOM LOGIC By RK MOD - START------------------
 	MainGTFO()
 	MainKickout()
 	VillageReport()
-	
+
 	CheckFarmSchedule()
-	
+
 	If $g_bReqCCFirst = 1 Then RequestCC()
 	;------------------CUSTOM LOGIC By RK MOD - END------------------
 	If Not $g_bRunState Then Return
