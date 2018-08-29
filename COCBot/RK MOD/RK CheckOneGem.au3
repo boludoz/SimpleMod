@@ -17,11 +17,13 @@ Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
 
 Func OneGemBoost()
 	checkMainScreen()
-	CheckHeroOneGem()
-	OpenArmyOverview(True, "OneGemBoost()")
-	CheckTroopsOneGem()
-	CheckSpellsOneGem()
-	ClickP($aAway, 1, 0, "#0161")
+	If $g_hChkOneGemBoostG Then CheckHeroOneGem()
+	If $g_hChkOneGemBoostBr Or $g_hChkOneGemBoostFr Then
+		OpenArmyOverview(True, "OneGemBoost()")
+		If $g_hChkOneGemBoostBr Then CheckTroopsOneGem()
+		If $g_hChkOneGemBoostFr Then CheckSpellsOneGem()
+		ClickP($aAway, 1, 0, "#0161")
+	EndIf
 EndFunc   ;==>OneGemBoost
 
 Func CheckOneGem()
@@ -82,6 +84,7 @@ Func CheckHeroOneGem()
 			EndIf
 		EndIf
 	Next
+	ClickP($aAway, 1, 0, "#0161")
 EndFunc   ;==>CheckHeroOneGem
 
 Func CheckTroopsOneGem()

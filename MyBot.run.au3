@@ -807,7 +807,7 @@ Func runBot() ;Bot that runs everything in order
 			;------------------ADDED By RK MOD - END------------------
 			If IsSearchAttackEnabled() Then ; if attack is disabled skip reporting, requesting, donating, training, and boosting
 
-				Local $aRndFuncList = ['ReplayShare', 'NotifyReport', 'DonateCC,Train', 'RequestCC', 'CollectFreeMagicItems', 'HeroT']; EDITED By RK MOD
+				Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'BoostAll', 'OneGemBost']; EDITED By RK MOD
 				While 1
 					If $g_bRunState = False Then Return
 					If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
@@ -823,7 +823,7 @@ Func runBot() ;Bot that runs everything in order
 					If CheckAndroidReboot() = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
 				WEnd
 				;BoostEverything() ; 1st Check if is to use Training Potion ; REMOVED By RK MOD
-				Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'BoostAll']; EDITED By RK MOD
+				Local $aRndFuncList = ['ReplayShare', 'NotifyReport', 'DonateCC,Train', 'RequestCC', 'CollectFreeMagicItems', 'HeroT']; EDITED By RK MOD
 				While 1
 					If $g_bRunState = False Then Return
 					If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
@@ -1278,17 +1278,17 @@ Func _RunFunction($action)
 			Else
 				If $g_bDebugSetlogTrain Then SetLog("Halt mode - training disabled", $COLOR_DEBUG)
 			EndIf
-		Case "BoostBarracks"
-			BoostBarracks()
-		Case "BoostSpellFactory"
-			BoostSpellFactory()
-		Case "BoostKing"
-			BoostKing()
-		Case "BoostQueen"
-			BoostQueen()
-		Case "BoostWarden"
-			BoostWarden()
 		;------------------CUSTOM LOGIC By RK MOD - START------------------
+		Case "BoostBarracks"
+			If Not $g_hChkOneGemBoostBr Then BoostBarracks()
+		Case "BoostSpellFactory"
+			If Not $g_hChkOneGemBoostFr Then BoostSpellFactory()
+		Case "BoostKing"
+			If Not $g_hChkOneGemBoostG Then BoostKing()
+		Case "BoostQueen"
+			If Not $g_hChkOneGemBoostG Then BoostQueen()
+		Case "BoostWarden"
+			If Not $g_hChkOneGemBoostG Then BoostWarden()
 		Case "BoostAll" ; EDITED By RK MOD
 			BoostAllWithMagicSpell() ; EDITED By RK MOD
 		Case "LabCheck"
@@ -1337,6 +1337,8 @@ Func _RunFunction($action)
 		;------------------ADDED By RK MOD - START------------------
 		Case "HeroT"
 			CheckHeroBoost()
+		Case "OneGemBost"
+			OneGemBoost()
 		;------------------ADDED By RK MOD - END------------------
 		Case ""
 			SetDebugLog("Function call doesn't support empty string, please review array size", $COLOR_ERROR)
