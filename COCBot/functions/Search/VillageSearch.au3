@@ -35,9 +35,9 @@ Func _VillageSearch() ;Control for searching a village that meets conditions
 	Local $iSkipped = 0
 	Local $bReturnToPickupHero = False
 	Local $abHeroUse[3] = [False, False, False]
-	For $i = 0 to 2
+	For $i = 0 To 2
 		$abHeroUse[$i] = ($g_abSearchSearchesEnable[$DB] ? IsSpecialTroopToBeUsed($DB, $eKing + $i) : False) _
-							Or ($g_abSearchSearchesEnable[$LB] ? IsSpecialTroopToBeUsed($LB, $eKing + $i) : False)
+				Or ($g_abSearchSearchesEnable[$LB] ? IsSpecialTroopToBeUsed($LB, $eKing + $i) : False)
 	Next
 
 	If $g_bDebugDeadBaseImage Or $g_aiSearchEnableDebugDeadBaseImage > 0 Then
@@ -456,6 +456,8 @@ Func _VillageSearch() ;Control for searching a village that meets conditions
 			Else
 				If $g_bDebugSetlog Then SetDebugLog("Wait to see Next Button... " & $i, $COLOR_DEBUG)
 			EndIf
+			Local $Googleimg = @ScriptDir & "\imgxml\other\Google*"
+			If QuickMis("BC1", $Googleimg, 350, 0, 350 + 88, 0 + 386) Then ClickP($aAway, 1, 0, "#0161")
 			If $i >= 99 Or isProblemAffect() Or (Mod($i, 10) = 0 And checkObstacles_Network(False, False)) Then ; if we can't find the next button or there is an error, then restart
 				$g_bIsClientSyncError = True
 				checkMainScreen()
