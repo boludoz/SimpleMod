@@ -112,6 +112,7 @@
 #include "functions\CreateArmy\TrainSystem.au3"
 #include "functions\CreateArmy\TrainSiege.au3"
 #include "functions\CreateArmy\TrainIt.au3"
+#include "functions\CreateArmy\DoubleTrain.au3" ; DoubleTrain Demen
 
 #include "functions\CreateArmy\getArmyTroops\getArmyTroopTime.au3"
 #include "functions\CreateArmy\getArmyTroops\getArmyTroopCapacity.au3"
@@ -128,7 +129,7 @@
 #include "functions\CreateArmy\getArmySiegeMachines\getArmySiegeMachines.au3"
 
 #include "functions\CreateArmy\getArmyCCTroops\getArmyCCStatus.au3"
-;#include "functions\CreateArmy\getArmyCCTroops\getArmyCCTroops.au3" Not in use yet, soonish hopefully
+#include "functions\CreateArmy\getArmyCCTroops\getArmyCCTroops.au3" ;for check & remove unwanted CC Troops
 
 #include "functions\CreateArmy\getArmyCCSpells\getArmyCCSpellCapacity.au3"
 #include "functions\CreateArmy\getArmyCCSpells\getArmyCCSpell.au3"
@@ -305,4 +306,4 @@
 #include "functions\Config\readConfig.au3"
 #include "functions\Config\saveConfig.au3"
 
-#include "RK MOD\RK MOD Functions.au3"
+#include "RK MOD\RK MOD Functions.au3"; ADDED By RK MOD

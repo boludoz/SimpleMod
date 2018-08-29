@@ -43,12 +43,6 @@ Func ReadConfig_RKMod()
 	IniReadS($itxtForecastHopingSwitchMin, $g_sProfileConfigPath, "RK Forecast", "txtForecastHopingSwitchMin", 2, "Int")
 	IniReadS($icmbSwLang, $g_sProfileConfigPath, "RK Forecast", "cmbSwLang", 1, "int")
 
-	;==================================================== Skip Request CC - Added by RK MOD ============================ ;
-
-	$g_bSkipRequestCC = (IniRead($g_sProfileConfigPath, "donate", "SkipRequestCC", "0") = "1")
-	$g_iSkipRequestCCTroop = Int(IniRead($g_sProfileConfigPath, "donate", "SkipRequestCC_Troop", "0"))
-	$g_iSkipRequestCCSpell = Int(IniRead($g_sProfileConfigPath, "donate", "SkipRequestCC_Spell", "0"))
-
 	;================================================== Move the Request CC Troops - Added by RK MOD =================== ;
 
 	IniReadS($g_bReqCCFirst, $g_sProfileConfigPath, "planned", "ReqCCFirst", $g_bReqCCFirst, "Bool")
@@ -133,21 +127,27 @@ Func ReadConfig_RKMod()
 	; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
 	IniReadS($g_iChkChatGlobal, $g_sProfileConfigPath, "Chatbot", "ChkChatGlobal", $g_iChkChatGlobal, "int")
-	IniReadS($g_iChkScrambleGlobal, $g_sProfileConfigPath, "Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal, "int")
+	IniReadS($g_iChkScrambleGlobal, $g_sProfileConfigPath, "Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal, "int") 
+	IniReadS($g_bDelayTime, $g_sProfileConfigPath, "Chatbot", "ChkDelayTime", False, "Bool")
+    IniReadS($g_iTxtDelayTimerun, $g_sProfileConfigPath, "Chatbot", "txtDelayTimerun", 10, "int")
 	IniReadS($g_iChkSwitchLang, $g_sProfileConfigPath, "Chatbot", "ChkSwitchLang", $g_iChkSwitchLang, "int")
 	IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chatbot", "CmbLang", 9, "int")
+	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "int")
 	IniReadS($g_iChkChatClan, $g_sProfileConfigPath, "Chatbot", "ChkChatClan", $g_iChkChatClan, "int")
 	IniReadS($g_iChkClanUseResponses, $g_sProfileConfigPath, "Chatbot", "ChkUseResponses", $g_iChkClanUseResponses, "int")
 	IniReadS($g_iChkClanAlwaysMsg, $g_sProfileConfigPath, "Chatbot", "ChkUseGeneric", $g_iChkClanAlwaysMsg, "int")
+	IniReadS($g_iChkCleverbot, $g_sProfileConfigPath, "Chatbot", "ChkCleverbot", $g_iChkCleverbot, "int")
 	IniReadS($g_iChkUseNotify, $g_sProfileConfigPath, "Chatbot", "ChkChatNotify", $g_iChkUseNotify, "int")
 	IniReadS($g_iChkPbSendNew, $g_sProfileConfigPath, "Chatbot", "ChkPbSendNewChats", $g_iChkPbSendNew, "int")
-	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "int")
-
 
 	; ==================================================  Upgrade Management - Added by RK MOD ==================== ;
 
 	IniReadS($g_ibUpdateNewUpgradesOnly, $g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly, "int")
-
+	
+	; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
+	
+	IniReadS($g_bChkBB_DropTrophies, $g_sProfileConfigPath, "other", "ChkBB_DropTrophies", $g_bChkBB_DropTrophies, "Int")
+	IniReadS($g_iTxtBB_DropTrophies, $g_sProfileConfigPath, "other", "TxtBB_DropTrophies", $g_iTxtBB_DropTrophies, "Int")
 EndFunc   ;==>ReadConfig_RKMod
 
 Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
@@ -183,12 +183,6 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	_Ini_Add("RK Forecast", "chkForecastHopingSwitchMax", $ichkForecastHopingSwitchMax ? 1 : 0)
 	_Ini_Add("RK Forecast", "chkForecastHopingSwitchMin", $ichkForecastHopingSwitchMin ? 1 : 0)
 	_Ini_Add("RK Forecast", "cmbSwLang", _GUICtrlComboBox_GetCurSel($cmbSwLang))
-
-	 ; ================================================== Skip Request CC - Added by RK MOD  ============================ ;
-
-	_Ini_Add("donate", "SkipRequestCC", $g_bSkipRequestCC ? 1 : 0)
-	_Ini_Add("donate", "SkipRequestCC_Troop", $g_iSkipRequestCCTroop)
-	_Ini_Add("donate", "SkipRequestCC_Spell", $g_iSkipRequestCCSpell)
 
 	;================================================== Move the Request CC Troops - Added by RK MOD ==================== ;
 
@@ -274,15 +268,18 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
 	_Ini_Add("Chatbot", "ChkChatGlobal", $g_iChkChatGlobal ? 1 : 0)
-	_Ini_Add("Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)  
+    _Ini_Add("Chatbot", "ChkDelayTime", $g_bDelayTime ? 1 : 0)
+    _Ini_Add("Chatbot", "txtDelayTimerun", $g_iTxtDelayTimerun)
     _Ini_Add("Chatbot", "ChkSwitchLang", $g_iChkSwitchLang ? 1 : 0)
 	_Ini_Add("Chatbot", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmbLang))
+	_Ini_Add("Chatbot", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
 	_Ini_Add("Chatbot", "ChkChatClan", $g_iChkChatClan ? 1 : 0)
 	_Ini_Add("Chatbot", "ChkUseResponses", $g_iChkClanUseResponses ? 1 : 0)
 	_Ini_Add("Chatbot", "ChkUseGeneric", $g_iChkClanAlwaysMsg ? 1 : 0)
+	_Ini_Add("Chatbot", "ChkCleverbot", $g_iChkCleverbot ? 1 : 0)
 	_Ini_Add("Chatbot", "ChkChatNotify", $g_iChkUseNotify ? 1 : 0)
 	_Ini_Add("Chatbot", "ChkPbSendNewChats", $g_iChkPbSendNew ? 1 : 0)
-    _Ini_Add("Chatbot", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
 
     _Ini_Add("Chatbot", "globalMsg1", $glb1)
 	_Ini_Add("Chatbot", "globalMsg2", $glb2)
@@ -293,7 +290,11 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 
 	_Ini_Add("upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly ? 1 : 0)
 
-
+	; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
+	
+	_Ini_Add("other", "ChkBB_DropTrophies", $g_bChkBB_DropTrophies)
+	_Ini_Add("other", "TxtBB_DropTrophies", $g_iTxtBB_DropTrophies)
+	
 EndFunc   ;==>SaveConfig_RKMod
 
 Func ApplyConfig_RKMod($TypeReadSave)
@@ -330,12 +331,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$itxtForecastHopingSwitchMin = GUICtrlRead($txtForecastHopingSwitchMin)
 			$icmbSwLang = _GUICtrlComboBox_GetCurSel($cmbSwLang)
 			$iTxtForecastPause = GUICtrlRead($txtForecastPause)
-
-			; ================================================== ; Skip Request CC  - Added by RK MOD ======================= ;
-
-			$g_bSkipRequestCC = (GUICtrlRead($g_hChkSkipRequestCC) = $GUI_CHECKED)
-			$g_iSkipRequestCCTroop = GUICtrlRead($g_hTxtSkipRequestCCTroop)
-			$g_iSkipRequestCCSpell = GUICtrlRead($g_hTxtSkipRequestCCSpell)
 
 			; =============================================== Move the Request CC Troops - Added by RK MOD =================== ;
 
@@ -422,19 +417,27 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
 			$g_iChkChatGlobal = GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED ? 1 : 0
-			$g_iChkScrambleGlobal = GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED ? 1 : 0
+			$g_iChkScrambleGlobal = GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED ? 1 : 0			
+		    $g_bDelayTime = (GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED)
+            $g_iTxtDelayTimerun = GUICtrlRead($g_hTxtDelayTimerun)
 			$g_iChkSwitchLang = GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED ? 1 : 0
 			$g_iCmbLang = _GUICtrlComboBox_GetCurSel($g_hCmbLang)
+			$g_iChkRusLang = GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED ? 1 : 0
 			$g_iChkChatClan = GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED ? 1 : 0
 			$g_iChkClanUseResponses = GUICtrlRead($g_hChkUseResponses) = $GUI_CHECKED ? 1 : 0
 			$g_iChkClanAlwaysMsg = GUICtrlRead($g_hChkUseGeneric) = $GUI_CHECKED ? 1 : 0
+			$g_iChkCleverbot = GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED ? 1 : 0
 			$g_iChkUseNotify = GUICtrlRead($g_hChkChatNotify) = $GUI_CHECKED ? 1 : 0
 			$g_iChkPbSendNew = GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED ? 1 : 0
-            $g_iChkRusLang = GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED ? 1 : 0
 
 			; ================================================== Upgrade Management - Added by RK MOD ============================= ;
 
 			$g_ibUpdateNewUpgradesOnly = GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED ? 1 : 0
+			
+			; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
+			
+			$g_bChkBB_DropTrophies = (GUICtrlRead($g_hChkBB_DropTrophies) = $GUI_CHECKED) ? 1 : 0
+			$g_iTxtBB_DropTrophies = GUICtrlRead($g_hTxtBB_DropTrophies)
 
 		Case "Read"
 
@@ -477,12 +480,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			chkForecastHopingSwitchMin()
 			_GUICtrlComboBox_SetCurSel($cmbSwLang, $icmbSwLang)
 
-			; ================================================== Skip Request CC - Added by RK MOD ============================= ;
-
-			GUICtrlSetState($g_hChkSkipRequestCC, $g_bSkipRequestCC ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetData($g_hTxtSkipRequestCCTroop, $g_iSkipRequestCCTroop)
-			GUICtrlSetData($g_hTxtSkipRequestCCSpell, $g_iSkipRequestCCSpell)
-            chkSkipRequestCC()
 			; ================================================== Move the Request CC Troops - Added by RK MOD ================== ;
 
 			GUICtrlSetState($g_hChkReqCCFirst, $g_bReqCCFirst = True ? $GUI_CHECKED : $GUI_UNCHECKED)
@@ -573,18 +570,22 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			; ================================================== NEW ChatBot - by RK MOD ======================================== ;
 
 			GUICtrlSetState($g_hChkGlobalChat, $g_iChkChatGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkGlobalScramble, $g_iChkScrambleGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkGlobalScramble, $g_iChkScrambleGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)			
+			GUICtrlSetState($g_hChkDelayTime, $g_bDelayTime ? $GUI_CHECKED : $GUI_UNCHECKED)
+            GUICtrlSetData($g_hTxtDelayTimerun, $g_iTxtDelayTimerun)			
 			GUICtrlSetState($g_hChkSwitchLang, $g_iChkSwitchLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbLang, $g_iCmbLang)
+			GUICtrlSetState($g_hChkRusLang, $g_iChkRusLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkClanChat, $g_iChkChatClan = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkUseResponses, $g_iChkClanUseResponses = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkUseGeneric, $g_iChkClanAlwaysMsg = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkCleverbot, $g_iChkCleverbot = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkChatNotify, $g_iChkUseNotify = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkPbSendNewChats, $g_iChkPbSendNew = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkRusLang, $g_iChkRusLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
    		    chkRusLang()
 			chkGlobalChat()
 			chkGlobalScramble()
+			chkCleverbot()
 			chkSwitchLang()
 			chkClanChat()
 			chkUseResponses()
@@ -592,12 +593,19 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			chkChatNotify()
 			chkPbSendNewChats()
 			ChatGuiEditUpdate()
-
+            chkDelayTime()
+			
 			; ==================================================  Upgrade Management - Added by RK MOD ======================================== ;
 
 			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
             chkUpdateNewUpgradesOnly()
 
+			; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
+					
+			GUICtrlSetState($g_hChkBB_DropTrophies, $g_bChkBB_DropTrophies = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetData($g_hTxtBB_DropTrophies, $g_iTxtBB_DropTrophies)
+			ChkBB_DropTrophies()
+			TxtBB_DropTrophies()
 	EndSwitch
 
 EndFunc   ;==>ApplyConfig_RKMod

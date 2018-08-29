@@ -21,9 +21,6 @@
 
 #include "RK Forecast.au3"
 
-#include "RK AF_SCID\AF_SCID Switch Acc.au3"
-#include "RK AF_SCID\AF_Various ImgSearch.au3"
-
 #include "RK Auto update camps.au3" ; (#ID135-)
 #include "RK Check Stop For War\CheckStopForWar.au3"
 
@@ -76,20 +73,18 @@
 
 #include "RK AreCollectorsOutside.au3"
 
-;Demen's DoubleTrain
-#include "RK DoubleTrain.au3"
-
-;Demen's Smart Train
-#include "RK Smart Train\SmartTrain.au3"
-#include "RK Smart Train\CheckQueue.au3"
-#include "RK Smart Train\CheckTrainingTab.au3"
-#include "RK Smart Train\CheckPreciseArmyCamp.au3"
-
-
 #include "RK UpgradesMgmt.au3"
 
 #include "RK CheckHeroBoost.au3"
+#include "RK TNRQT.au3"
+#include "RK CheckOneGem.au3"
 
 #include "RK Debug GUI Control.au3"
 
 #include "RK Config.au3"
+
+; --------------------------------------------
+; Builder Base Drop Trophies (ID70)
+; --------------------------------------------
+#include "RK BB\BB_DropTrophies.au3"
+#include "RK BB\BB_PrepareAttack.au3"

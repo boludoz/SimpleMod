@@ -13,7 +13,7 @@
 ; Example .......: No
 ; ===============================================================================================================================
 #include-once
-
+; RK MOD TODO NEED TO MARGE THIS FILE CAREFULLY
 Global $g_sLastModversion = "" ;latest version from GIT
 Global $g_sLastModmessage = "" ;message for last version
 Global $g_sOldModversmessage = "" ;warning message for old bot
@@ -22,19 +22,19 @@ Func CheckVersion()
 	If $g_bCheckVersion Then
 		CheckVersionHTML()
 		If $g_sLastModversion = "" Then
-			SetLog("WE CANNOT OBTAIN MOD VERSION AT THIS TIME", $COLOR_ACTION)
+			SetLog("WE CANNOT OBTAIN RK MOD VERSION AT THIS TIME", $COLOR_ACTION)
 			CheckModVersion()
 		ElseIf VersionNumFromVersionTXT($g_sModversion) < VersionNumFromVersionTXT($g_sLastModversion) Then
-			SetLog("WARNING, YOUR MOD VERSION (" & $g_sModversion & ") IS OUT OF DATE.", $COLOR_ERROR)
+			SetLog("WARNING, YOUR RK MOD VERSION (" & $g_sModversion & ") IS OUT OF DATE.", $COLOR_ERROR)
 			SetLog("CHIEF, PLEASE DOWNLOAD THE LATEST (" & $g_sLastModversion & ")", $COLOR_ERROR)
 			SetLog("FROM https://MyBot.run               ", $COLOR_ERROR)
 			SetLog(" ")
 			_PrintLogVersion($g_sOldModversmessage)
 			CheckModVersion()
 		ElseIf VersionNumFromVersionTXT($g_sModversion) > VersionNumFromVersionTXT($g_sLastModversion) Then
-			SetLog("YOU ARE USING A FUTURE MOD BY RK MOD VERSION CHIEF!", $COLOR_SUCCESS)
-			SetLog("YOUR MOD VERSION: " & $g_sModversion, $COLOR_SUCCESS)
-			SetLog("OFFICIAL MOD VERSION: " & $g_sLastModversion, $COLOR_SUCCESS)
+			SetLog("YOU ARE USING A FUTURE VERSION OF RK MOD CHIEF!", $COLOR_SUCCESS)
+			SetLog("YOUR RK MOD VERSION: " & $g_sModversion, $COLOR_SUCCESS)
+			SetLog("OFFICIAL RK MOD VERSION: " & $g_sLastModversion, $COLOR_SUCCESS)
 			SetLog(" ")
 		Else
 			SetLog("WELCOME CHIEF, YOU HAVE THE LATEST MOD VERSION", $COLOR_SUCCESS)
@@ -77,7 +77,7 @@ Func CheckVersionHTML()
 		FileCopy(@ScriptDir & "\TestVersion.txt", $versionfile, 1)
 	Else
 		;download page from site contains last bot version
-		Local $hDownload = InetGet("https://raw.githubusercontent.com/rulesss2/MyBot-MBR_v7.5.3_RK_MOD/master/LastVersion.txt", $versionfile, 0, 1)
+		Local $hDownload = InetGet("https://raw.githubusercontent.com/rulesss2/MyBot-MBR_v7.6.1_RK_MOD/master/LastVersion.txt", $versionfile, 0, 1)
 
 		; Wait for the download to complete by monitoring when the 2nd index value of InetGetInfo returns True.
 		Local $i = 0
@@ -100,7 +100,7 @@ Func CheckVersionHTML()
 			FileCopy(@ScriptDir & "\TestVersion_" & $g_sLanguage & ".txt", $versionfilelocalized, 1)
 		Else
 			;download page from site contains last bot version localized messages
-			$hDownload = InetGet("https://raw.githubusercontent.com/rulesss2/MyBot-MBR_v7.5.3_RK_MOD/master/LastVersion_" & $g_sLanguage & ".txt", $versionfilelocalized, 0, 1)
+			$hDownload = InetGet("https://raw.githubusercontent.com/rulesss2/MyBot-MBR_v7.6.1_RK_MOD/master/LastVersion_" & $g_sLanguage & ".txt", $versionfilelocalized, 0, 1)
 
 			; Wait for the download to complete by monitoring when the 2nd index value of InetGetInfo returns True.
 			Local $i = 0
@@ -201,7 +201,7 @@ Func CheckModVersion()
 			Return False
 		EndIf
 	Else
-		MsgBox($MB_ICONINFORMATION, "Notify", "You Are Using The Latest Version Of MOD By RK MOD" & @CRLF & _
+		MsgBox($MB_ICONINFORMATION, "Notify", "You Are Using The Latest Version Of by RK MOD" & @CRLF & _
 				"Thanks..", 15) ;15s timeout
 	EndIf
 EndFunc   ;==>CheckModVersion

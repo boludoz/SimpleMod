@@ -204,7 +204,7 @@ Func StopAndPrepareForWar($iSleepTime)
 		$g_bIsFullArmywithHeroesAndSpells = False
 
 		If Not $g_bUseQuickTrainWar Then
-			SmartTrain()     
+			DoubleTrain()
 		Else
 		    StartGainCost()
 			OpenArmyTab(False, "StopAndPrepareForWar()")
@@ -225,7 +225,7 @@ Func StopAndPrepareForWar($iSleepTime)
 			TrainArmyNumber($g_bQuickTrainArmy)
 			If _Sleep(250) Then Return
 			TrainArmyNumber($g_bQuickTrainArmy)
-
+			EndGainCost("Train")
 		EndIf
 
 		If _Sleep(500) Then Return

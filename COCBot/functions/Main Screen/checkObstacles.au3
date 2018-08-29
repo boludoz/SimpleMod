@@ -103,7 +103,7 @@ Func _checkObstacles($bBuilderBase = False, $bRecursive = False) ;Checks if some
 		EndIf
 		;;;;;;;##### 2- Take a break #####;;;;;;;
 
-		If UBound(decodeSingleCoord(FindImageInPlace("Break", $g_sImgPersonalBreak, "165,287,335,325", False))) > 1 Then ; used for all 3 different break messages
+		If UBound(decodeSingleCoord(FindImageInPlace("Break", $g_sImgPersonalBreak, "165,287,335,335", False))) > 1 Then ; used for all 3 different break messages
 			SetLog("Village must take a break, wait ...", $COLOR_ERROR)
 			If TestCapture() Then Return "Village must take a break"
 			PushMsg("TakeBreak")
@@ -323,13 +323,11 @@ Func _checkObstacles($bBuilderBase = False, $bRecursive = False) ;Checks if some
 	EndIf
 	
 	; check if google account list shown and select first
-	If $g_bChkAltuFaltuSCID = 0 Then	; AltuFaltu n
 		If Not CheckGoogleSelectAccount() Then
 		    SetDebugLog("check Log in with Supercell ID login by shared_prefs")
 			; check Log in with Supercell ID login screen
 			If CheckLoginWithSupercellID() Then Return True
 		EndIf
-	EndIf	; AltuFaltu n
 
 	Return False
 EndFunc   ;==>_checkObstacles

@@ -17,8 +17,8 @@
 Func chkShieldStatus($bChkShield = True, $bForceChkPBT = False)
 
 	; skip shield data collection if force single PB, wait for shield, or close while training not enabled, or window is not on main base
-	If ($g_bForceSinglePBLogoff = False And ($g_bChkBotStop = True And $g_iCmbBotCond >= 19) = False) And $g_bCloseWhileTrainingEnable = False And Not $g_bRequestTroopsEnableDefense Or Not (IsMainPage()) Then Return
-
+    If ($g_bForceSinglePBLogoff = False And ($g_bChkBotStop = True And $g_iCmbBotCond >= 19) = False) And $g_bCloseWhileTrainingEnable = False And Not $g_bRequestCCDefense Or Not (IsMainPage()) Then Return
+	
 	Local $Result, $iTimeTillPBTstartSec, $ichkTime = 0, $ichkSTime = 0, $ichkPBTime = 0
 
 	If $bChkShield Or $g_asShieldStatus[0] = "" Or $g_asShieldStatus[1] = "" Or $g_asShieldStatus[2] = "" Or $g_sPBStartTime = "" Or $g_bGForcePBTUpdate = True Then ; almost always get shield information

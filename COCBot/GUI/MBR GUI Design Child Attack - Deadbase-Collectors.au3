@@ -19,12 +19,14 @@ Global $g_ahChkDBCollectorLevel[13] = [-1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0,
 Global $g_ahCmbDBCollectorLevel[13] = [-1, -1, -1, -1, -1, -1, 0, 0, 0, 0, 0, 0, 0] ; elements 0 thru 5 are never referenced
 Global $g_hCmbMinCollectorMatches = 0, $g_hSldCollectorTolerance = 0, $g_hLblCollectorWarning = 0
 
+;------------------ADDED By RK MOD - START------------------
 ; Check Collector Outside - RK MOD
 Global $g_hChkDBMeetCollOutside = 0, $g_hChkDBCollectorsNearRedline = 0, $g_hChkSkipCollectorCheck = 0, $g_hChkSkipCollectorCheckTH = 0
 Global $g_hCmbRedlineTiles = 0, $g_hCmbSkipCollectorCheckTH = 0
 Global $g_hLblDBMinCollOutsideText = 0, $g_hLblDBMinCollOutsideText1 = 0, $g_hLblRedlineTiles = 0, $g_hLblSkipCollectorCheck = 0
 Global $g_hLblSkipCollectorCheckTHText1 = 0, $g_hLblSkipCollectorCheckTHText2 = 0, $g_hLblSkipCollectorGold = 0, $g_hLblSkipCollectorElixir = 0, $g_hLblSkipCollectorDark = 0
 Global $g_hTxtDBMinCollOutsidePercent = 0, $g_hTxtSkipCollectorGold = 0, $g_hTxtSkipCollectorElixir = 0, $g_hTxtSkipCollectorDark = 0
+;------------------ADDED By RK MOD - END------------------
 
 Func CreateAttackSearchDeadBaseCollectors()
 	Local $x = 10, $y = 45
@@ -34,7 +36,7 @@ Func CreateAttackSearchDeadBaseCollectors()
 
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "Group_01", "Collectors"), $x - 5, $y - 20, $g_iSizeWGrpTab4, $g_iSizeHGrpTab4)
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel", "Choose which collectors to search for while looking for a dead base. Also, choose how full they must be."), $x, $y, 250, 28)
-		$g_hChkDBDisableCollectorsFilter = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "ChkDisableCollectorsFilter", "Disable Collector Filter"), $x + 240, $y + 40, 150, 18)
+		$g_hChkDBDisableCollectorsFilter = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "ChkDisableCollectorsFilter", "Disable Collector Filter"), $x + 240, $y + 40, 150, 18); Was $x + 250, $y + 60 EDITED By RK MOD
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "ChkDisableCollectorsFilter_Info_01", "Disable Collector Filter CHANGES DeadBase into another ActiveBase search"))
 
@@ -49,12 +51,12 @@ Func CreateAttackSearchDeadBaseCollectors()
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel6", "Lvl 6. Must be >"), $x + 40, $y + 3, -1, -1)
 			_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetState(-1, $GUI_DISABLE)
-		$g_ahCmbDBCollectorLevel[6] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_ahCmbDBCollectorLevel[6] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL)); Was $x + 125, $y, 75 EDITED By RK MOD
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel6_Info_01", 'Select how full a level 6 collector needs to be for it to be marked "dead"'))
 			GUICtrlSetState(-1, $GUI_DISABLE)
 			GUICtrlSetData(-1, "50%|100%", "50%")
 			GUICtrlSetOnEvent(-1, "cmbDBCollector")
-		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3)
+		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3); Was $x + 205 EDITED By RK MOD
 
 	$y += 25
 		$g_ahChkDBCollectorLevel[7] = GUICtrlCreateCheckbox("", $x, $y, 18, 18)
@@ -66,11 +68,11 @@ Func CreateAttackSearchDeadBaseCollectors()
 			_GUICtrlSetTip(-1, $sTxtTip)
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel7", "Lvl 7. Must be >"), $x + 40, $y + 3, -1, -1)
 			_GUICtrlSetTip(-1, $sTxtTip)
-		$g_ahCmbDBCollectorLevel[7] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_ahCmbDBCollectorLevel[7] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL)); Was $x + 125, $y, 75 EDITED By RK MOD
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel7_Info_01", 'Select how full a level 7 collector needs to be for it to be marked "dead"'))
 			GUICtrlSetData(-1, "50%|100%", "50%")
 			GUICtrlSetOnEvent(-1, "cmbDBCollector")
-		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3)
+		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3); Was $x + 205 EDITED By RK MOD
 
 	$y += 25
 		$g_ahChkDBCollectorLevel[8] = GUICtrlCreateCheckbox("", $x, $y, 18, 18)
@@ -82,11 +84,11 @@ Func CreateAttackSearchDeadBaseCollectors()
 			_GUICtrlSetTip(-1, $sTxtTip)
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel8", "Lvl 8. Must be >"), $x + 40, $y + 3, -1, -1)
 			_GUICtrlSetTip(-1, $sTxtTip)
-		$g_ahCmbDBCollectorLevel[8] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_ahCmbDBCollectorLevel[8] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL)); Was $x + 125, $y, 75 EDITED By RK MOD
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel8_Info_01", 'Select how full a level 8 collector needs to be for it to be marked "dead"'))
 			GUICtrlSetData(-1, "50%|100%", "50%")
 			GUICtrlSetOnEvent(-1, "cmbDBCollector")
-		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3)
+		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3); Was $x + 205 EDITED By RK MOD
 
 	$y += 25
 		$g_ahChkDBCollectorLevel[9] = GUICtrlCreateCheckbox("", $x, $y, 18, 18)
@@ -98,11 +100,11 @@ Func CreateAttackSearchDeadBaseCollectors()
 			_GUICtrlSetTip(-1, $sTxtTip)
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel9", "Lvl 9. Must be >"), $x + 40, $y + 3, -1, -1)
 			_GUICtrlSetTip(-1, $sTxtTip)
-		$g_ahCmbDBCollectorLevel[9] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_ahCmbDBCollectorLevel[9] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL)); Was $x + 125, $y, 75 EDITED By RK MOD
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel9_Info_01", 'Select how full a level 9 collector needs to be for it to be marked "dead"'))
 			GUICtrlSetData(-1, "50%|100%", "50%")
 			GUICtrlSetOnEvent(-1, "cmbDBCollector")
-		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3)
+		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3); Was $x + 205 EDITED By RK MOD
 
 	$y += 25
 		$g_ahChkDBCollectorLevel[10] = GUICtrlCreateCheckbox("", $x, $y, 18, 18)
@@ -114,11 +116,11 @@ Func CreateAttackSearchDeadBaseCollectors()
 			_GUICtrlSetTip(-1, $sTxtTip)
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel10", "Lvl 10. Must be >"), $x + 40, $y + 3, -1, -1)
 			_GUICtrlSetTip(-1, $sTxtTip)
-		$g_ahCmbDBCollectorLevel[10] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_ahCmbDBCollectorLevel[10] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL)); Was $x + 125, $y, 75 EDITED By RK MOD
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel10_Info_01", 'Select how full a level 10 collector needs to be for it to be marked "dead"'))
 			GUICtrlSetData(-1, "50%|100%", "50%")
 			GUICtrlSetOnEvent(-1, "cmbDBCollector")
-		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3)
+		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3); Was $x + 205 EDITED By RK MOD
 
 	$y += 25
 		$g_ahChkDBCollectorLevel[11] = GUICtrlCreateCheckbox("", $x, $y, 18, 18)
@@ -130,11 +132,11 @@ Func CreateAttackSearchDeadBaseCollectors()
 			_GUICtrlSetTip(-1, $sTxtTip)
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel11", "Lvl 11. Must be >"), $x + 40, $y + 3, -1, -1)
 			_GUICtrlSetTip(-1, $sTxtTip)
-		$g_ahCmbDBCollectorLevel[11] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_ahCmbDBCollectorLevel[11] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL)); Was $x + 125, $y, 75 EDITED By RK MOD
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel11_Info_01", 'Select how full a level 11 collector needs to be for it to be marked "dead"'))
 			GUICtrlSetData(-1, "50%|100%", "50%")
 			GUICtrlSetOnEvent(-1, "cmbDBCollector")
-		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3)
+		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3); Was $x + 205 EDITED By RK MOD
 
 	$y += 25
 		$g_ahChkDBCollectorLevel[12] = GUICtrlCreateCheckbox("", $x, $y, 18, 18)
@@ -146,24 +148,26 @@ Func CreateAttackSearchDeadBaseCollectors()
 			_GUICtrlSetTip(-1, $sTxtTip)
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel12", "Lvl 12. Must be >"), $x + 40, $y + 3, -1, -1)
 			_GUICtrlSetTip(-1, $sTxtTip)
-		$g_ahCmbDBCollectorLevel[12] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_ahCmbDBCollectorLevel[12] = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL)); Was $x + 125, $y, 75 EDITED By RK MOD
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorLevel12_Info_01", 'Select how full a level 12 collector needs to be for it to be marked "dead"'))
 			GUICtrlSetData(-1, "50%|100%", "50%")
 			GUICtrlSetOnEvent(-1, "cmbDBCollector")
-		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3)
+		GUICtrlCreateLabel($g_hTxtFull, $x + 195, $y + 3); Was $x + 205 EDITED By RK MOD
 
 	$y += 25
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblMinCollectorMatches", "Collectors required"), $x, $y + 3, -1, -1)
 			$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "CmbMinCollectorMatches_Info_01", 'Select how many collectors are needed to consider village "dead"')
 			_GUICtrlSetTip(-1, $sTxtTip)
-		$g_hCmbMinCollectorMatches = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+		$g_hCmbMinCollectorMatches = GUICtrlCreateCombo("", $x + 130, $y, 60, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL)); Was $x + 125, $y, 75 EDITED By RK MOD
 			_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetData(-1, "1|2|3|4|5|6", "3")
 			GUICtrlSetOnEvent(-1, "cmbMinCollectorMatches")
 
 	$y += 25
 		GUICtrlCreateLabel("-15" & _PadStringCenter(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase-Collectors", "LblCollectorTolerance", "Tolerance"), 66, " ") & "15", $x, $y)
+		;If $g_bDevMode = False Then
 			GUICtrlSetState(-1, $GUI_HIDE)
+		;EndIf
 
 	$y += 15
 		$g_hSldCollectorTolerance = GUICtrlCreateSlider($x, $y, 250, 20, BITOR($TBS_TOOLTIPS, $TBS_AUTOTICKS))
@@ -176,15 +180,16 @@ Func CreateAttackSearchDeadBaseCollectors()
 			GUICtrlSetLimit(-1, 15, -15) ; change max/min value
 			GUICtrlSetData(-1, 0) ; default value
 			GUICtrlSetOnEvent(-1, "sldCollectorTolerance")
+		;If $g_bDevMode = False Then
 			GUICtrlSetState(-1, $GUI_HIDE)
-
+		;EndIf
 
 	$y += 25
 		$g_hLblCollectorWarning = GUICtrlCreateLabel("Warning: no collecters are selected. The bot will never find a dead base.", $x, $y, 255, 30)
 			GUICtrlSetFont(-1, 10, $FW_BOLD)
 			GUICtrlSetColor(-1, $COLOR_ERROR)
 			GUICtrlSetState(-1, $GUI_HIDE)
-			
+	;------------------ADDED By RK MOD - START------------------		
 	; Check Collector Outside - RK MOD
 	$y -= 215
 	$x += 240
@@ -247,7 +252,7 @@ Func CreateAttackSearchDeadBaseCollectors()
 		$g_hLblSkipCollectorCheckTHText2 = GUICtrlCreateLabel(ChrW(8804), $x + 120, $y, -1, -1)
 		$g_hCmbSkipCollectorCheckTH = GUICtrlCreateCombo("", $x + 135, $y - 2, 37, 20, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 			GUICtrlSetData(-1, "7|8|9|10", "8")
-
+	;------------------ADDED By RK MOD - END------------------
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 EndFunc   ;==>CreateAttackSearchDeadBaseCollectors

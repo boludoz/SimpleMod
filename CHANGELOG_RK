@@ -119,6 +119,14 @@ Update to v 7.6.1
 
 **v3.0.5**
 
+Update to v 7.6.2
+
+
+**Added**
+
+-- One Gem Boost.
+-- NEW Logo.
+-- Drop Trophies in BuildersBase.
 
 **IMPROVED AND FIXED**
 
@@ -128,5 +136,16 @@ Update to v 7.6.1
 -- Reported Supercell Id.
 -- Reported Profile tab.
 -- Reported Switch account.
--- Reported Labortarty
--- Reported Auto Upgrade
+-- Reported Labortarty.
+-- Reported Auto Upgrade.
+-- Request troops for defense.
+-- Return Home by Time.
+-- Request CC First.
+-- Max logout time.
+-- Double train army.
+-- LocateLab (fixed error)
+-- Switching accounts.
+
+** Removed **
+-- SmartTrain.
+-- Skip Request CC.

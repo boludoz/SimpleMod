@@ -32,8 +32,16 @@ Func TrainSystem()
 		Return
 	EndIf
 
+	If $g_abDonateOnly[$g_iCurAccount] And ProfileSwitchAccountEnabled() And $g_bIsFullArmywithHeroesAndSpells Then
+		SetLog("Donate Only mode and your Army is prepared!", $COLOR_DEBUG) ;Debug
+		If $g_bFirstStart Then $g_bFirstStart = False
+		DoubleTrain($g_bQuickTrainEnable)
+		Return
+	Endif
+
 	If ProfileSwitchAccountEnabled() Then $g_bDoubleTrainDone = $g_abDoubleTrainDone[$g_iCurAccount]
 	If $g_bIsFullArmywithHeroesAndSpells And $g_bDoubleTrainDone Then $g_bDoubleTrainDone = False
+
 	If Not $g_bQuickTrainEnable Then
 		TrainCustomArmy()
 		DoubleTrain()
@@ -50,14 +58,6 @@ Func TrainSystem()
 
 	If $g_bDoubleTrain And ($g_bDoubleTrainDone Or $g_bIsFullArmywithHeroesAndSpells) Then
 		; Do nothing DoubleQuickTrain()
-	
-	;SmartTrain - RK MOD (Demen)
-	If $g_bChkSmartTrain Then
-		SmartTrain()
-		ResetVariables("donated")
-		EndGainCost("Train")
-		Return
-	EndIf
 
 	ElseIf $g_bIsFullArmywithHeroesAndSpells Or ($g_CurrentCampUtilization = 0 And $g_bFirstStart) Then
 
@@ -250,7 +250,7 @@ Func CheckIfArmyIsReady()
 	If _Sleep(250) Then Return
 
 	CheckArmyCamp(False, False, False, True)
-	CheckWardenMode()
+	CheckWardenMode(); ADDED By RK MOD
 
 	If $g_bDebugSetlogTrain Then
 		SetLog(" - $g_CurrentCampUtilization : " & $g_CurrentCampUtilization)
@@ -830,7 +830,7 @@ Func RemoveExtraTroops($toRemove)
 			EndIf
 		EndIf
 
-		If Not OpenArmyTab(True, "RemoveExtraTroops()") Then Return
+		If Not OpenArmyTab(True, "RemoveExtraTroops()") Then Return ; was False EDITED By RK MOD
 		$toRemove = WhatToTrain(True, False)
 
 		$rGetSlotNumber = GetSlotNumber() ; Get all available Slot numbers with troops assigned on them
@@ -1116,7 +1116,7 @@ Func GetSlotNumber($bSpells = False)
 EndFunc   ;==>GetSlotNumber
 
 Func WhatToTrain($ReturnExtraTroopsOnly = False, $bSetLog = True)
-	OpenArmyTab(True, "WhatToTrain()")
+	OpenArmyTab(True, "WhatToTrain()"); was False EDITED By RK MOD
 	Local $ToReturn[1][2] = [["Arch", 0]]
 
 	If $g_bIsFullArmywithHeroesAndSpells And Not $ReturnExtraTroopsOnly Then
@@ -1298,7 +1298,9 @@ Func CheckQueueTroops($bGetQuantity = True, $bSetLog = True, $x = 839)
 	Local $aResult[1] = [""]
 	If $bSetLog Then SetLog("Checking Troops Queue...", $COLOR_INFO)
 
-	Local $aSearchResult = SearchArmy("trainwindow-TroopsInQueue-bundle", 18, 182, $x, 261)
+	Local $Dir = @ScriptDir & "\imgxml\ArmyOverview\TroopQueued"
+
+	Local $aSearchResult = SearchArmy($Dir, 18, 182, $x, 261)
 
 	ReDim $aResult[UBound($aSearchResult)]
 
@@ -1412,7 +1414,7 @@ Func SearchArmy($sImageDir = "", $x = 0, $y = 0, $x1 = 0, $y1 = 0, $sArmyType = 
 					If UBound($aCoordsSplit) = 2 Then
 						; Store the coords into a two dimensional array
 						$aCoordArray[0][0] = $aCoordsSplit[0] + $x ; X coord.
-						$aCoordArray[0][1] = $aCoordsSplit[1] ; Y coord.
+						$aCoordArray[0][1] = $aCoordsSplit[1] + $y ; Y coord.
 					Else
 						$aCoordArray[0][0] = -1
 						$aCoordArray[0][1] = -1
@@ -1526,6 +1528,7 @@ Func ResetVariables($sArmyType = "")
 
 EndFunc   ;==>ResetVariables
 
+;------------------CUSTOM LOGIC By RK MOD - START------------------
 Func TrainArmyNumber($Army, $iMultiClick = 5)
 
 	Local $a_TrainArmy[3][4] = [[784, 368, 0x6fb830, 10], [784, 485, 0x72bb2f, 10], [784, 602, 0x71ba2f, 10]]
@@ -1552,6 +1555,7 @@ Func TrainArmyNumber($Army, $iMultiClick = 5)
 	Next
 
 EndFunc   ;==>TrainArmyNumber
+;------------------CUSTOM LOGIC By RK MOD - END------------------
 
 Func DeleteQueued($sArmyTypeQueued, $iOffsetQueued = 802)
 
@@ -1575,21 +1579,22 @@ Func DeleteQueued($sArmyTypeQueued, $iOffsetQueued = 802)
 	WEnd
 EndFunc   ;==>DeleteQueued
 
-Func MakingDonatedTroops()
-	; notes $avDefaultTroopGroup[19][0] = TroopName | [1] = TroopNamePosition | [2] = TroopHeight | [3] = Times | [4] = qty | [5] = marker for DarkTroop or ElixerTroop]
-	Local $avDefaultTroopGroup[19][6] = [ _
-			["Arch", 1, 1, 25, 0, "e"], ["Giant", 2, 5, 120, 0, "e"], ["Wall", 4, 2, 60, 0, "e"], ["Barb", 0, 1, 20, 0, "e"], ["Gobl", 3, 1, 30, 0, "e"], ["Heal", 7, 14, 600, 0, "e"], _
-			["Pekk", 9, 25, 900, 0, "e"], ["Ball", 5, 5, 300, 0, "e"], ["Wiza", 6, 4, 300, 0, "e"], ["Drag", 8, 20, 900, 0, "e"], ["BabyD", 10, 10, 600, 0, "e"], ["Mine", 11, 6, 300, 0, "e"], _
-			["Mini", 0, 2, 45, 0, "d"], ["Hogs", 1, 5, 120, 0, "d"], ["Valk", 2, 8, 300, 0, "d"], ["Gole", 3, 30, 900, 0, "d"], ["Witc", 4, 12, 600, 0, "d"], ["Lava", 5, 30, 900, 0, "d"], _
-			["Bowl", 6, 6, 300, 0, "d"]]
+Func MakingDonatedTroops($sType = "All")
+	Local $avDefaultTroopGroup[$eTroopCount][6]
+	For $i = 0 To $eTroopCount - 1
+		$avDefaultTroopGroup[$i][0] = $g_asTroopShortNames[$i]
+		$avDefaultTroopGroup[$i][1] = $i
+		$avDefaultTroopGroup[$i][2] = $g_aiTroopSpace[$i]
+		$avDefaultTroopGroup[$i][3] = $g_aiTroopTrainTime[$i]
+		$avDefaultTroopGroup[$i][4] = 0
+		$avDefaultTroopGroup[$i][5] = $i >= $eMini ? "d" : "e"
+	Next
 
 	; notes $avDefaultTroopGroup[19][5]
 	; notes $avDefaultTroopGroup[19][0] = TroopName | [1] = TroopNamePosition | [2] = TroopHeight | [3] = Times | [4] = qty | [5] = marker for DarkTroop or ElixerTroop]
 	; notes ClickDrag(616, 445 + $g_iMidOffsetY, 400, 445 + $g_iMidOffsetY, 2000) ; Click drag for dark Troops
 	; notes	ClickDrag(400, 445 + $g_iMidOffsetY, 616, 445 + $g_iMidOffsetY, 2000) ; Click drag for Elixer Troops
 	; notes $RemainTrainSpace[0] = Current Army  | [1] = Total Army Capacity  | [2] = Remain Space for the current Army
-
-
 
 	Local $RemainTrainSpace
 	Local $Plural = 0
@@ -1598,16 +1603,19 @@ Func MakingDonatedTroops()
 	Local $areThereDonSiegeMachine = 0
 
 	For $j = 0 To $eTroopCount - 1
+		If $sType <> "Troops" And $sType <> "All" Then ExitLoop
 		If Not $g_bRunState Then Return
 		$areThereDonTroop += $g_aiDonateTroops[$j]
 	Next
 
 	For $j = 0 To $eSpellCount - 1
+		If $sType <> "Spells" And $sType <> "All" Then ExitLoop
 		If Not $g_bRunState Then Return
 		$areThereDonSpell += $g_aiDonateSpells[$j]
 	Next
 
 	For $j = 0 To $eSiegeMachineCount - 1
+		If $sType <> "Siege" And $sType <> "All" Then ExitLoop
 		If Not $g_bRunState Then Return
 		$areThereDonSiegeMachine += $g_aiDonateSiegeMachines[$j]
 	Next
@@ -1625,7 +1633,7 @@ Func MakingDonatedTroops()
 			Next
 		Next
 
-		If Not OpenTroopsTab(True, "MakingDonatedTroops()") Then Return
+		If Not OpenTroopsTab($sType = "All" ? True : False, "MakingDonatedTroops()") Then Return
 
 		For $i = 0 To UBound($avDefaultTroopGroup, 1) - 1
 			If Not $g_bRunState Then Return
@@ -1695,14 +1703,16 @@ Func MakingDonatedTroops()
 			EndIf
 		Next
 		;Top Off any remianing space with archers
-		$RemainTrainSpace = GetOCRCurrent(48, 160)
-		If $RemainTrainSpace[0] < $RemainTrainSpace[1] Then ; army camps full
-			Local $howMuch = $RemainTrainSpace[2]
-			TrainIt($eTroopArcher, $howMuch, $g_iTrainClickDelay)
-			;PureClick($TrainArch[0], $TrainArch[1], $howMuch, 500)
-			If $RemainTrainSpace[2] > 0 Then $Plural = 1
-			SetLog(" - Trained " & $howMuch & " archer(s)!", $COLOR_ACTION)
-			If _Sleep(1000) Then Return ; Needed Delay, OCR was not picking up Troop Changes
+		If $sType = "All" Then
+			$RemainTrainSpace = GetOCRCurrent(48, 160)
+			If $RemainTrainSpace[0] < $RemainTrainSpace[1] Then ; army camps full
+				Local $howMuch = $RemainTrainSpace[2]
+				TrainIt($eTroopArcher, $howMuch, $g_iTrainClickDelay)
+				;PureClick($TrainArch[0], $TrainArch[1], $howMuch, 500)
+				If $RemainTrainSpace[2] > 0 Then $Plural = 1
+				SetLog(" - Trained " & $howMuch & " archer(s)!", $COLOR_ACTION)
+				If _Sleep(1000) Then Return ; Needed Delay, OCR was not picking up Troop Changes
+			EndIf
 		EndIf
 		;Ensure all donate values are reset to zero
 		For $j = 0 To UBound($avDefaultTroopGroup, 1) - 1
@@ -1712,7 +1722,7 @@ Func MakingDonatedTroops()
 
 	If $areThereDonSpell > 0 Then
 		;Train Donated Spells
-		If Not OpenSpellsTab(True, "MakingDonatedTroops()") Then Return
+		If Not OpenSpellsTab($sType = "All" ? True : False, "MakingDonatedTroops()") Then Return
 
 		For $i = 0 To $eSpellCount - 1
 			If Not $g_bRunState Then Return
@@ -1723,9 +1733,7 @@ Func MakingDonatedTroops()
 				;PureClick($pos[0], $pos[1], $howMuch, 500)
 				If _Sleep($DELAYRESPOND) Then Return ; add 5ms delay to catch TrainIt errors, and force return to back to main loop
 				SetLog(" - Brewed " & $howMuch & " " & $g_asSpellNames[$i] & ($howMuch > 1 ? " Spells" : " Spell"), $COLOR_ACTION)
-				$g_aiDonateTroops[$i] -= $howMuch
-
-
+				$g_aiDonateSpells[$i] -= $howMuch
 
 				If _Sleep(1000) Then Return
 				$RemainTrainSpace = GetOCRCurrent(48, 160)
@@ -1736,7 +1744,7 @@ Func MakingDonatedTroops()
 
 	If $areThereDonSiegeMachine > 0 Then
 		;Train Donated Sieges
-		If Not OpenSiegeMachinesTab(True, "MakingDonatedTroops()") Then Return
+		If Not OpenSiegeMachinesTab($sType = "All" ? True : False, "MakingDonatedTroops()") Then Return
 
 		For $iSiegeIndex = $eSiegeWallWrecker To $eSiegeMachineCount - 1
 			If Not $g_bRunState Then Return
@@ -1751,17 +1759,20 @@ Func MakingDonatedTroops()
 					PureClick($checkPixel[0], $checkPixel[1], $HowMany, $g_iTrainClickDelay)
 					Local $sSiegeName = $HowMany >= 2 ? $g_asSiegeMachineNames[$iSiegeIndex] & "s" : $g_asSiegeMachineNames[$iSiegeIndex] & ""
 					SetLog(" - Trained " & $HowMany & " " & $g_asSiegeMachineNames[$iSiegeIndex] & ($HowMany > 1 ? " SiegeMachines" : " SiegeMachine"), $COLOR_ACTION)
-					$g_aiDonateTroops[$iSiegeIndex] -= $HowMany
+					$g_aiDonateSiegeMachines[$iSiegeIndex] -= $HowMany
 				EndIf
 			EndIf
 		Next
+		; Get Siege Capacities
+		Local $sSiegeInfo = getArmyCapacityOnTrainTroops(57, 160) ; OCR read Siege built and total
+		If $g_bDebugSetlogTrain Then SetLog("OCR $sSiegeInfo = " & $sSiegeInfo, $COLOR_DEBUG)
+		Local $aGetSiegeCap = StringSplit($sSiegeInfo, "#", $STR_NOCOUNT) ; split the built Siege number from the total Siege number
+		SetLog("Total Siege Workshop Capacity: " & $aGetSiegeCap[0] & "/" & $aGetSiegeCap[1])
+		If Number($aGetSiegeCap[0]) = 0 Then Return
 	EndIf
-	; Get Siege Capacities
-	Local $sSiegeInfo = getArmyCapacityOnTrainTroops(57, 160) ; OCR read Siege built and total
-	If $g_bDebugSetlogTrain Then SetLog("OCR $sSiegeInfo = " & $sSiegeInfo, $COLOR_DEBUG)
-	Local $aGetSiegeCap = StringSplit($sSiegeInfo, "#", $STR_NOCOUNT) ; split the built Siege number from the total Siege number
-	SetLog("Total Siege Workshop Capacity: " & $aGetSiegeCap[0] & "/" & $aGetSiegeCap[1])
-	If Number($aGetSiegeCap[0]) = 0 Then Return
+
+	Return True
+
 EndFunc   ;==>MakingDonatedTroops
 
 Func GetOCRCurrent($x_start, $y_start)
@@ -1890,6 +1901,7 @@ Func IIf($Condition, $IfTrue, $IfFalse)
 	EndIf
 EndFunc   ;==>IIf
 
+;------------------REMOVED By RK MOD Using Own _ArryRemoveBlanks From RK ArrayFunctions.au3 - START------------------
 ;Func _ArryRemoveBlanks(ByRef $aArray)
 ;	Local $iCounter = 0
 ;	For $i = 0 To UBound($aArray) - 1
@@ -1900,6 +1912,7 @@ EndFunc   ;==>IIf
 ;	Next
 ;	ReDim $aArray[$iCounter]
 ;EndFunc   ;==>_ArryRemoveBlanks
+;------------------REMOVED By RK MOD - END------------------
 
 Func ValidateSearchArmyResult($aSearchResult, $iIndex = 0)
 	If IsArray($aSearchResult) Then

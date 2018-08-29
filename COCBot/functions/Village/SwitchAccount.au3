@@ -178,8 +178,8 @@ Func CheckSwitchAcc()
 			If $g_iNextAccount > $g_iTotalAcc Then $g_iNextAccount = 0
 			While $abAccountNo[$g_iNextAccount] = False
 				$g_iNextAccount += 1
-				SetDebugLog("- While Account: " & $g_asProfileName[$g_iNextAccount] & " number: " & $g_iNextAccount + 1)
 				If $g_iNextAccount > $g_iTotalAcc Then $g_iNextAccount = 0 ; avoid idle Account
+				SetDebugLog("- While Account: " & $g_asProfileName[$g_iNextAccount] & " number: " & $g_iNextAccount + 1)
 			WEnd
 			If $g_abPBActive[$g_iNextAccount] Then ;   updated remain train time if PBT active
 				If $g_aiTimerStart[$g_iNextAccount] <> 0 Then $g_aiRemainTrainTime[$g_iNextAccount] -= Round(TimerDiff($g_aiTimerStart[$g_iNextAccount]) / 1000 / 60, 1)
@@ -204,6 +204,10 @@ Func CheckSwitchAcc()
 
 				$g_iNextAccount = $g_iNextAccount + 1
 				If $g_iNextAccount > $g_iTotalAcc Then $g_iNextAccount = 0
+				While $abAccountNo[$g_iNextAccount] = False
+					$g_iNextAccount += 1
+					If $g_iNextAccount > $g_iTotalAcc Then $g_iNextAccount = 0 ; avoid idle Account
+				WEnd
 			Else
 				ExitLoop
 			EndIf
@@ -253,9 +257,6 @@ Func SwitchCOCAcc($NextAccount)
 	If $StartOnlineTime <> 0 And Not $g_bReMatchAcc Then SetSwitchAccLog(" - Acc " & $g_iCurAccount + 1 & ", online: " & Round(TimerDiff($StartOnlineTime) / 1000 / 60, 1) & "m")
 
 	Local $bSharedPrefs = $g_bChkSharedPrefs And HaveSharedPrefs($g_asProfileName[$g_iNextAccount])
-
-	If $g_bChkAltuFaltuSCID = False then 		;AltuFaltu n
-
 	If $bSharedPrefs And $g_PushedSharedPrefsProfile = $g_asProfileName[$g_iNextAccount] Then
 		; shared prefs already pushed
 		$bResult = True
@@ -350,21 +351,13 @@ Func SwitchCOCAcc($NextAccount)
 		EndIf
 		If _Sleep(500) Then Return
 	EndIf
-;AltuFaltu s
-Else
-	If SwitchCOCAcc_SCID($NextAccount) = True Then
-		$bResult = True
-	Else
-		$bResult = False
-	EndIf
-EndIf
-;AltuFaltu e
 
 	If $bResult = True Then
 		$iRetry = 0
 		$g_bReMatchAcc = False
 		$g_abNotNeedAllTime[0] = 1
 		$g_abNotNeedAllTime[1] = 1
+		ResetVariables("donated") ; reset for new account
 		$g_aiAttackedCountSwitch[$g_iCurAccount] = $g_aiAttackedCountAcc[$g_iCurAccount]
 		$g_iCurAccount = $NextAccount
 		If $g_sProfileCurrentName <> $g_asProfileName[$g_iNextAccount] Then
@@ -386,6 +379,13 @@ EndIf
 			OpenCoC()
 			waitMainScreen()
 		EndIf
+
+		; Reseting Hero Status
+		$g_iHeroAvailable = $eHeroNone
+		$g_iHeroUpgradingBit = $eHeroNone
+		For $i = 0 To 2
+			$g_iHeroUpgrading[$i] = 0
+		Next
 
 		$StartOnlineTime = TimerInit()
 		SetSwitchAccLog("Switched to Acc [" & $NextAccount + 1 & "]", $COLOR_SUCCESS)
@@ -419,7 +419,6 @@ EndIf
 		EndIf
 
 	Else
-	If $g_SwitchSCIDAccFatalErrorAF = False Then 	; AltuFaltu n
 		$iRetry += 1
 		$g_bReMatchAcc = True
 		SetLog("Switching account failed!", $COLOR_ERROR)
@@ -433,16 +432,10 @@ EndIf
 			$iRetry = 0
 			UniversalCloseWaitOpenCoC()
 		EndIf
-	EndIf	; AltuFaltu n
 	EndIf
-	If $g_SwitchSCIDAccFatalErrorAF = False Then 	; AltuFaltu n
 	waitMainScreen()
 	If $g_bForceSinglePBLogoff Then $g_bGForcePBTUpdate = True
 	runBot()
-	Else
-	$g_SwitchSCIDAccFatalErrorAF = False
-	BtnStop()
-	EndIf
 
 EndFunc   ;==>SwitchCOCAcc
 
@@ -631,7 +624,7 @@ Func SwitchCOCAcc_ConnectedSCID(ByRef $bResult)
 		If _ColorCheck(_GetPixelColor($aButtonConnectedSCID[0], $aButtonConnectedSCID[1], True), Hex($aButtonConnectedSCID[2], 6), $aButtonConnectedSCID[3]) Then
 			Click($aButtonConnectedSCID[0], $aButtonConnectedSCID[1], 1, 0, "Click Connected SC_ID")
 			SetLog("   1. Click Connected Supercell ID")
-			If _Sleep(2500) Then Return "Exit"
+			If _Sleep(600) Then Return "Exit"
 			;ExitLoop
 			Return "OK"
 		EndIf
@@ -649,21 +642,21 @@ Func SwitchCOCAcc_ConnectedSCID(ByRef $bResult)
 EndFunc   ;==>SwitchCOCAcc_ConnectedSCID
 
 Func SwitchCOCAcc_ConfirmSCID(ByRef $bResult)
-	For $i = 0 To 20 ; Checking LogOut & Confirm button continuously in 20sec
-		If _ColorCheck(_GetPixelColor($aButtonLogOutSCID[0], $aButtonLogOutSCID[1], True), Hex($aButtonLogOutSCID[2], 6), $aButtonLogOutSCID[3]) Then
+	For $i = 0 To 30 ; Checking LogOut & Confirm button continuously in 30sec
+		If QuickMIS("BC1", $g_sImgLogOutButton, 620, 246, 693, 308) Then ; Check Log Out button
 			SetLog("   2. Click Log Out Supercell ID")
-			Click($aButtonLogOutSCID[0], $aButtonLogOutSCID[1], 2, 500, "Click Log Out SC_ID") ; Click LogOut button
+			Click($g_iQuickMISX + 620, $g_iQuickMISY + 246, 2, 500, "Click Log Out SC_ID") ; Click LogOut button
 			If _Sleep(500) Then Return "Exit"
 
-			For $j = 0 To 10 ; Click Confirm button
-				If _ColorCheck(_GetPixelColor($aButtonConfirmSCID[0], $aButtonConfirmSCID[1], True), Hex($aButtonConfirmSCID[2], 6), $aButtonConfirmSCID[3]) Then
+			For $j = 0 To 20
+				If QuickMIS("BC1", $g_sImgConfirmButton, 400, 414, 586, 455) Then ; Check Confirm button
 					SetLog("   3. Click Confirm Supercell ID")
-					Click($aButtonConfirmSCID[0], $aButtonConfirmSCID[1], 1, 0, "Click Confirm SC_ID")
+					Click($g_iQuickMISX + 400, $g_iQuickMISY + 414, 1, 0, "Click Confirm SC_ID") ; Click Confirm button
 					If _Sleep(500) Then Return "Exit"
 					;ExitLoop
 					Return "OK"
 				EndIf
-				If $j = 10 Then
+				If $j = 20 Then
 					$bResult = False
 					;ExitLoop 3
 					Return "Error"
@@ -672,9 +665,7 @@ Func SwitchCOCAcc_ConfirmSCID(ByRef $bResult)
 			Next
 		EndIf
 
-		SetDebugLog("Checking LogOut & Confirm button x:" & $aButtonLogOutSCID[0] & " y:" & $aButtonLogOutSCID[1] & " : " & _GetPixelColor($aButtonLogOutSCID[0], $aButtonLogOutSCID[1], True))
-
-		If $i = 20 Then
+		If $i = 30 Then
 			$bResult = False
 			;ExitLoop 2
 			Return "Error"
@@ -686,28 +677,55 @@ EndFunc   ;==>SwitchCOCAcc_ConfirmSCID
 
 Func SwitchCOCAcc_ClickAccountSCID(ByRef $bResult, $NextAccount, $iStep = 4)
 	Local $YCoord = Int(336 + 73.5 * $NextAccount)
+	Local $DeltaTotal8Acc = $g_iTotalAcc = 7 ? 14 : 0
 	Local $iRetryCloseSCIDTab = 0
 	For $i = 0 To 30 ; Checking "Log in with SuperCell ID" button continuously in 30sec
 		If _ColorCheck(_GetPixelColor($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], True), Hex($aLoginWithSupercellID[2], 6), $aLoginWithSupercellID[3]) And _
-				_ColorCheck(_GetPixelColor($aLoginWithSupercellID2[0], $aLoginWithSupercellID2[1], True), Hex($aLoginWithSupercellID2[2], 6), $aLoginWithSupercellID2[3]) Then
+		_ColorCheck(_GetPixelColor($aLoginWithSupercellID2[0], $aLoginWithSupercellID2[1], True), Hex($aLoginWithSupercellID2[2], 6), $aLoginWithSupercellID2[3]) Then
 			SetLog("   " & $iStep & ". Click Log in with Supercell ID")
 			Click($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], 1, 0, "Click Log in with SC_ID")
-			If _Sleep(3000) Then Return "Exit"
+			If _Sleep(600) Then Return "Exit"
 
 			For $j = 0 To 20 ; Checking Account List continuously in 20sec
-				If _ColorCheck(_GetPixelColor($aListAccountSCID[0], $aListAccountSCID[1], True), Hex($aListAccountSCID[2], 6), $aListAccountSCID[3]) Then
+				If QuickMIS("BC1", $g_sImgListAccounts, 490, 201, 524, 232) Then
+					Local $bDragDone = False
 					If $NextAccount >= 4 Then
 						$YCoord = Int(408 - 73.5 * ($g_iTotalAcc - $NextAccount))
+						SetLog("Dragging accounts")
+						;Local $iRandomDragX = Random(237, 550, 1)
+						;ClickDrag($iRandomDragX, 590, $iRandomDragX, 172, 2000)
 						ClickDrag(700, 590, 700, 172, 2000)
-						If _Sleep(500) Then Return "Exit"
+						If _Sleep(250) Then Return "Exit"
+						For $x = 0 To 5
+							If QuickMIS("N1", $g_sImgListAccounts, 415, 470, 442, 487) = "OR" Then
+								$bDragDone =  True
+								ExitLoop
+							EndIf
+							If _Sleep(250) Then Return "Exit" ; wait 1.5 seconds for last account to show up
+						Next
 					EndIf
-					Click(270, $YCoord) ; Click Account
-					SetLog("   " & ($iStep + 1) & ". Click Account [" & $NextAccount + 1 & "] Supercell ID")
-					If _Sleep(500) Then Return "Exit"
-					SetLog("Please wait for loading CoC...!")
+
+					If $NextAccount < 4 Or $bDragDone Then
+						Click(270, $YCoord, 3, 1000) ; Click Account
+						If _Sleep(250) Then Return "Exit"
+						$bResult = True
+					EndIf
+				ElseIf QuickMIS("BC1", $g_sImgListAccounts, 470, 190, 497, 297) Then
+					$YCoord = Int(359 - 16 * ($g_iTotalAcc - 1) + 32 * $NextAccount) + $DeltaTotal8Acc
+					Click(300, $YCoord, 3, 1000) ; Click Account
+					If _Sleep(250) Then Return "Exit"
 					$bResult = True
+				EndIf
+
+				If $bResult Then
+					SetLog("   " & ($iStep + 1) & ". Click Account [" & $NextAccount + 1 & "] Supercell ID")
+
+					SetLog("Please wait for loading CoC...!")
+
 					Return "OK"
-				ElseIf $j = 10 Then
+				EndIf
+
+				If $j = 20 Then
 					$iRetryCloseSCIDTab += 1
 					If $iRetryCloseSCIDTab <= 3 Then
 						SetLog("   " & $iStep & ".5 Click Close Tab Supercell ID")
@@ -722,12 +740,6 @@ Func SwitchCOCAcc_ClickAccountSCID(ByRef $bResult, $NextAccount, $iStep = 4)
 					EndIf
 				EndIf
 
-				SetDebugLog("Checking Account List x:" & $aListAccountSCID[0] & " y:" & $aListAccountSCID[1] & " : " & _GetPixelColor($aListAccountSCID[0], $aListAccountSCID[1], True))
-				If $j = 20 Then
-					$bResult = False
-					;ExitLoop 2
-					Return "Error"
-				EndIf
 				If _Sleep(900) Then Return "Exit"
 			Next
 
@@ -950,7 +962,7 @@ Func CheckLoginWithSupercellID()
 		Else
 			If $g_bChkSuperCellID And ProfileSwitchAccountEnabled() Then ; select the correct account matching with current profile
 				Local $NextAccount = 0
-				$bResult = True
+				;$bResult = True ;RK MOD
 				For $i = 0 To $g_iTotalAcc
 					If $g_abAccountNo[$i] = True And SwitchAccountEnabled($i) And $g_asProfileName[$i] = $g_sProfileCurrentName Then $NextAccount = $i
 				Next
@@ -983,6 +995,11 @@ Func CheckLoginWithSupercellIDScreen()
 
 	Local $g_sImgSCID = @ScriptDir & "\imgxml\SuperCellID\Accounts"
 	Local $AccountsCoord[0][2]
+	Local $acount = $g_iWhatSCIDAccount2Use
+
+	If $g_bChkSuperCellID And ProfileSwitchAccountEnabled() Then
+		$acount = $g_iCurAccount
+	EndIf
 
 	; Account List check be there, validate with imgloc
 	If UBound(decodeSingleCoord(FindImageInPlace("LoginWithSupercellID", $g_sImgLoginWithSupercellID, "318,678(125,30)", False))) > 1 Then
@@ -992,29 +1009,31 @@ Func CheckLoginWithSupercellIDScreen()
 		Click($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], 1, 0, "Click Log in with SC_ID")
 		If _Sleep(2000) Then Return
 		For $i = 0 To 10
-			Local $XCoordinates = QuickMIS("CX", $g_sImgSCID, 600, 165, 690, 605, True, $g_bDebugImageSave)
+			Local $XCoordinates = QuickMIS("CX", $g_sImgSCID, 550, 165, 690, 605, True, $g_bDebugImageSave)
 			If UBound($XCoordinates) > 0 Then
 				SetDebugLog("[SCID Accounts]: " & UBound($XCoordinates), $COLOR_DEBUG)
 				ReDim $AccountsCoord[UBound($XCoordinates)][2]
 				For $j = 0 To UBound($XCoordinates) - 1
 					Local $Coordinates = StringSplit($XCoordinates[$j], ",", 2)
-					$AccountsCoord[$j][0] = $Coordinates[0] + 600
+					$AccountsCoord[$j][0] = $Coordinates[0] + 550
 					$AccountsCoord[$j][1] = $Coordinates[1] + 165
-					SetDebugLog("[" & $j & "] Account coordinates: " & $AccountsCoord[$j][0] & "," & $AccountsCoord[$j][1])
 				Next
 				_ArraySort($AccountsCoord, 0, 0, 0, 1) ; short by column 1 [Y]
-				Setlog("SC_ID account number " & $g_iWhatSCIDAccount2Use + 1)
-				If $g_iWhatSCIDAccount2Use + 1 > UBound($XCoordinates) Then
-					Setlog("You selected a SCID undetected account!!", $COLOR_ERROR)
+				For $j = 0 To UBound($AccountsCoord) - 1
+					SetDebugLog("[" & $j & "] Account coordinates: " & $AccountsCoord[$j][0] & "," & $AccountsCoord[$j][1] & " named: " & $g_asProfileName[$j])
+				Next
+				Setlog("SC_ID account number " & $acount + 1 & " named: " & $g_asProfileName[$acount])
+				If $acount + 1 > UBound($XCoordinates) Then
+					setlog("You selected a SCID undetected account!!", $COLOR_ERROR)
 					ExitLoop
 				EndIf
-				Click($AccountsCoord[$g_iWhatSCIDAccount2Use][0] - 150, $AccountsCoord[$g_iWhatSCIDAccount2Use][1], 1)
+				Click($AccountsCoord[$acount][0] - 150, $AccountsCoord[$acount][1], 1)
 				SetLog("Please wait for loading CoC...!")
 				ExitLoop
 			EndIf
 
 			If $g_bRunState = False Then Return
-			If _Sleep(1000) Then Return
+			If _sleep(1000) Then Return
 		Next
 	Else
 		SetDebugLog("Log in with Supercell ID boot screen not verified")
@@ -1279,4 +1298,3 @@ Func CheckLastActiveAccount($i)
 	Return $iSleeptime
 
 EndFunc   ;==>CheckLastActiveAccount
-

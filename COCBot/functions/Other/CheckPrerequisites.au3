@@ -42,10 +42,12 @@ Func CheckPrerequisites($bSilent = False)
 		Opt('WinTitleMatchMode', 4)
 		Local $pos = ControlGetPos("classname=Shell_TrayWnd", "", "")
 		If Not @error Then
-			If $pos[2] > $pos[3] Then
-				SetLog("Please set your taskbar location to Right!", $COLOR_ERROR)
-				SetLog("TASKBAR SIZE: " & $pos[2] & "," & $pos[3], $COLOR_ERROR)
-				$isAllOK = False
+			If $pos[2] > $pos[3] And Int($pos[3]) + 732 > 768 Then
+				SetLog("Display: " & @DesktopWidth & "," & @DesktopHeight, $COLOR_ERROR)
+				SetLog("Windows TaskBar: " & $pos[2] & "," & $pos[3], $COLOR_ERROR)
+				SetLog("Emulator[732] and taskbar[" & $pos[3] & "] doesn't fit on your display!", $COLOR_ERROR)
+				SetLog("Please set your Windows taskbar location to Right!", $COLOR_ERROR)
+				;$isAllOK = False
 			EndIf
 		EndIf
 		Opt('WinTitleMatchMode', 3)
@@ -95,15 +97,24 @@ Func isEveryFileInstalled($bSilent = False)
 	Local $aCheckFiles = [@ScriptDir & "\COCBot", _
 			$g_sLibPath, _
 			@ScriptDir & "\Images", _
-			$g_sLibMyBotPath, _
-			$g_sLibImageSearchPath, _
-			$g_sLibIconPath, _
+			@ScriptDir & "\imgxml", _
+			$g_sLibPath & "\helper_functions.dll", _
+			$g_sLibPath & "\ImageSearchDLL.dll", _
+			$g_sLibPath & "\MBRBot.dll", _
+			$g_sLibPath & "\MyBot.run.dll", _
+			$g_sLibPath & "\sqlite3.dll", _
 			$g_sLibPath & "\opencv_core220.dll", _
 			$g_sLibPath & "\opencv_imgproc220.dll"]
 
 	For $vElement In $aCheckFiles
 		$iCount += FileExists($vElement)
 	Next
+	; How many .xml files in imgxml folder
+	Local $xmls = _FileListToArrayRec(@ScriptDir & "\imgxml\", "*.xml", $FLTAR_FILES + $FLTAR_NOHIDDEN, $FLTAR_RECUR, $FLTAR_NOSORT)
+	If IsArray($xmls) Then
+		If Number($xmls[0]) < 570 Then SetLog("Verify '\imgxml\' folder, found " & $xmls[0] & " *.xml files.", $COLOR_ERROR)
+	EndIf
+
 	If $iCount = UBound($aCheckFiles) Then
 		$bResult = True
 	ElseIf Not $bSilent Then

@@ -117,24 +117,17 @@ Func UpgradeBuilding()
 		SetLog("Upgrade #" & $iz + 1 & " " & $g_avBuildingUpgrades[$iz][4] & " Selected", $COLOR_SUCCESS) ; Tell logfile which upgrade working on.
 		If $g_bDebugSetlog Then SetDebugLog("-Upgrade location =  " & "(" & $g_avBuildingUpgrades[$iz][0] & "," & $g_avBuildingUpgrades[$iz][1] & ")", $COLOR_DEBUG) ;Debug
 		If _Sleep($DELAYUPGRADEBUILDING1) Then Return
-
+		If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel < 13 Then
+		SetLog("TownHall Level Check Complete", $COLOR_INFO)
+			Else
+				Return False
+				SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
+		EndIf
 		Switch $g_avBuildingUpgrades[$iz][3] ;Change action based on upgrade type!
 			Case "Gold"
-				If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel > 13 Then
-					If $g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
-						If $iAvailGold < $g_avBuildingUpgrades[$iz][2] Then ; Do we have enough Gold?
-							SetLog("Insufficent Gold for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2], $COLOR_INFO)
-							ContinueLoop
-						EndIf
-					ElseIf $g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
-						If $iAvailGold < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinGold Then ; Do we have enough Gold?
-							SetLog("Insufficent Gold for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinGold, $COLOR_INFO)
-							ContinueLoop
-						EndIf
-					EndIf
-				Else
-					Return False
-					SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
+				If $iAvailGold < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinGold Then ; Do we have enough Gold?
+					SetLog("Insufficent Gold for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinGold, $COLOR_INFO)
+					ContinueLoop
 				EndIf
 				If UpgradeNormal($iz) = False Then ContinueLoop
 				$iUpgradeAction += 2 ^ ($iz + 1)
@@ -145,21 +138,9 @@ Func UpgradeBuilding()
 				$iAvailGold -= $g_avBuildingUpgrades[$iz][2]
 				$iAvailBldr -= 1
 			Case "Elixir"
-				If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel > 13 Then
-					If $g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
-						If $iAvailElixir < $g_avBuildingUpgrades[$iz][2] Then ; Do we have enough Elixir?
-							SetLog("Insufficent Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2], $COLOR_INFO)
-							ContinueLoop
-						EndIf
-					ElseIf $g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakGE[$g_iTownHallLevel - 1] Then
-						If $iAvailElixir < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinElixir Then ; Do we have enough Elixir?
-							SetLog("Insufficent Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinElixir, $COLOR_INFO)
-							ContinueLoop
-						EndIf
-					EndIf	
-				Else
-					Return False
-					SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
+				If $iAvailElixir < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinElixir Then
+					SetLog("Insufficent Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinElixir, $COLOR_INFO)
+					ContinueLoop
 				EndIf
 				If UpgradeNormal($iz) = False Then ContinueLoop
 				$iUpgradeAction += 2 ^ ($iz + 1)
@@ -170,21 +151,9 @@ Func UpgradeBuilding()
 				$iAvailElixir -= $g_avBuildingUpgrades[$iz][2]
 				$iAvailBldr -= 1
 			Case "Dark"
-				If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel > 13 Then
-					If $g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakDE[$g_iTownHallLevel - 1] Then
-						If $iAvailDark < $g_avBuildingUpgrades[$iz][2] Then ; Do we have enough Dark?
-							SetLog("Insufficent Dark Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2], $COLOR_INFO)
-							ContinueLoop
-						EndIf
-					ElseIf $g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakDE[$g_iTownHallLevel - 1] Then
-						If $iAvailDark < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinDark Then ; Do we have enough Dark?
-							SetLog("Insufficent Dark Elixir for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinElixir, $COLOR_INFO)
-							ContinueLoop
-						EndIf
-					EndIf	
-				Else
-					Return False
-					SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
+				If $iAvailDark < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinDark Then
+					SetLog("Insufficent Dark for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinDark, $COLOR_INFO)
+					ContinueLoop
 				EndIf
 				If UpgradeHero($iz) = False Then ContinueLoop
 				$iUpgradeAction += 2 ^ ($iz + 1)

@@ -187,7 +187,7 @@ Func _AutoUpgrade()
 		; initiate a False boolean, that firstly says that there is no sufficent resource to launch upgrade
 		Local $bSufficentResourceToUpgrade = False
 		; if Cost of upgrade + Value set in settings to be kept after upgrade > Current village resource, make boolean True and can continue
-		If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel > 13 Then
+		If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel < 13 Then
 			Switch $g_aUpgradeResourceCostDuration[0]
 				Case "Gold"
 					If ((($g_aiCurrentLoot[$eLootGold] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinGold)) And ($g_aUpgradeResourceCostDuration[1] < $g_iLimitBreakGE[$g_iTownHallLevel - 1])) Or _

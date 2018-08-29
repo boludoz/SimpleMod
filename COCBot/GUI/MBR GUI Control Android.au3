@@ -103,3 +103,13 @@ Func cmbAndroidBackgroundMode()
 	$g_iAndroidBackgroundMode = _GUICtrlComboBox_GetCurSel($g_hCmbAndroidBackgroundMode)
 	UpdateAndroidBackgroundMode()
 EndFunc   ;==>cmbAndroidBackgroundMode
+
+Func EnableShowTouchs()
+	AndroidAdbSendShellCommand("content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:1")
+	SetDebugLog("EnableShowTouchs ON")
+EndFunc
+
+Func DisableShowTouchs()
+	AndroidAdbSendShellCommand("content insert --uri content://settings/system --bind name:s:show_touches --bind value:i:0")
+	SetDebugLog("EnableShowTouchs OFF")
+EndFunc

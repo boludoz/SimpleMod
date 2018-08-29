@@ -16,7 +16,7 @@
 #include-once
 #include <WinAPISys.au3>
 
-Func FClick($x, $y, $times = 1, $speed = 0, $debugtxt = "")
+Func FClick($x, $y, $times = 1, $speed = 0, $debugtxt = "") ; EDITED By RK MOD (Called from BotHumanization.au3)
 	If $g_bDebugClick Or TestCapture() Then
 		Local $txt = _DecodeDebug($debugtxt)
 		SetLog("Click " & $x & "," & $y & "," & $times & "," & $speed & " " & $debugtxt & $txt, $COLOR_ACTION, "Verdana", "7.5", 0)
@@ -26,8 +26,6 @@ Func FClick($x, $y, $times = 1, $speed = 0, $debugtxt = "")
 
 	If $g_bAndroidAdbClick = True Then
 		AndroidClick($x, $y, $times, $speed)
-	EndIf
-	If $g_bAndroidAdbClick = True Then
 		Return
 	EndIf
 
@@ -108,12 +106,10 @@ Func BuildingClick($x, $y, $debugtxt = "")
 EndFunc   ;==>BuildingClick
 
 Func BuildingClickP($point, $debugtxt = "")
-	Local $x = $point[0]
-	Local $y = $point[1]
-	Return BuildingClick($x, $y, $debugtxt)
+	Return BuildingClick($point[0], $point[1], $debugtxt)
 EndFunc   ;==>BuildingClickP
 
-Func FPureClick($x, $y, $times = 1, $speed = 0, $debugtxt = "")
+Func FPureClick($x, $y, $times = 1, $speed = 0, $debugtxt = "") ; EDITED By RK MOD (Called from BotHumanization.au3)
 	If $g_bDebugClick Then
 		Local $txt = _DecodeDebug($debugtxt)
 		SetLog("PureClick " & $x & "," & $y & "," & $times & "," & $speed & " " & $debugtxt & $txt, $COLOR_ACTION, "Verdana", "7.5", 0)
@@ -122,9 +118,9 @@ Func FPureClick($x, $y, $times = 1, $speed = 0, $debugtxt = "")
 	If TestCapture() Then Return
 
 	If $g_bAndroidAdbClick = True Then
-		AndroidClick($x, $y, $times, $speed, False)
-	EndIf
-	If $g_bAndroidAdbClick = True Then
+		For $i = 1 to $times
+			AndroidClick($x, $y, 1, $speed, False)
+		Next
 		Return
 	EndIf
 
@@ -147,7 +143,7 @@ Func PureClickP($point, $howMuch = 1, $speed = 0, $debugtxt = "")
 	PureClick($point[0], $point[1], $howMuch, $speed, $debugtxt)
 EndFunc   ;==>PureClickP
 
-Func FGemClick($x, $y, $times = 1, $speed = 0, $debugtxt = "")
+Func FGemClick($x, $y, $times = 1, $speed = 0, $debugtxt = "") ; EDITED By RK MOD (Called from BotHumanization.au3)
 	If $g_bDebugClick Then
 		Local $txt = _DecodeDebug($debugtxt)
 		SetLog("GemClick " & $x & "," & $y & "," & $times & "," & $speed & " " & $debugtxt & $txt, $COLOR_ACTION, "Verdana", "7.5", 0)

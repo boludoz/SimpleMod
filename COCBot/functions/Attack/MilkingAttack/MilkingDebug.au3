@@ -215,7 +215,7 @@ Func CheckMilkingBaseTest()
 ;~ 		Next
 
 ;~ 	;		_WinAPI_DeleteObject($g_hBitmap)
-;~ 			setlog ("Found " & $ZombieFoundEli & " collectors ready to attack in: " & Round((__TimerDiff($hTimer) / 1000)) & " seconds")
+;~ 			SetLog ("Found " & $ZombieFoundEli & " collectors ready to attack in: " & Round((__TimerDiff($hTimer) / 1000)) & " seconds")
 ;~ 	SetLog("[" & UBound($g_aiPixelElixirToAttack) & "] Elixir Collectors near red lines")
 ;~
 ;~
