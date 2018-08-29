@@ -22,19 +22,19 @@ Func CheckVersion()
 	If $g_bCheckVersion Then
 		CheckVersionHTML()
 		If $g_sLastModversion = "" Then
-			SetLog("WE CANNOT OBTAIN MOD VERSION AT THIS TIME", $COLOR_ACTION)
+			SetLog("WE CANNOT OBTAIN RK MOD VERSION AT THIS TIME", $COLOR_ACTION)
 			CheckModVersion()
 		ElseIf VersionNumFromVersionTXT($g_sModversion) < VersionNumFromVersionTXT($g_sLastModversion) Then
-			SetLog("WARNING, YOUR MOD VERSION (" & $g_sModversion & ") IS OUT OF DATE.", $COLOR_ERROR)
+			SetLog("WARNING, YOUR RK MOD VERSION (" & $g_sModversion & ") IS OUT OF DATE.", $COLOR_ERROR)
 			SetLog("CHIEF, PLEASE DOWNLOAD THE LATEST (" & $g_sLastModversion & ")", $COLOR_ERROR)
 			SetLog("FROM https://MyBot.run               ", $COLOR_ERROR)
 			SetLog(" ")
 			_PrintLogVersion($g_sOldModversmessage)
 			CheckModVersion()
 		ElseIf VersionNumFromVersionTXT($g_sModversion) > VersionNumFromVersionTXT($g_sLastModversion) Then
-			SetLog("YOU ARE USING A FUTURE BY RK MOD VERSION CHIEF!", $COLOR_SUCCESS)
-			SetLog("YOUR MOD VERSION: " & $g_sModversion, $COLOR_SUCCESS)
-			SetLog("OFFICIAL MOD VERSION: " & $g_sLastModversion, $COLOR_SUCCESS)
+			SetLog("YOU ARE USING A FUTURE VERSION OF RK MOD CHIEF!", $COLOR_SUCCESS)
+			SetLog("YOUR RK MOD VERSION: " & $g_sModversion, $COLOR_SUCCESS)
+			SetLog("OFFICIAL RK MOD VERSION: " & $g_sLastModversion, $COLOR_SUCCESS)
 			SetLog(" ")
 		Else
 			SetLog("WELCOME CHIEF, YOU HAVE THE LATEST MOD VERSION", $COLOR_SUCCESS)

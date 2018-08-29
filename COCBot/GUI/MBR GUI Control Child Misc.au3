@@ -187,7 +187,8 @@ Func btnPushSharedPrefs()
 EndFunc
 
 Func BtnSaveprofile()
-	Setlog("Saving your setting...", $COLOR_INFO)
+	FileDelete($g_sProfileConfigPath)
+	Setlog("Saving your clear setting...", $COLOR_INFO)
 	SaveConfig()
 	readConfig()
 	applyConfig()

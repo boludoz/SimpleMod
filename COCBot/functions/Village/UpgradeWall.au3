@@ -400,7 +400,7 @@ Func GoldPriority()
 				SetLog("Building: Priority Failure.", $COLOR_ERROR)
 				Return False
 		EndIf
-		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1) Then
+		If ($g_iChkAutoUpgrade = 0) Or ($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[0] = 1) Or ($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1) Then
 			SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else

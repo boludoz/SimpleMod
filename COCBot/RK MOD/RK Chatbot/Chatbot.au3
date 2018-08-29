@@ -56,15 +56,17 @@ Func chkGlobalChat()
     $g_iChkChatGlobal = 1
     If GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_ENABLE)
+		GUICtrlSetState($g_hChkDelayTime, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_ENABLE)
 		GUICtrlSetState($g_hCmbLang, $GUI_SHOW)
-		GUICtrlSetState($g_hChkRusLang, $GUI_ENABLE)
+		GUICtrlSetState($g_hChkRusLang, $GUI_ENABLE) 
 		GUICtrlSetState($g_hTxtEditGlobalMessages1, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtEditGlobalMessages2, $GUI_ENABLE)
 	Else
 	    $g_iChkChatGlobal = 0
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_DISABLE)
+		GUICtrlSetState($g_hChkDelayTime, $GUI_DISABLE)
 		GUICtrlSetState($g_hCmbLang, $GUI_INDETERMINATE)
 		GUICtrlSetState($g_hChkRusLang, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtEditGlobalMessages1, $GUI_DISABLE)
@@ -76,6 +78,10 @@ Func chkGlobalChat()
     	GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
 	EndIf
 EndFunc ;==>chkGlobalChat
+
+Func chkDelayTime()
+    GUICtrlSetState($g_hTxtDelayTimerun, GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED ? $GUI_ENABLE : $GUI_DISABLE)
+EndFunc   ;==>chkReturnTimer
 
 
 Func chkGlobalScramble()
@@ -106,6 +112,7 @@ Func chkClanChat()
 		GUICtrlSetState($g_hChkUseGeneric, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkChatNotify, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkPbSendNewChats, $GUI_ENABLE)
+		GUICtrlSetState($g_hChkCleverbot, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtEditResponses, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtEditGeneric, $GUI_ENABLE)
 	Else
@@ -114,6 +121,7 @@ Func chkClanChat()
 		GUICtrlSetState($g_hChkUseGeneric, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkChatNotify, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkPbSendNewChats, $GUI_DISABLE)
+		GUICtrlSetState($g_hChkCleverbot, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtEditResponses, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtEditGeneric, $GUI_DISABLE)
 	EndIf
@@ -151,11 +159,19 @@ Func chkPbSendNewChats()
 	EndIf
 EndFunc   ;==>chkPbSendNewChats
 
+Func chkCleverbot()
+    If GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED Then
+        $g_iChkCleverbot = 1
+    Else
+        $g_iChkCleverbot = 0
+    EndIf
+EndFunc ;==>chkCleverbot
+
 Func chkRusLang()
     If GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED Then
-    $g_iChkRusLang = 1
+        $g_iChkRusLang = 1
     Else
-    $g_iChkRusLang = 0
+        $g_iChkRusLang = 0
     EndIf
 EndFunc ;==>chkRusLang
 
@@ -222,7 +238,7 @@ EndFunc   ;==>ChatbotChatGlobalInput
 
 ;============================================
 ;+++++++++++++Kychera Modified +++++++++++++++
-Func ChatbotChatInput($message)
+Func ChatbotChatInput($g_sMessage)
     If _Sleep(1000) Then Return
 	Click(33, 707, 1)
     If $g_iChkRusLang = 1 Then
@@ -235,11 +251,11 @@ Func ChatbotChatInput($message)
 		_Sleep(500)
 	;Opt("SendKeyDelay", 1000)
 	AutoItSetOption("SendKeyDelay", 50)
-	  _SendExEx($message)
+	  _SendExEx($g_sMessage)
 	   SendKeepActive("")
     Else
 	 _Sleep(500)
- 	 SendText($message)
+ 	 SendText($g_sMessage)
 	EndIf
 	Return True
 EndFunc   ;==>ChatbotChatInput
@@ -461,13 +477,22 @@ EndFunc   ;==>ChangeLanguageToTR
 ;========================================
 ; MAIN SCRIPT ==============================================
 
-Func ChatbotMessage() ; run the chatbot
-	If $g_iChkChatGlobal Then
-		SetLog("Chatbot: Sending some chats", $COLOR_GREEN)
-	ElseIf $g_iChkChatClan Then
-		SetLog("Chatbot: Sending some chats", $COLOR_GREEN)
-	EndIf
-	If $g_iChkChatGlobal Then
+Func DelayTime($sendTimer, $chatType)
+	Local $TimeDiff = 0
+    Local $TimeDiff = (TimerDiff($sendTimer) / 1000) / 60	
+
+    If $chatType = "GLOBAL" Then
+	    If $TimeDiff > $g_iTxtDelayTimerun Then
+		    Return True
+	    Else
+		    SetLog("Chatbot: Skip sending chats to global chat", $COLOR_INFO)
+			SetLog("Delay Time " & StringFormat("%.1f", $TimeDiff) & " minute(s)", $COLOR_INFO)
+		    Return False
+	    EndIf
+   EndIf
+EndFunc ;==> DelayTime
+
+Func ChatGlobal()
 ;========================Kychera modified==========================================
 		If $g_iChkSwitchLang = 1 Then
 		Switch GUICtrlRead($g_hCmbLang)
@@ -498,16 +523,19 @@ Func ChatbotMessage() ; run the chatbot
 		If Not ChatbotChatOpen() Then Return
 		SetLog("Chatbot: Sending chats to global", $COLOR_GREEN)
 		; assemble a message
-		Global $message[2]
-		$message[0] = $g_iChkGlobalMessages1[Random(0, UBound($g_iChkGlobalMessages1) - 1, 1)]
-		$message[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
+
+		Global $g_sMessage
+		Global $g_sRandomMsg[2]
+		$g_sRandomMsg[0] = $g_iChkGlobalMessages1[Random(0, UBound($g_iChkGlobalMessages1) - 1, 1)]
+		$g_sRandomMsg[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
+		$g_sMessage = $g_sRandomMsg[Random(0,1)]
 		If $g_iChkScrambleGlobal Then
-			_ArrayShuffle($message)
+			_ArrayShuffle($g_sMessage)
 		EndIf
 		; Send the message
 		If Not ChatbotSelectGlobalChat() Then Return
 		If Not ChatbotChatGlobalInput() Then Return
-		If Not ChatbotChatInput(_ArrayToString($message, " ")) Then Return
+		If Not ChatbotChatInput(_ArrayToString($g_sMessage, " ")) Then Return
 		If Not ChatbotChatSendGlobal() Then Return
 		If Not ChatbotChatClose() Then Return
 ;==================kychera modified===============================================
@@ -518,8 +546,22 @@ Func ChatbotMessage() ; run the chatbot
 			  _Sleep(3000)
 		EndIf
 ;=================================================================================
-	EndIf
+EndFunc
 
+Func ChatbotMessage() ; run the chatbot
+	
+	If $g_bDelayTime = False and $g_iChkChatGlobal Then 
+	ChatGlobal()
+	EndIf
+	
+	If $g_bDelayTime = True and $g_iChkChatGlobal Then 
+    Local $iSendChatGlobalDelay = DelayTime($startDelayTimer, "GLOBAL")
+		If $iSendChatGlobalDelay = True Then
+		ChatGlobal()
+		$startDelayTimer = TimerInit()
+		EndIf
+	EndIf
+	
 	If $g_iChkChatClan Then
 		If Not ChatbotChatOpen() Then Return
 		SetLog("Chatbot: Sending chats to clan", $COLOR_GREEN)
@@ -553,7 +595,7 @@ Func ChatbotMessage() ; run the chatbot
 
 			Dim $Tmp[0] ; clear queue
 			$ChatbotQueuedChats = $Tmp
-             _sleep(2000)
+             _Sleep(2000)
 			ChatbotNotifySendChat()
 
 			If Not ChatbotChatClose() Then Return
@@ -561,7 +603,7 @@ Func ChatbotMessage() ; run the chatbot
 			Return
 		EndIf
 
-		If not ChatbotIsLastChatNew() Then
+		If Not ChatbotIsLastChatNew() Then
 			; get text of the latest message
 			Local $sLastChat = ReadChat()
 			Local $ChatMsg = StringStripWS($sLastChat, 7)
@@ -591,9 +633,10 @@ Func ChatbotMessage() ; run the chatbot
 				Next
 			EndIf
 			
-			If not $SentMessage Then
-				Local $Response = runHelper($ChatMsg)
-				If Not $Response = False Or not $ChatMsg = "" Or not $ChatMsg = " " Then
+			 If ($g_iChkCleverbot = 1) And Not $SentMessage Then
+				Local $Response = runHelper($ChatMsg, $g_iChkCleverbot)
+				If Not $Response = False Or Not $ChatMsg = "" Or Not $ChatMsg = " " Then
+				;If Not _Encoding_JavaUnicodeDecode($sString) Then Return
 				SetLog("Got cleverbot response: " & $Response, $COLOR_GREEN)
 					If Not ChatbotChatClanInput() Then Return
 					If Not ChatbotChatInput($Response) Then Return
@@ -630,9 +673,9 @@ Func ChatbotMessage() ; run the chatbot
 EndFunc   ;==>ChatbotMessage
 
 ; Returns the response from cleverbot or simsimi, if any
-Func runHelper($msg) ; run a script to get a response from cleverbot.com or simsimi.com
- Local $command, $DOS, $HelperStartTime, $Time_Difference
- Dim $DOS, $Message = ''
+Func runHelper($msg, $g_iChkCleverbot) ; run a script to get a response from cleverbot.com or simsimi.com
+ Local $command, $DOS, $HelperStartTime, $Time_Difference, $sString
+ Dim $DOS, $g_sMessage = ''
 
    $command = ' /c "phantomjs.exe phantom-cleverbot-helper.js '
 
@@ -650,14 +693,14 @@ Func runHelper($msg) ; run a script to get a response from cleverbot.com or sims
 		 Return ""
 	  EndIf
    WEnd
-   $Message = ''
+   $g_sMessage = ''
    While 1
-	  $Message &= StdoutRead($DOS)
+	  $g_sMessage &= StdoutRead($DOS)
 	  If @error Then
 		 ExitLoop
 	  EndIf
    WEnd
-   Return StringStripWS($Message, 7)
+   Return StringStripWS($g_sMessage, 7)
 EndFunc
 
 ;===========Addied kychera=================

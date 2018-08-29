@@ -40,21 +40,8 @@ Func waitMainScreen() ;Waits for main screen to popup
 			If $g_bDebugSetlog Then SetDebugLog("Screen cleared, WaitMainScreen exit", $COLOR_DEBUG)
 			Return
 		Else
-			; AltuFaltu s
-			If $g_bChkAltuFaltuSCID = 1 Then
-				If WaitforVariousImages("SCIDLoginBtn",1,200) = True Then
-					Setlog("AltuFaltu - MainScreen SuperCell ID Login Screen Detected",0x6E0DD0)
-					If _Sleep(1000) Then Return
-					RndClick_AF($g_ClkSCIDLoginBtnAF)
-					If _Sleep(1000) Then Return
-					Setlog("     5.Click on SuperCell ID Login Button",0xFF0099)
-					_MainScreen_SCIDLogin()
-				EndIf
-			Else
-			; AltuFaltu e
-				If Not TestCapture() And _Sleep($DELAYWAITMAINSCREEN1) Then Return
-				If checkObstacles() Then $i = 0 ;See if there is anything in the way of mainscreen
-			EndIf	; AltuFaltu n
+			If Not TestCapture() And _Sleep($DELAYWAITMAINSCREEN1) Then Return
+			If checkObstacles() Then $i = 0 ;See if there is anything in the way of mainscreen
 		EndIf
 		If Mod($i, 5) = 0 Then ;every 10 seconds
 			If $g_bDebugImageSave Then DebugImageSave("WaitMainScreen_", False)
@@ -112,21 +99,8 @@ Func waitMainScreenMini()
 		$iCount += 1
 		_CaptureRegion()
 		If Not _CheckPixel($aIsMain, $g_bNoCapturePixel) Then ;Checks for Main Screen
-			; AltuFaltu s
-			If $g_bChkAltuFaltuSCID = 1 Then
-				If WaitforVariousImages("SCIDLoginBtn",1,200) = True Then
-					Setlog("AltuFaltu - MainScreen SuperCell ID Login Screen Detected",0x6E0DD0)
-					If _Sleep(1000) Then Return
-					RndClick_AF($g_ClkSCIDLoginBtnAF)
-					If _Sleep(1000) Then Return
-					Setlog("     5.Click on SuperCell ID Login Button",0xFF0099)
-					_MainScreen_SCIDLogin()
-				EndIf
-			Else
-			; AltuFaltu e
-				If Not TestCapture() And _Sleep(1000) Then Return
-				If CheckObstacles() Then $i = 0 ;See if there is anything in the way of mainscreen
-			EndIf 	; AltuFaltu n
+			If Not TestCapture() And _Sleep(1000) Then Return
+			If CheckObstacles() Then $i = 0 ;See if there is anything in the way of mainscreen
 		Else
 			SetLog("CoC main window took " & Round(__TimerDiff($hTimer) / 1000, 2) & " seconds", $COLOR_SUCCESS)
 			Return

@@ -28,7 +28,6 @@ Func chkUseQTrain()
 		GUICtrlSetData($g_hLblDarkCostSpell, "0")
 	Else
         	chkQuickTrainCombo() ; ADDED By RK MOD Multi-Click Army3 Demen
-		chkSmartTrain() ; ADDED By RK MOD SmartTrain -  (Demen)
 		_GUI_Value_STATE("DISABLE", $g_ahChkArmy[0] & "#" & $g_ahChkArmy[1] & "#" & $g_ahChkArmy[2])
 		_GUI_Value_STATE("ENABLE", $grpTrainTroops)
 		_GUI_Value_STATE("ENABLE", $grpCookSpell)
@@ -56,38 +55,6 @@ Func chkQuickTrainCombo()
 	EndIf
     ;------------------ADDED By RK MOD - END------------------
 EndFunc   ;==>chkQuickTrainCombo
-
-;------------------ADDED By RK MOD - START------------------
-Func chkSmartTrain()
-	If GUICtrlRead($g_hChkSmartTrain) = $GUI_CHECKED Then
-		If GUICtrlRead($g_hChkUseQuickTrain) = $GUI_UNCHECKED Then _GUI_Value_STATE("ENABLE", $g_hChkPreciseArmyCamp)
-		_GUI_Value_STATE("ENABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-		chkPreciseTroops()
-		chkFillArcher()
-	Else
-		_GUI_Value_STATE("DISABLE", $g_hChkPreciseArmyCamp & "#" & $g_hChkFillArcher & "#" & $g_hTxtFillArcher & "#" & $g_hChkFillEQ)
-		_GUI_Value_STATE("UNCHECKED", $g_hChkPreciseArmyCamp & "#" & $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-	EndIf
-EndFunc   ;==>chkSmartTrain
-
-Func chkPreciseTroops()
-	If GUICtrlRead($g_hChkPreciseArmyCamp) = $GUI_CHECKED Then
-		_GUI_Value_STATE("DISABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-		_GUI_Value_STATE("UNCHECKED", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-		chkFillArcher()
-	Else
-		_GUI_Value_STATE("ENABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-	EndIf
-EndFunc   ;==>chkPreciseTroops
-
-Func chkFillArcher()
-	If GUICtrlRead($g_hChkFillArcher) = $GUI_CHECKED Then
-		_GUI_Value_STATE("ENABLE", $g_hTxtFillArcher)
-	Else
-		_GUI_Value_STATE("DISABLE", $g_hTxtFillArcher)
-	EndIf
-EndFunc   ;==>chkFillArcher
-;------------------ADDED By RK MOD - END------------------
 
 Func SetComboTroopComp()
 	Local $bWasRedraw = SetRedrawBotWindow(False, Default, Default, Default, "SetComboTroopComp")
@@ -227,25 +194,23 @@ Func lblTotalCountSpell2()
 	CalCostSpell()
 EndFunc   ;==>lblTotalCountSpell2
 
-;------------------CUSTOM LOGIC By RK MOD - START------------------
 Func lblTotalCountSiege()
 	; calculate total space and time for Siege composition
-	Local $iTotalTimeSiege = 0
-	Local $iTotalSpaceSiege = 0
+	Local $iTotalTotalTimeSiege = 0
+	$g_iTotalTrainSpaceSiege = 0
 
 	For $i = 0 To $eSiegeMachineCount - 1
-		$iTotalSpaceSiege += $g_aiArmyCompSiegeMachine[$i] * $g_aiSiegeMachineSpace[$i]
-		$iTotalTimeSiege  += $g_aiArmyCompSiegeMachine[$i] * $g_aiSiegeMachineTrainTimePerLevel[$i][$g_aiTrainArmySiegeMachineLevel[$i]]
+		$g_iTotalTrainSpaceSiege += $g_aiArmyCompSiegeMachine[$i] * $g_aiSiegeMachineSpace[$i]
+		$iTotalTotalTimeSiege += $g_aiArmyCompSiegeMachine[$i] * $g_aiSiegeMachineTrainTimePerLevel[$i][$g_aiTrainArmySiegeMachineLevel[$i]]
 	Next
-	
-	$g_iTotalTrainSpaceSiege = $iTotalSpaceSiege
 
-	GUICtrlSetData($g_hLblTotalTimeSiege, CalculTimeTo($iTotalTimeSiege))
-	GUICtrlSetData($g_hLblCountTotalSiege, $iTotalSpaceSiege)
-	GUICtrlSetBkColor($g_hLblCountTotalSiege, $iTotalSpaceSiege <= 2 ? $COLOR_MONEYGREEN : $COLOR_RED)
+	GUICtrlSetData($g_hLblTotalTimeSiege, CalculTimeTo($iTotalTotalTimeSiege))
+	GUICtrlSetData($g_hLblCountTotalSiege, $g_iTotalTrainSpaceSiege)
+	GUICtrlSetBkColor($g_hLblCountTotalSiege, $g_iTotalTrainSpaceSiege <= 2 ? $COLOR_MONEYGREEN : $COLOR_RED)
 
 	CalCostSiege()
-	If $g_iTownHallLevel < 0 And $g_iTownHallLevel > 12 Then
+	; prepared for some new TH level !!
+	If $g_iTownHallLevel > 0 And $g_iTownHallLevel < 12 then
 		$g_iTotalTrainSpaceSiege = 0
 		GUICtrlSetBkColor($g_hLblCountTotalSiege,$COLOR_RED)
 		_GUICtrlSetTip($g_hLblCountTotalSiege, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "LblCountTotal_Info_03", "Workshop Level 1 Required!"))
@@ -253,8 +218,7 @@ Func lblTotalCountSiege()
 		GUICtrlSetData($g_hLblCountTotalSiege, $g_iTotalTrainSpaceSiege)
 		GUICtrlSetData($g_hLblTotalTimeSiege, " 0s")
 	EndIf
-EndFunc   ;==>lblTotalCountSiege()
-;------------------CUSTOM LOGIC By RK MOD - END------------------
+EndFunc
 
 Func TotalSpellCountClick()
 	Local $bWasRedraw = SetRedrawBotWindow(False, Default, Default, Default, "TotalSpellCountClick")

@@ -63,25 +63,6 @@ Global $cmbSwLang = 0
 
 Global $g_bReqCCFirst = False
 
-; ================================================ AF_SCID - Added by RK MOD ======================================== ;
-
-;Glabal Variables for Debugging
-Global $g_DebugLogAF = 0
-Global $g_DebugImageAF = 0
-
-;Global Variables to hold Function Data
-Global $g_SwitchSCIDAccFatalErrorAF = False
-Global $g_ClkSCIDDisConnBtnAF[4] = [370,215,500,230]
-Global $g_ClkSCIDLogOutBtnAF[4] = [605,285,710,310]
-Global $g_ClkSCIDConfirmBtnAF[4] = [455,430,615,455]
-Global $g_ClkSCIDLoginBtnAF[4] = [120,675,405,700]
-
-Global Const $g_sImgSCIDCross =		@ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgMIS\Cross"
-Global Const $g_sImgSCIDAccs =		@ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgAccs"
-Global Const $g_sImgSCIDOr =		@ScriptDir & "\RK MOD\RK AF_SCID\Images\ImgMIS\Or"
-
-Global $g_bChkAltuFaltuSCID = False        
-
 ; ================================================ AutoCamp - by RK MOD ======================================== ;
 
 Global $g_iChkAutoCamp = 0
@@ -139,11 +120,16 @@ Global $g_iChkUseNotify = 0
 Global $g_iChkPbSendNew = 0
 Global $g_iChkRusLang = 0
 Global $g_iCmbLang = 9
+Global $g_iChkCleverbot = 0
+Global $g_bDelayTime = 0
+Global $g_iTxtDelayTimerun = 10
 Global $g_iChkClanMessages = ""
 Global $g_iChkClanResponses = ""
 Global $g_iChkClanResponses0
 Global $g_iChkGlobalMessages1 = ""
 Global $g_iChkGlobalMessages2 = ""
+Global $startDelayTimer = TimerInit()
+Global $sendTimer = TimerInit()
 Global $glb1 
 Global $glb2
 Global $cResp
@@ -213,12 +199,18 @@ Global $g_iChkUpgrPriority = 0, $g_iCmbUpgrdPriority = 0
 Global Const $g_iLimitBreakGE[12] = [2250, 6300, 90000, 450000, 900000, 1800000, 3600000, 5400000, 7200000, 7650000, 9000000, 10800000];Gold And Elixir Town Hall Level max resource storages at 90%
 Global Const $g_iLimitBreakDE[12] = [0, 0, 0, 0, 0, 0, 18000, 72000, 171000, 180000, 180000, 216000];Dark Elixir Town Hall Level max resource storage at 90%
 
-; ================================================== SmartTrain - RK MOD (Demen) ======================================== ;
-
-Global $g_bChkSmartTrain = False, $g_bChkPreciseArmyCamp = False, $g_bChkFillArcher = False, $g_bChkFillEQ = False, $g_iTxtFillArcher = 5
-Global Enum $g_eFull, $g_eRemained, $g_eNoTrain
-Global $g_bWrongTroop, $g_bWrongSpell, $g_sSmartTrainError = ""
-
 ; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 
 Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 5
+
+; ================================================== One Gem Boost by RK MOD ================================= ;
+
+Global $g_bChkOneGemBoostBr = False, $g_bChkOneGemBoostFr = False, $g_bChkOneGemBoostG = False, $g_bChkOnlyOneGemBoost = False
+
+; --------------------------------------------
+; Builder Base Drop Trophies (ID70)
+; --------------------------------------------
+Global $g_iTxtBB_DropTrophies = 0
+Global $g_bChkBB_DropTrophies = False
+Global $aBB_FindMatchButton[4] = [555, 240 + $g_iBottomOffsetY, 0xFFC346, 10]
+Global $aBB_FindMatchButtonRND[4] = [545, 230 + $g_iMidOffsetY, 565, 250 + $g_iMidOffsetY]

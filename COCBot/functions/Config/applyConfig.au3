@@ -439,16 +439,16 @@ Func ApplyConfig_600_11($TypeReadSave)
 			Next
 			;------------------ADDED By RK MOD - START------------------
 			; Request defense CC (Demen)
-            GUICtrlSetState($g_hChkRequestCCDefense, $g_bRequestCCDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
-            chkRequestDefense()
+            		GUICtrlSetState($g_hChkRequestCCDefense, $g_bRequestCCDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
+           		 chkRequestDefense()
 			GUICtrlSetData($g_hTxtRequestCCDefense, $g_sRequestCCDefenseText)
 			_GUICtrlComboBox_SetCurSel($g_hCmbRequestCCDefenseWhen, $g_bRequestCCDefenseWhenPB ? 0 : 1)
-            GUICtrlSetData($g_hTxtRequestCCDefenseTime, $g_iRequestDefenseTime)
+            		GUICtrlSetData($g_hTxtRequestCCDefenseTime, $g_iRequestDefenseTime)
 			
 			; ================================================== Russian Request - by RK MOD ======================================== ;
 
 			GUICtrlSetState($g_hChkRusLang2, $g_iChkRusLang2 = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-   		    chkRusLang2()
+   		    	chkRusLang2()
 			;------------------ADDED By RK MOD - END------------------
 		Case "Save"
 			$g_bRequestTroopsEnable = (GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED)
@@ -470,10 +470,10 @@ Func ApplyConfig_600_11($TypeReadSave)
 			Next
 			;------------------ADDED By RK MOD - START------------------
 			; Request defense CC (Demen)
-            $g_bRequestCCDefense = (GUICtrlRead($g_hChkRequestCCDefense) = $GUI_CHECKED)
-            $g_sRequestCCDefenseText = GUICtrlRead($g_hTxtRequestCCDefense)
+           		 $g_bRequestCCDefense = (GUICtrlRead($g_hChkRequestCCDefense) = $GUI_CHECKED)
+            		$g_sRequestCCDefenseText = GUICtrlRead($g_hTxtRequestCCDefense)
 			$g_bRequestCCDefenseWhenPB = (_GUICtrlComboBox_GetCurSel($g_hCmbRequestCCDefenseWhen) = 0)
-            $g_iRequestDefenseTime = GUICtrlRead($g_hTxtRequestCCDefenseTime)
+            		$g_iRequestDefenseTime = GUICtrlRead($g_hTxtRequestCCDefenseTime)
 			
 			; ================================================== Russian Request - by RK MOD ================================= ;
 
@@ -952,7 +952,15 @@ Func ApplyConfig_600_22($TypeReadSave)
 			chkBoostCMagic()
 			BoostClMagic()
 			
+			; ================================================== One Gem Boost by RK MOD ================================= ;
+			
+			GUICtrlSetState($g_hChkOneGemBoostBr, $g_bChkOneGemBoostBr ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkOneGemBoostFr, $g_bChkOneGemBoostFr ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkOneGemBoostG, $g_bChkOneGemBoostG ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkOnlyOneGemBoost, $g_bChkOnlyOneGemBoost ? $GUI_CHECKED : $GUI_UNCHECKED)
+			
 		Case "Save"
+		
 			$g_iCmbBoostBarracks = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBarracks)
 			$g_iCmbBoostSpellFactory = _GUICtrlComboBox_GetCurSel($g_hCmbBoostSpellFactory)
 			$g_iCmbBoostBarbarianKing = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBarbarianKing)
@@ -967,6 +975,14 @@ Func ApplyConfig_600_22($TypeReadSave)
 			$g_iCmbBoostBrMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic)
 			$g_iChkBoostCMagic = GUICtrlRead($g_hChkBoostCMagic) = $GUI_CHECKED ? 1 : 0
 			$g_iCmbBoostClMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic)
+			
+			; ================================================== One Gem Boost by RK MOD ================================= ;
+			
+			$g_bChkOneGemBoostBr = (GUICtrlRead($g_hChkOneGemBoostBr) = $GUI_CHECKED)
+			$g_bChkOneGemBoostFr = (GUICtrlRead($g_hChkOneGemBoostFr) = $GUI_CHECKED)
+			$g_bChkOneGemBoostG = (GUICtrlRead($g_hChkOneGemBoostG) = $GUI_CHECKED)
+			$g_bChkOnlyOneGemBoost = (GUICtrlRead($g_hChkOnlyOneGemBoost) = $GUI_CHECKED)
+			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_22
 
@@ -2214,26 +2230,17 @@ Func ApplyConfig_600_35_2($TypeReadSave)
 				GUICtrlSetState($g_hRadSwitchGooglePlay, $GUI_CHECKED)
 				GUICtrlSetState($g_hRadSwitchSuperCellID, $GUI_UNCHECKED)
 				GUICtrlSetState($g_hRadSwitchSharedPrefs, $GUI_UNCHECKED)
-				GUICtrlSetState($g_hRadAltuFaltuSCID, $GUI_UNCHECKED)	;AltuFaltu-n
 			EndIf
 			If $g_bChkSuperCellID Then
 				GUICtrlSetState($g_hRadSwitchGooglePlay, $GUI_UNCHECKED)
 				GUICtrlSetState($g_hRadSwitchSuperCellID, $GUI_CHECKED)
 				GUICtrlSetState($g_hRadSwitchSharedPrefs, $GUI_UNCHECKED)
-				GUICtrlSetState($g_hRadAltuFaltuSCID, $GUI_UNCHECKED)	;AltuFaltu-n
 			EndIf
 			If $g_bChkSharedPrefs Then
 				GUICtrlSetState($g_hRadSwitchGooglePlay, $GUI_UNCHECKED)
 				GUICtrlSetState($g_hRadSwitchSuperCellID, $GUI_UNCHECKED)
 				GUICtrlSetState($g_hRadSwitchSharedPrefs, $GUI_CHECKED)
-				GUICtrlSetState($g_hRadAltuFaltuSCID, $GUI_UNCHECKED)	;AltuFaltu-n
 			EndIf
-			If $g_bChkAltuFaltuSCID Then	;AltuFaltu-s
-				GUICtrlSetState($g_hRadSwitchGooglePlay, $GUI_UNCHECKED)
-				GUICtrlSetState($g_hRadSwitchSuperCellID, $GUI_UNCHECKED)
-				GUICtrlSetState($g_hRadSwitchSharedPrefs, $GUI_UNCHECKED)
-				GUICtrlSetState($g_hRadAltuFaltuSCID, $GUI_CHECKED)
-			EndIf	;AltuFaltu-e
 			GUICtrlSetState($g_hChkSmartSwitch, $g_bChkSmartSwitch ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkDonateLikeCrazy, $g_bDonateLikeCrazy ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbTotalAccount, $g_iTotalAcc - 1)
@@ -2266,7 +2273,6 @@ Func ApplyConfig_600_35_2($TypeReadSave)
 			$g_bChkGooglePlay = (GUICtrlRead($g_hRadSwitchGooglePlay) = $GUI_CHECKED)
 			$g_bChkSuperCellID = (GUICtrlRead($g_hRadSwitchSuperCellID) = $GUI_CHECKED)
 			$g_bChkSharedPrefs = (GUICtrlRead($g_hRadSwitchSharedPrefs) = $GUI_CHECKED)
-			$g_bChkAltuFaltuSCID = (GUICtrlRead($g_hRadAltuFaltuSCID) = $GUI_CHECKED)	;AltuFaltu-n
 			$g_bChkSmartSwitch = (GUICtrlRead($g_hChkSmartSwitch) = $GUI_CHECKED)
 			$g_bDonateLikeCrazy = (GUICtrlRead($g_hChkDonateLikeCrazy) = $GUI_CHECKED)
 			$g_iTotalAcc = _GUICtrlComboBox_GetCurSel($g_hCmbTotalAccount) + 1 ; at least 2 accounts needed
@@ -2288,13 +2294,13 @@ Func ApplyConfig_600_52_1($TypeReadSave)
 			GUICtrlSetState($g_ahChkArmy[0], $g_bQuickTrainArmy[0] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_ahChkArmy[1], $g_bQuickTrainArmy[1] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_ahChkArmy[2], $g_bQuickTrainArmy[2] ? $GUI_CHECKED : $GUI_UNCHECKED)
-            GUICtrlSetState($g_hChkMultiClick, $g_bChkMultiClick ? $GUI_CHECKED : $GUI_UNCHECKED) ; Multi-ClickArmy3 - Demen
+            		GUICtrlSetState($g_hChkMultiClick, $g_bChkMultiClick ? $GUI_CHECKED : $GUI_UNCHECKED) ; Multi-ClickArmy3 - Demen
 		Case "Save"
 			$g_bQuickTrainEnable = (GUICtrlRead($g_hChkUseQuickTrain) = $GUI_CHECKED)
 			$g_bQuickTrainArmy[0] = (GUICtrlRead($g_ahChkArmy[0]) = $GUI_CHECKED)
 			$g_bQuickTrainArmy[1] = (GUICtrlRead($g_ahChkArmy[1]) = $GUI_CHECKED)
 			$g_bQuickTrainArmy[2] = (GUICtrlRead($g_ahChkArmy[2]) = $GUI_CHECKED)
-            $g_bChkMultiClick = (GUICtrlRead($g_hChkMultiClick) = $GUI_CHECKED); Multi-ClickArmy3 - Demen
+           		 $g_bChkMultiClick = (GUICtrlRead($g_hChkMultiClick) = $GUI_CHECKED); Multi-ClickArmy3 - Demen
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_52_1
 
@@ -2339,15 +2345,8 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			; spell capacity and forced flag
 			GUICtrlSetData($g_hTxtTotalCountSpell, $g_iTotalSpellValue)
 			GUICtrlSetState($g_hChkForceBrewBeforeAttack, $g_bForceBrewSpells ? $GUI_CHECKED : $GUI_UNCHECKED)
-            ; DoubleTrain - Demen
-            GUICtrlSetState($g_hChkDoubleTrain, $g_bDoubleTrain ? $GUI_CHECKED : $GUI_UNCHECKED)
-			;SmartTrain - RK MOD (Demen)
-			GUICtrlSetState($g_hChkSmartTrain, $g_bChkSmartTrain ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkPreciseArmyCamp, $g_bChkPreciseArmyCamp ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkFillArcher, $g_bChkFillArcher ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetData($g_hTxtFillArcher, $g_iTxtFillArcher)
-			GUICtrlSetState($g_hChkFillEQ, $g_bChkFillEQ ? $GUI_CHECKED : $GUI_UNCHECKED)
-			chkSmartTrain()
+			; DoubleTrain - Demen
+			GUICtrlSetState($g_hChkDoubleTrain, $g_bDoubleTrain ? $GUI_CHECKED : $GUI_UNCHECKED)
 		Case "Save"
 			; troop/spell levels and counts
 			For $T = 0 To $eTroopCount - 1
@@ -2369,14 +2368,8 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			; spell capacity and forced flag
 			$g_iTotalSpellValue = GUICtrlRead($g_hTxtTotalCountSpell)
 			$g_bForceBrewSpells = (GUICtrlRead($g_hChkForceBrewBeforeAttack) = $GUI_CHECKED)
-            ; DoubleTrain - Demen
-            $g_bDoubleTrain = (GUICtrlRead($g_hChkDoubleTrain) = $GUI_CHECKED)
-			;SmartTrain - RK MOD (Demen)
-			$g_bChkSmartTrain = (GUICtrlRead($g_hChkSmartTrain) = $GUI_CHECKED)
-			$g_bChkPreciseArmyCamp = (GUICtrlRead($g_hChkPreciseArmyCamp) = $GUI_CHECKED)
-			$g_bChkFillArcher = (GUICtrlRead($g_hChkFillArcher) = $GUI_CHECKED)
-			$g_iTxtFillArcher = GUICtrlRead($g_hTxtFillArcher)
-			$g_bChkFillEQ = (GUICtrlRead($g_hChkFillEQ) = $GUI_CHECKED)
+			; DoubleTrain - Demen
+			$g_bDoubleTrain = (GUICtrlRead($g_hChkDoubleTrain) = $GUI_CHECKED)
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_52_2
 

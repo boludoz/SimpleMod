@@ -9,7 +9,7 @@
 
 Func setupProfileComboBox()
 	; Array to store Profile names to add to ComboBox
-	$profileString = ""
+	$profileString = "" ; was Local $profileString = "" EDITED By RK MOD
 	Local $aProfiles = _FileListToArray($g_sProfilePath, "*", $FLTA_FOLDERS)
 	Local $aProfileList = ["<No Profiles>"]
 	If @error Then
@@ -31,12 +31,12 @@ Func setupProfileComboBox()
 
 	; Clear the combo box current data in case profiles were deleted
 	GUICtrlSetData($g_hCmbProfile, "", "")
-	GUICtrlSetData($cmbForecastHopingSwitchMin, "", "")
-	GUICtrlSetData($cmbForecastHopingSwitchMax, "", "")
+	GUICtrlSetData($cmbForecastHopingSwitchMin, "", ""); ADDED By RK MOD
+	GUICtrlSetData($cmbForecastHopingSwitchMax, "", ""); ADDED By RK MOD
 	; Set the new data of available profiles
 	GUICtrlSetData($g_hCmbProfile, $profileString, "<No Profiles>")
-    GUICtrlSetData($cmbForecastHopingSwitchMax, $profileString, "<No Profiles>")
-	GUICtrlSetData($cmbForecastHopingSwitchMin, $profileString, "<No Profiles>")
+        GUICtrlSetData($cmbForecastHopingSwitchMax, $profileString, "<No Profiles>"); ADDED By RK MOD
+	GUICtrlSetData($cmbForecastHopingSwitchMin, $profileString, "<No Profiles>"); ADDED By RK MOD
 	For $i = 0 To 7
 		GUICtrlSetData($g_ahCmbProfile[$i], "")
 		GUICtrlSetData($g_ahCmbProfile[$i], "|" & $profileString)

@@ -628,6 +628,14 @@ Func SaveConfig_600_22()
 	_Ini_Add("boost", "cmbBoostBrMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic))
 	_Ini_Add("boost", "chkBoostCMagic", $g_iChkBoostCMagic ? 1 : 0)
 	_Ini_Add("boost", "cmbBoostClMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic))
+	
+	; ================================================== One Gem Boost by RK MOD ================================= ;
+	
+	_Ini_Add("boost", "ChkOneGemBoostBr", $g_bChkOneGemBoostBr ? 1 : 0)
+	_Ini_Add("boost", "ChkOneGemBoostFr", $g_bChkOneGemBoostFr ? 1 : 0)
+	_Ini_Add("boost", "ChkOneGemBoostG", $g_bChkOneGemBoostG ? 1 : 0)
+	_Ini_Add("boost", "ChkOnlyOneGemBoost", $g_bChkOnlyOneGemBoost ? 1 : 0)
+	
 	For $i = 0 To 2
 			_Ini_Add("boost", "LastTimeCollectors" & $i, $g_iLastTime[0])
 	Next
@@ -1204,7 +1212,6 @@ Func SaveConfig_600_35_2()
 		IniWrite($sSwitchAccFile, "SwitchAccount", "GooglePlay", $g_bChkGooglePlay ? 1 : 0)
 		IniWrite($sSwitchAccFile, "SwitchAccount", "SuperCellID", $g_bChkSuperCellID ? 1 : 0)
 		IniWrite($sSwitchAccFile, "SwitchAccount", "SharedPrefs", $g_bChkSharedPrefs ? 1 : 0)
-		IniWrite($sSwitchAccFile, "SwitchAccount", "AltuFaltuSCID", $g_bChkAltuFaltuSCID ? 1 : 0)	;AltuFaltu-n
 		IniWrite($sSwitchAccFile, "SwitchAccount", "SmartSwitch", $g_bChkSmartSwitch ? 1 : 0)
 		IniWrite($sSwitchAccFile, "SwitchAccount", "DonateLikeCrazy", $g_bDonateLikeCrazy ? 1 : 0)
 		IniWrite($sSwitchAccFile, "SwitchAccount", "TotalCocAccount", $g_iTotalAcc)
@@ -1214,6 +1221,7 @@ Func SaveConfig_600_35_2()
 			IniWrite($sSwitchAccFile, "SwitchAccount", "ProfileName." & $i, $g_asProfileName[$i - 1])
 			IniWrite($sSwitchAccFile, "SwitchAccount", "DonateOnly." & $i, $g_abDonateOnly[$i - 1] ? 1 : 0)
 		Next
+
 		;FarmSchedule
 		For $i = 1 To 8
 			IniWrite($sSwitchAccFile, "FarmStrategy", "ChkSetFarm" & $i, $g_abChkSetFarm[$i - 1] ? 1 : 0)
@@ -1265,16 +1273,8 @@ Func SaveConfig_600_52_2()
 	; spell capacity and forced flag
 	_Ini_Add("Spells", "SpellFactory", $g_iTotalSpellValue)
 	_Ini_Add("other", "ChkForceBrewBeforeAttack", $g_bForceBrewSpells ? 1 : 0)
-	
-    ; DoubleTrain - Demen
-    _Ini_Add("troop", "DoubleTrain", $g_bDoubleTrain ? 1 : 0)
-    ;SmartTrain - RK MOD (Demen)
-	_Ini_Add("SmartTrain", "Enable", $g_bChkSmartTrain ? 1 : 0)
-	_Ini_Add("SmartTrain", "ChkPreciseTroops", $g_bChkPreciseArmyCamp ? 1 : 0)
-	_Ini_Add("SmartTrain", "ChkFillArcher", $g_bChkFillArcher ? 1 : 0)
-	_Ini_Add("SmartTrain", "TxtFillArcher", $g_iTxtFillArcher)
-	_Ini_Add("SmartTrain", "ChkFillEQ", $g_bChkFillEQ ? 1 : 0)
-	
+	; DoubleTrain - Demen
+	_Ini_Add("troop", "DoubleTrain", $g_bDoubleTrain ? 1 : 0)
 EndFunc   ;==>SaveConfig_600_52_2
 
 Func SaveConfig_600_54()
