@@ -524,17 +524,17 @@ Func ChatGlobal()
 		SetLog("Chatbot: Sending chats to global", $COLOR_GREEN)
 		; assemble a message
 
-		Global $g_Message[2]
+		Global $g_sMessage[2]
 		Local $i = 0
 			$i = Random(0, 1, 0) 
 			$i = Round($i)
 			Setlog($i)
 		If $i = 1 Then
-			$g_Message[0] = $g_iChkGlobalMessages1[Random(0, UBound($g_iChkGlobalMessages1) - 1, 1)]
-			$g_Message[1] = ""
+			$g_sMessage[0] = $g_iChkGlobalMessages1[Random(0, UBound($g_iChkGlobalMessages1) - 1, 1)]
+			$g_sMessage[1] = ""
 			Else
-			$g_Message[0] = ""
-			$g_Message[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
+			$g_sMessage[0] = ""
+			$g_sMessage[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
 			Endif
 			
 		If $g_iChkScrambleGlobal Then
