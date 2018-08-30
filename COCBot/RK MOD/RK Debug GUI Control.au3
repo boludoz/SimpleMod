@@ -111,8 +111,10 @@ Func btnTestCheckOneGem()
 	;For Debug Purpose set run state to true temporarily
 	$g_bRunState = True
 
+	checkMainScreen()
 	OneGemBoost()
 
 	;Reset to orignal state
 	$g_bRunState = $wasRunState
+
 EndFunc

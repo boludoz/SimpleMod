@@ -9,27 +9,30 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
-
+Local $initBoostTime
 Local $bGemOcr
-
 Local $bBoostimage = @ScriptDir & "\imgxml\boost\BoostC\BoostCCheck"
 Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
 
 Func OneGemBoost()
-	Local $initBoostTime
-	If $g_bFirstStart Or (_DateDiff("h", $initBoostTime, _NowCalc())) > 1 Then
-		SetLog("Boosting with One Gem", $COLOR_INFO)
-		checkMainScreen()
-		If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem()
-		If $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
-			OpenArmyOverview(True, "OneGemBoost()")
-			If $g_bChkOneGemBoostBarracks Then CheckTroopsOneGem()
-			If $g_bChkOneGemBoostSpells Then CheckSpellsOneGem()
-			ClickP($aAway, 1, 0, "#0161")
+	Local $checkIfBoostNeededToBeChecked = _DateDiff("n", $initBoostTime, _NowCalc()) ;n = Difference in minutes between the given dates
+	SetDebugLog("OneGemBoost $initBoostTime = " & $initBoostTime & " $checkIfBoostNeededToBeChecked = " & $checkIfBoostNeededToBeChecked, $COLOR_DEBUG)
+
+	If $initBoostTime = "" Or $checkIfBoostNeededToBeChecked > 60 Then ;Check if initBoostTime is empty or greater then 1 hour.
+		If $g_bChkOneGemBoostHeroes Or $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
+			SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
+			If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem()
+			If $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
+				OpenArmyOverview(True, "OneGemBoost()")
+				If $g_bChkOneGemBoostBarracks Then CheckTroopsOneGem()
+				If $g_bChkOneGemBoostSpells Then CheckSpellsOneGem()
+				ClickP($aAway, 1, 0, "#0161")
+			EndIf
 		EndIf
 		$initBoostTime = _NowCalc()
 	EndIf
 EndFunc   ;==>OneGemBoost
+
 
 Func CheckOneGem()
 	$bGemOcr = QuickMis("OCR", $bBoostocr, 370, 420, 370 + 130, 420 + 50)
@@ -66,7 +69,7 @@ Func CheckHeroOneGem()
 		If $index = 0 Then BuildingClickP($g_aiKingAltarPos, "#0462")
 		If $index = 1 Then BuildingClickP($g_aiQueenAltarPos, "#0462")
 		If $index = 2 Then BuildingClickP($g_aiWardenAltarPos, "#0462")
-		
+
 		_Sleep($DELAYBOOSTHEROES1)
 
 		Local $Boost = findButton("BoostOne")
