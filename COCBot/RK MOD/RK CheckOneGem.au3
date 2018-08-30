@@ -18,7 +18,7 @@ Func OneGemBoost()
 	Local $checkIfBoostNeededToBeChecked = _DateDiff("n", $initBoostTime, _NowCalc()) ;n = Difference in minutes between the given dates
 	SetDebugLog("OneGemBoost $initBoostTime = " & $initBoostTime & " $checkIfBoostNeededToBeChecked = " & $checkIfBoostNeededToBeChecked, $COLOR_DEBUG)
 
-	If $initBoostTime = "" Or $checkIfBoostNeededToBeChecked > 60 Then ;Check if initBoostTime is empty or greater then 1 hour.
+	If $g_bFirstStart Or $initBoostTime = "" Or $checkIfBoostNeededToBeChecked > 60 Then ;Check if initBoostTime is empty or greater then 1 hour.
 		If $g_bChkOneGemBoostHeroes Or $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
 			SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
 			If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem()

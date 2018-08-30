@@ -107,14 +107,15 @@ Func btnTestCheckOneGem()
 	SetLog("Test Check One Gem Boost", $COLOR_DEBUG)
 
 	Local $wasRunState = $g_bRunState
-
+	Local $wasFirstStart = $g_bFirstStart
 	;For Debug Purpose set run state to true temporarily
 	$g_bRunState = True
+	$g_bFirstStart = True
 
 	checkMainScreen()
 	OneGemBoost()
 
 	;Reset to orignal state
 	$g_bRunState = $wasRunState
-
+	$g_bFirstStart = $wasFirstStart
 EndFunc
