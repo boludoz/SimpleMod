@@ -954,10 +954,9 @@ Func ApplyConfig_600_22($TypeReadSave)
 			
 			; ================================================== One Gem Boost by RK MOD ================================= ;
 			
-			GUICtrlSetState($g_hChkOneGemBoostBr, $g_bChkOneGemBoostBr ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkOneGemBoostFr, $g_bChkOneGemBoostFr ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkOneGemBoostG, $g_bChkOneGemBoostG ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkOnlyOneGemBoost, $g_bChkOnlyOneGemBoost ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkOneGemBoostBarracks, $g_bChkOneGemBoostBarracks ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkOneGemBoostSpells, $g_bChkOneGemBoostSpells ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkOneGemBoostHeroes, $g_bChkOneGemBoostHeroes ? $GUI_CHECKED : $GUI_UNCHECKED)
 			
 		Case "Save"
 		
@@ -978,10 +977,9 @@ Func ApplyConfig_600_22($TypeReadSave)
 			
 			; ================================================== One Gem Boost by RK MOD ================================= ;
 			
-			$g_bChkOneGemBoostBr = (GUICtrlRead($g_hChkOneGemBoostBr) = $GUI_CHECKED)
-			$g_bChkOneGemBoostFr = (GUICtrlRead($g_hChkOneGemBoostFr) = $GUI_CHECKED)
-			$g_bChkOneGemBoostG = (GUICtrlRead($g_hChkOneGemBoostG) = $GUI_CHECKED)
-			$g_bChkOnlyOneGemBoost = (GUICtrlRead($g_hChkOnlyOneGemBoost) = $GUI_CHECKED)
+			$g_bChkOneGemBoostBarracks = (GUICtrlRead($g_hChkOneGemBoostBarracks) = $GUI_CHECKED)
+			$g_bChkOneGemBoostSpells = (GUICtrlRead($g_hChkOneGemBoostSpells) = $GUI_CHECKED)
+			$g_bChkOneGemBoostHeroes = (GUICtrlRead($g_hChkOneGemBoostHeroes) = $GUI_CHECKED)
 			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_22

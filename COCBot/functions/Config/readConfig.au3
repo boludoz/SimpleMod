@@ -799,13 +799,12 @@ Func ReadConfig_600_22()
 
 	IniReadS($g_iChkBoostBMagic, $g_sProfileConfigPath, "boost", "chkBoostBMagic", $g_iChkBoostBMagic, "Int")
 	IniReadS($g_iCmbBoostBrMagic, $g_sProfileConfigPath, "boost", "CmbBoostBrMagic", 0, "int")
-    IniReadS($g_iChkBoostCMagic, $g_sProfileConfigPath, "boost", "chkBoostCMagic", $g_iChkBoostCMagic, "Int")
+        IniReadS($g_iChkBoostCMagic, $g_sProfileConfigPath, "boost", "chkBoostCMagic", $g_iChkBoostCMagic, "Int")
 	IniReadS($g_iCmbBoostClMagic, $g_sProfileConfigPath, "boost", "CmbBoostClMagic", 0, "int")
 	; ================================================== One Gem Boost by RK MOD ================================= ;
-	IniReadS($g_bChkOneGemBoostBr, $g_sProfileConfigPath, "boost", "ChkOneGemBoostBr", False, "Bool")
-	IniReadS($g_bChkOneGemBoostFr, $g_sProfileConfigPath, "boost", "ChkOneGemBoostFr", False, "Bool")
-    IniReadS($g_bChkOneGemBoostG, $g_sProfileConfigPath, "boost", "ChkOneGemBoostG", False, "Bool")
-	IniReadS($g_bChkOnlyOneGemBoost, $g_sProfileConfigPath, "boost", "ChkOnlyOneGemBoost", False, "Bool")
+	IniReadS($g_bChkOneGemBoostBarracks, $g_sProfileConfigPath, "boost", "ChkOneGemBoostBarracks", False, "Bool")
+	IniReadS($g_bChkOneGemBoostSpells, $g_sProfileConfigPath, "boost", "ChkOneGemBoostSpells", False, "Bool")
+        IniReadS($g_bChkOneGemBoostHeroes, $g_sProfileConfigPath, "boost", "ChkOneGemBoostHeroes", False, "Bool")
 	
 	For $i = 0 To 2
 		IniReadS($g_iLastTime[$i], $g_sProfileBuildingPath, "other", "LastTimeCollectors" & $i, 0, "int")
