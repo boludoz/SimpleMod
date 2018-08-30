@@ -19,7 +19,7 @@ Func BB_PrepareAttack() ; Click attack button and find a match
 	Local $j = 0
 	Local $bCanAttack = False
 	Local $TroopsOk[4] = [ 310, 355 + $g_iBottomOffsetY, 0xDAF482 , 10 ]
-
+	Local $ReturnFromAttack[4] = [697, 474 + $g_iBottomOffsetY, 0xC3EA6B ,20]
 	Local $bDegug = False
 
 	SetLog("BH: Going to Attack... [ " & String( $g_iTxtBB_DropTrophies ) & " ]", $COLOR_INFO)
@@ -57,8 +57,13 @@ Func BB_PrepareAttack() ; Click attack button and find a match
 				ClickR($aBB_FindMatchButtonRND, $aFindMatchButton[0], $aFindMatchButton[1], 1, 0)
 			EndIf
 		Else
+			If _CheckPixel($ReturnFromAttack, $g_bCapturePixel) Then ; Click on Green Join Button on Donate Window
+			SetLog("Click okay button.", $COLOR_INFO)
+			ClickP($ReturnFromAttack)
+			Else
 			SetLog("BB: Can't Find Match Buttom. Color Was: 0x" & $cPixColor, $COLOR_ERROR)
 			$bCanAttack = False
+			EndIf
 		EndIf
 
 		If _Sleep($DELAYPREPARESEARCH2) Then Return
