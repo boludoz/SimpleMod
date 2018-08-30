@@ -631,10 +631,9 @@ Func SaveConfig_600_22()
 	
 	; ================================================== One Gem Boost by RK MOD ================================= ;
 	
-	_Ini_Add("boost", "ChkOneGemBoostBr", $g_bChkOneGemBoostBr ? 1 : 0)
-	_Ini_Add("boost", "ChkOneGemBoostFr", $g_bChkOneGemBoostFr ? 1 : 0)
-	_Ini_Add("boost", "ChkOneGemBoostG", $g_bChkOneGemBoostG ? 1 : 0)
-	_Ini_Add("boost", "ChkOnlyOneGemBoost", $g_bChkOnlyOneGemBoost ? 1 : 0)
+	_Ini_Add("boost", "ChkOneGemBoostBarracks", $g_bChkOneGemBoostBarracks ? 1 : 0)
+	_Ini_Add("boost", "ChkOneGemBoostSpells", $g_bChkOneGemBoostSpells ? 1 : 0)
+	_Ini_Add("boost", "ChkOneGemBoostHeroes", $g_bChkOneGemBoostHeroes ? 1 : 0)
 	
 	For $i = 0 To 2
 			_Ini_Add("boost", "LastTimeCollectors" & $i, $g_iLastTime[0])

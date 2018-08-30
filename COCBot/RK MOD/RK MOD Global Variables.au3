@@ -205,7 +205,7 @@ Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 5
 
 ; ================================================== One Gem Boost by RK MOD ================================= ;
 
-Global $g_bChkOneGemBoostBr = False, $g_bChkOneGemBoostFr = False, $g_bChkOneGemBoostG = False, $g_bChkOnlyOneGemBoost = False
+Global $g_bChkOneGemBoostBarracks = False, $g_bChkOneGemBoostSpells = False, $g_bChkOneGemBoostHeroes = False
 
 ; --------------------------------------------
 ; Builder Base Drop Trophies (ID70)

@@ -19,11 +19,11 @@ Func OneGemBoost()
 	Local $initBoostTime
 	If $g_bFirstStart Or (_DateDiff("h", $initBoostTime, _NowCalc())) > 1 Then
 		checkMainScreen()
-		If $g_bChkOneGemBoostG Then CheckHeroOneGem()
-		If $g_bChkOneGemBoostBr Or $g_bChkOneGemBoostFr Then
+		If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem()
+		If $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
 			OpenArmyOverview(True, "OneGemBoost()")
-			If $g_bChkOneGemBoostBr Then CheckTroopsOneGem()
-			If $g_bChkOneGemBoostFr Then CheckSpellsOneGem()
+			If $g_bChkOneGemBoostBarracks Then CheckTroopsOneGem()
+			If $g_bChkOneGemBoostSpells Then CheckSpellsOneGem()
 			ClickP($aAway, 1, 0, "#0161")
 		EndIf
 		$initBoostTime = _NowCalc()

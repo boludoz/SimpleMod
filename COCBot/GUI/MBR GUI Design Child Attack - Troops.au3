@@ -56,7 +56,7 @@ Global $g_hChkBoostBMagic  = 0, $g_hCmbBoostBrMagic = 0, $g_hChkBoostCMagic = 0,
 Global $g_hChkCheckWardenMode = 0, $g_hCmbCheckWardenMode = 0
 
 ; One Gem Boost - by RK MOD
-Global $g_hChkOneGemBoostBr = 0, $g_hChkOneGemBoostFr = 0, $g_hChkOneGemBoostG = 0, $g_hChkOnlyOneGemBoost = 0
+Global $g_hChkOneGemBoostBarracks = 0, $g_hChkOneGemBoostSpells = 0, $g_hChkOneGemBoostHeroes = 0
 ;------------------ADDED By RK MOD - END------------------
 
 ; Train Order sub-tab
@@ -775,39 +775,59 @@ Func CreateBoostSubTab()
 	Local $sTxtTip = ""
 
 	$g_hGUI_TRAINARMY_TAB_ITEM2 = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_03_STab_01_STab_02", "Boost"))
-
+	;------------------CUSTOM LOGIC By RK MOD - START------------------
 	Local $x = 25, $y = 45
-	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_01", "Boost Barracks"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 60)
+	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_01", "Boost Barracks"), $x - 20, $y - 20, Int($g_iSizeWGrpTab3 / 2) - 2, 60)
+	$x = $x - 5
 	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnBarrackBoost, $x - 10, $y + 5, 24, 24)
 	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnDarkBarrackBoost, $x + 19, $y + 5, 24, 24)
-	GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "LblBarracksBoost", "Barracks") & " " & $sTextBoostLeft, $x + 20 + 29, $y + 4 + 7, -1, -1)
+	GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "LblBarracksBoost", "Barracks") & " " & $sTextBoostLeft, $x + 20 + 27, $y + 4 + 7, -1, -1)
 	$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "LblBarracksBoost_Info_01", "Use this to boost your Barracks with GEMS! Use with caution!")
 	_GUICtrlSetTip(-1, $sTxtTip)
-	$g_hCmbBoostBarracks = GUICtrlCreateCombo("", $x + 140 + 45, $y + 7, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+	$g_hCmbBoostBarracks = GUICtrlCreateCombo("", $x + 140 + 5, $y + 7, 50, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 	GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|No limit", "0")
 	_GUICtrlSetTip(-1, $sTxtTip)
-	$g_hChkOneGemBoostBr = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkOneGemBoostBr_Info_01", "One Gem Boost"), $x + 260, $y + 7, -1, -1)
-	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostBr_Info_02", "Enable this function for Check one gem boost."))
-	GUICtrlSetState(-1, $GUI_UNCHECKED)
-	GUICtrlSetOnEvent(-1, "CheckTroopsOneGem")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-	$y += 65
-	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_02", "Boost Spell Factories"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 50)
-	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnSpellFactoryBoost, $x - 10, $y - 2, 24, 24)
-	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnDarkSpellBoost, $x + 19, $y - 2, 24, 24)
-	GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "LblSpellFactoryBoost", "Spell Factory") & " " & $sTextBoostLeft, $x + 20 + 29, $y + 4, -1, -1)
+	$x = Int($g_iSizeWGrpTab3 / 2) + $x + 5
+
+	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_02", "Boost Spell Factories"), $x - 20, $y - 20, Int($g_iSizeWGrpTab3 / 2), 60)
+	$x = $x - 5
+	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnSpellFactoryBoost, $x - 10, $y + 5, 24, 24)
+	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnDarkSpellBoost, $x + 19, $y + 5, 24, 24)
+	GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "LblSpellFactoryBoost", "Spell Factory") & " " & $sTextBoostLeft, $x + 20 + 27, $y + 4 + 7, -1, -1)
 	$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "LblSpellFactoryBoost_Info_01", "Use this to boost your Spell Factory with GEMS! Use with caution!")
 	_GUICtrlSetTip(-1, $sTxtTip)
-	$g_hCmbBoostSpellFactory = GUICtrlCreateCombo("", $x + 185, $y, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+	$g_hCmbBoostSpellFactory = GUICtrlCreateCombo("", $x + 140 + 5, $y + 7, 50, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 	GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|No limit", "0")
 	_GUICtrlSetTip(-1, $sTxtTip)
-	$g_hChkOneGemBoostFr = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkOneGemBoostFr_Info_01", "One Gem Boost"), $x + 260, $y, -1, -1)
-	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostFr_Info_02", "Enable this function for Check one gem boost."))
-	GUICtrlSetState(-1, $GUI_UNCHECKED)
-	GUICtrlSetOnEvent(-1, "CheckSpellsOneGem")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
+	;------------------CUSTOM LOGIC By RK MOD - END------------------
 
+	;------------------ADDED By RK MOD - START------------------
+	$x = 25
+	$y += 65
+	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_06", "1-Gem Army Boost Event"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 50)
+	$x = $x - 9
+	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnBarrackBoost, $x - 10, $y - 2, 24, 24)
+	$g_hChkOneGemBoostBarracks = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostBarracks_Info_01", "Barracks 1-Gem Boost"), $x + 15, $y, -1, -1)
+	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostBarracks_Info_02", "Use this to boost your Barracks Automatically Only In 1-Gem Army Event."))
+	GUICtrlSetState(-1, $GUI_UNCHECKED)
+	$x = $x + 150
+	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnSpellFactoryBoost, $x - 10, $y - 2, 24, 24)
+	$g_hChkOneGemBoostSpells = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostSpells_Info_01", "Spells 1-Gem Boost"), $x + 15, $y, -1, -1)
+	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostSpells_Info_02", "Use this to boost your Spell Factory Automatically Only In 1-Gem Army Event."))
+	GUICtrlSetState(-1, $GUI_UNCHECKED)
+	$x = $x + 137
+	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnKingBoost, $x - 10, $y - 2, 24, 24)
+	$g_hChkOneGemBoostHeroes = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostHeroes_Info_01", "Heroes 1-Gem Boost"), $x + 15, $y, -1, -1)
+	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostHeroes_Info_02", "Use this to boost your Heroes Automatically Only In 1-Gem Army Event."))
+	GUICtrlSetState(-1, $GUI_UNCHECKED)
+
+	GUICtrlCreateGroup("", -99, -99, 1, 1)
+	;------------------ADDED By RK MOD - END------------------
+
+	$x = 25
 	$y += 55
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_03", "Boost Heroes"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 98)
 	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnKingBoost, $x - 10, $y - 2, 24, 24)
@@ -818,14 +838,6 @@ Func CreateBoostSubTab()
 	GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|No limit", "0")
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlSetOnEvent(-1, "chkUpgradeKing")
-	$g_hChkOneGemBoostG = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkOneGemBoostG_Info_01", "One Gem Boost"), $x + 260, $y, -1, -1)
-	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOneGemBoostG_Info_02", "Enable this function for Check one gem boost."))
-	GUICtrlSetState(-1, $GUI_UNCHECKED)
-	GUICtrlSetOnEvent(-1, "CheckHeroOneGem")
-	
-	$g_hChkOnlyOneGemBoost = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost",  "ChkOnlyOneGBoost_Info_01", "Only One Gem Boost"), $x + 260, $y + 25 , -1, -1)
-	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "ChkOnlyOneGBoost_Info_02", "Enable this function for Check only one gem boost."))
-	GUICtrlSetState(-1, $GUI_UNCHECKED)
 
 	$y += 25
 	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnQueenBoost, $x - 10, $y - 2, 24, 24)
