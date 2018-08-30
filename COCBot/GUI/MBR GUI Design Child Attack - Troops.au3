@@ -771,7 +771,7 @@ EndFunc   ;==>CreateTroopsSpellsSubTab
 
 Func CreateBoostSubTab()
 
-	Local $sTextBoostLeft = GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "TextBoostLeft", "Boosts left")
+	Local $sTextBoostLeft ;= GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "TextBoostLeft", "Boosts left")
 	Local $sTxtTip = ""
 
 	$g_hGUI_TRAINARMY_TAB_ITEM2 = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_03_STab_01_STab_02", "Boost"))

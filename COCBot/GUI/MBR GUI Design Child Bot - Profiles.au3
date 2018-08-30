@@ -15,7 +15,7 @@
 #include-once
 
 Global $g_hCmbProfile = 0, $g_hTxtVillageName = 0, $g_hBtnAddProfile = 0, $g_hBtnConfirmAddProfile = 0, $g_hBtnConfirmRenameProfile = 0, $g_hChkOnlySCIDAccounts = 0, $g_hCmbWhatSCIDAccount2Use = 0 , _
-	   $g_hBtnDeleteProfile = 0, $g_hBtnCancelProfileChange = 0, $g_hBtnRenameProfile = 0, $g_hBtnPullSharedPrefs = 0, $g_hBtnPushSharedPrefs = 0 , $g_hBtnSaveprofile = 0
+	   $g_hBtnDeleteProfile = 0, $g_hBtnCancelProfileChange = 0, $g_hBtnRenameProfile = 0, $g_hBtnPullSharedPrefs = 0, $g_hBtnPushSharedPrefs = 0 , $g_hBtnSaveprofile = 0, $g_hBtnRecycle = 0
 	   
 ;------------------REMOVED By RK MOD - START------------------
 ;Global $g_hChkSwitchAcc = 0, $g_hCmbSwitchAcc = 0, $g_hChkSharedPrefs = 0, $g_hCmbTotalAccount = 0, $g_hChkSmartSwitch = 0, $g_hCmbTrainTimeToSkip = 0, $g_hChkDonateLikeCrazy = 0, _
@@ -77,12 +77,15 @@ Func CreateBotProfiles()
 			$bIconPull = _GUIImageList_Create(24, 24, 4)
 			_GUIImageList_AddBitmap($bIconPull, @ScriptDir & "\images\Button\iconPull.bmp")
 		EndIf
-
-		Static $bIconSave = 0
-		If $bIconSave = 0 Then
-			$bIconSave = _GUIImageList_Create(24, 24, 4)
-			_GUIImageList_AddBitmap($bIconSave, @ScriptDir & "\images\Button\iconRecycle.bmp")
-		EndIf
+		Static $bIconSave = _GUIImageList_Create(24, 24, 4)
+		_GUIImageList_AddBitmap($bIconSave, @ScriptDir & "\images\Button\iconConfirm.bmp")
+		
+		Local $bIconRecycle = _GUIImageList_Create(24, 24, 4)
+			_GUIImageList_AddBitmap($bIconRecycle, @ScriptDir & "\images\Button\iconRecycle.bmp")
+			_GUIImageList_AddBitmap($bIconRecycle, @ScriptDir & "\images\Button\iconRecycle_2.bmp")
+			_GUIImageList_AddBitmap($bIconRecycle, @ScriptDir & "\images\Button\iconRecycle_2.bmp")
+			_GUIImageList_AddBitmap($bIconRecycle, @ScriptDir & "\images\Button\iconRecycle_4.bmp")
+			_GUIImageList_AddBitmap($bIconRecycle, @ScriptDir & "\images\Button\iconRecycle.bmp")
 
 		$x -= 15
 		$g_hBtnAddProfile = GUICtrlCreateButton("", $x + 135, $y, 24, 24)
@@ -90,12 +93,12 @@ Func CreateBotProfiles()
 			GUICtrlSetOnEvent(-1, "btnAddConfirm")
 			GUICtrlSetState(-1, $GUI_SHOW)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnAddProfile_Info_01", "Add New Profile"))
-		$g_hBtnConfirmAddProfile = GUICtrlCreateButton("", $x + 135, $y, 24, 24)
+		$g_hBtnConfirmAddProfile = GUICtrlCreateButton("", $x + 148, $y, 24, 24)
 			_GUICtrlButton_SetImageList($g_hBtnConfirmAddProfile, $bIconConfirm, 4)
 			GUICtrlSetOnEvent(-1, "btnAddConfirm")
 			GUICtrlSetState(-1, $GUI_HIDE)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnConfirmAddProfile_Info_01", "Confirm"))
-		$g_hBtnConfirmRenameProfile = GUICtrlCreateButton("", $x + 135, $y, 24, 24)
+		$g_hBtnConfirmRenameProfile = GUICtrlCreateButton("", $x + 145, $y, 24, 24)
 			_GUICtrlButton_SetImageList($g_hBtnConfirmRenameProfile, $bIconConfirm, 4)
 			GUICtrlSetOnEvent(-1, "btnRenameConfirm")
 			GUICtrlSetState(-1, $GUI_HIDE)
@@ -105,7 +108,7 @@ Func CreateBotProfiles()
 			GUICtrlSetOnEvent(-1, "btnDeleteCancel")
 			GUICtrlSetState(-1, $GUI_SHOW)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnDeleteProfile_Info_01", "Delete Profile"))
-		$g_hBtnCancelProfileChange = GUICtrlCreateButton("", $x + 164, $y, 24, 24)
+		$g_hBtnCancelProfileChange = GUICtrlCreateButton("", $x + 175, $y, 24, 24)
 			_GUICtrlButton_SetImageList($g_hBtnCancelProfileChange, $bIconCancel, 4)
 			GUICtrlSetOnEvent(-1, "btnDeleteCancel")
 			GUICtrlSetState(-1, $GUI_HIDE)
@@ -125,7 +128,12 @@ Func CreateBotProfiles()
 		$g_hBtnSaveprofile = GUICtrlCreateButton("", $x + 284, $y, 24, 24)
 			_GUICtrlButton_SetImageList($g_hBtnSaveprofile, $bIconSave, 4)
 			GUICtrlSetOnEvent(-1, "BtnSaveprofile")
-			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnSaveprofile_Info_01", "Recycle Profile by removing all settings no longer suported that could lead to bad behaviour, and save."))
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnSaveprofile_Info_01", "Save your current setting."))
+		$g_hBtnRecycle = GUICtrlCreateButton("", $x + 313, $y + 2, 22, 22)
+			_GUICtrlButton_SetImageList($g_hBtnRecycle, $bIconRecycle, 4)
+			GUICtrlSetOnEvent(-1, "btnRecycle")
+			GUICtrlSetState(-1, $GUI_SHOW)
+			_GUICtrlSetTip(-1,  GetTranslatedFileIni("MBR GUI Design Child Bot - Profiles", "BtnRecycle_Info_01", "Recycle Profile by removing all settings no longer suported that could lead to bad behaviour"))
 			If GUICtrlRead($g_hCmbProfile) = "<No Profiles>" Then
 				GUICtrlSetState(-1, $GUI_DISABLE)
 			Else
