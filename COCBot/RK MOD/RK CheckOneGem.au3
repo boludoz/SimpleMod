@@ -18,6 +18,7 @@ Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
 Func OneGemBoost()
 	Local $initBoostTime
 	If $g_bFirstStart Or (_DateDiff("h", $initBoostTime, _NowCalc())) > 1 Then
+		SetLog("Boosting with One Gem", $COLOR_INFO)
 		checkMainScreen()
 		If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem()
 		If $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
@@ -33,10 +34,11 @@ EndFunc   ;==>OneGemBoost
 Func CheckOneGem()
 	$bGemOcr = QuickMis("OCR", $bBoostocr, 370, 420, 370 + 130, 420 + 50)
 	$bGemOcr = StringReplace($bGemOcr, " ", "")
-	If $g_bDebugSetlog Then SetLog("$bGemOcr = " & $bGemOcr, $COLOR_INFO)
 	If $bGemOcr <> "none" Then
 		If $bGemOcr = 1 Then
 			Return True
+		Else
+			SetLog("One Gem Boost Not Found", $COLOR_ERROR)
 		EndIf
 	Else
 		SetLog("$bGemOcr Not Found", $COLOR_ERROR)

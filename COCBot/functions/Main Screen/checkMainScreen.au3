@@ -45,6 +45,13 @@ Func _checkMainScreen($bSetLog = Default, $bBuilderBase = Default) ;Checks if in
 	$i = 0
 	$iErrorCount = 0
 	$iCheckBeforeRestartAndroidCount = 3
+	;------------------CUSTOM LOGIC By RK MOD - START------------------
+	Local $Googleimg = @ScriptDir & "\imgxml\other\Google*"
+	If QuickMis("BC1", $Googleimg, 350, 0, 350 + 88, 0 + 386) Then
+		If Not CheckGoogleSelectAccount() Then ClickP($aAway, 1, 0, "#0161")
+	EndIf
+	;------------------CUSTOM LOGIC By RK MOD - END------------------
+	
 
 	If $bBuilderBase Then $aPixelToCheck = $aIsOnBuilderBase
 	Local $bLocated
@@ -112,4 +119,4 @@ EndFunc   ;==>_checkMainScreen
 Func _checkMainScreenImage(ByRef $bLocated, $aPixelToCheck)
 	$bLocated = _CheckPixel($aPixelToCheck, $g_bNoCapturePixel) And Not checkObstacles_Network(False, False)
 	Return $bLocated
-EndFunc
+EndFunc   ;==>_checkMainScreenImage
