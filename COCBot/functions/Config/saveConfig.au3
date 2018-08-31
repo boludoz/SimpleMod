@@ -670,10 +670,15 @@ Func SaveConfig_600_28()
 	_Ini_Add("search", "RestartSearchPickupHero", $g_bSearchRestartPickupHero ? 1 : 0)
 	_Ini_Add("general", "AlertSearch", $g_bSearchAlertMe ? 1 : 0)
 
-	
 	; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
+	
 	_Ini_Add("search", "ChkReturnTimerEnable", $g_bReturnTimerEnable ? 1 : 0)
 	_Ini_Add("search", "ReturnTimer", $g_iTxtReturnTimer)
+	
+	; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
+	
+	_Ini_Add("search", "ChkAttackPrioriti", $g_bChkAttackPrioriti ? 1 : 0)
+	
 EndFunc   ;==>SaveConfig_600_28
 
 Func SaveConfig_600_28_DB()

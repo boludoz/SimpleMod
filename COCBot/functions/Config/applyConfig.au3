@@ -1035,6 +1035,10 @@ Func ApplyConfig_600_28($TypeReadSave)
 			GUICtrlSetData($g_hTxtReturnTimer, $g_iTxtReturnTimer)
 			chkReturnTimer()
 			
+			; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
+			
+			GUICtrlSetState($g_hChkAttackPrioriti, $g_bChkAttackPrioriti ? $GUI_CHECKED : $GUI_UNCHECKED)
+			
 		Case "Save"
 			$g_bSearchReductionEnable = (GUICtrlRead($g_hChkSearchReduction) = $GUI_CHECKED)
 			$g_iSearchReductionCount = GUICtrlRead($g_hTxtSearchReduceCount)
@@ -1051,11 +1055,16 @@ Func ApplyConfig_600_28($TypeReadSave)
 			$g_iSearchRestartLimit = GUICtrlRead($g_hTxtRestartSearchlimit)
 			$g_bSearchRestartPickupHero = (GUICtrlRead($g_hChkRestartSearchPickupHero) = $GUI_CHECKED)
 			$g_bSearchAlertMe = (GUICtrlRead($g_hChkAlertSearch) = $GUI_CHECKED)
-
-			
+		
 			; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
+			
 			$g_bReturnTimerEnable = (GUICtrlRead($g_hChkReturnTimerEnable) = $GUI_CHECKED)
 			$g_iTxtReturnTimer = GUICtrlRead($g_hTxtReturnTimer)
+			
+			; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
+			
+			$g_bChkAttackPrioriti = (GUICtrlRead($g_hChkAttackPrioriti) = $GUI_CHECKED)
+			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_28
 

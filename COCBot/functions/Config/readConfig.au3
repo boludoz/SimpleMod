@@ -799,12 +799,12 @@ Func ReadConfig_600_22()
 
 	IniReadS($g_iChkBoostBMagic, $g_sProfileConfigPath, "boost", "chkBoostBMagic", $g_iChkBoostBMagic, "Int")
 	IniReadS($g_iCmbBoostBrMagic, $g_sProfileConfigPath, "boost", "CmbBoostBrMagic", 0, "int")
-        IniReadS($g_iChkBoostCMagic, $g_sProfileConfigPath, "boost", "chkBoostCMagic", $g_iChkBoostCMagic, "Int")
+    IniReadS($g_iChkBoostCMagic, $g_sProfileConfigPath, "boost", "chkBoostCMagic", $g_iChkBoostCMagic, "Int")
 	IniReadS($g_iCmbBoostClMagic, $g_sProfileConfigPath, "boost", "CmbBoostClMagic", 0, "int")
 	; ================================================== One Gem Boost by RK MOD ================================= ;
 	IniReadS($g_bChkOneGemBoostBarracks, $g_sProfileConfigPath, "boost", "ChkOneGemBoostBarracks", False, "Bool")
 	IniReadS($g_bChkOneGemBoostSpells, $g_sProfileConfigPath, "boost", "ChkOneGemBoostSpells", False, "Bool")
-        IniReadS($g_bChkOneGemBoostHeroes, $g_sProfileConfigPath, "boost", "ChkOneGemBoostHeroes", False, "Bool")
+    IniReadS($g_bChkOneGemBoostHeroes, $g_sProfileConfigPath, "boost", "ChkOneGemBoostHeroes", False, "Bool")
 	
 	For $i = 0 To 2
 		IniReadS($g_iLastTime[$i], $g_sProfileBuildingPath, "other", "LastTimeCollectors" & $i, 0, "int")
@@ -838,8 +838,14 @@ Func ReadConfig_600_28()
 	IniReadS($g_bSearchAlertMe, $g_sProfileConfigPath, "general", "AlertSearch", False, "Bool")
 
 	; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
+	
 	IniReadS($g_bReturnTimerEnable, $g_sProfileConfigPath, "search", "ChkReturnTimerEnable", False, "Bool")
 	IniReadS($g_iTxtReturnTimer, $g_sProfileConfigPath, "search", "ReturnTimer", 5, "int")
+	
+	; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
+	
+	IniReadS($g_bChkAttackPrioriti, $g_sProfileConfigPath, "search", "ChkAttackPrioriti", False, "Bool")
+	
 EndFunc   ;==>ReadConfig_600_28
 
 Func ReadConfig_600_28_DB()

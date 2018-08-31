@@ -219,3 +219,7 @@ Global $aBB_FindMatchButtonRND[4] = [545, 230 + $g_iMidOffsetY, 565, 250 + $g_iM
 
 Global $g_bChkSmartTrain = False, $g_bChkPreciseArmyCamp = False, $g_bChkFillArcher = False, $g_bChkFillEQ = False, $g_iTxtFillArcher = 5
 Global $g_bWrongTroop, $g_bWrongSpell, $g_sSmartTrainError = ""
+
+; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
+
+Global $g_bChkAttackPrioriti = False
