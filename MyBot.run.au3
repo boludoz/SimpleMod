@@ -1420,30 +1420,3 @@ Func FirstCheck()
 		EndIf
 	EndIf
 EndFunc   ;==>FirstCheck
-
-Func AttackPriority() ;------------------ADDED By RK MOD------------------
-	TrainSystem()
-	If Not $g_bRunState Then Return
-	SetDebugLog("Are you ready? " & String($g_bIsFullArmywithHeroesAndSpells))
-	If $g_bIsFullArmywithHeroesAndSpells Then
-		BoostAllWithMagicSpell()
-		OneGemBoost()
-		If (isInsideDiamond($g_aiTownHallPos) = False) Then
-			BotDetectFirstTime()
-		EndIf
-		If $g_iCommandStop <> 0 And $g_iCommandStop <> 3 Then
-			Setlog("Before any other routine let's attack!!", $COLOR_INFO)
-			If Not $g_bRunState Then Return
-			AttackMain()
-			$g_bSkipFirstZoomout = False
-			If $g_bOutOfGold = True Then
-				SetLog("Switching to Halt Attack, Stay Online/Collect mode ...", $COLOR_ERROR)
-				$g_bFirstStart = True
-				Return
-			EndIf
-			If _Sleep($DELAYRUNBOT1) Then Return
-		EndIf
-	Else
-	EndIf
-EndFunc   ;==>AttackPriority
-

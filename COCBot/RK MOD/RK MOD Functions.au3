@@ -14,6 +14,7 @@
 ; ===============================================================================================================================
 
 #include "RK CSV Speed.au3"
+#include "RK Extra.au3"
 #include "RK Four Finger Classic.au3"
 #include "RK GoblinXP\RK GoblinXP.au3"
 #include "RK GoblinXP\RK multiSearch.au3"
