@@ -121,6 +121,8 @@ Func BB_Attack($Nside = 1, $SIDESNAMES = "TR|TL", $iTroopToDeploy = 4 )
 	$iHalf += $iRest
 
 	SetLog("BB: Attacking on a single side", $COLOR_INFO)
+	Local $ibKingClick[3] = TruePixel(0, 652, 835, 724, 0x3020D8, 20) 
+	;Setlog($ibKingClick[0] & $ibKingClick[1] & $ibKingClick[2])
 
 	$aBB_LineCenter[0] = INT( ( $aBB_DiamondTop[0] + $aBB_DiamondRight[0] ) / 2 )
 	$aBB_LineCenter[1] = INT( ( $aBB_DiamondTop[1] + $aBB_DiamondRight[1] ) / 2 )
@@ -135,9 +137,9 @@ Func BB_Attack($Nside = 1, $SIDESNAMES = "TR|TL", $iTroopToDeploy = 4 )
 		$aDropPointY[0] = $aBB_LineCenter[0] - ( $i * $aDropCoord[0] )
 		$aDropPointY[1] = $aBB_LineCenter[1] - ( $i * $aDropCoord[1] )
 		ClickP($aDropPointX, 1, 0, "#0000") ; Drop Troop
-		If _Sleep($DELAYDROPTROOP1) Then Return
+		If _Sleep($DELAYDROPTROOP1 / 5) Then Return
 		AttackClick($aDropPointY[0], $aDropPointY[1], 1, SetSleep(0), 0, "#0000")
-		If _Sleep($DELAYDROPTROOP2) Then Return
+		If _Sleep($DELAYDROPTROOP2 / 5) Then Return
 	Next
 
 	ReleaseClicks()
