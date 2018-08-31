@@ -1035,9 +1035,9 @@ Func ApplyConfig_600_28($TypeReadSave)
 			GUICtrlSetData($g_hTxtReturnTimer, $g_iTxtReturnTimer)
 			chkReturnTimer()
 			
-			; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
+			; ================================================== ; Attack Priority - by RK MOD  ======================================== ;
 			
-			GUICtrlSetState($g_hChkAttackPrioriti, $g_bChkAttackPrioriti ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkAttackPriority, $g_bChkAttackPriority ? $GUI_CHECKED : $GUI_UNCHECKED)
 			
 		Case "Save"
 			$g_bSearchReductionEnable = (GUICtrlRead($g_hChkSearchReduction) = $GUI_CHECKED)
@@ -1061,9 +1061,9 @@ Func ApplyConfig_600_28($TypeReadSave)
 			$g_bReturnTimerEnable = (GUICtrlRead($g_hChkReturnTimerEnable) = $GUI_CHECKED)
 			$g_iTxtReturnTimer = GUICtrlRead($g_hTxtReturnTimer)
 			
-			; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
+			; ================================================== ; Attack Priority - by RK MOD  ======================================== ;
 			
-			$g_bChkAttackPrioriti = (GUICtrlRead($g_hChkAttackPrioriti) = $GUI_CHECKED)
+			$g_bChkAttackPriority = (GUICtrlRead($g_hChkAttackPriority) = $GUI_CHECKED)
 			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_28

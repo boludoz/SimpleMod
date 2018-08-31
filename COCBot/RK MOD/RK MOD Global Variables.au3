@@ -222,4 +222,4 @@ Global $g_bWrongTroop, $g_bWrongSpell, $g_sSmartTrainError = ""
 
 ; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
 
-Global $g_bChkAttackPrioriti = False
+Global $g_bChkAttackPriority = False

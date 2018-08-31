@@ -677,7 +677,7 @@ Func SaveConfig_600_28()
 	
 	; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
 	
-	_Ini_Add("search", "ChkAttackPrioriti", $g_bChkAttackPrioriti ? 1 : 0)
+	_Ini_Add("search", "ChkAttackPriority", $g_bChkAttackPriority ? 1 : 0)
 	
 EndFunc   ;==>SaveConfig_600_28
 
