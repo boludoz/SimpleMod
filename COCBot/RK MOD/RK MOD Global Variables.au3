@@ -128,8 +128,7 @@ Global $g_iChkClanResponses = ""
 Global $g_iChkClanResponses0
 Global $g_iChkGlobalMessages1 = ""
 Global $g_iChkGlobalMessages2 = ""
-Global $startDelayTimer = TimerInit()
-Global $sendTimer = TimerInit()
+Global $g_sGlobalChatLastMsgSentTime = ""
 Global $glb1 
 Global $glb2
 Global $cResp
