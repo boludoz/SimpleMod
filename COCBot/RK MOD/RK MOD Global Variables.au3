@@ -5,7 +5,7 @@
 ; Parameters ....: ---
 ; Return values .: ---
 ; Author ........: by RK MOD
-; Modified ......: 
+; Modified ......:
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2017
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......: ---
@@ -129,7 +129,7 @@ Global $g_iChkClanResponses0
 Global $g_iChkGlobalMessages1 = ""
 Global $g_iChkGlobalMessages2 = ""
 Global $g_sGlobalChatLastMsgSentTime = ""
-Global $glb1 
+Global $glb1
 Global $glb2
 Global $cResp
 Global $cGeneric
@@ -150,7 +150,7 @@ Global $g_bRequestCCDefense, $g_sRequestCCDefenseText, $g_bRequestCCDefenseWhenP
 
 ; ================================================== Boost for Magic Spell by RK MOD ================================= ;
 
-Global $g_iChkBoostBMagic = 0, $g_iCmbBoostBrMagic = 0, $g_iChkBoostCMagic = 0, $g_iCmbBoostClMagic = 0  
+Global $g_iChkBoostBMagic = 0, $g_iCmbBoostBrMagic = 0, $g_iChkBoostCMagic = 0, $g_iCmbBoostClMagic = 0
 Global $g_iXCollect = 0, $g_iYCollect = 0, $g_bCanBoostC = False
 Global $g_iLastTime[3] = [0, 0, 0]
 
@@ -218,6 +218,7 @@ Global $aBB_FindMatchButtonRND[4] = [545, 230 + $g_iMidOffsetY, 565, 250 + $g_iM
 ; ================================================== SmartTrain - RK MOD (Demen) ======================================== ;
 
 Global $g_bChkSmartTrain = False, $g_bChkPreciseArmyCamp = False, $g_bChkFillArcher = False, $g_bChkFillEQ = False, $g_iTxtFillArcher = 5
+Global Enum $g_eFull, $g_eRemained, $g_eNoTrain
 Global $g_bWrongTroop, $g_bWrongSpell, $g_sSmartTrainError = ""
 
 ; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
