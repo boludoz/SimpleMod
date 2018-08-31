@@ -105,7 +105,7 @@ Func CheckStopForWar()
 		EndIf
 	EndIf
 
-	If ProfileSwitchAccountEnabled() Then  ; Save Timer of Current Account
+	If ProfileSwitchAccountEnabled() Then ; Save Timer of Current Account
 		$asTimeToRecheck[$g_iCurAccount] = $sTimeToRecheck
 		$abTimeToStop[$g_iCurAccount] = $bTimeToStop
 	EndIf
@@ -116,6 +116,7 @@ Func CheckStopForWar()
 	EndIf
 
 EndFunc   ;==>CheckStopForWar
+
 
 Func CheckWarTime(ByRef $sResult, ByRef $bResult) ; return [Success + $sResult = $sBattleEndTime, $bResult = $bInWar] OR Failure
 
@@ -181,72 +182,67 @@ Func StopAndPrepareForWar($iSleepTime)
 
 	If $g_bTrainWarTroop Then
 		SetLog("Let's remove all farming troops and train war troop", $COLOR_ACTION)
-		If $g_bUseQuickTrainWar Then
-			$g_bQuickTrainEnable = $g_bUseQuickTrainWar
-			$g_bQuickTrainArmy = $g_aChkArmyWar
 
-			Local $aiArmyCompTroopsEmpty[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-			Local $aiArmyCompSpellsEmpty[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-			$g_aiArmyCompTroops = $aiArmyCompTroopsEmpty
-			$g_aiArmyCompSpells = $aiArmyCompSpellsEmpty
+		; Loading variables
+		$g_bDoubleTrain = True
+		If $g_iTotalSpellValue = 0 Then $g_iTotalSpellValue = 11
+		If $g_iTotalCampSpace = 0 Then $g_iTotalCampSpace = 280
+		If $g_bUseQuickTrainWar Then
+			$g_bQuickTrainEnable = True
+			$g_bQuickTrainArmy = $g_aChkArmyWar
+			For $i = 0 To $eTroopCount - 1
+				$g_aiArmyCompTroops[$i] = 0
+				If $i < $eSpellCount Then $g_aiArmyCompSpells[$i] = 0
+			Next
+			; removing current army
+			OpenArmyOverview(False, "StopAndPrepareForWar()")
+			If Not IsQueueEmpty("Troops", False, False) Then DeleteQueued("Troops")
+			If Not IsQueueEmpty("Spells", False, False) Then DeleteQueued("Spells")
+			If _Sleep(300) Then Return
+
+			If Not OpenArmyTab(False, "StopAndPrepareForWar()") Then Return
+			If _Sleep(300) Then Return
+			Local $toTrainFake[1][2] = [["Barb", 0]]
+			getArmySpells(False, False, False, False)
+			For $i = 0 To $eSpellCount - 1
+				If $g_aiCurrentSpells[$i] = 0 Then
+					$g_aiArmyCompSpells[$i] = 1 ; this is to by pass TotalSpellsToBrewInGUI() in TrainSystem
+					ExitLoop
+				EndIf
+			Next
+			RemoveExtraTroops($toTrainFake)
+			ClickP($aAway, 2, 0, "#0346") ;Click Away
+			If _Sleep(300) Then Return
 		Else
 			$g_aiArmyCompTroops = $g_aiWarCompTroops
 			$g_aiArmyCompSpells = $g_aiWarCompSpells
 		EndIf
 
 		; Train
-		OpenArmyOverview(False, "StopAndPrepareForWar()")
-
-		If Not IsQueueEmpty("Troops", True, False) Then DeleteQueued("Troops")
-		If Not IsQueueEmpty("Spells", True, False) Then DeleteQueued("Spells")
-		If _Sleep(300) Then Return
-
-		$g_bIsFullArmywithHeroesAndSpells = False
-
-		If Not $g_bUseQuickTrainWar Then
-			DoubleTrain()
-		Else
-		    StartGainCost()
-			OpenArmyTab(False, "StopAndPrepareForWar()")
-			If _Sleep(300) Then Return
-
-			Local $toTrainFake[1][2] = [["Barb", 0]]
-			getArmySpells(False, False, False, False)
-			For $i = 0 To $eSpellCount - 1
-				If $g_aiCurrentSpells[$i] = 0 Then
-					$g_aiArmyCompSpells[$i] = 1 ; this is to by pass TotalSpellsToBrewInGUI() in Train Revamp
-					ExitLoop
-				EndIf
-			Next
-			RemoveExtraTroops($toTrainFake)
-
-			OpenQuickTrainTab(False, "StopAndPrepareForWar()")
-			If _Sleep(750) Then Return
-			TrainArmyNumber($g_bQuickTrainArmy)
-			If _Sleep(250) Then Return
-			TrainArmyNumber($g_bQuickTrainArmy)
-			EndGainCost("Train")
-		EndIf
-
-		If _Sleep(500) Then Return
-
-		If $g_bRequestCCForWar Then
-			OpenArmyTab(False, "StopAndPrepareForWar()")
-		Else
-			ClickP($aAway, 2, 0, "#0346") ;Click Away
-		EndIf
-
+		DoubleTrain($g_bUseQuickTrainWar, True)
 		If _Sleep(500) Then Return
 	EndIf
 
 	If $g_bRequestCCForWar Then
 		$g_bRequestTroopsEnable = True
 		$g_bDonationEnabled = True
+		$g_bCanRequestCC = True
 		$g_abRequestCCHours[@HOUR] = True
 		$g_sRequestTroopsText = $g_sTxtRequestCCForWar
+		$g_abRequestType[0] = True
+		$g_abRequestType[1] = True
+		For $i = 0 To 2
+			$g_aiClanCastleTroopWaitType[$i] = 0 ; Barb for all 3 slots
+			$g_aiClanCastleTroopWaitQty[$i] = 1 ; Q'ty = 0 for all 3 slots
+		Next
+		For $i = 0 To $eTroopCount - 1
+			$g_aiCCTroopsExpected[$i] = 0 ; remove all troops
+		Next
+		$g_iCurrentCCSpells = $g_iTotalCCSpells
+		$g_iClanCastleSpellsWaitFirst = 10 ; fake to cheat CompareCCSpellWithGUI()
+		$g_iClanCastleSpellsWaitSecond = 6 ; fake to cheat CompareCCSpellWithGUI()
 
 		SetLog("Let's request again for war", $COLOR_ACTION)
-		RemoveCC()
 		RequestCC()
 	EndIf
 
@@ -295,77 +291,6 @@ Func StopAndPrepareForWar($iSleepTime)
 	UniversalCloseWaitOpenCoC($iSleepTime * 60 * 1000, "StopAndPrepareForWar", False, True) ; wake up & full restart
 
 EndFunc   ;==>StopAndPrepareForWar
-
-Func RemoveCC()
-
-	If Not IsTrainPage() Then
-		OpenArmyOverview(True, "CheckCC()")
-		If _Sleep(500) Then Return
-	EndIf
-
-	Local $sCCTroop, $aCCTroop, $sCCSpell, $aCCSpell
-	$sCCTroop = getOcrAndCapture("coc-ms", 289, 468, 60, 16, True, False, True) ; read CC troops 0/40
-	$aCCTroop = StringSplit($sCCTroop, "#", $STR_NOCOUNT) ; split the trained troop number from the total troop number
-	$sCCSpell = getOcrAndCapture("coc-ms", 472, 468, 35, 16, True, False, True) ; read CC Spells 0/2
-	$aCCSpell = StringSplit($sCCSpell, "#", $STR_NOCOUNT) ; split the trained troop number from the total troop number
-
-	Local $aPos[2] = [40, 575]
-	Local $bHasCCTroopOrSpell = False
-	If IsArray($aCCTroop) Then $bHasCCTroopOrSpell = Number($aCCTroop[0]) > 1
-	If IsArray($aCCSpell) Then $bHasCCTroopOrSpell = Number($aCCSpell[0]) > 1
-
-	If $bHasCCTroopOrSpell Then
-		Click(Random(715, 825, 1), Random(507, 545, 1)) ; Click on Edit Army Button
-		If _Sleep(500) Then Return
-		For $i = 0 To 6
-			If _ColorCheck(_GetPixelColor(Round(30 + 72.8 * $i, 0), 508, True), Hex(0xCFCFC8, 6), 15) Then
-				ExitLoop
-			Else
-				$aPos[0] = 40 + 74 * $i
-				ClickRemoveTroop($aPos, 35, $g_iTrainClickDelay)
-			EndIf
-		Next
-		If Not _ColorCheck(_GetPixelColor(570, 508, True), Hex(0xCFCFC8, 6), 15) Then
-			$aPos[0] = 570
-			ClickRemoveTroop($aPos, 3, $g_iTrainClickDelay)
-		EndIf
-
-		For $i = 0 To 10
-			If _ColorCheck(_GetPixelColor(806, 567, True), Hex(0xCEEF76, 6), 25) Then
-				Click(Random(720, 815, 1), Random(558, 589, 1)) ; Click on 'Okay' button to save changes
-				ExitLoop
-			Else
-				If $i = 10 Then
-					SetLog("Cannot find/verify 'Okay' Button in Army tab", $COLOR_WARNING)
-					ClickP($aAway, 2, 0)
-					Return ; Exit function
-				EndIf
-				If _Sleep(200) Then Return
-			EndIf
-		Next
-
-		For $i = 0 To 10
-			If _ColorCheck(_GetPixelColor(508, 428, True), Hex(0xFFFFFF, 6), 30) Then
-				Click(Random(445, 583, 1), Random(402, 455, 1)) ; Click on 'Okay' button to Save changes... Last button
-				ExitLoop
-			Else
-				If $i = 10 Then
-					SetLog("Cannot find/verify 'Okay #2' Button in Army tab", $COLOR_WARNING)
-					ClickP($aAway, 2, 0)
-					Return ; Exit function
-				EndIf
-				If _Sleep(300) Then Return
-			EndIf
-		Next
-		SetLog("CC Troops/Spells removed", $COLOR_SUCCESS)
-		If _Sleep(200) Then Return
-	EndIf
-
-	getArmyCCStatus()
-
-	ClickP($aAway, 2, 0)
-	If _Sleep(300) Then Return
-EndFunc   ;==>RemoveCC
 
 ;========= GUI Control ==========
 Func ChkStopForWar()
