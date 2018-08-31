@@ -743,7 +743,6 @@ Func runBot() ;Bot that runs everything in order
 			ProfileSwitch()
 			CheckFarmSchedule()
 			CheckStopForWar()
-			If $g_bChkAttackPriority Then AttackPriority()
 			;------------------CUSTOM LOGIC By RK MOD - END------------------
 			If $g_bOutOfGold = True And (Number($g_aiCurrentLoot[$eLootGold]) >= Number($g_iTxtRestartGold)) Then ; check if enough gold to begin searching again
 				$g_bOutOfGold = False ; reset out of gold flag
@@ -1094,7 +1093,7 @@ Func AttackMain() ;Main control for attack functions
 	ClickP($aAway, 1, 0, "#0000") ;Click Away to prevent any pages on top
 	If IsSearchAttackEnabled() Then
 		If (IsSearchModeActive($DB) And checkCollectors(True, False)) Or IsSearchModeActive($LB) Or IsSearchModeActive($TS) Then
-			If ProfileSwitchAccountEnabled() And ($g_aiAttackedCountSwitch[$g_iCurAccount] <= $g_aiAttackedCountAcc[$g_iCurAccount] - 2) And (($g_bChkAttackPriority And Not $g_bIsFullArmywithHeroesAndSpells) Or (Not $g_bChkAttackPriority)) Then checkSwitchAcc()
+			If ProfileSwitchAccountEnabled() And ($g_aiAttackedCountSwitch[$g_iCurAccount] <= $g_aiAttackedCountAcc[$g_iCurAccount] - 2) Then checkSwitchAcc()
 			If $g_bUseCCBalanced = True Then ;launch profilereport() only if option balance D/R it's activated
 				ProfileReport()
 				If Not $g_bRunState Then Return
@@ -1320,8 +1319,11 @@ Func _RunFunction($action)
 				BuilderBaseReport()
 				StartClockTowerBoost()
 				MainSuggestedUpgradeCode()
+				If $g_bChkBB_DropTrophies Then
+				BuilderBaseReport(True)
 				BB_DropTrophies() ;------------------ADDED By RK MOD - by Chacal GYN - Drop Trophies (ID70) ------------------
 				; switch back to normal village
+				EndIf
 				SwitchBetweenBases()
 			EndIf
 			_Sleep($DELAYRUNBOT3)
@@ -1364,10 +1366,23 @@ Func FirstCheck()
 	MainGTFO()
 	MainKickout()
 	VillageReport()
+	
+			If isOnBuilderBase() Or (($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades Or $g_bChkBB_DropTrophies) And SwitchBetweenBases()) Then
+				CollectBuilderBase()
+				BuilderBaseReport()
+				StartClockTowerBoost()
+				MainSuggestedUpgradeCode()
+				If $g_bChkBB_DropTrophies Then
+				BuilderBaseReport(True)
+				BB_DropTrophies() ;------------------ADDED By RK MOD - by Chacal GYN - Drop Trophies (ID70) ------------------
+				; switch back to normal village
+				EndIf
+				SwitchBetweenBases()
+			EndIf
 
 	CheckFarmSchedule()
 
-	If $g_bReqCCFirst = 1 And BalanceRecRec(True) Then RequestCC()
+	If $g_bReqCCFirst = 1 Then RequestCC()
 	;------------------CUSTOM LOGIC By RK MOD - END------------------
 	If Not $g_bRunState Then Return
 

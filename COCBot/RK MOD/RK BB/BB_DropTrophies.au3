@@ -52,7 +52,7 @@ Func BB_DropTrophies()
 	Local $TroopsToDrop    = 0
 	Local $iKing = 0x251CC6
 	If _Sleep($DELAYRESPOND) Then Return
-	If $g_iTxtBB_DropTrophies < 0 Then $g_aiCurrentLootBB[$eLootTrophyBB] = getTrophyMainScreen(67, 84)
+	If $g_iTxtBB_DropTrophies > 0 Then $g_aiCurrentLootBB[$eLootTrophyBB] = getTrophyMainScreen(67, 84)
 
 	If $g_bChkBB_DropTrophies Then
 		; Click attack button and find a match
