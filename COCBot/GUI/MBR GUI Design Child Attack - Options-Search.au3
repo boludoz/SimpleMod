@@ -22,7 +22,7 @@ Global $g_hChkAttackNow = 0, $g_hCmbAttackNowDelay = 0, $g_hChkRestartSearchLimi
 Global $g_hLblVSDelay = 0, $g_hLblTextVSDelay = 0, $g_hLblMaxVSDelay = 0, $g_hLblTextMaxVSDelay = 0, $g_hLblAttackNow = 0, $g_hLblAttackNowSec = 0
 Global $g_hChkRestartSearchPickupHero = 0
 Global $g_hChkReturnTimerEnable = 0, $g_hTxtReturnTimer = 0 ; Return Home by Time ; ADDED By RK MOD
-Global $g_hChkAttackPrioriti = 0 ; Attack Prioriti ; ADDED By RK MOD
+Global $g_hChkAttackPriority = 0 ; Attack Priority ; ADDED By RK MOD
 
 Func CreateAttackSearchOptionsSearch()
 
@@ -190,10 +190,10 @@ Func CreateAttackSearchOptionsSearch()
 		_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "TxtReturnTimer_01", "Set the desired time, if the wait in the cloud exceeds this time, the bot will return home."))
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "Label_15", "min.", -1), $x + 147, $y, -1, -1)
 		GUICtrlSetLimit(-1, 3)
-		;Attack Prioriti
+		;Attack Priority
 	$y += 25
-		$g_hChkAttackPrioriti = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAttackPrioriti_01", "Attack Prioriti"), $x - 5, $y - 1, -1, -1)
-		    ;_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAttackPrioriti_02", "-----."))
+		$g_hChkAttackPriority = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAttackPriority_01", "Attack Priority"), $x - 5, $y - 1, -1, -1)
+		    ;_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAttackPriority_02", "-----."))
 		
 	    ;------------------ADDED By RK MOD - END------------------
 	GUICtrlCreateGroup("", -99, -99, 1, 1)

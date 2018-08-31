@@ -842,9 +842,9 @@ Func ReadConfig_600_28()
 	IniReadS($g_bReturnTimerEnable, $g_sProfileConfigPath, "search", "ChkReturnTimerEnable", False, "Bool")
 	IniReadS($g_iTxtReturnTimer, $g_sProfileConfigPath, "search", "ReturnTimer", 5, "int")
 	
-	; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
+	; ================================================== ; Attack Priority - by RK MOD  ======================================== ;
 	
-	IniReadS($g_bChkAttackPrioriti, $g_sProfileConfigPath, "search", "ChkAttackPrioriti", False, "Bool")
+	IniReadS($g_bChkAttackPriority, $g_sProfileConfigPath, "search", "ChkAttackPriority", False, "Bool")
 	
 EndFunc   ;==>ReadConfig_600_28
 
