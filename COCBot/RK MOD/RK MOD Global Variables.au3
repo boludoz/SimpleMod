@@ -121,15 +121,14 @@ Global $g_iChkPbSendNew = 0
 Global $g_iChkRusLang = 0
 Global $g_iCmbLang = 9
 Global $g_iChkCleverbot = 0
-Global $g_bDelayTime = 0
+Global $g_bDelayTime = False
 Global $g_iTxtDelayTimerun = 10
 Global $g_iChkClanMessages = ""
 Global $g_iChkClanResponses = ""
 Global $g_iChkClanResponses0
 Global $g_iChkGlobalMessages1 = ""
 Global $g_iChkGlobalMessages2 = ""
-Global $startDelayTimer = TimerInit()
-Global $sendTimer = TimerInit()
+Global $g_sGlobalChatLastMsgSentTime = ""
 Global $glb1 
 Global $glb2
 Global $cResp
@@ -185,6 +184,7 @@ Global $g_iSpaceForTroopsFill = 0
 
 
 ; ================================================== GTFO Mod ================================== ;
+
 Global $g_bChkUseGTFO = False, $g_bChkUseKickOut = False, $g_bChkKickOutSpammers = False
 Global $g_iTxtMinSaveGTFO_Elixir = 200000, $g_iTxtMinSaveGTFO_DE = 2000, _
 	$g_iTxtDonatedCap = 8, $g_iTxtReceivedCap = 35, _
@@ -214,3 +214,8 @@ Global $g_iTxtBB_DropTrophies = 0
 Global $g_bChkBB_DropTrophies = False
 Global $aBB_FindMatchButton[4] = [555, 240 + $g_iBottomOffsetY, 0xFFC346, 10]
 Global $aBB_FindMatchButtonRND[4] = [545, 230 + $g_iMidOffsetY, 565, 250 + $g_iMidOffsetY]
+
+; ================================================== SmartTrain - RK MOD (Demen) ======================================== ;
+
+Global $g_bChkSmartTrain = False, $g_bChkPreciseArmyCamp = False, $g_bChkFillArcher = False, $g_bChkFillEQ = False, $g_iTxtFillArcher = 5
+Global $g_bWrongTroop, $g_bWrongSpell, $g_sSmartTrainError = ""

@@ -88,3 +88,9 @@
 ; --------------------------------------------
 #include "RK BB\BB_DropTrophies.au3"
 #include "RK BB\BB_PrepareAttack.au3"
+
+;Demen's Smart Train
+#include "RK Smart Train\SmartTrain.au3"
+#include "RK Smart Train\CheckQueue.au3"
+#include "RK Smart Train\CheckTrainingTab.au3"
+#include "RK Smart Train\CheckPreciseArmyCamp.au3"

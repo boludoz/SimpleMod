@@ -490,7 +490,17 @@ Func CompareCCSpellWithGUI($CCSpell1, $CCSpell2, $CastleCapacity)
 				If $sCCSpell <> $CCSpell1[0][0] Then ; First Spell not in Slot 1
 					If $g_bDebugSetlog Then SetLog("First Spell not in Slot 1")
 					If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 Then
-						If $sCCSpell <> $CCSpell2[0][0] Then ; First Spell not in Slot 2, so check Second Spell
+                        If $CCSpell2 = "" Then ; Slot 2 empty
+                            If $g_bDebugSetlog Then SetLog("Slot 2 empty")
+                            If $sCCSpell2 <> "Any" Then
+                                If $sCCSpell2 <> $CCSpell1[0][0] Then ; Second Spell not in Slot 1, so remove this one
+                                    If $g_bDebugSetlog Then SetLog("Second Spell not in Slot 1")
+                                    $aShouldRemove[0] = $CCSpell1[0][3]
+                                Else
+                                    If $g_bDebugSetlog Then SetLog("Second Spell in Slot 1")
+                                EndIf
+                            EndIf
+                        ElseIf $sCCSpell <> $CCSpell2[0][0] Then ; First Spell not in Slot 2, so check Second Spell
 							If $g_bDebugSetlog Then SetLog("First Spell not in Slot 2")
 							If $sCCSpell2 <> "Any" Then
 								If $sCCSpell2 <> $CCSpell1[0][0] Then ; Second Spell not in Slot 1, so remove this one
@@ -522,7 +532,7 @@ Func CompareCCSpellWithGUI($CCSpell1, $CCSpell2, $CastleCapacity)
 					EndIf
 				Else
 					If $g_bDebugSetlog Then SetLog("First Spell in Slot 1")
-					If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 Then
+                    If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 And $CCSpell2 <> "" Then
 						If $sCCSpell2 <> $CCSpell2[0][0] And $sCCSpell2 <> "Any" Then ; Second Spell not in Slot 2
 							If $g_bDebugSetlog Then SetLog("Second Spell not in Slot 2")
 							$aShouldRemove[1] = $CCSpell2[0][3]

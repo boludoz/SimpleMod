@@ -43,27 +43,27 @@ Func ChatbotReadSettings()
 EndFunc   ;==>ChatbotReadSettings
 
 Func ChatbotIsLastChatNew() ; returns true if the last chat was not by you, false otherwise
-   _CaptureRegion()
+	_CaptureRegion()
 	For $y = 552 To 643
 		For $x = 33 To 110
 			If _ColorCheck(_GetPixelColor($x, $y), Hex(0x92EE4D, 6), 20) Then Return True
 		Next
-	Next  
-   Return False
-EndFunc
+	Next
+	Return False
+EndFunc   ;==>ChatbotIsLastChatNew
 
 Func chkGlobalChat()
-    $g_iChkChatGlobal = 1
-    If GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED Then
+	$g_iChkChatGlobal = 1
+	If GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkDelayTime, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_ENABLE)
 		GUICtrlSetState($g_hCmbLang, $GUI_SHOW)
-		GUICtrlSetState($g_hChkRusLang, $GUI_ENABLE) 
+		GUICtrlSetState($g_hChkRusLang, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtEditGlobalMessages1, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtEditGlobalMessages2, $GUI_ENABLE)
 	Else
-	    $g_iChkChatGlobal = 0
+		$g_iChkChatGlobal = 0
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkDelayTime, $GUI_DISABLE)
@@ -72,16 +72,16 @@ Func chkGlobalChat()
 		GUICtrlSetState($g_hTxtEditGlobalMessages1, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtEditGlobalMessages2, $GUI_DISABLE)
 	EndIf
-	If  GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED And GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED Then
-	    GUICtrlSetState($g_hCmbLang, $GUI_ENABLE)
+	If GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED And GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED Then
+		GUICtrlSetState($g_hCmbLang, $GUI_ENABLE)
 	Else
-    	GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
+		GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
 	EndIf
-EndFunc ;==>chkGlobalChat
+EndFunc   ;==>chkGlobalChat
 
 Func chkDelayTime()
-    GUICtrlSetState($g_hTxtDelayTimerun, GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED ? $GUI_ENABLE : $GUI_DISABLE)
-EndFunc   ;==>chkReturnTimer
+	GUICtrlSetState($g_hTxtDelayTimerun, GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED ? $GUI_ENABLE : $GUI_DISABLE)
+EndFunc   ;==>chkDelayTime
 
 
 Func chkGlobalScramble()
@@ -99,15 +99,15 @@ Func chkSwitchLang()
 		$g_iChkSwitchLang = 0
 	EndIf
 	If GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED Then
-	    GUICtrlSetState($g_hCmbLang, $GUI_ENABLE)
+		GUICtrlSetState($g_hCmbLang, $GUI_ENABLE)
 	Else
-   	    GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
+		GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
 	EndIf
 EndFunc   ;==>chkSwitchLang
 
 Func chkClanChat()
-    $g_iChkChatClan = 1
-   	If GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED Then
+	$g_iChkChatClan = 1
+	If GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hChkUseResponses, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkUseGeneric, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkChatNotify, $GUI_ENABLE)
@@ -116,7 +116,7 @@ Func chkClanChat()
 		GUICtrlSetState($g_hTxtEditResponses, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtEditGeneric, $GUI_ENABLE)
 	Else
-	    $g_iChkChatClan = 0
+		$g_iChkChatClan = 0
 		GUICtrlSetState($g_hChkUseResponses, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkUseGeneric, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkChatNotify, $GUI_DISABLE)
@@ -125,7 +125,7 @@ Func chkClanChat()
 		GUICtrlSetState($g_hTxtEditResponses, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtEditGeneric, $GUI_DISABLE)
 	EndIf
-EndFunc ;==>chkClanChat
+EndFunc   ;==>chkClanChat
 
 Func chkUseResponses()
 	If GUICtrlRead($g_hChkUseResponses) = $GUI_CHECKED Then
@@ -160,27 +160,27 @@ Func chkPbSendNewChats()
 EndFunc   ;==>chkPbSendNewChats
 
 Func chkCleverbot()
-    If GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED Then
-        $g_iChkCleverbot = 1
-    Else
-        $g_iChkCleverbot = 0
-    EndIf
-EndFunc ;==>chkCleverbot
+	If GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED Then
+		$g_iChkCleverbot = 1
+	Else
+		$g_iChkCleverbot = 0
+	EndIf
+EndFunc   ;==>chkCleverbot
 
 Func chkRusLang()
-    If GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED Then
-        $g_iChkRusLang = 1
-    Else
-        $g_iChkRusLang = 0
-    EndIf
-EndFunc ;==>chkRusLang
+	If GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED Then
+		$g_iChkRusLang = 1
+	Else
+		$g_iChkRusLang = 0
+	EndIf
+EndFunc   ;==>chkRusLang
 
 Func ChatGuiEditUpdate()
- Global $glb1 = GUICtrlRead($g_hTxtEditGlobalMessages1)
- Global $glb2 = GUICtrlRead($g_hTxtEditGlobalMessages2)
+	Global $glb1 = GUICtrlRead($g_hTxtEditGlobalMessages1)
+	Global $glb2 = GUICtrlRead($g_hTxtEditGlobalMessages2)
 
- Global $cResp = GUICtrlRead($g_hTxtEditResponses)
- Global $cGeneric = GUICtrlRead($g_hTxtEditGeneric)
+	Global $cResp = GUICtrlRead($g_hTxtEditResponses)
+	Global $cGeneric = GUICtrlRead($g_hTxtEditGeneric)
 
 	; how 2 be lazy 101 =======
 	$glb1 = StringReplace($glb1, @CRLF, "|")
@@ -188,15 +188,15 @@ Func ChatGuiEditUpdate()
 
 	$cResp = StringReplace($cResp, @CRLF, "|")
 	$cGeneric = StringReplace($cGeneric, @CRLF, "|")
-;	; =========================
-    ChatbotReadSettings()
+	;	; =========================
+	ChatbotReadSettings()
 EndFunc   ;==>ChatGuiEditUpdate
 
 ; FUNCTIONS ================================================
 ; All of the following return True if the script should
 ; continue running, and false otherwise
 Func ChatbotChatOpen() ; open the chat area
-    ClickP($aAway, 1, 0, "#0000") ;Click Away to prevent any pages on top
+	ClickP($aAway, 1, 0, "#0000") ;Click Away to prevent any pages on top
 	If _Sleep(1000) Then Return
 	Click(20, 383, 1, 0) ; open chat
 	If _Sleep(1000) Then Return
@@ -241,21 +241,21 @@ EndFunc   ;==>ChatbotChatGlobalInput
 Func ChatbotChatInput($g_sMessage)
     If _Sleep(1000) Then Return
 	Click(33, 707, 1)
-    If $g_iChkRusLang = 1 Then
-	  SetLog("Chat send in russia", $COLOR_BLUE)
-	 AutoItWinSetTitle('MyAutoItTitle')
-    _WinAPI_SetKeyboardLayout(WinGetHandle(AutoItWinGetTitle()), 0x0419)
+	If $g_iChkRusLang = 1 Then
+		SetLog("Chat send in russia", $COLOR_BLUE)
+		AutoItWinSetTitle('MyAutoItTitle')
+		_WinAPI_SetKeyboardLayout(WinGetHandle(AutoItWinGetTitle()), 0x0419)
 		_Sleep(500)
 		ControlFocus($g_hAndroidWindow, "", "")
 		SendKeepActive($g_hAndroidWindow)
 		_Sleep(500)
-	;Opt("SendKeyDelay", 1000)
-	AutoItSetOption("SendKeyDelay", 50)
-	  _SendExEx($g_sMessage)
-	   SendKeepActive("")
-    Else
-	 _Sleep(500)
- 	 SendText($g_sMessage)
+		;Opt("SendKeyDelay", 1000)
+		AutoItSetOption("SendKeyDelay", 50)
+		_SendExEx($g_sMessage)
+		SendKeepActive("")
+	Else
+		_Sleep(500)
+		SendText($g_sMessage)
 	EndIf
 	Return True
 EndFunc   ;==>ChatbotChatInput
@@ -264,9 +264,9 @@ EndFunc   ;==>ChatbotChatInput
 ;=============================================
 
 Func ChatbotChatSendClan() ; click send
-			randomSleep(1000)
-			Click(840, 710) ; click send message
-			randomSleep(2000)
+	randomSleep(1000)
+	Click(840, 710) ; click send message
+	randomSleep(2000)
 	Return True
 EndFunc   ;==>ChatbotChatSendClan
 
@@ -282,7 +282,7 @@ Func ChatbotStartTimer()
 EndFunc   ;==>ChatbotStartTimer
 
 Func ChatbotIsInterval()
-    Local $Time_Difference = TimerDiff($ChatbotStartTime)
+	Local $Time_Difference = TimerDiff($ChatbotStartTime)
 	If $Time_Difference > $ChatbotReadInterval * 1000 Then
 		Return True
 	Else
@@ -291,47 +291,47 @@ Func ChatbotIsInterval()
 EndFunc   ;==>ChatbotIsInterval
 
 Func ChatbotNotifySendChat()
-   If Not $g_iChkUseNotify Then Return
+	If Not $g_iChkUseNotify Then Return
 
-   Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
-   Local $Time = @HOUR & "." & @MIN & "." & @SEC
-   _CaptureRegion(0, 0, 320, 675)
-   Local $ChatFile = $Date & "__" & $Time & ".jpg" ; separator __ is need  to not have conflict with saving other files if $TakeSS = 1 and $chkScreenshotLootInfo = 0
-   _GDIPlus_ImageSaveToFile($g_hBitmap, $g_sProfileLootsPath & $ChatFile)
-   _GDIPlus_ImageDispose($g_hBitmap)
-   ;push the file
-   SetLog("Chatbot: Sent chat image", $COLOR_GREEN)
-   ;========Modified Kychera===========
-   NotifyPushFileToTelegram($ChatFile, "Loots", "image/jpeg", $g_sNotifyOrigin & " | Last Clan Chats" & "\n" & $ChatFile)
-   ;===================
-   ;wait a second and then delete the file
-   If _Sleep($DELAYPUSHMSG2) Then Return
-   Local $iDelete = FileDelete($g_sProfileLootsPath & $ChatFile)
-   If Not ($iDelete) Then SetLog("Chatbot: Failed to delete temp file", $COLOR_RED)
-EndFunc
+	Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
+	Local $Time = @HOUR & "." & @MIN & "." & @SEC
+	_CaptureRegion(0, 0, 320, 675)
+	Local $ChatFile = $Date & "__" & $Time & ".jpg" ; separator __ is need  to not have conflict with saving other files if $TakeSS = 1 and $chkScreenshotLootInfo = 0
+	_GDIPlus_ImageSaveToFile($g_hBitmap, $g_sProfileLootsPath & $ChatFile)
+	_GDIPlus_ImageDispose($g_hBitmap)
+	;push the file
+	SetLog("Chatbot: Sent chat image", $COLOR_GREEN)
+	;========Modified Kychera===========
+	NotifyPushFileToTelegram($ChatFile, "Loots", "image/jpeg", $g_sNotifyOrigin & " | Last Clan Chats" & "\n" & $ChatFile)
+	;===================
+	;wait a second and then delete the file
+	If _Sleep($DELAYPUSHMSG2) Then Return
+	Local $iDelete = FileDelete($g_sProfileLootsPath & $ChatFile)
+	If Not ($iDelete) Then SetLog("Chatbot: Failed to delete temp file", $COLOR_RED)
+EndFunc   ;==>ChatbotNotifySendChat
 
 Func ChatbotNotifyQueueChat($Chat)
-   If Not $g_iChkUseNotify Then Return
-   _ArrayAdd($ChatbotQueuedChats, $Chat)
-EndFunc
+	If Not $g_iChkUseNotify Then Return
+	_ArrayAdd($ChatbotQueuedChats, $Chat)
+EndFunc   ;==>ChatbotNotifyQueueChat
 
 Func ChatbotNotifyQueueChatRead()
-   If Not $g_iChkUseNotify Then Return
-   $ChatbotReadQueued = True
-EndFunc
+	If Not $g_iChkUseNotify Then Return
+	$ChatbotReadQueued = True
+EndFunc   ;==>ChatbotNotifyQueueChatRead
 
 Func ChatbotNotifyStopChatRead()
-   If Not $g_iChkUseNotify Then Return
-   $ChatbotReadInterval = 0
-   $ChatbotIsOnInterval = False
-EndFunc
+	If Not $g_iChkUseNotify Then Return
+	$ChatbotReadInterval = 0
+	$ChatbotIsOnInterval = False
+EndFunc   ;==>ChatbotNotifyStopChatRead
 
 Func ChatbotNotifyIntervalChatRead($Interval)
-   If Not $g_iChkUseNotify Then Return
-   $ChatbotReadInterval = $Interval
-   $ChatbotIsOnInterval = True
-   ChatbotStartTimer()
-EndFunc
+	If Not $g_iChkUseNotify Then Return
+	$ChatbotReadInterval = $Interval
+	$ChatbotIsOnInterval = True
+	ChatbotStartTimer()
+EndFunc   ;==>ChatbotNotifyIntervalChatRead
 
 Func ChangeLanguageToEN()
 	Click(820, 585, 1) ;settings
@@ -361,7 +361,7 @@ Func ChangeLanguageToFRA()
 	SetLog("Chatbot: Switching language FRA", $COLOR_GREEN)
 	Click(513, 426, 1) ;language
 	If _Sleep(1000) Then Return
-EndFunc   ;==>ChangeLanguageToFra
+EndFunc   ;==>ChangeLanguageToFRA
 ;===========Modified Kychera================
 Func ChangeLanguageToRU()
 	Click(820, 585, 1) ;settings
@@ -477,106 +477,118 @@ EndFunc   ;==>ChangeLanguageToTR
 ;========================================
 ; MAIN SCRIPT ==============================================
 
-Func DelayTime($sendTimer, $chatType)
-	Local $TimeDiff = 0
-    Local $TimeDiff = (TimerDiff($sendTimer) / 1000) / 60	
+Func DelayTime($chatType)
+	If $chatType = "GLOBAL" Then
+		If $g_sGlobalChatLastMsgSentTime = "" Then ;If GlobalLastMsgSentTime sent time is empty means it's first time sms allow it
+			Return True
+		Else
+			Local $sDateTimeDiffOfLastMsgInMin = _DateDiff("s", $g_sGlobalChatLastMsgSentTime, _NowCalc())/60;For getting float value of minutes(s) we divided the diffsec by 60
+			SetDebugLog("$g_iTxtDelayTimerun = " & $g_iTxtDelayTimerun)
+			SetDebugLog("$g_sGlobalChatLastMsgSentTime = " & $g_sGlobalChatLastMsgSentTime &", $sDateTimeDiffOfLastMsgInMin = " & $sDateTimeDiffOfLastMsgInMin )
+			If $sDateTimeDiffOfLastMsgInMin > $g_iTxtDelayTimerun Then ;If GlobalLastMsgSentTime sent time is empty means it's first time sms
+				Return True
+			Else
+				;----------- LOGIC JUST FOR BEAUTIFUL TIME LOG -------------------
+				Local $hour = 0, $min = 0, $sec = 0
+				Local $sDateTimeDiffOfLastMsgInSec = _DateDiff("s", _NowCalc() , _DateAdd( 'n',$g_iTxtDelayTimerun, $g_sGlobalChatLastMsgSentTime))
+				SetDebugLog("$sDateTimeDiffOfLastMsgInSec = " & $sDateTimeDiffOfLastMsgInSec)
+				_TicksToTime($sDateTimeDiffOfLastMsgInSec*1000, $hour, $min, $sec)
+				;----------- LOGIC JUST FOR BEAUTIFUL TIME LOG -------------------
 
-    If $chatType = "GLOBAL" Then
-	    If $TimeDiff > $g_iTxtDelayTimerun Then
-		    Return True
-	    Else
-		    SetLog("Chatbot: Skip sending chats to global chat", $COLOR_INFO)
-			SetLog("Delay Time " & StringFormat("%.1f", $TimeDiff) & " minute(s)", $COLOR_INFO)
-		    Return False
-	    EndIf
-   EndIf
-EndFunc ;==> DelayTime
+				SetLog("Chatbot: Skip sending chats to global chat", $COLOR_INFO)
+				SetLog("Delay Time " &  StringFormat("%02i:%02i:%02i", $hour, $min, $sec)& " left before sending new msg.", $COLOR_INFO)
+				Return False
+			EndIf
+		EndIf
+	EndIf
+
+EndFunc   ;==>DelayTime
 
 Func ChatGlobal()
-;========================Kychera modified==========================================
-		If $g_iChkSwitchLang = 1 Then
+	;========================Kychera modified==========================================
+	If $g_iChkSwitchLang = 1 Then
 		Switch GUICtrlRead($g_hCmbLang)
-		        Case "FR"
-			ChangeLanguageToFRA()
-		        Case "DE"
-		    ChangeLanguageToDE()
-		        Case "ES"
-		    ChangeLanguageToES()
-		        Case "IT"
-		    ChangeLanguageToITA()
-		        Case "NL"
-		    ChangeLanguageToNL()
-		        Case "NO"
-		    ChangeLanguageToNO()
-		        Case "PR"
-		    ChangeLanguageToPR()
-		        Case "TR"
-		    ChangeLanguageToTR()
-		        Case "RU"
-		    ChangeLanguageToRU()
-			Sleep(3000)
-              EndSwitch
-			Sleep(3000)
-			waitMainScreen()
-		EndIf
-;======================================================================================
-		If Not ChatbotChatOpen() Then Return
-		SetLog("Chatbot: Sending chats to global", $COLOR_GREEN)
-		; assemble a message
+			Case "FR"
+				ChangeLanguageToFRA()
+			Case "DE"
+				ChangeLanguageToDE()
+			Case "ES"
+				ChangeLanguageToES()
+			Case "IT"
+				ChangeLanguageToITA()
+			Case "NL"
+				ChangeLanguageToNL()
+			Case "NO"
+				ChangeLanguageToNO()
+			Case "PR"
+				ChangeLanguageToPR()
+			Case "TR"
+				ChangeLanguageToTR()
+			Case "RU"
+				ChangeLanguageToRU()
+				Sleep(3000)
+		EndSwitch
+		Sleep(3000)
+		waitMainScreen()
+	EndIf
+	;======================================================================================
+	If Not ChatbotChatOpen() Then Return
+	SetLog("Chatbot: Sending chats to global", $COLOR_GREEN)
+	; assemble a message
 
-		Global $g_sMessage[2]
-		Local $i = 0
-			$i = Random(0, 1, 0) 
-			$i = Round($i)
-			Setlog($i)
-		If $i = 1 Then
-			$g_sMessage[0] = $g_iChkGlobalMessages1[Random(0, UBound($g_iChkGlobalMessages1) - 1, 1)]
-			$g_sMessage[1] = ""
-			Else
-			$g_sMessage[0] = ""
-			$g_sMessage[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
-			Endif
-			
-		If $g_iChkScrambleGlobal Then
-			_ArrayShuffle($g_sMessage)
-		EndIf
-		; Send the message
-		If Not ChatbotSelectGlobalChat() Then Return
-		If Not ChatbotChatGlobalInput() Then Return
-		If Not ChatbotChatInput(_ArrayToString($g_sMessage, " ")) Then Return
-		If Not ChatbotChatSendGlobal() Then Return
-		If Not ChatbotChatClose() Then Return
-;==================kychera modified===============================================
-		If $g_iChkSwitchLang = 1 Then
-			ChangeLanguageToEN()
-			  _Sleep(3000)
-			waitMainScreen()
-			  _Sleep(3000)
-		EndIf
-;=================================================================================
-EndFunc
+	Global $g_sMessage[2]
+	Local $i = 0
+	$i = Random(0, 1, 0)
+	$i = Round($i)
+	Setlog($i)
+	If $i = 1 Then
+		$g_sMessage[0] = $g_iChkGlobalMessages1[Random(0, UBound($g_iChkGlobalMessages1) - 1, 1)]
+		$g_sMessage[1] = ""
+	Else
+		$g_sMessage[0] = ""
+		$g_sMessage[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
+	EndIf
+
+	If $g_iChkScrambleGlobal Then
+		_ArrayShuffle($g_sMessage)
+	EndIf
+	; Send the message
+	If Not ChatbotSelectGlobalChat() Then Return
+	If Not ChatbotChatGlobalInput() Then Return
+	If Not ChatbotChatInput(_ArrayToString($g_sMessage, " ")) Then Return
+	If Not ChatbotChatSendGlobal() Then Return
+	If Not ChatbotChatClose() Then Return
+	;==================kychera modified===============================================
+	If $g_iChkSwitchLang = 1 Then
+		ChangeLanguageToEN()
+		_Sleep(3000)
+		waitMainScreen()
+		_Sleep(3000)
+	EndIf
+	;=================================================================================
+EndFunc   ;==>ChatGlobal
 
 Func ChatbotMessage() ; run the chatbot
-	
-	If $g_bDelayTime = False And $g_iChkChatGlobal Then 
-	ChatGlobal()
-	EndIf
-	
-	If $g_bDelayTime = True And $g_iChkChatGlobal Then 
-    Local $iSendChatGlobalDelay = DelayTime($startDelayTimer, "GLOBAL")
-		If $iSendChatGlobalDelay = True Then
+
+	If $g_bDelayTime = False And $g_iChkChatGlobal Then
 		ChatGlobal()
-		$startDelayTimer = TimerInit()
+	EndIf
+
+	If $g_bDelayTime = True And $g_iChkChatGlobal Then
+		Local $iSendChatGlobalDelay = DelayTime("GLOBAL")
+		If $iSendChatGlobalDelay = True Then
+			ChatGlobal()
+			$g_sGlobalChatLastMsgSentTime = _NowCalc() ;Store msg sent time
 		EndIf
 	EndIf
-	
+
 	If $g_iChkChatClan Then
 		If Not ChatbotChatOpen() Then Return
 		SetLog("Chatbot: Sending chats to clan", $COLOR_GREEN)
 		If Not ChatbotSelectClanChat() Then Return
 
 		Local $SentClanChat = False
-         _Sleep(2000)
+		_Sleep(2000)
 		If $ChatbotReadQueued Then
 			ChatbotNotifySendChat()
 			$ChatbotReadQueued = False
@@ -593,7 +605,7 @@ Func ChatbotMessage() ; run the chatbot
 			SetLog("Chatbot: Sending Notify chats", $COLOR_GREEN)
 
 			For $a = 0 To UBound($ChatbotQueuedChats) - 1
-			Local $ChatToSend = $ChatbotQueuedChats[$a]
+				Local $ChatToSend = $ChatbotQueuedChats[$a]
 				If Not ChatbotChatClanInput() Then Return
 				;===Modified Kychera=====
 				If Not ChatbotChatInput(_Encoding_JavaUnicodeDecode($ChatToSend)) Then Return
@@ -603,7 +615,7 @@ Func ChatbotMessage() ; run the chatbot
 
 			Dim $Tmp[0] ; clear queue
 			$ChatbotQueuedChats = $Tmp
-             _Sleep(2000)
+			_Sleep(2000)
 			ChatbotNotifySendChat()
 
 			If Not ChatbotChatClose() Then Return
@@ -640,12 +652,12 @@ Func ChatbotMessage() ; run the chatbot
 					EndIf
 				Next
 			EndIf
-			
-			 If ($g_iChkCleverbot = 1) And Not $SentMessage Then
+
+			If ($g_iChkCleverbot = 1) And Not $SentMessage Then
 				Local $Response = runHelper($ChatMsg, $g_iChkCleverbot)
 				If Not $Response = False Or Not $ChatMsg = "" Or Not $ChatMsg = " " Then
-				;If Not _Encoding_JavaUnicodeDecode($sString) Then Return
-				SetLog("Got cleverbot response: " & $Response, $COLOR_GREEN)
+					;If Not _Encoding_JavaUnicodeDecode($sString) Then Return
+					SetLog("Got cleverbot response: " & $Response, $COLOR_GREEN)
 					If Not ChatbotChatClanInput() Then Return
 					If Not ChatbotChatInput($Response) Then Return
 					If Not ChatbotChatSendClan() Then Return
@@ -682,34 +694,34 @@ EndFunc   ;==>ChatbotMessage
 
 ; Returns the response from cleverbot or simsimi, if any
 Func runHelper($msg, $g_iChkCleverbot) ; run a script to get a response from cleverbot.com or simsimi.com
- Local $command, $DOS, $HelperStartTime, $Time_Difference, $sString
- Dim $DOS, $g_sMessage = ''
+	Local $command, $DOS, $HelperStartTime, $Time_Difference, $sString
+	Dim $DOS, $g_sMessage = ''
 
-   $command = ' /c "phantomjs.exe phantom-cleverbot-helper.js '
+	$command = ' /c "phantomjs.exe phantom-cleverbot-helper.js '
 
-   $DOS = Run(@ComSpec & $command & $msg & '"', "", @SW_HIDE, 8)
-   $HelperStartTime = TimerInit()
-   SetLog("Waiting for chatbot helper...")
-   While ProcessExists($DOS)
-	  ProcessWaitClose($DOS, 10)
-	  SetLog("Still waiting for chatbot helper...")
-	  $Time_Difference = TimerDiff($HelperStartTime)
-	  If $Time_Difference > 50000 Then
-		 SetLog("Chatbot helper is taking too long!", $COLOR_RED)
-		 ProcessClose($DOS)
-		 _RunDos("taskkill -f -im phantomjs.exe") ; force kill
-		 Return ""
-	  EndIf
-   WEnd
-   $g_sMessage = ''
-   While 1
-	  $g_sMessage &= StdoutRead($DOS)
-	  If @error Then
-		 ExitLoop
-	  EndIf
-   WEnd
-   Return StringStripWS($g_sMessage, 7)
-EndFunc
+	$DOS = Run(@ComSpec & $command & $msg & '"', "", @SW_HIDE, 8)
+	$HelperStartTime = TimerInit()
+	SetLog("Waiting for chatbot helper...")
+	While ProcessExists($DOS)
+		ProcessWaitClose($DOS, 10)
+		SetLog("Still waiting for chatbot helper...")
+		$Time_Difference = TimerDiff($HelperStartTime)
+		If $Time_Difference > 50000 Then
+			SetLog("Chatbot helper is taking too long!", $COLOR_RED)
+			ProcessClose($DOS)
+			_RunDos("taskkill -f -im phantomjs.exe") ; force kill
+			Return ""
+		EndIf
+	WEnd
+	$g_sMessage = ''
+	While 1
+		$g_sMessage &= StdoutRead($DOS)
+		If @error Then
+			ExitLoop
+		EndIf
+	WEnd
+	Return StringStripWS($g_sMessage, 7)
+EndFunc   ;==>runHelper
 
 ;===========Addied kychera=================
 ; #FUNCTION# ====================================================================================================================
@@ -746,5 +758,5 @@ Func _Encoding_JavaUnicodeDecode($sString)
 	Opt('ExpandEnvStrings', $iOld_Opt_EES)
 
 	Return $sOut
-EndFunc ;==>_Encoding_JavaUnicodeDecode
+EndFunc   ;==>_Encoding_JavaUnicodeDecode
 ;============================================

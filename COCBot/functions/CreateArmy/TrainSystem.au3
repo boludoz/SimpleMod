@@ -58,6 +58,14 @@ Func TrainSystem()
 
 	If $g_bDoubleTrain And ($g_bDoubleTrainDone Or $g_bIsFullArmywithHeroesAndSpells) Then
 		; Do nothing DoubleQuickTrain()
+		
+	;SmartTrain - RK MOD (Demen)
+	If $g_bChkSmartTrain Then
+		SmartTrain()
+		ResetVariables("donated")
+		EndGainCost("Train")
+		Return
+	EndIf
 
 	ElseIf $g_bIsFullArmywithHeroesAndSpells Or ($g_CurrentCampUtilization = 0 And $g_bFirstStart) Then
 

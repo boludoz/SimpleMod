@@ -456,8 +456,12 @@ Func _VillageSearch() ;Control for searching a village that meets conditions
 			Else
 				If $g_bDebugSetlog Then SetDebugLog("Wait to see Next Button... " & $i, $COLOR_DEBUG)
 			EndIf
+			;------------------CUSTOM LOGIC By RK MOD - START------------------
 			Local $Googleimg = @ScriptDir & "\imgxml\other\Google*"
-			If QuickMis("BC1", $Googleimg, 350, 0, 350 + 88, 0 + 386) Then ClickP($aAway, 1, 0, "#0161")
+			If QuickMis("BC1", $Googleimg, 350, 0, 350 + 88, 0 + 386) Then
+				If Not CheckGoogleSelectAccount() Then ClickP($aAway, 1, 0, "#0161")
+			EndIf
+			;------------------CUSTOM LOGIC By RK MOD - END------------------
 			If $i >= 99 Or isProblemAffect() Or (Mod($i, 10) = 0 And checkObstacles_Network(False, False)) Then ; if we can't find the next button or there is an error, then restart
 				$g_bIsClientSyncError = True
 				checkMainScreen()
