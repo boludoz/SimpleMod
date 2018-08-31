@@ -79,7 +79,7 @@ Func BB_DropTrophies()
 					
 					$TroopsToDrop = getTroopCountBig( $TroopSlot[0]+24, $TroopSlot[1]-7 )
 					If ($i > 0) Then 
-						If _Sleep(12) Then Return 
+						If _Sleep(120) Then Return 
 						If Not _ColorCheck( $cPixColor, Hex($NextSlotOff[$i], 20), $TroopSlot[3]) Then
 							ClickP($TroopSlot, 1, 0, "#0000")
 							Local $x = $TroopSlot[0]
@@ -96,6 +96,7 @@ Func BB_DropTrophies()
 					If $bContinue Then
 						While Not _ColorCheck( $cPixColor, Hex($TroopSlot[2], 20), $TroopSlot[3])
 							BB_Attack($Nside, $SIDESNAMES, 8)
+							
 							If $bDegug Then SetLog("BB: Drop Troops - Slot[ " & String( $i + 1 ) & " ], code: 0x" & $cPixColor & " [ " & String( $j ) & " ] Num:[ " & $TroopsToDrop & " ]", $COLOR_DEBUG)
 							If _Sleep(12) Then Return 
 							$j += 1
@@ -105,6 +106,15 @@ Func BB_DropTrophies()
 						If $bDegug Then SetLog("BB: Last Slot Color [ " & String( $i + 1 ) & " ], code: 0x" & $cPixColor & " [ " & String( $i + 1 ) & " ]", $COLOR_DEBUG)
 					EndIf
 				Next
+				
+				While 1
+				Setlog("Droping boy.", $COLOR_INFO)
+				Local $ibKingClick = TruePixel(0, 652, 835, 724, 0x3020D8, 20)
+				If $ibKingClick[0] = True Then Click($ibKingClick[1], $ibKingClick[2], 1)
+				
+				;Setlog($ibKingClick[0] & $ibKingClick[1] & $ibKingClick[2])
+				
+				WEnd
 
 				Setlog("Will Wait End Battle for " & String( $DELAYCHECKOBSTACLES4 / 60000 / 2 ) & " minutes then continue", $COLOR_INFO)
 				If _Sleep($DELAYCHECKOBSTACLES4 / 2 ) Then Return
