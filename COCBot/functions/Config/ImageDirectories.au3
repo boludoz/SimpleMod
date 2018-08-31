@@ -123,6 +123,7 @@ Global Const $g_sImgListAccounts = @ScriptDir & "\imgxml\other\SwitchAccounts\Li
 #Region Grand Warden Mode
 Global $g_sImgGrandWardenHeal = @ScriptDir & "\imgxml\other\GrandWardenMode\GrandWardenHeal" ; ADDED By RK MOD
 Global $g_sImgGrandWardenMode = @ScriptDir & "\imgxml\other\GrandWardenMode\GrandWardenAir" ; ADDED By RK MOD
+Global $g_sImgGrandWardenUpgrade = @ScriptDir & "\imgxml\other\GrandWardenMode\GrandWardenUpgrade" ; ADDED By RK MOD
 #EndRegion
 
 #Region ClanGames

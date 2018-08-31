@@ -122,6 +122,9 @@
 ![Ii]mgxml/Boost/*.png
 ![Ii]mgxml/BuilderTime/*.png
 ![Ii]mgxml/HeroTime/*.png
+![Ii]mgxml/other/GrandWardenMode/GrandWardenUpgrade/*.png
+![Ii]mgxml/other/GrandWardenMode/GrandWardenHeal/*.png
+![Ii]mgxml/other/GrandWardenMode/GrandWardenAir/*.png
 ![Ii]mgxml/other/SwitchAccounts/ConfirmButton/*.png
 ![Ii]mgxml/other/SwitchAccounts/ListAccounts/*.png
 ![Ii]mgxml/other/SwitchAccounts/LogOutButton/*.png

@@ -2,7 +2,7 @@
 ; Name ..........: CheckWardenMode
 ; Description ...: Check in which Mode the Warden is and switch if needed
 ; Author ........: MantasM (10-2017)
-; Modified ......: 
+; Modified ......:
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2018
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:
@@ -26,7 +26,13 @@ Func CheckWardenMode($bOpenArmyWindow = False, $bCloseArmyWindow = False)
 	EndIf
 
 	If QuickMIS("BC1", $g_sImgGrandWardenHeal, 800, 341, 829, 369) Then
-		SetLog("Grand Warden not available, skip check....!", $COLOR_ACTION)
+		SetLog("Grand Warden is healing not available , skip check....!", $COLOR_ACTION)
+		If $bCloseArmyWindow Then ClickP($aAway, 2, $DELAYCHECKARMYCAMP4, "#0000")
+		Return
+	EndIf
+
+	If QuickMIS("BC1", $g_sImgGrandWardenUpgrade, 800, 341, 829, 369) Then
+		SetLog("Grand Warden is on upgrade not available, skip check....!", $COLOR_ACTION)
 		If $bCloseArmyWindow Then ClickP($aAway, 2, $DELAYCHECKARMYCAMP4, "#0000")
 		Return
 	EndIf
