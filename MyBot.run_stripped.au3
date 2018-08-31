@@ -6941,15 +6941,14 @@ Global $g_iChkPbSendNew = 0
 Global $g_iChkRusLang = 0
 Global $g_iCmbLang = 9
 Global $g_iChkCleverbot = 0
-Global $g_bDelayTime = 0
+Global $g_bDelayTime = False
 Global $g_iTxtDelayTimerun = 10
 Global $g_iChkClanMessages = ""
 Global $g_iChkClanResponses = ""
 Global $g_iChkClanResponses0
 Global $g_iChkGlobalMessages1 = ""
 Global $g_iChkGlobalMessages2 = ""
-Global $startDelayTimer = TimerInit()
-Global $sendTimer = TimerInit()
+Global $g_sGlobalChatLastMsgSentTime = ""
 Global $glb1
 Global $glb2
 Global $cResp
@@ -6986,6 +6985,8 @@ Global $g_iTxtBB_DropTrophies = 0
 Global $g_bChkBB_DropTrophies = False
 Global $aBB_FindMatchButton[4] = [555, 240 + $g_iBottomOffsetY, 0xFFC346, 10]
 Global $aBB_FindMatchButtonRND[4] = [545, 230 + $g_iMidOffsetY, 565, 250 + $g_iMidOffsetY]
+Global $g_bChkSmartTrain = False, $g_bChkPreciseArmyCamp = False, $g_bChkFillArcher = False, $g_bChkFillEQ = False, $g_iTxtFillArcher = 5
+Global $g_bWrongTroop, $g_bWrongSpell, $g_sSmartTrainError = ""
 Global $g_bChkClanGamesDestruction = 0
 Global $g_bChkClanGamesAirTroop = 0
 Global $g_bChkClanGamesGroundTroop = 0
@@ -14877,6 +14878,7 @@ Global $g_hTxtFullTroop = 0, $g_hChkTotalCampForced = 0, $g_hTxtTotalCampForced 
 Global $g_hLblRemoveArmy = 0, $g_hBtnRemoveArmy = 0
 Global $g_hChkDoubleTrain = 0, $g_hChkMultiClick = 0
 Global $g_hChkAutoCamp = 0
+Global $g_hChkSmartTrain = 0, $g_hChkPreciseArmyCamp = 0, $g_hChkFillArcher = 0, $g_hTxtFillArcher = 0, $g_hChkFillEQ = 0
 Global $g_hGrpTrainTroops = 0
 Global $g_ahPicTrainArmyTroop[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Global $g_ahPicTrainArmySpell[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -15300,6 +15302,8 @@ $g_hTxtTotalCountSpell = GUICtrlCreateCombo("", $x + 93, $y - 3, 35, 21, BitOR($
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "TxtTotalCountSpell_Info_01", "Enter the No. of Spells Capacity. Set to ZERO if you don't want any Spells"))
 GUICtrlSetData(-1, "0|2|4|6|7|8|9|10|11", "0")
 GUICtrlSetOnEvent(-1, "TotalSpellCountClick")
+$g_hChkDoubleTrain = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkDoubleTrain", "Double Train Army"), $x + 290, $y, -1, 15)
+_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip", "Train 2nd set of Troops & Spells after training 1st combo") & @CRLF & GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip1", "Make sure to enter exactly the 'Total Camp',") & @CRLF & GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip2", "'Total Spell' and number of Troops/Spells in your Setting") & @CRLF & GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip3", "Note: Donations + Double Train can produce an unbalanced army!"))
 $g_hChkAutoCamp = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkAutoCamp", "Auto update camps"), $x + 135, $y, -1, 15)
 $y += 13
 Local $sSpellName = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtLightningSpells", "Lightning Spell")
@@ -15452,12 +15456,33 @@ GUICtrlSetFont(-1, 9, $FW_BOLD, Default, "Arial", $CLEARTYPE_QUALITY)
 GUICtrlSetColor(-1, $COLOR_WHITE)
 _GUICtrlCreateIcon($g_sLibIconPath, $eIcnDark, $x + 146, $y + 14, 16, 16)
 GUICtrlCreateGroup("", -99, -99, 1, 1)
-_GUICtrlCreateIcon($g_sLibIconPath, $eIcnTrain, $x + 60 , $y + 48, 24, 24)
-$g_hChkDoubleTrain = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkDoubleTrain", "Double Train Army"), $x + 90, $y + 52, -1, 15)
-_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip", "Train 2nd set of Troops & Spells after training 1st combo") & @CRLF & GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip1", "Make sure to enter exactly the 'Total Camp',") & @CRLF & GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip2", "'Total Spell' and number of Troops/Spells in your Setting") & @CRLF & GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip3", "Note: Donations + Double Train can produce an unbalanced army!"))
+$x = 10
+$y = 363
+GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "Group_03", "Smart Train"), $x - 5, $y, $g_iSizeWGrpTab3, 38)
+$x += 7
+$y += 16
+$g_hChkSmartTrain = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkSmartTrain", "Double Train Army"), $x, $y, -1, 15)
+GUICtrlSetOnEvent(-1, "chkSmartTrain")
+_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkSmartTrain_Info_01", "Train 2 sets of army to make full camp & full queue") & @CRLF & GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkSmartTrain_Info_02", "Only delete queued troops or spells if the queue is not full") & @CRLF & GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkSmartTrain_Info_03", "Not delete training troops up to full camp capacity"))
+$x += 130
+$g_hChkPreciseArmyCamp = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkPreciseArmyCamp", "Precise troops"), $x, $y, -1, 15)
+GUICtrlSetOnEvent(-1, "chkPreciseTroops")
+_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkPreciseArmyCamp_Info_01", "Check precision of troops & spells before training.") & @CRLF & GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkPreciseArmyCamp_Info_02", "Will remove wrong troops or spells if any"))
+$x += 103
+$g_hChkFillArcher = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillArcher", "Fill Archer:"), $x, $y, -1, 15)
+GUICtrlSetState(-1, $GUI_DISABLE)
+GUICtrlSetOnEvent(-1, "chkFillArcher")
+_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillArcher_Info_01", "Train some archers to top-up the camp or queue if it is nearly full"))
+$g_hTxtFillArcher = GUICtrlCreateInput("5", $x + 70, $y-1, 20, 16, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+GUICtrlSetState(-1, $GUI_DISABLE)
+GUICtrlSetLimit(-1, 2)
+$x += 110
+$g_hChkFillEQ = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillEQ", "Fill 1 EQ"), $x, $y, -1, 15)
+GUICtrlSetState(-1, $GUI_DISABLE)
+_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillEQ_Info_01", "Brew 1 EarthQuake Spell to top-up the spell camp or queue"))
 EndFunc
 Func CreateBoostSubTab()
-Local $sTextBoostLeft
+Local $sTextBoostLeft = GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "TextBoostLeft", "Boost")
 Local $sTxtTip = ""
 $g_hGUI_TRAINARMY_TAB_ITEM2 = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_03_STab_01_STab_02", "Boost"))
 Local $x = 25, $y = 45
@@ -22873,6 +22898,7 @@ GUICtrlSetData($g_hLblElixirCostSpell, "0")
 GUICtrlSetData($g_hLblDarkCostSpell, "0")
 Else
 chkQuickTrainCombo()
+chkSmartTrain()
 _GUI_Value_STATE("DISABLE", $g_ahChkArmy[0] & "#" & $g_ahChkArmy[1] & "#" & $g_ahChkArmy[2])
 _GUI_Value_STATE("ENABLE", $grpTrainTroops)
 _GUI_Value_STATE("ENABLE", $grpCookSpell)
@@ -22894,6 +22920,35 @@ _GUI_Value_STATE("SHOW", $g_hChkMultiClick)
 Else
 _GUI_Value_STATE("HIDE", $g_hChkMultiClick)
 _GUI_Value_STATE("SHOW", $g_hLblRemoveArmy & "#" & $g_hBtnRemoveArmy)
+EndIf
+EndFunc
+Func chkSmartTrain()
+If GUICtrlRead($g_hChkSmartTrain) = $GUI_CHECKED Then
+If GUICtrlRead($g_hChkUseQuickTrain) = $GUI_UNCHECKED Then _GUI_Value_STATE("ENABLE", $g_hChkPreciseArmyCamp)
+_GUI_Value_STATE("ENABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
+_GUI_Value_STATE("DISABLE", $g_hChkDoubleTrain)
+chkPreciseTroops()
+chkFillArcher()
+Else
+_GUI_Value_STATE("ENABLE", $g_hChkDoubleTrain)
+_GUI_Value_STATE("DISABLE", $g_hChkPreciseArmyCamp & "#" & $g_hChkFillArcher & "#" & $g_hTxtFillArcher & "#" & $g_hChkFillEQ)
+_GUI_Value_STATE("UNCHECKED", $g_hChkPreciseArmyCamp & "#" & $g_hChkFillArcher & "#" & $g_hChkFillEQ)
+EndIf
+EndFunc
+Func chkPreciseTroops()
+If GUICtrlRead($g_hChkPreciseArmyCamp) = $GUI_CHECKED Then
+_GUI_Value_STATE("DISABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
+_GUI_Value_STATE("UNCHECKED", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
+chkFillArcher()
+Else
+_GUI_Value_STATE("ENABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
+EndIf
+EndFunc
+Func chkFillArcher()
+If GUICtrlRead($g_hChkFillArcher) = $GUI_CHECKED Then
+_GUI_Value_STATE("ENABLE", $g_hTxtFillArcher)
+Else
+_GUI_Value_STATE("DISABLE", $g_hTxtFillArcher)
 EndIf
 EndFunc
 Func SetComboTroopComp()
@@ -41098,6 +41153,12 @@ If $g_bDebugSetlogTrain Then SetLog(" - Line Open Army Window")
 CheckIfArmyIsReady()
 If Not $g_bRunState Then Return
 If $g_bDoubleTrain And($g_bDoubleTrainDone Or $g_bIsFullArmywithHeroesAndSpells) Then
+If $g_bChkSmartTrain Then
+SmartTrain()
+ResetVariables("donated")
+EndGainCost("Train")
+Return
+EndIf
 ElseIf $g_bIsFullArmywithHeroesAndSpells Or($g_CurrentCampUtilization = 0 And $g_bFirstStart) Then
 If $g_bIsFullArmywithHeroesAndSpells Then SetLog(" - Your Army is Full, let's make troops before Attack!", $COLOR_INFO)
 If($g_CurrentCampUtilization = 0 And $g_bFirstStart) Then
@@ -42970,7 +43031,7 @@ If $g_bDebugSetlogTrain Then SetLog("GetFullNameSlot(): Dark Elixir Troop Icon f
 Return $aSlot
 EndIf
 EndFunc
-Func DoubleTrain($bQuickTrain = False)
+Func DoubleTrain($bQuickTrain = False, $bWarTroop = False)
 If Not $g_bDoubleTrain Then Return
 Local $bDebug = $g_bDebugSetlogTrain Or $g_bDebugSetlog
 Local $bSetlog =(Not $g_bDoubleTrainDone) Or $bDebug
@@ -42994,8 +43055,8 @@ Local $TroopCamp = GetCurrentArmy(48, 160)
 If $bSetlog Then SetLog("Checking Troop tab: " & $TroopCamp[0] & "/" & $TroopCamp[1] * 2)
 If $TroopCamp[1] = 0 Then ExitLoop
 If $bSetlog And $TroopCamp[1] <> $g_iTotalCampSpace Then SetLog("Incorrect Troop combo: " & $g_iTotalCampSpace & " vs Total camp: " & $TroopCamp[1] & @CRLF & "                 Double train may not work well", $COLOR_DEBUG)
-If $TroopCamp[0] < $TroopCamp[1] Then
-If $g_bDonationEnabled And $g_bChkDonate And MakingDonatedTroops("Troops") Then
+If $bWarTroop Or $TroopCamp[0] < $TroopCamp[1] Then
+If Not $bWarTroop And $g_bDonationEnabled And $g_bChkDonate And MakingDonatedTroops("Troops") Then
 If $bDebug Then SetLog($Step & ". MakingDonatedTroops('Troops')", $COLOR_DEBUG)
 $Step += 1
 If $Step = 6 Then ExitLoop
@@ -43040,8 +43101,8 @@ If $SpellCamp[1] <> $TotalSpellsToBrewInGUI Or $SpellCamp[1] <> $g_iTotalSpellVa
 If $bSetlog And Not $g_bForceBrewSpells Then SetLog("Incorrect Spell combo: " & $TotalSpellsToBrewInGUI & "/" & $g_iTotalSpellValue & " vs Total camp: " & $SpellCamp[1] & @CRLF & "                 Double train may not work well", $COLOR_DEBUG)
 If $g_bForceBrewSpells And $SpellCamp[1] > $TotalSpell Then $SpellCamp[1] = $TotalSpell
 EndIf
-If $SpellCamp[0] < $SpellCamp[1] Then
-If $g_bDonationEnabled And $g_bChkDonate And MakingDonatedTroops("Spells") Then
+If $bWarTroop Or $SpellCamp[0] < $SpellCamp[1] Then
+If Not $bWarTroop And $g_bDonationEnabled And $g_bChkDonate And MakingDonatedTroops("Spells") Then
 If $bDebug Then SetLog($Step & ". MakingDonatedTroops('Spells')", $COLOR_DEBUG)
 $Step += 1
 If $Step = 6 Then ExitLoop
@@ -53868,7 +53929,7 @@ Local $versionfile = @ScriptDir & "\LastVersion.txt"
 If FileExists(@ScriptDir & "\TestVersion.txt") Then
 FileCopy(@ScriptDir & "\TestVersion.txt", $versionfile, 1)
 Else
-Local $hDownload = InetGet("https://raw.githubusercontent.com/rulesss2/MyBot-MBR_v7.6.1_RK_MOD/master/LastVersion.txt", $versionfile, 0, 1)
+Local $hDownload = InetGet("https://raw.githubusercontent.com/rulesss2/MyBot-MBR_v7.6.2_RK_MOD/master/LastVersion.txt", $versionfile, 0, 1)
 Local $i = 0
 Do
 Sleep($DELAYCHECKVERSIONHTML1)
@@ -53884,7 +53945,7 @@ Local $versionfilelocalized = @ScriptDir & "\LastVersion_" & $g_sLanguage & ".tx
 If FileExists(@ScriptDir & "\TestVersion_" & $g_sLanguage & ".txt") Then
 FileCopy(@ScriptDir & "\TestVersion_" & $g_sLanguage & ".txt", $versionfilelocalized, 1)
 Else
-$hDownload = InetGet("https://raw.githubusercontent.com/rulesss2/MyBot-MBR_v7.6.1_RK_MOD/master/LastVersion_" & $g_sLanguage & ".txt", $versionfilelocalized, 0, 1)
+$hDownload = InetGet("https://raw.githubusercontent.com/rulesss2/MyBot-MBR_v7.6.2_RK_MOD/master/LastVersion_" & $g_sLanguage & ".txt", $versionfilelocalized, 0, 1)
 Local $i = 0
 Do
 Sleep($DELAYCHECKVERSIONHTML1)
@@ -59128,6 +59189,12 @@ EndIf
 WEnd
 UpdateStats()
 If _Sleep($DELAYDONATECC2) Then Return
+If $g_bChkSmartTrain Then
+OpenArmyOverview(True, "DonateCC()")
+MakingDonatedTroops()
+ClickP($aAway, 1, 0, "#0176")
+If _Sleep($DELAYDONATECC2) Then Return
+EndIf
 EndFunc
 Func CheckDonateTroop(Const $iTroopIndex, Const $sDonateTroopString, Const $sBlacklistTroopString, Const $sClanString)
 Local $sName =($iTroopIndex = 99 ? "Custom" : $g_asTroopNames[$iTroopIndex])
@@ -61762,7 +61829,17 @@ If $sCCSpell <> "Any" Then
 If $sCCSpell <> $CCSpell1[0][0] Then
 If $g_bDebugSetlog Then SetLog("First Spell not in Slot 1")
 If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 Then
-If $sCCSpell <> $CCSpell2[0][0] Then
+If $CCSpell2 = "" Then
+If $g_bDebugSetlog Then SetLog("Slot 2 empty")
+If $sCCSpell2 <> "Any" Then
+If $sCCSpell2 <> $CCSpell1[0][0] Then
+If $g_bDebugSetlog Then SetLog("Second Spell not in Slot 1")
+$aShouldRemove[0] = $CCSpell1[0][3]
+Else
+If $g_bDebugSetlog Then SetLog("Second Spell in Slot 1")
+EndIf
+EndIf
+ElseIf $sCCSpell <> $CCSpell2[0][0] Then
 If $g_bDebugSetlog Then SetLog("First Spell not in Slot 2")
 If $sCCSpell2 <> "Any" Then
 If $sCCSpell2 <> $CCSpell1[0][0] Then
@@ -61794,7 +61871,7 @@ $aShouldRemove[0] = $CCSpell1[0][3]
 EndIf
 Else
 If $g_bDebugSetlog Then SetLog("First Spell in Slot 1")
-If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 Then
+If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 And $CCSpell2 <> "" Then
 If $sCCSpell2 <> $CCSpell2[0][0] And $sCCSpell2 <> "Any" Then
 If $g_bDebugSetlog Then SetLog("Second Spell not in Slot 2")
 $aShouldRemove[1] = $CCSpell2[0][3]
@@ -64045,7 +64122,7 @@ EndFunc
 Func ReplayShare($bShareLastReplay)
 If Not $g_bShareAttackEnable Or Not $bShareLastReplay Then Return
 Local Static $sLastTimeShared = ""
-If $sLastTimeShared = "" Or _DateDiff("m", $sLastTimeShared, _NowCalc()) > 30 Then
+If $sLastTimeShared = "" Or _DateDiff("n", $sLastTimeShared, _NowCalc()) > 30 Then
 SetLog("Going to share the last Attack!")
 ClickP($aAway, 1, 0, "#0235")
 If _Sleep($DELAYREPLAYSHARE2) Then Return
@@ -69539,6 +69616,12 @@ GUICtrlSetData($g_hTxtTotalCampForced, $g_iTotalCampForcedValue)
 GUICtrlSetData($g_hTxtTotalCountSpell, $g_iTotalSpellValue)
 GUICtrlSetState($g_hChkForceBrewBeforeAttack, $g_bForceBrewSpells ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetState($g_hChkDoubleTrain, $g_bDoubleTrain ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkSmartTrain, $g_bChkSmartTrain ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkPreciseArmyCamp, $g_bChkPreciseArmyCamp ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkFillArcher, $g_bChkFillArcher ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetData($g_hTxtFillArcher, $g_iTxtFillArcher)
+GUICtrlSetState($g_hChkFillEQ, $g_bChkFillEQ ? $GUI_CHECKED : $GUI_UNCHECKED)
+chkSmartTrain()
 Case "Save"
 For $T = 0 To $eTroopCount - 1
 $g_aiArmyCompTroops[$T] = GUICtrlRead($g_ahTxtTrainArmyTroopCount[$T])
@@ -69558,6 +69641,11 @@ $g_iTotalCampForcedValue = Int(GUICtrlRead($g_hTxtTotalCampForced))
 $g_iTotalSpellValue = GUICtrlRead($g_hTxtTotalCountSpell)
 $g_bForceBrewSpells =(GUICtrlRead($g_hChkForceBrewBeforeAttack) = $GUI_CHECKED)
 $g_bDoubleTrain =(GUICtrlRead($g_hChkDoubleTrain) = $GUI_CHECKED)
+$g_bChkSmartTrain =(GUICtrlRead($g_hChkSmartTrain) = $GUI_CHECKED)
+$g_bChkPreciseArmyCamp =(GUICtrlRead($g_hChkPreciseArmyCamp) = $GUI_CHECKED)
+$g_bChkFillArcher =(GUICtrlRead($g_hChkFillArcher) = $GUI_CHECKED)
+$g_iTxtFillArcher = GUICtrlRead($g_hTxtFillArcher)
+$g_bChkFillEQ =(GUICtrlRead($g_hChkFillEQ) = $GUI_CHECKED)
 EndSwitch
 EndFunc
 Func ApplyConfig_600_54($TypeReadSave)
@@ -70787,6 +70875,11 @@ $g_bForceBrewSpells =(IniRead($g_sProfileConfigPath, "other", "ChkForceBrewBefor
 IniReadS($g_iTotalSpellValue, $g_sProfileConfigPath, "Spells", "SpellFactory", 0, "int")
 $g_iTotalSpellValue = Int($g_iTotalSpellValue)
 $g_bDoubleTrain =(IniRead($g_sProfileConfigPath, "troop", "DoubleTrain", "0") = "1")
+IniReadS($g_bChkSmartTrain, $g_sProfileConfigPath, "SmartTrain", "Enable", False, "Bool")
+IniReadS($g_bChkPreciseArmyCamp, $g_sProfileConfigPath, "SmartTrain", "ChkPreciseTroops", False, "Bool")
+IniReadS($g_bChkFillArcher, $g_sProfileConfigPath, "SmartTrain", "ChkFillArcher", False, "Bool")
+IniReadS($g_iTxtFillArcher, $g_sProfileConfigPath, "SmartTrain", "TxtFillArcher", 5, "int")
+IniReadS($g_bChkFillEQ, $g_sProfileConfigPath, "SmartTrain", "ChkFillEQ", False, "Bool")
 EndFunc
 Func ReadConfig_600_54()
 IniReadS($g_bCustomTrainOrderEnable, $g_sProfileConfigPath, "troop", "chkTroopOrder", False, "Bool")
@@ -71837,6 +71930,11 @@ _Ini_Add("other", "ValueTotalCampForced", $g_iTotalCampForcedValue)
 _Ini_Add("Spells", "SpellFactory", $g_iTotalSpellValue)
 _Ini_Add("other", "ChkForceBrewBeforeAttack", $g_bForceBrewSpells ? 1 : 0)
 _Ini_Add("troop", "DoubleTrain", $g_bDoubleTrain ? 1 : 0)
+_Ini_Add("SmartTrain", "Enable", $g_bChkSmartTrain ? 1 : 0)
+_Ini_Add("SmartTrain", "ChkPreciseTroops", $g_bChkPreciseArmyCamp ? 1 : 0)
+_Ini_Add("SmartTrain", "ChkFillArcher", $g_bChkFillArcher ? 1 : 0)
+_Ini_Add("SmartTrain", "TxtFillArcher", $g_iTxtFillArcher)
+_Ini_Add("SmartTrain", "ChkFillEQ", $g_bChkFillEQ ? 1 : 0)
 EndFunc
 Func SaveConfig_600_54()
 ApplyConfig_600_54(GetApplyConfigSaveAction())
@@ -73764,27 +73862,21 @@ EndFunc
 Func StopAndPrepareForWar($iSleepTime)
 If $g_bTrainWarTroop Then
 SetLog("Let's remove all farming troops and train war troop", $COLOR_ACTION)
+$g_bDoubleTrain = True
+If $g_iTotalSpellValue = 0 Then $g_iTotalSpellValue = 11
+If $g_iTotalCampSpace = 0 Then $g_iTotalCampSpace = 280
 If $g_bUseQuickTrainWar Then
-$g_bQuickTrainEnable = $g_bUseQuickTrainWar
+$g_bQuickTrainEnable = True
 $g_bQuickTrainArmy = $g_aChkArmyWar
-Local $aiArmyCompTroopsEmpty[$eTroopCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-Local $aiArmyCompSpellsEmpty[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
-$g_aiArmyCompTroops = $aiArmyCompTroopsEmpty
-$g_aiArmyCompSpells = $aiArmyCompSpellsEmpty
-Else
-$g_aiArmyCompTroops = $g_aiWarCompTroops
-$g_aiArmyCompSpells = $g_aiWarCompSpells
-EndIf
+For $i = 0 To $eTroopCount - 1
+$g_aiArmyCompTroops[$i] = 0
+If $i < $eSpellCount Then $g_aiArmyCompSpells[$i] = 0
+Next
 OpenArmyOverview(False, "StopAndPrepareForWar()")
-If Not IsQueueEmpty("Troops", True, False) Then DeleteQueued("Troops")
-If Not IsQueueEmpty("Spells", True, False) Then DeleteQueued("Spells")
+If Not IsQueueEmpty("Troops", False, False) Then DeleteQueued("Troops")
+If Not IsQueueEmpty("Spells", False, False) Then DeleteQueued("Spells")
 If _Sleep(300) Then Return
-$g_bIsFullArmywithHeroesAndSpells = False
-If Not $g_bUseQuickTrainWar Then
-DoubleTrain()
-Else
-StartGainCost()
-OpenArmyTab(False, "StopAndPrepareForWar()")
+If Not OpenArmyTab(False, "StopAndPrepareForWar()") Then Return
 If _Sleep(300) Then Return
 Local $toTrainFake[1][2] = [["Barb", 0]]
 getArmySpells(False, False, False, False)
@@ -73795,28 +73887,34 @@ ExitLoop
 EndIf
 Next
 RemoveExtraTroops($toTrainFake)
-OpenQuickTrainTab(False, "StopAndPrepareForWar()")
-If _Sleep(750) Then Return
-TrainArmyNumber($g_bQuickTrainArmy)
-If _Sleep(250) Then Return
-TrainArmyNumber($g_bQuickTrainArmy)
-EndGainCost("Train")
-EndIf
-If _Sleep(500) Then Return
-If $g_bRequestCCForWar Then
-OpenArmyTab(False, "StopAndPrepareForWar()")
-Else
 ClickP($aAway, 2, 0, "#0346")
+If _Sleep(300) Then Return
+Else
+$g_aiArmyCompTroops = $g_aiWarCompTroops
+$g_aiArmyCompSpells = $g_aiWarCompSpells
 EndIf
+DoubleTrain($g_bUseQuickTrainWar, True)
 If _Sleep(500) Then Return
 EndIf
 If $g_bRequestCCForWar Then
 $g_bRequestTroopsEnable = True
 $g_bDonationEnabled = True
+$g_bCanRequestCC = True
 $g_abRequestCCHours[@HOUR] = True
 $g_sRequestTroopsText = $g_sTxtRequestCCForWar
+$g_abRequestType[0] = True
+$g_abRequestType[1] = True
+For $i = 0 To 2
+$g_aiClanCastleTroopWaitType[$i] = 0
+$g_aiClanCastleTroopWaitQty[$i] = 1
+Next
+For $i = 0 To $eTroopCount - 1
+$g_aiCCTroopsExpected[$i] = 0
+Next
+$g_iCurrentCCSpells = $g_iTotalCCSpells
+$g_iClanCastleSpellsWaitFirst = 10
+$g_iClanCastleSpellsWaitSecond = 6
 SetLog("Let's request again for war", $COLOR_ACTION)
-RemoveCC()
 RequestCC()
 EndIf
 SetLog("It's war time, let's take a break", $COLOR_ACTION)
@@ -73855,68 +73953,6 @@ EndIf
 EndIf
 EndIf
 UniversalCloseWaitOpenCoC($iSleepTime * 60 * 1000, "StopAndPrepareForWar", False, True)
-EndFunc
-Func RemoveCC()
-If Not IsTrainPage() Then
-OpenArmyOverview(True, "CheckCC()")
-If _Sleep(500) Then Return
-EndIf
-Local $sCCTroop, $aCCTroop, $sCCSpell, $aCCSpell
-$sCCTroop = getOcrAndCapture("coc-ms", 289, 468, 60, 16, True, False, True)
-$aCCTroop = StringSplit($sCCTroop, "#", $STR_NOCOUNT)
-$sCCSpell = getOcrAndCapture("coc-ms", 472, 468, 35, 16, True, False, True)
-$aCCSpell = StringSplit($sCCSpell, "#", $STR_NOCOUNT)
-Local $aPos[2] = [40, 575]
-Local $bHasCCTroopOrSpell = False
-If IsArray($aCCTroop) Then $bHasCCTroopOrSpell = Number($aCCTroop[0]) > 1
-If IsArray($aCCSpell) Then $bHasCCTroopOrSpell = Number($aCCSpell[0]) > 1
-If $bHasCCTroopOrSpell Then
-Click(Random(715, 825, 1), Random(507, 545, 1))
-If _Sleep(500) Then Return
-For $i = 0 To 6
-If _ColorCheck(_GetPixelColor(Round(30 + 72.8 * $i, 0), 508, True), Hex(0xCFCFC8, 6), 15) Then
-ExitLoop
-Else
-$aPos[0] = 40 + 74 * $i
-ClickRemoveTroop($aPos, 35, $g_iTrainClickDelay)
-EndIf
-Next
-If Not _ColorCheck(_GetPixelColor(570, 508, True), Hex(0xCFCFC8, 6), 15) Then
-$aPos[0] = 570
-ClickRemoveTroop($aPos, 3, $g_iTrainClickDelay)
-EndIf
-For $i = 0 To 10
-If _ColorCheck(_GetPixelColor(806, 567, True), Hex(0xCEEF76, 6), 25) Then
-Click(Random(720, 815, 1), Random(558, 589, 1))
-ExitLoop
-Else
-If $i = 10 Then
-SetLog("Cannot find/verify 'Okay' Button in Army tab", $COLOR_WARNING)
-ClickP($aAway, 2, 0)
-Return
-EndIf
-If _Sleep(200) Then Return
-EndIf
-Next
-For $i = 0 To 10
-If _ColorCheck(_GetPixelColor(508, 428, True), Hex(0xFFFFFF, 6), 30) Then
-Click(Random(445, 583, 1), Random(402, 455, 1))
-ExitLoop
-Else
-If $i = 10 Then
-SetLog("Cannot find/verify 'Okay #2' Button in Army tab", $COLOR_WARNING)
-ClickP($aAway, 2, 0)
-Return
-EndIf
-If _Sleep(300) Then Return
-EndIf
-Next
-SetLog("CC Troops/Spells removed", $COLOR_SUCCESS)
-If _Sleep(200) Then Return
-EndIf
-getArmyCCStatus()
-ClickP($aAway, 2, 0)
-If _Sleep(300) Then Return
 EndFunc
 Func ChkStopForWar()
 If GUICtrlRead($g_hChkStopForWar) = $GUI_CHECKED Then
@@ -76421,16 +76457,25 @@ SetLog("Chatbot: Switching language TR", $COLOR_GREEN)
 Click(513, 426, 1)
 If _Sleep(1000) Then Return
 EndFunc
-Func DelayTime($sendTimer, $chatType)
-Local $TimeDiff = 0
-Local $TimeDiff =(TimerDiff($sendTimer) / 1000) / 60
+Func DelayTime($chatType)
 If $chatType = "GLOBAL" Then
-If $TimeDiff > $g_iTxtDelayTimerun Then
+If $g_sGlobalChatLastMsgSentTime = "" Then
 Return True
 Else
+Local $sDateTimeDiffOfLastMsgInMin = _DateDiff("s", $g_sGlobalChatLastMsgSentTime, _NowCalc())/60
+SetDebugLog("$g_iTxtDelayTimerun = " & $g_iTxtDelayTimerun)
+SetDebugLog("$g_sGlobalChatLastMsgSentTime = " & $g_sGlobalChatLastMsgSentTime &", $sDateTimeDiffOfLastMsgInMin = " & $sDateTimeDiffOfLastMsgInMin )
+If $sDateTimeDiffOfLastMsgInMin > $g_iTxtDelayTimerun Then
+Return True
+Else
+Local $hour = 0, $min = 0, $sec = 0
+Local $sDateTimeDiffOfLastMsgInSec = _DateDiff("s", _NowCalc() , _DateAdd( 'n',$g_iTxtDelayTimerun, $g_sGlobalChatLastMsgSentTime))
+SetDebugLog("$sDateTimeDiffOfLastMsgInSec = " & $sDateTimeDiffOfLastMsgInSec)
+_TicksToTime($sDateTimeDiffOfLastMsgInSec*1000, $hour, $min, $sec)
 SetLog("Chatbot: Skip sending chats to global chat", $COLOR_INFO)
-SetLog("Delay Time " & StringFormat("%.1f", $TimeDiff) & " minute(s)", $COLOR_INFO)
+SetLog("Delay Time " & StringFormat("%02i:%02i:%02i", $hour, $min, $sec)& " left before sending new msg.", $COLOR_INFO)
 Return False
+EndIf
 EndIf
 EndIf
 EndFunc
@@ -76473,7 +76518,7 @@ $g_sMessage[1] = ""
 Else
 $g_sMessage[0] = ""
 $g_sMessage[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
-Endif
+EndIf
 If $g_iChkScrambleGlobal Then
 _ArrayShuffle($g_sMessage)
 EndIf
@@ -76494,10 +76539,10 @@ If $g_bDelayTime = False And $g_iChkChatGlobal Then
 ChatGlobal()
 EndIf
 If $g_bDelayTime = True And $g_iChkChatGlobal Then
-Local $iSendChatGlobalDelay = DelayTime($startDelayTimer, "GLOBAL")
+Local $iSendChatGlobalDelay = DelayTime("GLOBAL")
 If $iSendChatGlobalDelay = True Then
 ChatGlobal()
-$startDelayTimer = TimerInit()
+$g_sGlobalChatLastMsgSentTime = _NowCalc()
 EndIf
 EndIf
 If $g_iChkChatClan Then
@@ -78345,19 +78390,22 @@ EndFunc
 Func TNRQT()
 local $Troopsdetect = CheckQueueTroops()
 EndFunc
+Local $initBoostTime
 Local $bGemOcr
 Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
 Func OneGemBoost()
-Local $initBoostTime
-If $g_bFirstStart Or(_DateDiff("h", $initBoostTime, _NowCalc())) > 1 Then
-SetLog("Boosting with One Gem", $COLOR_INFO)
-checkMainScreen()
+Local $checkIfBoostNeededToBeChecked = _DateDiff("n", $initBoostTime, _NowCalc())
+SetDebugLog("OneGemBoost $initBoostTime = " & $initBoostTime & " $checkIfBoostNeededToBeChecked = " & $checkIfBoostNeededToBeChecked, $COLOR_DEBUG)
+If $g_bFirstStart Or $initBoostTime = "" Or $checkIfBoostNeededToBeChecked > 60 Then
+If $g_bChkOneGemBoostHeroes Or $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
+SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
 If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem()
 If $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
 OpenArmyOverview(True, "OneGemBoost()")
 If $g_bChkOneGemBoostBarracks Then CheckTroopsOneGem()
 If $g_bChkOneGemBoostSpells Then CheckSpellsOneGem()
 ClickP($aAway, 1, 0, "#0161")
+EndIf
 EndIf
 $initBoostTime = _NowCalc()
 EndIf
@@ -78517,9 +78565,13 @@ EndFunc
 Func btnTestCheckOneGem()
 SetLog("Test Check One Gem Boost", $COLOR_DEBUG)
 Local $wasRunState = $g_bRunState
+Local $wasFirstStart = $g_bFirstStart
 $g_bRunState = True
+$g_bFirstStart = True
+checkMainScreen()
 OneGemBoost()
 $g_bRunState = $wasRunState
+$g_bFirstStart = $wasFirstStart
 EndFunc
 Func ReadConfig_RKMod()
 IniReadS($icmbCSVSpeed[$LB], $g_sProfileConfigPath, "RK CSV Speed", "cmbCSVSpeed[LB]", 2, "Int")
@@ -78605,7 +78657,7 @@ IniReadS($g_iTxtMinTrophyAmount, $g_sProfileConfigPath, "profiles", "txtMinTroph
 IniReadS($g_iChkChatGlobal, $g_sProfileConfigPath, "Chatbot", "ChkChatGlobal", $g_iChkChatGlobal, "int")
 IniReadS($g_iChkScrambleGlobal, $g_sProfileConfigPath, "Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal, "int")
 IniReadS($g_bDelayTime, $g_sProfileConfigPath, "Chatbot", "ChkDelayTime", False, "Bool")
-IniReadS($g_iTxtDelayTimerun, $g_sProfileConfigPath, "Chatbot", "txtDelayTimerun", 10, "int")
+IniReadS($g_iTxtDelayTimerun, $g_sProfileConfigPath, "Chatbot", "TxtDelayTimerun", $g_iTxtDelayTimerun, "int")
 IniReadS($g_iChkSwitchLang, $g_sProfileConfigPath, "Chatbot", "ChkSwitchLang", $g_iChkSwitchLang, "int")
 IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chatbot", "CmbLang", 9, "int")
 IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "int")
@@ -78704,7 +78756,7 @@ _Ini_Add("profiles", "txtMinTrophyAmount", $g_iTxtMinTrophyAmount)
 _Ini_Add("Chatbot", "ChkChatGlobal", $g_iChkChatGlobal ? 1 : 0)
 _Ini_Add("Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)
 _Ini_Add("Chatbot", "ChkDelayTime", $g_bDelayTime ? 1 : 0)
-_Ini_Add("Chatbot", "txtDelayTimerun", $g_iTxtDelayTimerun)
+_Ini_Add("Chatbot", "TxtDelayTimerun", $g_iTxtDelayTimerun)
 _Ini_Add("Chatbot", "ChkSwitchLang", $g_iChkSwitchLang ? 1 : 0)
 _Ini_Add("Chatbot", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmbLang))
 _Ini_Add("Chatbot", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
@@ -79153,6 +79205,639 @@ If _Sleep($DELAYDROPTROOP2) Then Return
 Next
 ReleaseClicks()
 If _Sleep($DELAYDROPTROOP2) Then Return
+EndFunc
+Func SmartTrain()
+Local $bRemoveUnpreciseTroops = False
+Local $aeTrainMethod[2] = [$g_eNoTrain, $g_eNoTrain], $aeBrewMethod[2] = [$g_eNoTrain, $g_eNoTrain]
+Local $bCheckWrongArmyCamp = False, $bCheckWrongSpells = False
+If Not $g_bQuickTrainEnable Then
+SetLog("Start Smart Custom Train")
+Else
+SetLog("Start Smart Quick Train")
+EndIf
+While 1
+$bRemoveUnpreciseTroops = CheckPreciseArmyCamp()
+If @error Then ExitLoop
+If $bRemoveUnpreciseTroops Then SetLog("Continue Smart Train...!")
+If $g_iTotalCampSpace <> 0 Then
+$aeTrainMethod = CheckTrainingTab("Troops")
+If @error Then ExitLoop
+If IsArray($aeTrainMethod) Then
+If $aeTrainMethod[0] = $g_eRemained And Not $bRemoveUnpreciseTroops Then
+$bCheckWrongArmyCamp = True
+ElseIf Not $g_bQuickTrainEnable Then
+MakeCustomTrain("Troops", $aeTrainMethod)
+If @error Then ExitLoop
+$aeTrainMethod[0] = $g_eNoTrain
+$aeTrainMethod[1] = $g_eNoTrain
+EndIf
+EndIf
+EndIf
+If $g_iTotalSpellValue <> 0 Then
+$aeBrewMethod = CheckTrainingTab("Spells")
+If @error Then ExitLoop
+If IsArray($aeBrewMethod) Then
+If $aeBrewMethod[0] = $g_eRemained And Not $bRemoveUnpreciseTroops Then
+$bCheckWrongSpells = True
+ElseIf Not $g_bQuickTrainEnable Then
+MakeCustomTrain("Spells", $aeBrewMethod)
+If @error Then ExitLoop
+$aeBrewMethod[0] = $g_eNoTrain
+$aeBrewMethod[1] = $g_eNoTrain
+EndIf
+EndIf
+EndIf
+If Not IsArray($aeTrainMethod) Or Not IsArray($aeBrewMethod) Then
+SetLog("Some kinds of error. Quit training", $COLOR_ERROR)
+Else
+If Not $g_bQuickTrainEnable Then
+If _Sleep(500) Then Return
+If $bCheckWrongArmyCamp Or $bCheckWrongSpells Then
+Local $toRemove = CheckWrongArmyCamp()
+If @error Then ExitLoop
+RemoveWrongArmyCamp($toRemove)
+If @error Then ExitLoop
+EndIf
+If _Sleep(1000) Then Return
+Local $aeTB_Method = $aeTrainMethod
+_ArrayConcatenate($aeTB_Method, $aeBrewMethod)
+MakeCustomTrain("All", $aeTB_Method)
+If @error Then ExitLoop
+ElseIf $aeTrainMethod[1] <> $g_eNoTrain Or $aeBrewMethod[1] <> $g_eNoTrain Then
+If Not OpenQuickTrainTab() Then $g_sSmartTrainError = SetError(1, 0, "Error OpenQuickTrainTab called from SmartTrain")
+If @error Then ExitLoop
+If _Sleep(500) Then Return
+Local $iMultiClick = 1
+If $g_bChkMultiClick Then $iMultiClick = $g_iMultiClick
+TrainArmyNumber($g_bQuickTrainArmy, $iMultiClick)
+Else
+SetLog("Full queue, skip Quick Train", $COLOR_INFO)
+EndIf
+SmartTrainSiege($bDebug)
+SetLog("Smart Train accomplished")
+EndIf
+ExitLoop
+WEnd
+If @error Then SetLog("Quit training. " & $g_sSmartTrainError, $COLOR_ERROR)
+ClickP($aAway, 2, 0, "#0000")
+If $bRemoveUnpreciseTroops Then CheckIfArmyIsReady()
+EndFunc
+Func MakeCustomTrain($sText, $aeMethod)
+If Not IsArray($aeMethod) Then Return False
+For $i = 0 To UBound($aeMethod) - 1
+If $aeMethod[$i] <> $g_eNoTrain Then ExitLoop
+If $i = 3 Then Return True
+Next
+Local $aArmy, $bTrainQueue = False
+If $sText <> "Spells" Then
+If Not OpenTroopsTab() Then $g_sSmartTrainError = SetError(2, 0, "Error OpenTroopsTab called from MakeCustomTrain")
+If @error Then Return
+For $i = 0 To 1
+$bTrainQueue = Mod($i, 2) = 1
+$aArmy = DefineWhatToTrain("Troops", $aeMethod[$i], $bTrainQueue)
+TrainNow("Troops", $aArmy)
+If @error Then SetError(2)
+Next
+EndIf
+If $sText <> "Troops" Then
+If Not OpenSpellsTab() Then $g_sSmartTrainError = SetError(2, 0, "Error OpenSpellsTab called from MakeCustomTrain")
+If @error Then Return
+Local $x = 0
+If $sText = "All" Then $x = 2
+For $i = $x To $x + 1
+$bTrainQueue = Mod($i, 2) = 1
+$aArmy = DefineWhatToTrain("Spells", $aeMethod[$i], $bTrainQueue)
+TrainNow("Spells", $aArmy)
+If @error Then SetError(2)
+Next
+EndIf
+Return True
+EndFunc
+Func TrainNow($sText, $aArmy)
+If Not IsArray($aArmy) Then Return
+For $i = 0 To(UBound($aArmy) - 1)
+If $aArmy[$i][1] > 0 Then
+If Not DragIfNeeded($aArmy[$i][0]) Then $g_sSmartTrainError = SetError(3, 0, "Error DragIfNeeded called from TrainNow")
+If @error Then Return
+Local $sAction = "Training "
+If $sText = "Spells" Then
+$sAction = "Brewing "
+EndIf
+Local $iTS_Index = TroopIndexLookup($aArmy[$i][0])
+Local $sTS_Name = NameOfTroop($iTS_Index, $aArmy[$i][1] > 1 ? 1 : 0)
+If CheckValuesCost($aArmy[$i][0], $aArmy[$i][1]) Then
+SetLog(" - " & $sAction & $aArmy[$i][1] & "x " & $sTS_Name, $COLOR_SUCCESS)
+If Not TrainIt($iTS_Index, $aArmy[$i][1], $g_iTrainClickDelay) Then $g_sSmartTrainError = SetError(3, 0, "Error TrainIt called from TrainNow")
+If @error Then Return
+Else
+SetLog("No resources for " & $sAction & $aArmy[$i][1] & "x " & $sTS_Name, $COLOR_ACTION)
+EndIf
+EndIf
+Next
+EndFunc
+Func DefineWhatToTrain($sText = "Troops", $TrainMethod = $g_eFull, $bTrainQueue = False)
+Local $rWTT[1][2] = [["Arch", 0]]
+If $sText = "Spells" Then $rWTT[0][0] = "LSpell"
+Local $eCount = $eTroopCount
+If $sText = "Spells" Then $eCount = $eSpellCount
+Local $aCurrent[$eCount], $iIndex, $aiArmyComp[$eCount], $asShortNames[$eCount]
+Local $aiCurrentQty[$eCount], $aiQueueQty[$eCount]
+Switch $TrainMethod
+Case $g_eNoTrain
+Return False
+Case $g_eFull
+If Not $bTrainQueue Then
+SetLog("Custom train full set of " & $sText, $COLOR_INFO)
+Else
+SetLog("Custom train full set of queue " & $sText, $COLOR_INFO)
+EndIf
+For $i = 0 To(UBound($aCurrent) - 1)
+If $sText = "Troops" Then
+$iIndex = $g_aiTrainOrder[$i]
+$aiArmyComp[$iIndex] = $g_aiArmyCompTroops[$iIndex]
+$asShortNames[$iIndex] = $g_asTroopShortNames[$iIndex]
+ElseIf $sText = "Spells" Then
+$iIndex = $g_aiBrewOrder[$i]
+$aiArmyComp[$iIndex] = $g_aiArmyCompSpells[$iIndex]
+$asShortNames[$iIndex] = $g_asSpellShortNames[$iIndex]
+EndIf
+If $aiArmyComp[$iIndex] > 0 Then
+$rWTT[UBound($rWTT) - 1][0] = $asShortNames[$iIndex]
+$rWTT[UBound($rWTT) - 1][1] = $aiArmyComp[$iIndex]
+Local $iTS_Index = TroopIndexLookup($rWTT[UBound($rWTT) - 1][0])
+Local $sTS_Name = NameOfTroop($iTS_Index, $rWTT[UBound($rWTT) - 1][1] > 1 ? 1 : 0)
+ReDim $rWTT[UBound($rWTT) + 1][2]
+EndIf
+Next
+Case $g_eRemained
+If Not $bTrainQueue Then
+SetLog("Custom train remaining " & $sText, $COLOR_INFO)
+Else
+SetLog("Custom train remaining queue " & $sText, $COLOR_INFO)
+EndIf
+For $i = 0 To(UBound($aCurrent) - 1)
+If $sText = "Troops" Then
+$iIndex = $g_aiTrainOrder[$i]
+$aiCurrentQty[$iIndex] = $g_aiCurrentTroops[$iIndex]
+$aiQueueQty[$iIndex] = $g_aiQueueTroops[$iIndex]
+$aiArmyComp[$iIndex] = $g_aiArmyCompTroops[$iIndex]
+$asShortNames[$iIndex] = $g_asTroopShortNames[$iIndex]
+ElseIf $sText = "Spells" Then
+$iIndex = $g_aiBrewOrder[$i]
+$aiCurrentQty[$iIndex] = $g_aiCurrentSpells[$iIndex]
+$aiQueueQty[$iIndex] = $g_aiQueueSpells[$iIndex]
+$aiArmyComp[$iIndex] = $g_aiArmyCompSpells[$iIndex]
+$asShortNames[$iIndex] = $g_asSpellShortNames[$iIndex]
+EndIf
+If Not $bTrainQueue = $g_eRemained Then
+$aCurrent[$iIndex] = $aiCurrentQty[$iIndex]
+Else
+$aCurrent[$iIndex] = $aiQueueQty[$iIndex]
+EndIf
+If $aiArmyComp[$iIndex] - $aCurrent[$iIndex] > 0 Then
+$rWTT[UBound($rWTT) - 1][0] = $asShortNames[$iIndex]
+$rWTT[UBound($rWTT) - 1][1] = Abs($aiArmyComp[$iIndex] - $aCurrent[$iIndex])
+Local $iTS_Index = TroopIndexLookup($rWTT[UBound($rWTT) - 1][0])
+Local $sTS_Name = NameOfTroop($iTS_Index, $rWTT[UBound($rWTT) - 1][1] > 1 ? 1 : 0)
+ReDim $rWTT[UBound($rWTT) + 1][2]
+EndIf
+Next
+EndSwitch
+Return $rWTT
+EndFunc
+Func SmartTrainSiege($bDebug)
+Local $iSiege = $eSiegeWallWrecker
+If $g_iTotalTrainSpaceSiege < 1 Then Return
+If $g_aiArmyCompSiegeMachine[$eSiegeWallWrecker] > 0 And $g_aiArmyCompSiegeMachine[$eSiegeBattleBlimp] > 0 Then
+If $bDebug Then SetLog("Army has both types of siege. Smart Train siege might cause unbalance.", $COLOR_DEBUG)
+Else
+If $g_aiArmyCompSiegeMachine[$eSiegeBattleBlimp] > 0 Then $iSiege = $eSiegeBattleBlimp
+If Not OpenSiegeMachinesTab(True, "SmartTrainSiege()") Then Return
+If _Sleep(500) Then Return
+Local $checkPixel[4] = [58 + $iSiege * 171, 556, 0x47717E, 10]
+If _CheckPixel($checkPixel, True, Default, $g_asSiegeMachineNames[$iSiege]) Then
+If $g_aiCurrentSiegeMachines[$iSiege] < $g_aiArmyCompSiegeMachine[$iSiege] Then
+Local $HowMany = $g_aiArmyCompSiegeMachine[$iSiege] - $g_aiCurrentSiegeMachines[$iSiege]
+PureClick($checkPixel[0], $checkPixel[1], $HowMany, $g_iTrainClickDelay)
+Setlog("Build " & $HowMany & " " & $g_asSiegeMachineNames[$iSiege] &($HowMany >= 2 ? "s" : ""), $COLOR_SUCCESS)
+If _Sleep(250) Then Return
+EndIf
+PureClick($checkPixel[0], $checkPixel[1], $g_aiArmyCompSiegeMachine[$iSiege], $g_iTrainClickDelay)
+Setlog("Build " & $g_aiArmyCompSiegeMachine[$iSiege] & " " & $g_asSiegeMachineNames[$iSiege] &($g_aiArmyCompSiegeMachine[$iSiege] >= 2 ? "s" : ""), $COLOR_SUCCESS)
+EndIf
+If _Sleep(250) Then Return
+EndIf
+EndFunc
+Func CheckQueue(ByRef $eTrainMethod_0, $sText = "Troops")
+Local $CheckTroop[4] = [825, 204, 0xCFCFC8, 15]
+Local $CheckPink[4] = [825, 186, 0xD7AFA9, 10]
+Local $directory = @ScriptDir & "\imgxml\Train\Queue_" & $sText
+Local $iTotalQueue = 0
+Local $bResult = False
+If $g_bQuickTrainEnable Then
+SetLog("Delete all queue for quick train", $COLOR_WARNING)
+DeleteQueue($sText)
+$bResult = True
+EndIf
+If $sText = "Troops" Then
+For $i = 0 To $eTroopCount - 1
+$g_aiQueueTroops[$i] = 0
+Next
+ElseIf $sText = "Spells" Then
+For $i = 0 To $eSpellCount - 1
+$g_aiQueueSpells[$i] = 0
+Next
+EndIf
+SetLog("Checking queue " & $sText, $COLOR_INFO)
+If Not _ColorCheck(_GetPixelColor($CheckTroop[0] - 11 * 70, $CheckTroop[1], True), Hex($CheckTroop[2], 6), $CheckTroop[3]) Then
+SetLog("So many troops queued, removing queues at the last slot", $COLOR_ACTION)
+Local $x = 0
+While Not _ColorCheck(_GetPixelColor($CheckTroop[0] - 11 * 70, $CheckTroop[1], True), Hex($CheckTroop[2], 6), $CheckTroop[3])
+If _Sleep(20) Then Return
+If Not $g_bRunState Then Return
+PureClick($CheckTroop[0] - 11 * 70, 202, 2, 50)
+$x += 1
+If $x = 290 Then ExitLoop
+WEnd
+EndIf
+For $i = 0 To 10
+If _ColorCheck(_GetPixelColor($CheckPink[0] - $i * 70, $CheckPink[1], True), Hex($CheckPink[2], 6), $CheckPink[3]) Then
+Local $sTroopNameFound = QuickMIS("N1", $directory, Int(795 - 70.5 * $i), 210, Int(815 - 70.5 * $i), 230, True, $g_bDebugSetlog)
+If $sTroopNameFound = "none" Then ContinueLoop
+Local $iQty = getQueueTroopsQuantity(Int(772 -(70.5 * $i)), 190)
+Local $eIndex = Eval("e" & $sTroopNameFound)
+If $sText = "Troops" Then
+$g_aiQueueTroops[$eIndex] += $iQty
+ElseIf $sText = "Spells" Then
+$g_aiQueueSpells[$eIndex - $eLSpell] += $iQty
+EndIf
+EndIf
+Next
+If $sText = "Troops" Then
+For $j = 0 To $eTroopCount - 1
+If $g_aiQueueTroops[$j] > 0 Then
+SetLog(" - " & NameOfTroop($j, $g_aiQueueTroops[$j] > 1 ? 1 : 0) & " x" & $g_aiQueueTroops[$j])
+$iTotalQueue += $g_aiQueueTroops[$j] * $g_aiTroopSpace[$j]
+EndIf
+Next
+ElseIf $sText = "Spells" Then
+For $j = 0 To $eSpellCount - 1
+If $g_aiQueueSpells[$j] > 0 Then
+SetLog(" - " & NameOfTroop($j + $eLSpell, $g_aiQueueSpells[$j] > 1 ? 1 : 0) & " x" & $g_aiQueueSpells[$j])
+$iTotalQueue += $g_aiQueueSpells[$j] * $g_aiSpellSpace[$j]
+EndIf
+Next
+EndIf
+Local $NewCampOCR = GetOCRCurrent(43, 160)
+If $NewCampOCR[0] < $NewCampOCR[1] + $iTotalQueue Then
+SetLog("A big guy blocks our camp", $COLOR_ACTION)
+ClearTrainingArmyCamp()
+If CheckBlockTroops($sText) Then
+$eTrainMethod_0 = $g_eRemained
+Else
+$eTrainMethod_0 = $g_eNoTrain
+EndIf
+$bResult = True
+Else
+If $sText = "Troops" Then
+For $i = 0 To($eTroopCount - 1)
+If $g_aiQueueTroops[$i] - $g_aiArmyCompTroops[$i] > 0 Then $bResult = True
+If $bResult Then ExitLoop
+Next
+ElseIf $sText = "Spells" Then
+For $i = 0 To($eSpellCount - 1)
+If $g_aiQueueSpells[$i] - $g_aiArmyCompSpells[$i] > 0 Then $bResult = True
+If $bResult Then ExitLoop
+Next
+EndIf
+If $bResult Then
+SetLog("Some wrong " & $sText & " in queue", $COLOR_WARNING)
+DeleteQueue($sText)
+EndIf
+EndIf
+Return $bResult
+EndFunc
+Func DeleteQueue($sText = "Troops")
+Local $CheckTroop[4] = [825, 204, 0xCFCFC8, 15]
+Local $CheckPink[4] = [825, 186, 0xD7AFA9, 10]
+SetLog("Removing all queue " & $sText, $COLOR_SUCCESS)
+For $i = 0 To 11
+If _ColorCheck(_GetPixelColor($CheckPink[0] - $i * 70, $CheckPink[1], True), Hex($CheckPink[2], 6), $CheckPink[3]) Then
+If $g_bDebugSetlog Then SetDebugLog("Slot: " & $i & " Found queue", $COLOR_DEBUG)
+Local $x = 0
+While Not _ColorCheck(_GetPixelColor($CheckTroop[0] - $i * 70, $CheckTroop[1], True), Hex($CheckTroop[2], 6), $CheckTroop[3])
+If _Sleep(20) Then Return
+If Not $g_bRunState Then Return
+PureClick($CheckTroop[0] - $i * 70, 202, 2, 50)
+$x += 1
+If $sText = "Troops" Then
+If $x = 290 Then ExitLoop
+ElseIf $sText = "Spells" Then
+If $x = 22 Then ExitLoop
+EndIf
+WEnd
+If $g_bDebugSetlog Then SetDebugLog("Delete all queue, let's exit clicking", $COLOR_DEBUG)
+ExitLoop
+EndIf
+Next
+If _Sleep(250) Then Return
+EndFunc
+Func CheckTrainingTab($sText = "Troops")
+$g_sSmartTrainError = ""
+Local $aeTrainMethod[2] = [$g_eNoTrain, $g_eNoTrain]
+Local $Tab = $TrainTroopsTAB
+If Not $g_bChkFillArcher Then $g_iTxtFillArcher = 0
+Local $iTopUp = $g_iTxtFillArcher
+If $sText = "Spells" Then
+$Tab = $BrewSpellsTAB
+If Not $g_bQuickTrainEnable And TotalSpellsToBrewInGUI() = 0 Then Return $aeTrainMethod
+$iTopUp = $g_bChkFillEQ
+EndIf
+If $sText = "Troops" Then
+If Not OpenTroopsTab() Then $g_sSmartTrainError = SetError(2, 0, "Error OpenTroopsTab called from CheckTrainingTab")
+Else
+If Not OpenSpellsTab() Then $g_sSmartTrainError = SetError(2, 0, "Error OpenSpellsTab called from CheckTrainingTab")
+EndIf
+If @error Then Return
+If _Sleep(1000) Then Return
+Local $ArmyCamp = GetOCRCurrent(43, 160)
+SetLog("Checking " & $sText & " tab: " & $ArmyCamp[0] & "/" & $ArmyCamp[1] * 2)
+If $ArmyCamp[1] = 0 Then $g_sSmartTrainError = SetError(2, 0, "Error GetOCRCurrent called from CheckTrainingTab")
+If @error Then Return
+Switch $ArmyCamp[0]
+Case 0
+SetLog(" - No " & $sText, $COLOR_ACTION)
+$aeTrainMethod[0] = $g_eFull
+$aeTrainMethod[1] = $g_eFull
+Case 1 To $ArmyCamp[1] - $iTopUp - 1
+SetLog(" - Not full " & $sText & " camp", $COLOR_ACTION)
+If ClearTrainingArmyCamp() Then SetLog("All training " & $sText & " cleared!", $COLOR_SUCCESS)
+$aeTrainMethod[0] = $g_eRemained
+$aeTrainMethod[1] = $g_eFull
+Case $ArmyCamp[1] - $iTopUp To $ArmyCamp[1]
+If $ArmyCamp[0] - $ArmyCamp[1] < 0 Then
+TopUpCamp($sText, $ArmyCamp[1] - $ArmyCamp[0])
+If @error Then Return SetError(2)
+Else
+SetLog(" - Zero queue " & $sText, $COLOR_ACTION)
+EndIf
+$aeTrainMethod[1] = $g_eFull
+Case $ArmyCamp[1] + 1 To $ArmyCamp[1] * 2 - $iTopUp - 1
+If $sText = "Spells" And $g_bForceBrewSpells Then
+If Not $g_bQuickTrainEnable Then
+SetLog("Force brew spell is active, keep brewing anyway", $COLOR_ACTION)
+ForceBrewSpells($ArmyCamp[1] * 2 - $ArmyCamp[0])
+If @error Then Return SetError(2)
+Else
+$aeTrainMethod[1] = $g_eRemained
+EndIf
+Else
+If CheckQueue($aeTrainMethod[0], $sText) Then
+If $g_bDebugSetlog Then SetDebugLog("Result from checkqueue: $aeTrainMethod[0] = " & $aeTrainMethod[0], $COLOR_DEBUG)
+$aeTrainMethod[1] = $g_eFull
+Else
+$aeTrainMethod[1] = $g_eRemained
+EndIf
+EndIf
+Case $ArmyCamp[1] * 2 - $iTopUp To $ArmyCamp[1] * 2
+If $ArmyCamp[0] - $ArmyCamp[1] * 2 < 0 Then
+TopUpCamp($sText, $ArmyCamp[1] * 2 - $ArmyCamp[0])
+If @error Then Return SetError(2)
+Else
+SetLog(" - Full queue " & $sText, $COLOR_SUCCESS)
+EndIf
+Local $bSkipTraining = $g_bFullArmy
+If $sText = "Spells" Then $bSkipTraining = $g_bFullArmySpells Or $g_bForceBrewSpells
+If Not $bSkipTraining And _ColorCheck(_GetPixelColor(824, 243, True), Hex(0x94A522, 6), 20) Then
+If $g_bChkSwitchAcc And $g_abDonateOnly[$g_iCurAccount] Then
+SetLog("A big guy is blocking our camp, but you are in donate account, so just leave it", $COLOR_ACTION)
+Else
+SetLog("A big guy is blocking in queue, try delete queued troops", $COLOR_ACTION)
+ClearTrainingArmyCamp()
+If CheckBlockTroops($sText) Then $aeTrainMethod[0] = $g_eRemained
+$aeTrainMethod[1] = $g_eFull
+EndIf
+EndIf
+EndSwitch
+If $sText = "Spells" Then $g_iMultiClick = _Max(Ceiling(($ArmyCamp[1] * 2 - $ArmyCamp[0]) / 2), 1)
+Return $aeTrainMethod
+EndFunc
+Func ClearTrainingArmyCamp($OpenTabNumber = "Current", $bReturnArmyTab = False)
+If $g_bQuickTrainEnable Then Return False
+$g_sSmartTrainError = ""
+If $OpenTabNumber = "Troop" Then
+If Not OpenTroopsTab() Then $g_sSmartTrainError = SetError(3, 0, "Error OpenTroopsTab called from ClearTrainingArmyCamp")
+ElseIf $OpenTabNumber = "Spell" Then
+If Not OpenSpellsTab() Then $g_sSmartTrainError = SetError(3, 0, "Error OpenSpellsTab called from ClearTrainingArmyCamp")
+EndIf
+If @error Then Return
+If _ColorCheck(_GetPixelColor(820, 220, True), Hex(0xCFCFC8, 6), 15) Then Return False
+Local $x = 0
+While Not _ColorCheck(_GetPixelColor(820, 220, True), Hex(0xCFCFC8, 6), 15)
+PureClick(820, 202, 2, 50)
+$x += 1
+If $x = 540 Then ExitLoop
+WEnd
+If _Sleep(250) Then Return
+If $bReturnArmyTab Then
+If Not OpenArmyTab() Then $g_sSmartTrainError = SetError(3, 0, "Error OpenArmyTab called from ClearTrainingArmyCamp")
+If @error Then Return
+EndIf
+Return True
+EndFunc
+Func TopUpCamp($sText = "Troops", $ArchToMake = 0)
+If $ArchToMake <= 0 Then Return
+$g_sSmartTrainError = ""
+Local $eTroop = $eArch
+If $sText = "Spells" Then $eTroop = $eESpell
+SetLog("Top up with " & $ArchToMake & " " & NameOfTroop($eTroop, $ArchToMake > 1 ? 1 : 0), $COLOR_INFO)
+If Not TrainIt($eTroop, $ArchToMake, 500) Then $g_sSmartTrainError = SetError(3, 0, "Error TrainIt called from TopUpCamp")
+If @error Then Return
+EndFunc
+Func ForceBrewSpells($iRemainQueue)
+For $i = 0 To($eSpellCount - 1)
+If Not $g_bRunState Then Return
+If $g_aiArmyCompSpells[$i] > 0 And $iRemainQueue - $g_aiSpellSpace[$i] >= 0 Then
+Local $iBrewedCount = 0
+While $iRemainQueue - $g_aiSpellSpace[$i] >= 0
+Local $SpellName = $g_asSpellShortNames[$i]
+Local $iSpellIndex = TroopIndexLookup($SpellName)
+If CheckValuesCost($SpellName, 1) Then
+If Not TrainIt($iSpellIndex, 1, $g_iTrainClickDelay) Then $g_sSmartTrainError = SetError(3, 0, "Error TrainIt called from ForceBrewSpells")
+If @error Then Return
+$iBrewedCount += 1
+$iRemainQueue -= $g_aiSpellSpace[$i]
+Else
+SetLog("No resources to brew more " & $g_asSpellNames[$i], $COLOR_ACTION)
+ExitLoop
+EndIf
+If $iBrewedCount >= $g_aiArmyCompSpells[$i] Then ExitLoop
+WEnd
+If $iBrewedCount > 0 Then SetLog(" - Brewed " & $iBrewedCount & "x " & $g_asSpellNames[$i], $COLOR_SUCCESS)
+EndIf
+Next
+EndFunc
+Func CheckBlockTroops($sText = "Troops")
+Local $NewCampOCR = GetOCRCurrent(43, 160)
+If $NewCampOCR[0] - $NewCampOCR[1] >= 0 Then
+Return False
+Else
+If $sText = "Troops" Then
+If $NewCampOCR[1] - $NewCampOCR[0] <= $g_iTxtFillArcher Then
+TopUpCamp($sText, $NewCampOCR[1] - $NewCampOCR[0])
+If @error Then SetError(3, 0, "Error TopUpCamp called from CheckBlockTroops")
+Return False
+Else
+Return True
+EndIf
+ElseIf $sText = "Spells" Then
+If $g_bChkFillEQ And $NewCampOCR[1] - $NewCampOCR[0] = 1 Then
+TopUpCamp($sText, 1)
+If @error Then SetError(3, 0, "Error TopUpCamp called from CheckBlockTroops")
+Return False
+Else
+Return True
+EndIf
+EndIf
+EndIf
+EndFunc
+Func CheckPreciseArmyCamp()
+If Not $g_bChkPreciseArmyCamp Then Return False
+Local $sTextTroop = "Troops are so far so good!"
+Local $sTextSpell = "Spells are so far so good!"
+SetLog("Checking ArmyWindow for Troops & Spells precision", $COLOR_INFO)
+Local $toRemove = CheckWrongArmyCamp(False)
+If @error Then Return SetError(2)
+If Not $g_bWrongTroop And Not $g_bWrongSpell Then
+If $g_bFullArmy Then $sTextTroop = "All troops are correct!"
+If $g_bFullArmySpells Then $sTextSpell = "All spells are correct!"
+If $g_bForceBrewSpells Then $sTextSpell = "Skip checking spells as ForceBrewSpell is activated!"
+SetLog($sTextTroop & " " & $sTextSpell, $COLOR_SUCCESS)
+Return False
+Else
+Local $bNeedClearTroop = $g_bWrongTroop And _ColorCheck(_GetPixelColor($aGreenArrowTrainTroops[0], $aGreenArrowTrainTroops[1], True), Hex(0xA0D077, 6), 30)
+Local $bNeedClearSpell = $g_bWrongSpell And _ColorCheck(_GetPixelColor($aGreenArrowBrewSpells[0], $aGreenArrowBrewSpells[1], True), Hex(0xA0D077, 6), 30)
+If $bNeedClearTroop Then
+SetLog("Need to clear queued troops before removing!", $COLOR_ACTION)
+ClearTrainingArmyCamp("Troop", Not $bNeedClearSpell)
+If @error Then Return SetError(2)
+EndIf
+If $bNeedClearSpell Then
+SetLog("Need to clear queued spells before removing!", $COLOR_ACTION)
+ClearTrainingArmyCamp("Spell", True)
+If @error Then Return SetError(2)
+EndIf
+If $bNeedClearTroop Or $bNeedClearSpell Then $toRemove = CheckWrongArmyCamp()
+If @error Then Return SetError(2)
+If _Sleep(200) Then Return
+RemoveWrongArmyCamp($toRemove)
+If @error Then Return SetError(2)
+Return True
+EndIf
+EndFunc
+Func CheckWrongArmyCamp($bCheckExistentArmy = True)
+$g_sSmartTrainError = ""
+Local $toRemove[1][2] = [["Arch", 0]]
+$g_bWrongTroop = False
+$g_bWrongSpell = False
+If Not OpenArmyTab() Then $g_sSmartTrainError = SetError(3, 0, "Error OpenArmyTab called from CheckWrongArmyCamp.")
+If @error Then Return
+If _Sleep(500) Then Return
+If $bCheckExistentArmy Then
+getArmyTroops()
+If Not $g_bForceBrewSpells Then getArmySpells()
+EndIf
+For $i = 0 To($eTroopCount - 1)
+If $g_aiCurrentTroops[$i] - $g_aiArmyCompTroops[$i] > 0 Then
+$toRemove[UBound($toRemove) - 1][0] = $g_asTroopShortNames[$i]
+$toRemove[UBound($toRemove) - 1][1] = $g_aiCurrentTroops[$i] - $g_aiArmyCompTroops[$i]
+ReDim $toRemove[UBound($toRemove) + 1][2]
+EndIf
+Next
+If Not $g_bForceBrewSpells Then
+For $i = 0 To($eSpellCount - 1)
+If $g_aiCurrentSpells[$i] - $g_aiArmyCompSpells[$i] > 0 Then
+$toRemove[UBound($toRemove) - 1][0] = $g_asSpellShortNames[$i]
+$toRemove[UBound($toRemove) - 1][1] = $g_aiCurrentSpells[$i] - $g_aiArmyCompSpells[$i]
+ReDim $toRemove[UBound($toRemove) + 1][2]
+EndIf
+Next
+EndIf
+If UBound($toRemove) = 1 And $toRemove[0][0] = "Arch" And $toRemove[0][1] = 0 Then Return
+If UBound($toRemove) > 0 Then
+SetLog("Troops To Remove: ", $COLOR_INFO)
+Local $CounterToRemove = 0
+For $i = 0 To(UBound($toRemove) - 1)
+If IsSpellToBrew($toRemove[$i][0]) Then ExitLoop
+$CounterToRemove += 1
+If $toRemove[$i][1] > 0 Then
+SetLog(" - " & $g_asTroopNames[TroopIndexLookup($toRemove[$i][0])] & ": " & $toRemove[$i][1] & "x", $COLOR_SUCCESS)
+$g_bWrongTroop = True
+EndIf
+Next
+If TotalSpellsToBrewInGUI() > 0 Then
+If $CounterToRemove <= UBound($toRemove) - 1 Then
+SetLog("Spells To Remove: ", $COLOR_INFO)
+For $i = $CounterToRemove To(UBound($toRemove) - 1)
+If $toRemove[$i][1] > 0 Then SetLog(" - " & $g_asSpellNames[TroopIndexLookup($toRemove[$i][0]) - $eLSpell] & ": " & $toRemove[$i][1] & "x", $COLOR_SUCCESS)
+Next
+$g_bWrongSpell = True
+EndIf
+EndIf
+EndIf
+Return $toRemove
+EndFunc
+Func RemoveWrongArmyCamp($toRemove)
+If Not IsArray($toRemove) Then Return
+$g_sSmartTrainError = ""
+If UBound($toRemove) > 0 Then
+Local $rGetSlotNumber = GetSlotNumber()
+Local $rGetSlotNumberSpells = GetSlotNumber(True)
+If Not _ColorCheck(_GetPixelColor(806, 516, True), Hex(0xCEEF76, 6), 25) Then
+SetLog("Cannot find/verify 'Edit Army' Button in Army tab", $COLOR_WARNING)
+$g_sSmartTrainError = SetError(3, 0, "Error finding 'Edit Army' button, called from RemoveWrongArmyCamp.")
+Return
+EndIf
+Click(Random(719, 838, 1), Random(505, 545, 1))
+Local $CounterToRemove = 0
+For $j = 0 To(UBound($toRemove) - 1)
+If IsSpellToBrew($toRemove[$j][0]) Then ExitLoop
+$CounterToRemove += 1
+For $i = 0 To(UBound($rGetSlotNumber) - 1)
+If $toRemove[$j][0] = $rGetSlotNumber[$i] Then
+Local $pos = GetSlotRemoveBtnPosition($i + 1)
+ClickRemoveTroop($pos, $toRemove[$j][1], $g_iTrainClickDelay)
+EndIf
+Next
+Next
+If TotalSpellsToBrewInGUI() > 0 Then
+For $j = $CounterToRemove To(UBound($toRemove) - 1)
+For $i = 0 To(UBound($rGetSlotNumberSpells) - 1)
+If $toRemove[$j][0] = $rGetSlotNumberSpells[$i] Then
+Local $pos = GetSlotRemoveBtnPosition($i + 1, True)
+ClickRemoveTroop($pos, $toRemove[$j][1], $g_iTrainClickDelay)
+EndIf
+Next
+Next
+EndIf
+If _Sleep(500) Then Return
+If Not _ColorCheck(_GetPixelColor(806, 567, True), Hex(0xCEEF76, 6), 25) Then
+SetLog("Cannot find/verify 'Okay' Button in Army tab", $COLOR_WARNING)
+$g_sSmartTrainError = SetError(3, 0, "Error finding 'Okay' button, called from RemoveWrongArmyCamp.")
+Return
+EndIf
+If _Sleep(700) Then Return
+Click(Random(724, 827, 1), Random(556, 590, 1))
+If _Sleep(1200) Then Return
+If Not _ColorCheck(_GetPixelColor(508, 428, True), Hex(0xFFFFFF, 6), 30) Then
+SetLog("Cannot find/verify 'Okay #2' Button in Army tab", $COLOR_WARNING)
+$g_sSmartTrainError = SetError(3, 0, "Error finding 'Okay #2' button, called from RemoveWrongArmyCamp.")
+Return
+EndIf
+Click(Random(443, 583, 1), Random(400, 457, 1))
+SetLog("All wrong troops removed", $COLOR_SUCCESS)
+If _Sleep(200) Then Return
+EndIf
 EndFunc
 Func GetTranslatedParsedText($sText, $var1 = Default, $var2 = Default, $var3 = Default)
 Local $s = StringReplace(StringReplace($sText, "\r\n", @CRLF), "\n", @CRLF)
