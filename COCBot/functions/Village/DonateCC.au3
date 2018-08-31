@@ -553,6 +553,14 @@ Func DonateCC($bCheckForNewMsg = False)
 
 	UpdateStats()
 	If _Sleep($DELAYDONATECC2) Then Return
+	
+	;SmartTrain - RK MOD (Demen)
+	If $g_bChkSmartTrain Then
+		OpenArmyOverview(True, "DonateCC()")
+		MakingDonatedTroops()
+		ClickP($aAway, 1, 0, "#0176")
+		If _Sleep($DELAYDONATECC2) Then Return
+	EndIf
 
 EndFunc   ;==>DonateCC
 

@@ -1274,6 +1274,14 @@ Func SaveConfig_600_52_2()
 	_Ini_Add("other", "ChkForceBrewBeforeAttack", $g_bForceBrewSpells ? 1 : 0)
 	; DoubleTrain - Demen
 	_Ini_Add("troop", "DoubleTrain", $g_bDoubleTrain ? 1 : 0)
+	
+	;SmartTrain - RK MOD (Demen)
+	_Ini_Add("SmartTrain", "Enable", $g_bChkSmartTrain ? 1 : 0)
+	_Ini_Add("SmartTrain", "ChkPreciseTroops", $g_bChkPreciseArmyCamp ? 1 : 0)
+	_Ini_Add("SmartTrain", "ChkFillArcher", $g_bChkFillArcher ? 1 : 0)
+	_Ini_Add("SmartTrain", "TxtFillArcher", $g_iTxtFillArcher)
+	_Ini_Add("SmartTrain", "ChkFillEQ", $g_bChkFillEQ ? 1 : 0)
+	
 EndFunc   ;==>SaveConfig_600_52_2
 
 Func SaveConfig_600_54()
