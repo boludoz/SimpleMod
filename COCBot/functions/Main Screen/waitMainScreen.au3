@@ -51,7 +51,14 @@ Func waitMainScreen() ;Waits for main screen to popup
 		If TestCapture() Then
 			Return "Main screen not available"
 		EndIf
-
+		;------------------CUSTOM LOGIC By RK MOD - START------------------
+		If Mod($i, 3) = 0 Then
+			Local $Googleimg = @ScriptDir & "\imgxml\other\Google*"
+			If QuickMis("BC1", $Googleimg, 350, 0, 350 + 88, 0 + 386) Then
+				If Not CheckGoogleSelectAccount() Then ClickP($aAway, 1, 0, "#0161")
+			EndIf
+		EndIf
+		;------------------CUSTOM LOGIC By RK MOD - END------------------
 	Next
 
 	;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;;

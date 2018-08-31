@@ -323,11 +323,11 @@ Func _checkObstacles($bBuilderBase = False, $bRecursive = False) ;Checks if some
 	EndIf
 	
 	; check if google account list shown and select first
-		If Not CheckGoogleSelectAccount() Then
-		    SetDebugLog("check Log in with Supercell ID login by shared_prefs")
-			; check Log in with Supercell ID login screen
-			If CheckLoginWithSupercellID() Then Return True
-		EndIf
+	If Not CheckGoogleSelectAccount() Then
+		SetDebugLog("check Log in with Supercell ID login by shared_prefs")
+		; check Log in with Supercell ID login screen
+		If CheckLoginWithSupercellID() Then Return True
+	EndIf
 
 	Return False
 EndFunc   ;==>_checkObstacles
@@ -453,5 +453,5 @@ Func UpdateGame()
 
 		SetLog("Game updated failed"
 		Return False
-	#ce
+	#ce Finish that when time permits
 EndFunc   ;==>UpdateGame
