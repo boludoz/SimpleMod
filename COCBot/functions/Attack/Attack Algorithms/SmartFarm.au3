@@ -562,14 +562,14 @@ Func AttackSmartFarm($Nside, $SIDESNAMES)
 				[MatchTroopDropName(20), $nbSides, MatchTroopWaveNb(20), 1, MatchSlotsPerEdge(20)], _
 				[MatchTroopDropName(21), $nbSides, MatchTroopWaveNb(21), 1, MatchSlotsPerEdge(21)]]
 	Else
+		; $ListInfoDeploy = [Troop, No. of Sides, $WaveNb, $MaxWaveNb, $slotsPerEdge]
 		Local $listInfoDeploy[22][5] = [[$eGole, $nbSides, 1, 1, 2] _
 				, [$eLava, $nbSides, 1, 1, 2] _
 				, [$eGiant, $nbSides, 1, 1, $g_iSlotsGiants] _
 				, [$eDrag, $nbSides, 1, 1, 0] _
-				, ["CC", 1, 1, 1, 1] _
 				, [$eBall, $nbSides, 1, 1, 0] _
 				, [$eBabyD, $nbSides, 1, 1, 0] _
-				, [$eHogs, $nbSides, 1, 1, 1] _
+				, [$eHogs, $nbSides, 1, 1, 2] _
 				, [$eValk, $nbSides, 1, 1, 0] _
 				, [$eBowl, $nbSides, 1, 1, 0] _
 				, [$eMine, $nbSides, 1, 1, 0] _
@@ -579,11 +579,12 @@ Func AttackSmartFarm($Nside, $SIDESNAMES)
 				, [$eArch, $nbSides, 1, 1, 0] _
 				, [$eWiza, $nbSides, 1, 1, 0] _
 				, [$eMini, $nbSides, 1, 1, 0] _
-				, [$eWitc, $nbSides, 1, 1, 1] _
+				, [$eWitc, $nbSides, 1, 1, 2] _
 				, [$eGobl, $nbSides, 1, 1, 0] _
 				, [$eHeal, $nbSides, 1, 1, 1] _
 				, [$ePekk, $nbSides, 1, 1, 1] _
-				, ["HEROES", 1, 2, 1, 1] _
+				, ["CC", 1, 1, 1, 1] _
+				, ["HEROES", 1, 1, 1, 1] _
 				]
 	EndIf
 
