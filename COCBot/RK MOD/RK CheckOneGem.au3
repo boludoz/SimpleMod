@@ -16,7 +16,7 @@ Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
 
 Func OneGemBoost()
 	Local $checkIfBoostNeededToBeChecked = _DateDiff("n", $initBoostTime, _NowCalc()) ;n = Difference in minutes between the given dates
-	SetDebugLog("OneGemBoost $initBoostTime = " & $initBoostTime & " $checkIfBoostNeededToBeChecked = " & $checkIfBoostNeededToBeChecked, $COLOR_DEBUG)
+	SetDebugLog("OneGemBoost $g_bFirstStart = "&$g_bFirstStart&" $initBoostTime = " & $initBoostTime & " $checkIfBoostNeededToBeChecked = " & $checkIfBoostNeededToBeChecked, $COLOR_DEBUG)
 
 	If $g_bFirstStart Or $initBoostTime = "" Or $checkIfBoostNeededToBeChecked > 60 Then ;Check if initBoostTime is empty or greater then 1 hour.
 		If $g_bChkOneGemBoostHeroes Or $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then

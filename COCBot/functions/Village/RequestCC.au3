@@ -17,12 +17,12 @@ Func RequestCC($ClickPAtEnd = True, $specifyText = "")
 
 	; Request troops for defense Add RK MOD
 	Local $bRequestDefense = False
-    If $g_bRequestCCDefense And $g_bCanRequestCC Then
+	If $g_bRequestCCDefense And $g_bCanRequestCC Then
 		Local $sTime = $g_bRequestCCDefenseWhenPB ? $g_sPBStartTime : $g_asShieldStatus[2]
 
 		If Not $g_bRequestCCDefenseWhenPB And $g_asShieldStatus[0] = "none" Then
 			$bRequestDefense = True
-            SetLog("No shield! Request troops for defense", $COLOR_INFO)
+			SetLog("No shield! Request troops for defense", $COLOR_INFO)
 		ElseIf _DateIsValid($sTime) Then
 			Local $iTime = Int(_DateDiff('n', _NowCalc(), $sTime)) ; time till P.Break or Guard expiry (in minutes)
 			If Not $g_bRequestCCDefenseWhenPB And $g_asShieldStatus[0] = "shield" Then $iTime += 30 ; add 30 minutes guard time
@@ -33,16 +33,16 @@ Func RequestCC($ClickPAtEnd = True, $specifyText = "")
 			EndIf
 		EndIf
 
-        If $bRequestDefense Then
-            $g_sRequestTroopsText = $g_sRequestCCDefenseText
-            SetDebugLog("$g_sRequestTroopsText is now: " & $g_sRequestTroopsText)
-        ElseIf $g_sRequestTroopsText = $g_sRequestCCDefenseText Then
-            $g_sRequestTroopsText = IniRead($g_sProfileConfigPath, "donate", "txtRequest", "")
-            SetDebugLog("Reload $g_sRequestTroopsText: " & $g_sRequestTroopsText)
-        EndIf
-    EndIf
+		If $bRequestDefense Then
+			$g_sRequestTroopsText = $g_sRequestCCDefenseText
+			SetDebugLog("$g_sRequestTroopsText is now: " & $g_sRequestTroopsText)
+		ElseIf $g_sRequestTroopsText = $g_sRequestCCDefenseText Then
+			$g_sRequestTroopsText = IniRead($g_sProfileConfigPath, "donate", "txtRequest", "")
+			SetDebugLog("Reload $g_sRequestTroopsText: " & $g_sRequestTroopsText)
+		EndIf
+	EndIf
 
-    If (Not $g_bRequestTroopsEnable Or Not $g_bCanRequestCC Or Not $g_bDonationEnabled) And Not $bRequestDefense Then
+	If (Not $g_bRequestTroopsEnable Or Not $g_bCanRequestCC Or Not $g_bDonationEnabled) And Not $bRequestDefense Then
 		Return
 	EndIf
 
@@ -155,25 +155,25 @@ Func _makerequest()
 			_Sleep($DELAYMAKEREQUEST2)
 			; Russian Request- by RK MOD
 			If $g_iChkRusLang2 = 1 Then
-	        SetLog("Request in russian", $COLOR_BLUE)
-            AutoItWinSetTitle('MyAutoItTitle')
-            _WinAPI_SetKeyboardLayout(WinGetHandle(AutoItWinGetTitle()), 0x0419)
-	        Sleep(200)
-	        ControlFocus($g_hAndroidWindow, "", "")
-	        Sleep(200)
-	        SendKeepActive($g_hAndroidWindow)
-	        AutoItSetOption( "SendKeyDelay", 50)
-	        If _SendExEx($g_sRequestTroopsText) = 0 Then
-	            Setlog(" Request text entry failed, try again", $COLOR_ERROR)
-				  Return
-		    EndIf
-            Else
-			If SendText($g_sRequestTroopsText) = 0 Then
-				SetLog(" Request text entry failed, try again", $COLOR_ERROR)
-				Return
+				SetLog("Request in russian", $COLOR_BLUE)
+				AutoItWinSetTitle('MyAutoItTitle')
+				_WinAPI_SetKeyboardLayout(WinGetHandle(AutoItWinGetTitle()), 0x0419)
+				Sleep(200)
+				ControlFocus($g_hAndroidWindow, "", "")
+				Sleep(200)
+				SendKeepActive($g_hAndroidWindow)
+				AutoItSetOption("SendKeyDelay", 50)
+				If _SendExEx($g_sRequestTroopsText) = 0 Then
+					Setlog(" Request text entry failed, try again", $COLOR_ERROR)
+					Return
+				EndIf
+			Else
+				If SendText($g_sRequestTroopsText) = 0 Then
+					SetLog(" Request text entry failed, try again", $COLOR_ERROR)
+					Return
+				EndIf
 			EndIf
-		EndIf
-		; Russian Request- by RK MOD
+			; Russian Request- by RK MOD
 		EndIf
 		If _Sleep($DELAYMAKEREQUEST2) Then Return ; wait time for text request to complete
 		$iCount = 0
@@ -201,9 +201,9 @@ Func IsFullClanCastleType($CCType = 0) ; Troops = 0, Spells = 1, Siege Machine =
 		If $g_bDebugSetlog Then SetLog($sLog[$CCType] & " not cared about.")
 		Return True
 	Else
-		If _ColorCheck(_GetPixelColor($aCheckCCNotFull[$CCType], 470, True), Hex(0xDC363A , 6), 30) Then ; red symbol
+		If _ColorCheck(_GetPixelColor($aCheckCCNotFull[$CCType], 470, True), Hex(0xDC363A, 6), 30) Then ; red symbol
 			SetDebugLog("Found CC " & $sLog[$CCType] & " not full")
-			If $aiRequestCountCC[$CCType] = 0 or $aiRequestCountCC[$CCType] >= 40 - $CCType * 38 Then
+			If $aiRequestCountCC[$CCType] = 0 Or $aiRequestCountCC[$CCType] >= 40 - $CCType * 38 Then
 				Return False
 			Else
 				Local $sCCReceived = getOcrAndCapture("coc-ms", 289 + $CCType * 183, 468, 60, 16, True, False, True) ; read CC (troops 0/40 or spells 0/2)
@@ -285,7 +285,8 @@ Func CheckCCArmy()
 	Local $bCCSpellFull = False
 
 	If Not $g_bRunState Then Return
-	If $g_abRequestType[1] And $g_iClanCastleSpellsWaitFirst > 0 And $g_iCurrentCCSpells = $g_iTotalCCSpells And $g_iTotalCCSpells > 0 Then
+	If $g_abRequestType[1] And $g_iClanCastleSpellsWaitFirst > 0 And $g_iCurrentCCSpells > 0 And $g_iTotalCCSpells > 0 Then
+		;If $g_abRequestType[1] And $g_iClanCastleSpellsWaitFirst > 0 And $g_iCurrentCCSpells = $g_iTotalCCSpells And $g_iTotalCCSpells > 0 Then ;Removed By RK MOD Bug Fix
 		If $g_bDebugSetlog Then SetLog("Getting current available spell in Clan Castle.")
 		; Imgloc Detection
 		If $g_iTotalCCSpells >= 1 Then $sCurCCSpell1 = GetCurCCSpell(1)
@@ -462,18 +463,18 @@ Func CompareCCSpellWithGUI($CCSpell1, $CCSpell2, $CastleCapacity)
 			If $sCCSpell <> "Any" Then
 				If $sCCSpell <> $CCSpell1[0][0] Then ; First Spell not in Slot 1
 					If $g_bDebugSetlog Then SetLog("First Spell not in Slot 1")
-					If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 Then
-                        If $CCSpell2 = "" Then ; Slot 2 empty
-                            If $g_bDebugSetlog Then SetLog("Slot 2 empty")
-                            If $sCCSpell2 <> "Any" Then
-                                If $sCCSpell2 <> $CCSpell1[0][0] Then ; Second Spell not in Slot 1, so remove this one
-                                    If $g_bDebugSetlog Then SetLog("Second Spell not in Slot 1")
-                                    $aShouldRemove[0] = $CCSpell1[0][3]
-                                Else
-                                    If $g_bDebugSetlog Then SetLog("Second Spell in Slot 1")
-                                EndIf
-                            EndIf
-                        ElseIf $sCCSpell <> $CCSpell2[0][0] Then ; First Spell not in Slot 2, so check Second Spell
+					If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 And Not ($CCSpell1[0][0] = "LSpell" Or $CCSpell1[0][0] = "HSpell" Or $CCSpell1[0][0] = "RSpell" Or $CCSpell1[0][0] = "JSpell") Then ;Was If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 Then  EDITED BY RK MOD
+						If $CCSpell2 = "" Then ; Slot 2 empty
+							If $g_bDebugSetlog Then SetLog("Slot 2 empty")
+							If $sCCSpell2 <> "Any" Then
+								If $sCCSpell2 <> $CCSpell1[0][0] Then ; Second Spell not in Slot 1, so remove this one
+									If $g_bDebugSetlog Then SetLog("Second Spell not in Slot 1")
+									$aShouldRemove[0] = $CCSpell1[0][3]
+								Else
+									If $g_bDebugSetlog Then SetLog("Second Spell in Slot 1")
+								EndIf
+							EndIf
+						ElseIf $sCCSpell <> $CCSpell2[0][0] Then ; First Spell not in Slot 2, so check Second Spell
 							If $g_bDebugSetlog Then SetLog("First Spell not in Slot 2")
 							If $sCCSpell2 <> "Any" Then
 								If $sCCSpell2 <> $CCSpell1[0][0] Then ; Second Spell not in Slot 1, so remove this one
@@ -505,7 +506,7 @@ Func CompareCCSpellWithGUI($CCSpell1, $CCSpell2, $CastleCapacity)
 					EndIf
 				Else
 					If $g_bDebugSetlog Then SetLog("First Spell in Slot 1")
-                    If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 And $CCSpell2 <> "" Then
+					If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 And $CCSpell2 <> "" Then
 						If $sCCSpell2 <> $CCSpell2[0][0] And $sCCSpell2 <> "Any" Then ; Second Spell not in Slot 2
 							If $g_bDebugSetlog Then SetLog("Second Spell not in Slot 2")
 							$aShouldRemove[1] = $CCSpell2[0][3]
