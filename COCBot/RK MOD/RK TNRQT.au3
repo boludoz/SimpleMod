@@ -11,6 +11,7 @@
 ; ===============================================================================================================================
 
 Func TNRQT()
+	Local $TroopCamp = GetCurrentArmy(48, 160)
 	local $Troopsdetect = CheckQueueTroops()
 	;SetLog("$Troopsdetect = " $Troopsdetect, $COLOR_INFO)
 EndFunc

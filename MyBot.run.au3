@@ -1367,7 +1367,7 @@ Func FirstCheck()
 
 	CheckFarmSchedule()
 
-	If $g_bReqCCFirst = 1 Then RequestCC()
+	If $g_bReqCCFirst = 1 And BalanceRecRec(True) Then RequestCC()
 	;------------------CUSTOM LOGIC By RK MOD - END------------------
 	If Not $g_bRunState Then Return
 
