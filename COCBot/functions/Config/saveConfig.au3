@@ -116,6 +116,9 @@ Func SaveBuildingConfig()
 	_Ini_Add("upgrade", "upgradetroops", $g_bAutoLabUpgradeEnable ? 1 : 0)
 	_Ini_Add("upgrade", "upgradetroopname", $g_iCmbLaboratory)
 	_Ini_Add("upgrade", "upgradelabtime", $g_sLabUpgradeTime)
+	; ================================================== ; Priority System - by RK MOD  ======================================== ; 
+	_Ini_Add("upgrade", "ChkPrioritySystem", $g_bChkPrioritySystem ? 1 : 0)
+	_Ini_Add("upgrade", "CmbPrioritySystem", $g_iCmbPrioritySystem)
 
 	; <><><><> Village / Upgrade - Buildings <><><><>
 	ApplyConfig_600_16(GetApplyConfigSaveAction())

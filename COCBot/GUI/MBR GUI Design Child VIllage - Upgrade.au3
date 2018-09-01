@@ -55,6 +55,9 @@ Global $g_hChkUpgradeAllOrNone = 0, $g_hChkUpgradeRepeatAllOrNone = 0, $g_hChkUp
 ;Wall/Building Upgrading Priority - by RK MOD
 Global $g_hChkUpgrPriority = 0, $g_hCmbUpgrdPriority = 0
 
+; Priority System - by RK MOD
+Global $g_hChkPrioritySystem = 0, $g_hCmbPrioritySystem = 0
+
 Func CreateVillageUpgrade()
 
 	; ensure all language translation are created
@@ -143,6 +146,14 @@ Func CreateLaboratorySubTab()
 			GUICtrlSetOnEvent(-1, "ResetLabUpgradeTime")
 		$g_hPicLabUpgrade = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBlank, $x + 330, $y, 64, 64)
 			GUICtrlSetState(-1, $GUI_HIDE)
+		; Priority System - by RK MOD  
+		$g_hChkPrioritySystem = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Laboratory", "ChkPrioritySystem_01", "Priority System") & ": ", $x + 85, $y + 95, -1, -1)
+			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Laboratory", "ChkPrioritySystem_02", "Enable this function to select resource priorities"))
+			GUICtrlSetOnEvent(-1, "chkPrioritySystem")
+		$g_hCmbPrioritySystem = GUICtrlCreateCombo("", $x + 180, $y + 95, 70, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+			GUICtrlSetData(-1, "Elixir|Dark Elixir", "Elixir")
+			GUICtrlSetState(-1, $GUI_DISABLE)
+			GUICtrlSetOnEvent(-1, "PrioritySystem")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 EndFunc   ;==>CreateLaboratorySubTab

@@ -694,9 +694,17 @@ Func ApplyConfig_600_14($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
 			_GUICtrlSetImage($g_hPicLabUpgrade, $g_sLibIconPath, $g_avLabTroops[$g_iCmbLaboratory][4])
 			chkLab()
+			; ================================================== ; Priority System - by RK MOD  ======================================== ; 
+			GUICtrlSetState($g_hChkPrioritySystem, $g_bChkPrioritySystem ? $GUI_CHECKED : $GUI_UNCHECKED)
+			_GUICtrlComboBox_SetCurSel($g_hCmbPrioritySystem, $g_iCmbPrioritySystem)
+			chkPrioritySystem()
 		Case "Save"
 			$g_bAutoLabUpgradeEnable = (GUICtrlRead($g_hChkAutoLabUpgrades) = $GUI_CHECKED)
 			$g_iCmbLaboratory = _GUICtrlComboBox_GetCurSel($g_hCmbLaboratory)
+			; ================================================== ; Priority System - by RK MOD  ======================================== ;
+			$g_bChkPrioritySystem = (GUICtrlRead($g_hChkPrioritySystem) = $GUI_CHECKED)
+			$g_iCmbPrioritySystem = _GUICtrlComboBox_GetCurSel($g_hCmbPrioritySystem)
+			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_14
 

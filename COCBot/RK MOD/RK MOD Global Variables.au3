@@ -224,3 +224,7 @@ Global $g_bWrongTroop, $g_bWrongSpell, $g_sSmartTrainError = ""
 ; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
 
 Global $g_bChkAttackPriority = False
+
+; ================================================== ; Priority System - by RK MOD  ======================================== ;
+
+Global $g_bChkPrioritySystem = False, $g_iCmbPrioritySystem = 0
