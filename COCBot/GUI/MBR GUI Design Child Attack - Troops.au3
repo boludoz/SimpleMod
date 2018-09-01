@@ -786,7 +786,7 @@ Func CreateTroopsSpellsSubTab()
 	$x += 103
 		$g_hChkFillArcher = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillArcher", "Fill Archer"), $x, $y, -1, 15)
 			GUICtrlSetState(-1, $GUI_DISABLE)
-			GUICtrlSetOnEvent(-1, "chkFillArcher")
+			;GUICtrlSetOnEvent(-1, "chkFillArcher")
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillArcher_Info_01", "Train some archers to top-up the camp or queue if it is nearly full"))
 
 	$x += 110

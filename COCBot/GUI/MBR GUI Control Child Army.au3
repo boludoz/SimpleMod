@@ -73,15 +73,15 @@ Func chkSmartTrain()
 	EndIf
 EndFunc   ;==>chkSmartTrain
 
-Func chkPreciseTroops()
-	If GUICtrlRead($g_hChkPreciseArmyCamp) = $GUI_CHECKED Then
-		_GUI_Value_STATE("DISABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-		_GUI_Value_STATE("UNCHECKED", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-		chkFillArcher()
-	Else
-		_GUI_Value_STATE("ENABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-	EndIf
-EndFunc   ;==>chkPreciseTroops
+;Func chkPreciseTroops()
+;	If GUICtrlRead($g_hChkPreciseArmyCamp) = $GUI_CHECKED Then
+;		_GUI_Value_STATE("DISABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
+;		_GUI_Value_STATE("UNCHECKED", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
+;		chkFillArcher()
+;	Else
+;		_GUI_Value_STATE("ENABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
+;	EndIf
+;EndFunc   ;==>chkPreciseTroops
 
 Func chkFillArcher()
 	If GUICtrlRead($g_hChkFillArcher) = $GUI_CHECKED Then
