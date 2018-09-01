@@ -23,7 +23,7 @@ Func OneGemBoost()
 		Local $i_heroTime = ($CurrHeroBTime[$index] - (_DateDiff("n", $CTime[$g_iCurAccount][$index], _NowCalc())))
 		If $g_bFirstStart Or $initBoostTime = "" Or $checkIfBoostNeededToBeChecked > 60 Or $i_heroTime < 0 Then ;Check if initBoostTime is empty or greater then 1 hour.
 			If $g_bChkOneGemBoostHeroes Or $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
-				If $$index = 0 Then SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
+				If $index = 0 Then SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
 				If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem($index)
 				If $FoundRes = 0 And ($g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells) Then
 					OpenArmyOverview(True, "OneGemBoost()")
