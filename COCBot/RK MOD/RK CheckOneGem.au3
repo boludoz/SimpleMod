@@ -37,7 +37,7 @@ Func OneGemBoost()
 				CheckHeroOneGem($index)
 			EndIf
 		Next
-		$initBarracksSpellBoostTime = _NowCalc() ;Take time when all three hereos boosted
+		$initHeroesBoostTime = _NowCalc() ;Take time when all three hereos boosted
 	EndIf
 
 	If $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
