@@ -693,6 +693,9 @@ Func ReadConfig_600_14()
 	IniReadS($g_bAutoLabUpgradeEnable, $g_sProfileBuildingPath, "upgrade", "upgradetroops", False, "Bool")
 	IniReadS($g_iCmbLaboratory, $g_sProfileBuildingPath, "upgrade", "upgradetroopname", 0, "int")
 	$g_sLabUpgradeTime = IniRead($g_sProfileBuildingPath, "upgrade", "upgradelabtime", "")
+	; ================================================== ; Priority System - by RK MOD  ======================================== ;
+	IniReadS($g_bChkPrioritySystem, $g_sProfileBuildingPath, "upgrade", "ChkPrioritySystem", False, "Bool")
+	IniReadS($g_iCmbPrioritySystem, $g_sProfileBuildingPath, "upgrade", "CmbPrioritySystem", $g_iCmbPrioritySystem, "int")
 EndFunc   ;==>ReadConfig_600_14
 
 Func ReadConfig_600_15()

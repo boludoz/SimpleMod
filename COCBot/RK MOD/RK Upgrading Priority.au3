@@ -1,6 +1,6 @@
 ; #FUNCTION# ====================================================================================================================
-; Name ..........: Wall/Building Upgrading Priority
-; Description ...: Wall/Building Upgrading Priority Option
+; Name ..........: Wall/Building Upgrading Priority and  Priority System 
+; Description ...: Wall/Building Upgrading Priority Option and  Priority System
 ; Author ........: by RK MOD
 ; Modified ......: 
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2018
@@ -29,3 +29,24 @@ Func UpgrdPriority()
 	EndSwitch
 
 EndFunc   ;==>UpgrdPriority
+
+Func chkPrioritySystem()
+	If GUICtrlRead($g_hChkPrioritySystem) = $GUI_CHECKED Then
+		$g_bChkPrioritySystem = True
+		GUICtrlSetState($g_hCmbPrioritySystem, $GUI_ENABLE)
+	Else
+		$g_bChkPrioritySystem = False
+		GUICtrlSetState($g_hCmbPrioritySystem, $GUI_DISABLE)
+	EndIf
+EndFunc   ;==>chkPrioritySystem
+
+Func PrioritySystem()
+
+	Switch _GUICtrlComboBox_GetCurSel($g_hCmbPrioritySystem)
+		Case "Elixir"
+			$g_iCmbPrioritySystem = 0 
+		Case "Dark Elixir"
+			$g_iCmbPrioritySystem = 1
+	EndSwitch
+
+EndFunc   ;==>PrioritySystem
