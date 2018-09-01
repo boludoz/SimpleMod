@@ -9,35 +9,51 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
-Local $initBoostTime
+Local $initBarracksSpellBoostTime
+Local $initHeroesBoostTime
 Local $bGemOcr
 Local $bBoostimage = @ScriptDir & "\imgxml\boost\BoostC\BoostCCheck"
 Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
 Local $sHeroName[3] = ["King", "Queen", "Warden"]
 
 Func OneGemBoost()
-	Local $checkIfBoostNeededToBeChecked = _DateDiff("n", $initBoostTime, _NowCalc()) ;n = Difference in minutes between the given dates
-	SetDebugLog("OneGemBoost $g_bFirstStart = " & $g_bFirstStart & " $initBoostTime = " & $initBoostTime & " $checkIfBoostNeededToBeChecked = " & $checkIfBoostNeededToBeChecked, $COLOR_DEBUG)
+	Local $isLogShown = False ;For making sure log is print one time
 
-	For $index = 0 To 2
-		Local $i_heroTime = ($CurrHeroBTime[$index] - (_DateDiff("n", $CTime[$g_iCurAccount][$index], _NowCalc())))
-		SetDebugLog("$i_heroTime [" & $sHeroName[$index] & "] = " & $i_heroTime, $COLOR_DEBUG)
-		If $g_bFirstStart Or $initBoostTime = "" Or $checkIfBoostNeededToBeChecked > 60 Or $i_heroTime < 0 Then ;Check if initBoostTime is empty or greater then 1 hour.
-			If $g_bChkOneGemBoostHeroes Or $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
-				If $index = 0 Then SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
-				If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem($index)
+	If $g_bChkOneGemBoostHeroes Then
+		Local $checkIfHeroesNeedToBoost = Round((_DateDiff("s", $initHeroesBoostTime, _NowCalc()) / 60), 2) ;Difference in min with seconds float for precise result
+		SetDebugLog("OneGemBoost $g_bFirstStart = " & $g_bFirstStart & " $initHeroesBoostTime = " & $initHeroesBoostTime & " $checkIfHeroesNeedToBoost = " & $checkIfHeroesNeedToBoost, $COLOR_DEBUG)
+		For $index = 0 To 2
+			Local $i_heroBoostTimeDiff = Round((_DateDiff("s", $CTime[$g_iCurAccount][$index], _NowCalc()) / 60), 2) ; Difference in min with seconds float for precise result
+			Local $i_heroTime = $CurrHeroBTime[$index] - $i_heroBoostTimeDiff
+			SetDebugLog("$CurrHeroBTime[" & $index & "] = " & $CurrHeroBTime[$index] & " | $CTime[" & $g_iCurAccount & "][" & $index & "] = " & $CTime[$g_iCurAccount][$index], $COLOR_DEBUG)
+			SetDebugLog("$i_heroBoostTimeDiff = " & $i_heroBoostTimeDiff & " | $i_heroTime [" & $sHeroName[$index] & "] = " & $i_heroTime, $COLOR_DEBUG)
+			If $i_heroTime > 0 Then ;If We have herotime which don't need boost no need to check
+				SetDebugLog($sHeroName[$index] & " already Boosted no need to boost", $COLOR_DEBUG)
+			ElseIf $g_bFirstStart Or $initHeroesBoostTime = "" Or $checkIfHeroesNeedToBoost > 60 Or $i_heroTime <= 0 Then
+				If Not $isLogShown Then
+					SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
+					$isLogShown = True
+				EndIf
+				CheckHeroOneGem($index)
 			EndIf
-			
-		EndIf
-	Next
-	If $g_bFirstStart Or $initBoostTime = "" Or $checkIfBoostNeededToBeChecked > 60 Then ;Check if initBoostTime is empty or greater then 1 hour.
-		If ($g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells) Then
+		Next
+		$initBarracksSpellBoostTime = _NowCalc() ;Take time when all three hereos boosted
+	EndIf
+
+	If $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
+		Local $checkIfBarracksNeedToBoost = Round((_DateDiff("s", $initBarracksSpellBoostTime, _NowCalc()) / 60), 2) ; Difference in min with seconds float for precise result
+		SetDebugLog("OneGemBoost $g_bFirstStart = " & $g_bFirstStart & " $initBarracksSpellBoostTime = " & $initBarracksSpellBoostTime & " $checkIfBarracksNeedToBoost = " & $checkIfBarracksNeedToBoost, $COLOR_DEBUG)
+		If $g_bFirstStart Or $initBarracksSpellBoostTime = "" Or $checkIfBarracksNeedToBoost > 60 Then ;Check if initBoostTime is empty or greater then 1 hour.
+			If Not $isLogShown Then
+				SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
+				$isLogShown = True
+			EndIf
 			OpenArmyOverview(True, "OneGemBoost()")
 			If $g_bChkOneGemBoostBarracks Then CheckTroopsOneGem()
 			If $g_bChkOneGemBoostSpells Then CheckSpellsOneGem()
 			ClickP($aAway, 1, 0, "#0161")
 		EndIf
-		$initBoostTime = _NowCalc()
+		;$initBarracksSpellBoostTime = _NowCalc() ;Don't update time here this can cause 1 hour delay if barracks or spell factory already boosted before startup of bot Time updated where barracks and spell perfectly boosted.
 	EndIf
 EndFunc   ;==>OneGemBoost
 
@@ -105,6 +121,11 @@ EndFunc   ;==>CheckHeroOneGem
 
 Func CheckTroopsOneGem()
 	OpenTroopsTab(True, "CheckTroopsOneGem()")
+
+	If IsArray(findButton("BarrackBoosted")) Then
+		SetLog("Barracks already boosted", $COLOR_SUCCESS)
+		Return
+	EndIf
 	Local $aBoostBtn = findButton("BoostBarrack")
 	If IsArray($aBoostBtn) Then
 		ClickP($aBoostBtn)
@@ -120,6 +141,7 @@ Func CheckTroopsOneGem()
 			If IsArray(findButton("EnterShop")) Then
 				SetLog("Not enough gems to boost ", $COLOR_ERROR)
 			EndIf
+			$initBarracksSpellBoostTime = _NowCalc() ;Update time only when barrack was manually boosted
 		EndIf
 	EndIf
 
@@ -127,6 +149,12 @@ EndFunc   ;==>CheckTroopsOneGem
 
 Func CheckSpellsOneGem()
 	OpenSpellsTab(True, "CheckSpellsOneGem()")
+
+	If IsArray(findButton("BarrackBoosted")) Then
+		SetLog("Spells already boosted", $COLOR_SUCCESS)
+		Return
+	EndIf
+
 	Local $aBoostBtn = findButton("BoostBarrack")
 	If IsArray($aBoostBtn) Then
 		ClickP($aBoostBtn)
@@ -142,7 +170,9 @@ Func CheckSpellsOneGem()
 			If IsArray(findButton("EnterShop")) Then
 				SetLog("Not enough gems to boost ", $COLOR_ERROR)
 			EndIf
+			$initBarracksSpellBoostTime = _NowCalc() ;Update time only when spells was manually boosted
 		EndIf
 	EndIf
 	_Sleep(500)
 EndFunc   ;==>CheckSpellsOneGem
+
