@@ -42,7 +42,7 @@ Func TrainSystem()
 	If ProfileSwitchAccountEnabled() Then $g_bDoubleTrainDone = $g_abDoubleTrainDone[$g_iCurAccount]
 	If $g_bIsFullArmywithHeroesAndSpells And $g_bDoubleTrainDone Then $g_bDoubleTrainDone = False
 
-	If Not $g_bQuickTrainEnable Then
+	If Not $g_bQuickTrainEnable And Not $g_bChkSmartTrain Then
 		TrainCustomArmy()
 		DoubleTrain()
 		Return
@@ -56,9 +56,7 @@ Func TrainSystem()
 
 	If Not $g_bRunState Then Return
 
-	If $g_bDoubleTrain And ($g_bDoubleTrainDone Or $g_bIsFullArmywithHeroesAndSpells) Then
-		; Do nothing DoubleQuickTrain()
-		
+
 	;SmartTrain - RK MOD (Demen)
 	If $g_bChkSmartTrain Then
 		SmartTrain()
@@ -66,6 +64,9 @@ Func TrainSystem()
 		EndGainCost("Train")
 		Return
 	EndIf
+	
+	If $g_bDoubleTrain And ($g_bDoubleTrainDone Or $g_bIsFullArmywithHeroesAndSpells) Then
+		; Do nothing DoubleQuickTrain()
 
 	ElseIf $g_bIsFullArmywithHeroesAndSpells Or ($g_CurrentCampUtilization = 0 And $g_bFirstStart) Then
 
@@ -101,7 +102,9 @@ Func TrainSystem()
 	EndIf
 
 	TrainSiege()
-	DoubleTrain($g_bQuickTrainEnable)
+	If $g_bQuickTrainEnable Then
+		DoubleTrain($g_bQuickTrainEnable)
+	EndIf
 
 	ClickP($aAway, 2, 0, "#0346") ;Click Away
 	If _Sleep(1000) Then Return ; Delay AFTER the click Away Prevents lots of coc restarts
@@ -211,13 +214,13 @@ Func TrainCustomArmy()
 
 	If IsQueueEmpty("Troops") Then
 		If Not $g_bRunState Then Return
-		If Not OpenArmyTab(False, "TrainCustomArmy()") Then Return
+		If Not OpenArmyTab(True, "TrainCustomArmy()") Then Return
 
 		$rWhatToTrain = WhatToTrain(False, False)
 		TrainUsingWhatToTrain($rWhatToTrain)
 	Else
 		If Not $g_bRunState Then Return
-		If Not OpenArmyTab(False, "TrainCustomArmy()") Then Return
+		If Not OpenArmyTab(True, "TrainCustomArmy()") Then Return
 	EndIf
 	If _Sleep($DELAYRESPOND) Then Return ; add 5ms delay to catch TrainIt errors, and force return to back to main loop
 
@@ -226,7 +229,7 @@ Func TrainCustomArmy()
 		If IsQueueEmpty("Spells") Then
 			TrainUsingWhatToTrain($rWhatToTrain, True)
 		Else
-			If Not OpenArmyTab(False, "TrainCustomArmy()") Then Return
+			If Not OpenArmyTab(True, "TrainCustomArmy()") Then Return
 		EndIf
 	EndIf
 
@@ -544,7 +547,7 @@ Func BrewUsingWhatToTrain($Spell, $Quantity) ; it's job is a bit different with 
 		Return True
 	EndIf
 	If Not $g_bRunState Then Return
-	If Not OpenSpellsTab(False, "BrewUsingWhatToTrain()") Then Return ; Was "True". Too much setlog (DoubleTrain Demen)
+	If Not OpenSpellsTab(True, "BrewUsingWhatToTrain()") Then Return ; Was "True". Too much setlog (DoubleTrain Demen)
 
 	Select
 		Case $g_bIsFullArmywithHeroesAndSpells = False
@@ -1648,7 +1651,7 @@ Func MakingDonatedTroops($sType = "All")
 			$Plural = 0
 			If $avDefaultTroopGroup[$i][4] > 0 Then
 				$RemainTrainSpace = GetOCRCurrent(48, 160)
-				If $RemainTrainSpace[0] = $RemainTrainSpace[1] Then ; army camps full
+				If $RemainTrainSpace[0] = $RemainTrainSpace[1] And Not $g_bChkSmartTrain Then ; army camps full
 					;Camps Full All Donate Counters should be zero!!!!
 					For $j = 0 To UBound($avDefaultTroopGroup, 1) - 1
 						$avDefaultTroopGroup[$j][4] = 0
@@ -1658,7 +1661,7 @@ Func MakingDonatedTroops($sType = "All")
 
 				Local $iTroopIndex = TroopIndexLookup($avDefaultTroopGroup[$i][0], "MakingDonatedTroops")
 
-				If $avDefaultTroopGroup[$i][2] * $avDefaultTroopGroup[$i][4] <= $RemainTrainSpace[2] Then ; Troopheight x donate troop qty <= avaible train space
+				If $avDefaultTroopGroup[$i][2] * $avDefaultTroopGroup[$i][4] <= $RemainTrainSpace[2] Or $g_bChkSmartTrain Then ; Troopheight x donate troop qty <= avaible train space
 					;Local $pos = GetTrainPos(TroopIndexLookup($avDefaultTroopGroup[$i][0]))
 					Local $howMuch = $avDefaultTroopGroup[$i][4]
 					If $avDefaultTroopGroup[$i][5] = "e" Then

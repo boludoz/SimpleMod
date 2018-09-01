@@ -714,7 +714,10 @@ Func runBot() ;Bot that runs everything in order
 		chkShieldStatus()
 		If Not $g_bRunState Then Return
 		If $g_bRestart = True Then ContinueLoop
-
+		;------------------ADDED By RK MOD - START------------------
+		MainGTFO()
+		MainKickout()
+		;------------------ADDED By RK MOD - END------------------
 		checkObstacles() ; trap common error messages also check for reconnecting animation
 		If $g_bRestart = True Then ContinueLoop
 
@@ -733,8 +736,6 @@ Func runBot() ;Bot that runs everything in order
 			If $g_bRestart = True Then ContinueLoop
 			If _Sleep($DELAYRUNBOT3) Then Return
 			;------------------CUSTOM LOGIC By RK MOD - START------------------
-			MainGTFO()
-			MainKickout()
 
 			If Not $g_bFirstStart Then
 				VillageReport()
@@ -806,8 +807,7 @@ Func runBot() ;Bot that runs everything in order
 			EndIf
 			;------------------ADDED By RK MOD - END------------------
 			If IsSearchAttackEnabled() Then ; if attack is disabled skip reporting, requesting, donating, training, and boosting
-
-				Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'BoostAll', 'OneGemBost'] ; EDITED By RK MOD
+				Local $aRndFuncList = ['ReplayShare', 'NotifyReport', 'DonateCC,Train', 'RequestCC', 'CollectFreeMagicItems', 'HeroT'] ; EDITED By RK MOD
 				While 1
 					If $g_bRunState = False Then Return
 					If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
@@ -823,7 +823,7 @@ Func runBot() ;Bot that runs everything in order
 					If CheckAndroidReboot() = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
 				WEnd
 				;BoostEverything() ; 1st Check if is to use Training Potion ; REMOVED By RK MOD
-				Local $aRndFuncList = ['ReplayShare', 'NotifyReport', 'DonateCC,Train', 'RequestCC', 'CollectFreeMagicItems', 'HeroT'] ; EDITED By RK MOD
+				Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'BoostAll', 'OneGemBost'] ; EDITED By RK MOD
 				While 1
 					If $g_bRunState = False Then Return
 					If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
@@ -845,10 +845,11 @@ Func runBot() ;Bot that runs everything in order
 					If Unbreakable() = True Then ContinueLoop
 				EndIf
 			EndIf
-			MainSuperXPHandler() ; ADDED By RK MOD
+
 			If ($g_iCommandStop = 3 Or $g_iCommandStop = 0) Then ; Train Donate only - force a donate cc everytime, Ignore any SkipDonate Near Full Values
 				If BalanceDonRec(True) Then DonateCC()
 			EndIf
+			MainSuperXPHandler() ; ADDED By RK MOD
 			Local $aRndFuncList = ['Laboratory', 'UpgradeHeroes', 'UpgradeBuilding', 'BuilderBase']
 			While 1
 				If $g_bRunState = False Then Return
@@ -1366,7 +1367,7 @@ Func FirstCheck()
 	MainGTFO()
 	MainKickout()
 	VillageReport()
-	
+
 			If isOnBuilderBase() Or (($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades Or $g_bChkBB_DropTrophies) And SwitchBetweenBases()) Then
 				CollectBuilderBase()
 				BuilderBaseReport()

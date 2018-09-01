@@ -585,11 +585,11 @@ Func CreateTroopsSpellsSubTab()
 	GUICtrlSetOnEvent(-1, "TotalSpellCountClick")
 
 	 ; DoubleTrain - Demen
-    $g_hChkDoubleTrain = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkDoubleTrain", "Official Double Train Army"), $x + 260, $y, -1, 15)
-         _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip",  "Train 2nd set of Troops & Spells after training 1st combo") & @CRLF & _
-						 GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip1", "Make sure to enter exactly the 'Total Camp',") & @CRLF & _
-						 GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip2", "'Total Spell' and number of Troops/Spells in your Setting") & @CRLF & _
-						 GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip3", "Note: Donations + Double Train can produce an unbalanced army!"))
+    ;$g_hChkDoubleTrain = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkDoubleTrain", "Official Double Train Army"), $x + 260, $y, -1, 15)
+         ;_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip",  "Train 2nd set of Troops & Spells after training 1st combo") & @CRLF & _
+						 ;GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip1", "Make sure to enter exactly the 'Total Camp',") & @CRLF & _
+						 ;GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip2", "'Total Spell' and number of Troops/Spells in your Setting") & @CRLF & _
+						 ;GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip3", "Note: Donations + Double Train can produce an unbalanced army!"))
 
 	; Auto Camp - Bld
     $g_hChkAutoCamp = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkAutoCamp", "Auto update camps"), $x + 135, $y, -1, 15); ADDED By RK MOD
@@ -773,7 +773,7 @@ Func CreateTroopsSpellsSubTab()
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "Group_03", "Smart Train"), $x - 5, $y, $g_iSizeWGrpTab3, 38)
 	$x += 7
 	$y += 16
-		$g_hChkSmartTrain = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkSmartTrain", "Enable Smart Train"), $x, $y, -1, 15)
+		$g_hChkSmartTrain = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkSmartTrain", "Double Train Army"), $x, $y, -1, 15)
 			GUICtrlSetOnEvent(-1, "chkSmartTrain")
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkSmartTrain_Info_01", "Train 2 sets of army to make full camp & full queue") & @CRLF & _
 							   GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkSmartTrain_Info_02", "Only delete queued troops or spells if the queue is not full") & @CRLF & _
