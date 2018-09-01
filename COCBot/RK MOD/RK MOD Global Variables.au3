@@ -221,6 +221,10 @@ Global $g_bChkSmartTrain = False, $g_bChkPreciseArmyCamp = False, $g_bChkFillArc
 Global Enum $g_eFull, $g_eRemained, $g_eNoTrain
 Global $g_bWrongTroop, $g_bWrongSpell, $g_sSmartTrainError = ""
 
-; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
+; ================================================== ; Attack Priority - by RK MOD  ======================================== ;
 
 Global $g_bChkAttackPriority = False
+
+; ================================================== ; HeroBoost Time - by RK MOD  ======================================== ;
+
+Global $CTime[8][3] = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]]
