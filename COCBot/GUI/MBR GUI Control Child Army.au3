@@ -62,12 +62,12 @@ Func chkSmartTrain()
 	If GUICtrlRead($g_hChkSmartTrain) = $GUI_CHECKED Then
 		If GUICtrlRead($g_hChkUseQuickTrain) = $GUI_UNCHECKED Then _GUI_Value_STATE("ENABLE", $g_hChkPreciseArmyCamp)
 		_GUI_Value_STATE("ENABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-		_GUI_Value_STATE("DISABLE", $g_hChkDoubleTrain)
+		;_GUI_Value_STATE("DISABLE", $g_hChkDoubleTrain)
 		_GUI_Value_STATE("UNCHECKED", $g_hChkDoubleTrain)
 		chkPreciseTroops()
 		chkFillArcher()
 	Else
-	    _GUI_Value_STATE("ENABLE", $g_hChkDoubleTrain)
+	   ; _GUI_Value_STATE("ENABLE", $g_hChkDoubleTrain)
 		_GUI_Value_STATE("DISABLE", $g_hChkPreciseArmyCamp & "#" & $g_hChkFillArcher & "#" & $g_hTxtFillArcher & "#" & $g_hChkFillEQ)
 		_GUI_Value_STATE("UNCHECKED", $g_hChkPreciseArmyCamp & "#" & $g_hChkFillArcher & "#" & $g_hChkFillEQ)
 	EndIf
