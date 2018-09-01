@@ -13,29 +13,32 @@ Local $initBoostTime
 Local $bGemOcr
 Local $bBoostimage = @ScriptDir & "\imgxml\boost\BoostC\BoostCCheck"
 Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
+Local $sHeroName[3] = ["King", "Queen", "Warden"]
 
 Func OneGemBoost()
 	Local $checkIfBoostNeededToBeChecked = _DateDiff("n", $initBoostTime, _NowCalc()) ;n = Difference in minutes between the given dates
 	SetDebugLog("OneGemBoost $g_bFirstStart = " & $g_bFirstStart & " $initBoostTime = " & $initBoostTime & " $checkIfBoostNeededToBeChecked = " & $checkIfBoostNeededToBeChecked, $COLOR_DEBUG)
-	Local $FoundRes = 0
 
 	For $index = 0 To 2
 		Local $i_heroTime = ($CurrHeroBTime[$index] - (_DateDiff("n", $CTime[$g_iCurAccount][$index], _NowCalc())))
+		SetDebugLog("$i_heroTime [" & $sHeroName[$index] & "] = " & $i_heroTime, $COLOR_DEBUG)
 		If $g_bFirstStart Or $initBoostTime = "" Or $checkIfBoostNeededToBeChecked > 60 Or $i_heroTime < 0 Then ;Check if initBoostTime is empty or greater then 1 hour.
 			If $g_bChkOneGemBoostHeroes Or $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
 				If $index = 0 Then SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
 				If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem($index)
-				If $index = 2 And $FoundRes = 0 And ($g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells) Then
-					OpenArmyOverview(True, "OneGemBoost()")
-					If $g_bChkOneGemBoostBarracks Then CheckTroopsOneGem()
-					If $g_bChkOneGemBoostSpells Then CheckSpellsOneGem()
-					ClickP($aAway, 1, 0, "#0161")
-					$FoundRes += 1
-				EndIf
 			EndIf
-			$initBoostTime = _NowCalc()
+			
 		EndIf
 	Next
+	If $g_bFirstStart Or $initBoostTime = "" Or $checkIfBoostNeededToBeChecked > 60 Then ;Check if initBoostTime is empty or greater then 1 hour.
+		If ($g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells) Then
+			OpenArmyOverview(True, "OneGemBoost()")
+			If $g_bChkOneGemBoostBarracks Then CheckTroopsOneGem()
+			If $g_bChkOneGemBoostSpells Then CheckSpellsOneGem()
+			ClickP($aAway, 1, 0, "#0161")
+		EndIf
+		$initBoostTime = _NowCalc()
+	EndIf
 EndFunc   ;==>OneGemBoost
 
 
@@ -55,7 +58,6 @@ Func CheckOneGem()
 EndFunc   ;==>CheckOneGem
 
 Func CheckHeroOneGem($index)
-	Local $sHeroName[3] = ["King", "Queen", "Warden"]
 	; For $index = 0 To 2
 	If $index = 0 Then
 		If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
@@ -86,7 +88,7 @@ Func CheckHeroOneGem($index)
 		If IsArray($Boost) Then
 			If Not CheckOneGem() Then
 				ClickP($aAway, 1, 0, "#0161")
-				Return; ContinueLoop
+				Return ; ContinueLoop
 			EndIf
 			Click($Boost[0], $Boost[1], 1, 0, "#0464")
 			If _Sleep($DELAYBOOSTHEROES4) Then Return
