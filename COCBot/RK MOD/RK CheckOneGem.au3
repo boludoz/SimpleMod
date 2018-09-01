@@ -16,21 +16,26 @@ Local $bBoostocr = @ScriptDir & "\imgxml\Boost\BoostOcr"
 
 Func OneGemBoost()
 	Local $checkIfBoostNeededToBeChecked = _DateDiff("n", $initBoostTime, _NowCalc()) ;n = Difference in minutes between the given dates
-	SetDebugLog("OneGemBoost $g_bFirstStart = "&$g_bFirstStart&" $initBoostTime = " & $initBoostTime & " $checkIfBoostNeededToBeChecked = " & $checkIfBoostNeededToBeChecked, $COLOR_DEBUG)
+	SetDebugLog("OneGemBoost $g_bFirstStart = " & $g_bFirstStart & " $initBoostTime = " & $initBoostTime & " $checkIfBoostNeededToBeChecked = " & $checkIfBoostNeededToBeChecked, $COLOR_DEBUG)
+	Local $FoundRes = 0
 
-	If $g_bFirstStart Or $initBoostTime = "" Or $checkIfBoostNeededToBeChecked > 60 Then ;Check if initBoostTime is empty or greater then 1 hour.
-		If $g_bChkOneGemBoostHeroes Or $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
-			SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
-			If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem()
-			If $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
-				OpenArmyOverview(True, "OneGemBoost()")
-				If $g_bChkOneGemBoostBarracks Then CheckTroopsOneGem()
-				If $g_bChkOneGemBoostSpells Then CheckSpellsOneGem()
-				ClickP($aAway, 1, 0, "#0161")
+	For $index = 0 To 2
+		Local $i_heroTime = ($CurrHeroBTime[$index] - (_DateDiff("n", $CTime[$g_iCurAccount][$index], _NowCalc())))
+		If $g_bFirstStart Or $initBoostTime = "" Or $checkIfBoostNeededToBeChecked > 60 Or $i_heroTime < 0 Then ;Check if initBoostTime is empty or greater then 1 hour.
+			If $g_bChkOneGemBoostHeroes Or $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
+				If $index = 0 Then SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
+				If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem($index)
+				If $index = 2 And $FoundRes = 0 And ($g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells) Then
+					OpenArmyOverview(True, "OneGemBoost()")
+					If $g_bChkOneGemBoostBarracks Then CheckTroopsOneGem()
+					If $g_bChkOneGemBoostSpells Then CheckSpellsOneGem()
+					ClickP($aAway, 1, 0, "#0161")
+					$FoundRes += 1
+				EndIf
 			EndIf
+			$initBoostTime = _NowCalc()
 		EndIf
-		$initBoostTime = _NowCalc()
-	EndIf
+	Next
 EndFunc   ;==>OneGemBoost
 
 
@@ -49,50 +54,50 @@ Func CheckOneGem()
 	Return False
 EndFunc   ;==>CheckOneGem
 
-Func CheckHeroOneGem()
+Func CheckHeroOneGem($index)
 	Local $sHeroName[3] = ["King", "Queen", "Warden"]
-	For $index = 0 To 2
-		If $index = 0 Then
-			If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
-				SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
-			EndIf
-		ElseIf $index = 1 Then
-			If $g_aiQueenAltarPos[0] = "" Or $g_aiQueenAltarPos[0] = -1 Then
-				SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
-			EndIf
-		ElseIf $index = 2 Then
-			If $g_aiWardenAltarPos[0] = "" Or $g_aiWardenAltarPos[0] = -1 Then
-				SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
-			EndIf
+	; For $index = 0 To 2
+	If $index = 0 Then
+		If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
+			SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
 		EndIf
+	ElseIf $index = 1 Then
+		If $g_aiQueenAltarPos[0] = "" Or $g_aiQueenAltarPos[0] = -1 Then
+			SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
+		EndIf
+	ElseIf $index = 2 Then
+		If $g_aiWardenAltarPos[0] = "" Or $g_aiWardenAltarPos[0] = -1 Then
+			SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
+		EndIf
+	EndIf
 
-		If $index = 0 Then BuildingClickP($g_aiKingAltarPos, "#0462")
-		If $index = 1 Then BuildingClickP($g_aiQueenAltarPos, "#0462")
-		If $index = 2 Then BuildingClickP($g_aiWardenAltarPos, "#0462")
+	If $index = 0 Then BuildingClickP($g_aiKingAltarPos, "#0462")
+	If $index = 1 Then BuildingClickP($g_aiQueenAltarPos, "#0462")
+	If $index = 2 Then BuildingClickP($g_aiWardenAltarPos, "#0462")
 
-		_Sleep($DELAYBOOSTHEROES1)
+	_Sleep($DELAYBOOSTHEROES1)
 
-		Local $Boost = findButton("BoostOne")
+	Local $Boost = findButton("BoostOne")
+	If IsArray($Boost) Then
+		If $g_bDebugSetlog Then SetDebugLog("Boost Button X|Y = " & $Boost[0] & "|" & $Boost[1], $COLOR_DEBUG)
+		Click($Boost[0], $Boost[1], 1, 0, "#0463")
+		If _Sleep($DELAYBOOSTHEROES1) Then Return
+		$Boost = findButton("GEM")
 		If IsArray($Boost) Then
-			If $g_bDebugSetlog Then SetDebugLog("Boost Button X|Y = " & $Boost[0] & "|" & $Boost[1], $COLOR_DEBUG)
-			Click($Boost[0], $Boost[1], 1, 0, "#0463")
-			If _Sleep($DELAYBOOSTHEROES1) Then Return
-			$Boost = findButton("GEM")
-			If IsArray($Boost) Then
-				If Not CheckOneGem() Then
-					ClickP($aAway, 1, 0, "#0161")
-					ContinueLoop
-				EndIf
-				Click($Boost[0], $Boost[1], 1, 0, "#0464")
-				If _Sleep($DELAYBOOSTHEROES4) Then Return
-				If IsArray(findButton("EnterShop")) Then
-					SetLog("Not enough gems to boost " & $sHeroName[$index], $COLOR_ERROR)
-				EndIf
-			Else
-				SetLog($sHeroName[$index] & " is already Boosted", $COLOR_SUCCESS)
+			If Not CheckOneGem() Then
+				ClickP($aAway, 1, 0, "#0161")
+				Return; ContinueLoop
 			EndIf
+			Click($Boost[0], $Boost[1], 1, 0, "#0464")
+			If _Sleep($DELAYBOOSTHEROES4) Then Return
+			If IsArray(findButton("EnterShop")) Then
+				SetLog("Not enough gems to boost " & $sHeroName[$index], $COLOR_ERROR)
+			EndIf
+		Else
+			SetLog($sHeroName[$index] & " is already Boosted", $COLOR_SUCCESS)
 		EndIf
-	Next
+	EndIf
+	; Next
 	ClickP($aAway, 1, 0, "#0161")
 EndFunc   ;==>CheckHeroOneGem
 

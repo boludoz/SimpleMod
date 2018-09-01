@@ -11,13 +11,12 @@
 ; ===============================================================================================================================
 
 Local $HeroTime[8][3] = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]]
-Local $CurrHeroBTime[3] = ["", "", ""]
-Local $CTime[8][3] = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]]
 Local $sHeroTime[3] = ["", "", ""]
 
 Func CheckHeroBoost()
 	SetLog("Checking Hero Boost Time", $COLOR_INFO)
-
+	
+	Local $sHeroName[3] = ["King", "Queen", "Warden"]
 	Local $bIsBoostedImg = @ScriptDir & "\imgxml\boost\BoostC\BoostCCheck"
 	Local $bHeroTimeOCRImgs = @ScriptDir & "\imgxml\HeroTime"
 
@@ -33,21 +32,15 @@ Func CheckHeroBoost()
 
 			If $index = 0 Then
 				If $g_aiKingAltarPos[0] = "" Or $g_aiKingAltarPos[0] = -1 Then
-					LocateKingAltar()
-					SaveConfig()
-					If _Sleep($DELAYBOOSTHEROES4) Then Return
+					SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
 				EndIf
 			ElseIf $index = 1 Then
 				If $g_aiQueenAltarPos[0] = "" Or $g_aiQueenAltarPos[0] = -1 Then
-					LocateQueenAltar()
-					SaveConfig()
-					If _Sleep($DELAYBOOSTHEROES4) Then Return
+					SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
 				EndIf
 			ElseIf $index = 2 Then
 				If $g_aiWardenAltarPos[0] = "" Or $g_aiWardenAltarPos[0] = -1 Then
-					LocateWardenAltar()
-					SaveConfig()
-					If _Sleep($DELAYBOOSTHEROES4) Then Return
+					SetLog("Please Locate " & $sHeroName[$index], $COLOR_ERROR)
 				EndIf
 			EndIf
 
