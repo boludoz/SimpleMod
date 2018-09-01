@@ -207,9 +207,8 @@ Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 5
 
 Global $g_bChkOneGemBoostBarracks = False, $g_bChkOneGemBoostSpells = False, $g_bChkOneGemBoostHeroes = False
 
-; --------------------------------------------
-; Builder Base Drop Trophies (ID70)
-; --------------------------------------------
+; ================================================== Builder Base Drop Trophies (ID70) ================================= ;
+
 Global $g_iTxtBB_DropTrophies = 0
 Global $g_bChkBB_DropTrophies = False
 Global $aBB_FindMatchButton[4] = [555, 240 + $g_iBottomOffsetY, 0xFFC346, 10]
