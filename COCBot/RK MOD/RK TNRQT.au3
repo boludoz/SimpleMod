@@ -10,20 +10,42 @@
 ; Example .......: No
 ; ===============================================================================================================================
 
-Func TNRQT()
-	Local $TroopCamp = GetCurrentArmy(48, 160)
-	OpenTroopsTab(True, "TNRQT()")
-	Local $Troopsdetect = CheckQueueTroops()
-	OpenSpellsTab(True, "TNRQT()")
-	Local $Spelldetect = CheckQueueSpells()
-	Local $iWhatToTrain = WhatToTrainQueue(True, False)
-	_ArrayDisplay($iWhatToTrain)
-	SetDebugLog("$eTroopCount = " & $eTroopCount, $COLOR_INFO)
-	;SetDebugLog("$g_asTroopShortNames = " & $g_asTroopShortNames[$troopIndex], $COLOR_INFO)
-	;SetDebugLog("$g_aiArmyCompTroops = " & $g_aiArmyCompTroops[$troopIndex], $COLOR_INFO)
+Local $Troopsdetect
+Local $Spelldetect
 
-	If $Troopsdetect = "" Then SetDebugLog("Troops are empty", $COLOR_INFO)
-	If $iWhatToTrain[0][0] = "Arch" And $iWhatToTrain[0][1] = 0 Then SetDebugLog("None left troops", $COLOR_INFO)
+Func TNRQT()
+	OpenTroopsTab(True, "TNRQT()")
+	Local $TroopCamp = GetCurrentArmy(48, 160)
+	$Troopsdetect = CheckQueueTroops()
+	OpenSpellsTab(True, "TNRQT()")
+	$Spelldetect = CheckQueueSpells()
+	Local $TroopsToTrain = WhatToTrainQueue(False, False)
+	Local $TroopsToRemove = WhatToTrainQueue(True, False)
+
+	If $Troopsdetect = "" Then SetDebugLog("Troops are empty", $COLOR_DEBUG)
+	
+	If $g_bDebugSetlog Then
+
+		If $TroopsToTrain[0][0] = "Arch" And $TroopsToTrain[0][1] = 0 Then
+			SetDebugLog("None Troops Left To Train", $COLOR_DEBUG)
+		Else
+			SetDebugLog("Troops Left To Train : ", $COLOR_INFO)
+			For $i = 0 To UBound($Troopsdetect) - 1
+				SetDebugLog("  - " & $TroopsToTrain[$i][0] & ": " & $TroopsToTrain[$i][1] & "x", $COLOR_SUCCESS)
+			Next
+		EndIf
+
+		If $TroopsToRemove[0][0] = "Arch" And $TroopsToRemove[0][1] = 0 Then
+			SetDebugLog("None Troops Left To Remove", $COLOR_DEBUG)
+		Else
+			SetDebugLog("Troops Left To Remove : ", $COLOR_INFO)
+			For $i = 0 To UBound($Troopsdetect) - 1
+				SetDebugLog("  - " & $TroopsToRemove[$i][0] & ": " & $TroopsToRemove[$i][1] & "x", $COLOR_SUCCESS)
+			Next
+		EndIf
+
+	EndIf
+	
 EndFunc   ;==>TNRQT
 
 Func WhatToTrainQueue($ReturnExtraTroopsOnly = False, $bSetLog = True)
@@ -35,11 +57,10 @@ Func WhatToTrainQueue($ReturnExtraTroopsOnly = False, $bSetLog = True)
 			If $g_bFirstStart Then $g_bFirstStart = False
 			Return $ToReturn
 		EndIf
-		SetLog(" - Your Army is Full, let's add or remove troops", $COLOR_INFO)
+		SetLog(" - Your Army is Full, let's Make Troops", $COLOR_INFO)
 		; Elixir Troops
 		For $i = 0 To $eTroopCount - 1
 			Local $troopIndex = $g_aiTrainOrder[$i]
-			SetDebugLog("$g_aiArmyCompTroops[$troopIndex] = " & $g_aiArmyCompTroops[$troopIndex], $COLOR_INFO)
 			If $g_aiArmyCompTroops[$troopIndex] > 0 Then
 				$ToReturn[UBound($ToReturn) - 1][0] = $g_asTroopShortNames[$troopIndex]
 				$ToReturn[UBound($ToReturn) - 1][1] = $g_aiArmyCompTroops[$troopIndex]
@@ -58,9 +79,9 @@ Func WhatToTrainQueue($ReturnExtraTroopsOnly = False, $bSetLog = True)
 					ReDim $ToReturn[UBound($ToReturn) + 1][2]
 				Else
 					getArmySpells(False, False, False, False)
-					If $g_aiArmyCompSpells[$BrewIndex] - $g_aiCurrentSpells[$BrewIndex] > 0 Then
+					If $g_aiArmyCompSpells[$BrewIndex] - $Spelldetect[$BrewIndex] > 0 Then
 						$ToReturn[UBound($ToReturn) - 1][0] = $g_asSpellShortNames[$BrewIndex]
-						$ToReturn[UBound($ToReturn) - 1][1] = $g_aiArmyCompSpells[$BrewIndex] - $g_aiCurrentSpells[$BrewIndex]
+						$ToReturn[UBound($ToReturn) - 1][1] = $g_aiArmyCompSpells[$BrewIndex] - $Spelldetect[$BrewIndex]
 						ReDim $ToReturn[UBound($ToReturn) + 1][2]
 					Else
 						$ToReturn[UBound($ToReturn) - 1][0] = $g_asSpellShortNames[$BrewIndex]
@@ -79,49 +100,51 @@ Func WhatToTrainQueue($ReturnExtraTroopsOnly = False, $bSetLog = True)
 
 	Switch $ReturnExtraTroopsOnly
 		Case False
-			; Check Elixir Troops needed quantity to Train
+			; Check Elixir Troops Extra Quantity To Train
 			For $ii = 0 To $eTroopCount - 1
 				Local $troopIndex = $g_aiTrainOrder[$ii]
-				SetDebugLog("$g_aiArmyCompTroops[$troopIndex] = " & $g_aiArmyCompTroops[$troopIndex], $COLOR_INFO)
-				If $g_aiArmyCompTroops[$troopIndex] > 0 Then
-					$ToReturn[UBound($ToReturn) - 1][0] = $g_asTroopShortNames[$troopIndex]
-					$ToReturn[UBound($ToReturn) - 1][1] = $g_aiArmyCompTroops[$troopIndex] - $g_aiCurrentTroops[$troopIndex]
-					ReDim $ToReturn[UBound($ToReturn) + 1][2]
-				EndIf
-			Next
-
-			; Check Spells needed quantity to Brew
-			For $i = 0 To $eSpellCount - 1
-				Local $BrewIndex = $g_aiBrewOrder[$i]
-				If TotalSpellsToBrewInGUI() = 0 Then ExitLoop
-				If $g_aiArmyCompSpells[$BrewIndex] > 0 Then
-					$ToReturn[UBound($ToReturn) - 1][0] = $g_asSpellShortNames[$BrewIndex]
-					$ToReturn[UBound($ToReturn) - 1][1] = $g_aiArmyCompSpells[$BrewIndex] - $g_aiCurrentSpells[$BrewIndex]
-					ReDim $ToReturn[UBound($ToReturn) + 1][2]
-				EndIf
-			Next
-		Case Else
-			; Check Elixir Troops Extra Quantity
-			For $ii = 0 To $eTroopCount - 1
-				Local $troopIndex = $g_aiTrainOrder[$ii]
-				SetDebugLog("$g_aiCurrentTroops[$troopIndex] = " & $g_aiCurrentTroops[$troopIndex], $COLOR_INFO)
-				If $g_aiCurrentTroops[$troopIndex] > 0 Then
-					If $g_aiArmyCompTroops[$troopIndex] - $g_aiCurrentTroops[$troopIndex] < 0 Then
+				If $Troopsdetect[$troopIndex] > 0 Then
+					If $g_aiArmyCompTroops[$troopIndex] - $Troopsdetect[$troopIndex] > 0 Then
 						$ToReturn[UBound($ToReturn) - 1][0] = $g_asTroopShortNames[$troopIndex]
-						$ToReturn[UBound($ToReturn) - 1][1] = Abs($g_aiArmyCompTroops[$troopIndex] - $g_aiCurrentTroops[$troopIndex])
+						$ToReturn[UBound($ToReturn) - 1][1] = Abs($g_aiArmyCompTroops[$troopIndex] - $Troopsdetect[$troopIndex])
 						ReDim $ToReturn[UBound($ToReturn) + 1][2]
 					EndIf
 				EndIf
 			Next
 
-			; Check Spells Extra Quantity
+			; Check Spells Extra Quantity To Train
 			For $i = 0 To $eSpellCount - 1
 				Local $BrewIndex = $g_aiBrewOrder[$i]
 				If TotalSpellsToBrewInGUI() = 0 Then ExitLoop
-				If $g_aiCurrentSpells[$BrewIndex] > 0 Then
-					If $g_aiArmyCompSpells[$BrewIndex] - $g_aiCurrentSpells[$BrewIndex] < 0 Then
+				If $Spelldetect[$BrewIndex] > 0 Then
+					If $g_aiArmyCompSpells[$BrewIndex] - $Spelldetect[$BrewIndex] > 0 Then
 						$ToReturn[UBound($ToReturn) - 1][0] = $g_asSpellShortNames[$BrewIndex]
-						$ToReturn[UBound($ToReturn) - 1][1] = Abs($g_aiArmyCompSpells[$BrewIndex] - $g_aiCurrentSpells[$BrewIndex])
+						$ToReturn[UBound($ToReturn) - 1][1] = Abs($g_aiArmyCompSpells[$BrewIndex] - $Spelldetect[$BrewIndex])
+						ReDim $ToReturn[UBound($ToReturn) + 1][2]
+					EndIf
+				EndIf
+			Next
+		Case Else
+			; Check Elixir Troops Extra Quantity To Remove
+			For $ii = 0 To $eTroopCount - 1
+				Local $troopIndex = $g_aiTrainOrder[$ii]
+				If $Troopsdetect[$troopIndex] > 0 Then
+					If $g_aiArmyCompTroops[$troopIndex] - $Troopsdetect[$troopIndex] < 0 Then
+						$ToReturn[UBound($ToReturn) - 1][0] = $g_asTroopShortNames[$troopIndex]
+						$ToReturn[UBound($ToReturn) - 1][1] = Abs($g_aiArmyCompTroops[$troopIndex] - $Troopsdetect[$troopIndex])
+						ReDim $ToReturn[UBound($ToReturn) + 1][2]
+					EndIf
+				EndIf
+			Next
+
+			; Check Spells Extra Quantity To Remove
+			For $i = 0 To $eSpellCount - 1
+				Local $BrewIndex = $g_aiBrewOrder[$i]
+				If TotalSpellsToBrewInGUI() = 0 Then ExitLoop
+				If $Spelldetect[$BrewIndex] > 0 Then
+					If $g_aiArmyCompSpells[$BrewIndex] - $Spelldetect[$BrewIndex] < 0 Then
+						$ToReturn[UBound($ToReturn) - 1][0] = $g_asSpellShortNames[$BrewIndex]
+						$ToReturn[UBound($ToReturn) - 1][1] = Abs($g_aiArmyCompSpells[$BrewIndex] - $Spelldetect[$BrewIndex])
 						ReDim $ToReturn[UBound($ToReturn) + 1][2]
 					EndIf
 				EndIf
