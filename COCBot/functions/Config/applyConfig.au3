@@ -439,16 +439,16 @@ Func ApplyConfig_600_11($TypeReadSave)
 			Next
 			;------------------ADDED By RK MOD - START------------------
 			; Request defense CC (Demen)
-            		GUICtrlSetState($g_hChkRequestCCDefense, $g_bRequestCCDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
-           		 chkRequestDefense()
+          	GUICtrlSetState($g_hChkRequestCCDefense, $g_bRequestCCDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
+           	chkRequestDefense()
 			GUICtrlSetData($g_hTxtRequestCCDefense, $g_sRequestCCDefenseText)
 			_GUICtrlComboBox_SetCurSel($g_hCmbRequestCCDefenseWhen, $g_bRequestCCDefenseWhenPB ? 0 : 1)
-            		GUICtrlSetData($g_hTxtRequestCCDefenseTime, $g_iRequestDefenseTime)
+            GUICtrlSetData($g_hTxtRequestCCDefenseTime, $g_iRequestDefenseTime)
 			
 			; ================================================== Russian Request - by RK MOD ======================================== ;
 
 			GUICtrlSetState($g_hChkRusLang2, $g_iChkRusLang2 = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-   		    	chkRusLang2()
+   		    chkRusLang2()
 			;------------------ADDED By RK MOD - END------------------
 		Case "Save"
 			$g_bRequestTroopsEnable = (GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED)

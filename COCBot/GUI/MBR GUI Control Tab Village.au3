@@ -52,6 +52,7 @@ Func chkRequestCCHours()
 			GUICtrlSetState($i, $GUI_ENABLE)
 		Next
 		chkRequestCountCC()
+		chkRequestDefense()
 	Else
 		GUICtrlSetState($g_hTxtRequestCC, $GUI_SHOW + $GUI_DISABLE)
 		For $i = $g_hLblRequestType To $g_hLblRequestCCHoursPM
