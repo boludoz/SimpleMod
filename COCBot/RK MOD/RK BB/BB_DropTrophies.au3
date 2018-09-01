@@ -31,7 +31,7 @@ Func TruePixel($ix1 = 0, $iy1 = 0, $ix2 = 0, $iy2 = 0, $iHexColor = 0, $iCTolera
 EndFunc
 
 Func BB_DropTrophies()
-
+	Local $iBoy = 0
 	Local $i = 0
 	Local $j = 0
 
@@ -53,6 +53,7 @@ Func BB_DropTrophies()
 	Local $iKing = 0x251CC6
 	If _Sleep($DELAYRESPOND) Then Return
 	If $g_iTxtBB_DropTrophies > 0 Then $g_aiCurrentLootBB[$eLootTrophyBB] = getTrophyMainScreen(67, 84)
+	If _Sleep($DELAYRESPOND) Then Return
 
 	If $g_bChkBB_DropTrophies Then
 		; Click attack button and find a match
@@ -95,6 +96,23 @@ Func BB_DropTrophies()
 					EndIf
 					If $bContinue Then
 						While Not _ColorCheck( $cPixColor, Hex($TroopSlot[2], 20), $TroopSlot[3])
+							If $iBoy = 0 Then
+							If _Sleep($DELAYRESPOND*3) Then Return
+						If QuickMIS("BC1", $g_sImgMachine, 0, 652, 835, 724, True, False) Then
+								KeepClicks()
+								Local $aBoyDropPoint[2] = [0, 0]
+										$aBoyDropPoint[0] = $g_iQuickMISX
+										$aBoyDropPoint[1] = (652 + $g_iQuickMISY)
+									Setlog("Drop boy on map", $COLOR_GREEN)
+									ClickP($aBoyDropPoint, 1, 0, "#0000") ; Drop Troop
+									If _Sleep($DELAYDROPTROOP1 / 5) Then Return
+									AttackClick(557, 251, 1, SetSleep(0), 0, "#0000")
+									If _Sleep($DELAYDROPTROOP2 / 5) Then Return
+								$iBoy = 1
+								EndIf
+									ReleaseClicks()
+
+							EndIf
 							BB_Attack($Nside, $SIDESNAMES, 8)
 							
 							If $bDegug Then SetLog("BB: Drop Troops - Slot[ " & String( $i + 1 ) & " ], code: 0x" & $cPixColor & " [ " & String( $j ) & " ] Num:[ " & $TroopsToDrop & " ]", $COLOR_DEBUG)
@@ -106,16 +124,7 @@ Func BB_DropTrophies()
 						If $bDegug Then SetLog("BB: Last Slot Color [ " & String( $i + 1 ) & " ], code: 0x" & $cPixColor & " [ " & String( $i + 1 ) & " ]", $COLOR_DEBUG)
 					EndIf
 				Next
-				
-				While 1
-				Setlog("Droping boy.", $COLOR_INFO)
-				Local $ibKingClick = TruePixel(0, 652, 835, 724, 0x3020D8, 20)
-				If $ibKingClick[0] = True Then Click($ibKingClick[1], $ibKingClick[2], 1)
-				
-				;Setlog($ibKingClick[0] & $ibKingClick[1] & $ibKingClick[2])
-				
-				WEnd
-
+					
 				Setlog("Will Wait End Battle for " & String( $DELAYCHECKOBSTACLES4 / 60000 / 2 ) & " minutes then continue", $COLOR_INFO)
 				If _Sleep($DELAYCHECKOBSTACLES4 / 2 ) Then Return
 

@@ -99,15 +99,7 @@ EndFunc   ;==>BB_PrepareSearch
 ; ===============================================================================================================================
 
 Func BB_Attack($Nside = 1, $SIDESNAMES = "TR|TL", $iTroopToDeploy = 4 )
-	;
-	Local $TroopSlot[4]    = [  40, 638 + $g_iBottomOffsetY, 0x404040, 20 ]
-	Local $NextSlotActive[6] = [0x5094D8, 0x5094D8, 0x5094D8, 0x5094D8, 0x5094D8, 0x5094D8]
-	Local $NextSlotOff[6]  = [0x464646, 0x454545, 0x454545, 0x464646, 0x454545, 0x5198E0]
-	Local $NextSlotAdd     = 72
-	Local $TroopsToDrop    = 0
-	Local $iKing = 0x251CC6
 
-	;
 	Local $aBB_DiamondTop[4]    = [440,  30 + $g_iBottomOffsetY, 0x294949, 10]
 	Local $aBB_DiamondBottom[4] = [440, 730 + $g_iBottomOffsetY, 0x2B4847, 10]
 	Local $aBB_DiamondLeft[4]   = [ 30, 330 + $g_iBottomOffsetY, 0x213E3E, 10]
@@ -129,33 +121,26 @@ Func BB_Attack($Nside = 1, $SIDESNAMES = "TR|TL", $iTroopToDeploy = 4 )
 	$iHalf += $iRest
 
 	SetLog("BB: Attacking on a single side", $COLOR_INFO)
-	
+
 	$aBB_LineCenter[0] = INT( ( $aBB_DiamondTop[0] + $aBB_DiamondRight[0] ) / 2 )
 	$aBB_LineCenter[1] = INT( ( $aBB_DiamondTop[1] + $aBB_DiamondRight[1] ) / 2 )
 	$aDropCoord[0]     = INT( ( ( $aBB_LineCenter[0] - $aBB_DiamondTop[0] ) * 0.9 ) / $iHalf )
 	$aDropCoord[1]     = INT( ( ( $aBB_LineCenter[1] - $aBB_DiamondTop[1] ) * 0.9 ) / $iHalf )
 
-	Local $x = $TroopSlot[0]
-	Local $y = $TroopSlot[1]
-	For $b = 0 to 5
-	$x += $NextSlotAdd
-		If _ColorCheck(_GetPixelColor($x, $y), Hex($NextSlotActive[$b], 20), 20) Then 
-			KeepClicks()
-		
-			For $i = $iHalf To 1 Step -1
-				$aDropPointX[0] = $aBB_LineCenter[0] + ( $i * $aDropCoord[0] )
-				$aDropPointX[1] = $aBB_LineCenter[1] + ( $i * $aDropCoord[1] )
-				$aDropPointY[0] = $aBB_LineCenter[0] - ( $i * $aDropCoord[0] )
-				$aDropPointY[1] = $aBB_LineCenter[1] - ( $i * $aDropCoord[1] )
-				ClickP($aDropPointX, 1, 0, "#0000") ; Drop Troop
-				If _Sleep($DELAYDROPTROOP1 / 5) Then Return
-				AttackClick($aDropPointY[0], $aDropPointY[1], 1, SetSleep(0), 0, "#0000")
-				If _Sleep($DELAYDROPTROOP2 / 5) Then Return
-			Next
-	
-			ReleaseClicks()
-		EndIf
+	KeepClicks()
+
+	For $i = $iHalf To 1 Step -1
+		$aDropPointX[0] = $aBB_LineCenter[0] + ( $i * $aDropCoord[0] )
+		$aDropPointX[1] = $aBB_LineCenter[1] + ( $i * $aDropCoord[1] )
+		$aDropPointY[0] = $aBB_LineCenter[0] - ( $i * $aDropCoord[0] )
+		$aDropPointY[1] = $aBB_LineCenter[1] - ( $i * $aDropCoord[1] )
+		ClickP($aDropPointX, 1, 0, "#0000") ; Drop Troop
+		If _Sleep($DELAYDROPTROOP1 / 5) Then Return
+		AttackClick($aDropPointY[0], $aDropPointY[1], 1, SetSleep(0), 0, "#0000")
+		If _Sleep($DELAYDROPTROOP2 / 5) Then Return
 	Next
+
+	ReleaseClicks()
 
 	If _Sleep($DELAYDROPTROOP2) Then Return
 

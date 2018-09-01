@@ -13,6 +13,8 @@
 
 Global $g_sImgImgLocButtons = @ScriptDir & "\imgxml\imglocbuttons"
 
+Global Const $g_sImgMachine = @ScriptDir & "\imgxml\Boy*"
+
 #Region Obstacles
 Global Const $g_sImgAnyoneThere = @ScriptDir & "\imgxml\other\AnyoneThere[[Android]]*"
 Global Const $g_sImgPersonalBreak = @ScriptDir & "\imgxml\other\break*"
