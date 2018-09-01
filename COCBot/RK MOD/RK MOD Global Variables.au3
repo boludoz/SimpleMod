@@ -229,7 +229,7 @@ Global $g_bChkAttackPriority = False
 
 Global $CTime[8][3] = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]]
 Global $CurrHeroBTime[3] = ["", "", ""]
-=======
+
 ; ================================================== ; Priority System - by RK MOD  ======================================== ;
 
 Global $g_bChkPrioritySystem = False, $g_iCmbPrioritySystem = 0
