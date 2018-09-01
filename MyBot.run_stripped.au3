@@ -14291,13 +14291,6 @@ GUICtrlSetState(-1, $GUI_HIDE)
 GUICtrlSetOnEvent(-1, "ResetLabUpgradeTime")
 $g_hPicLabUpgrade = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBlank, $x + 330, $y, 64, 64)
 GUICtrlSetState(-1, $GUI_HIDE)
-$g_hChkPrioritySystem = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Laboratory", "ChkPrioritySystem_01", "Priority System") & ": ", $x + 85, $y + 95, -1, -1)
-_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Laboratory", "ChkPrioritySystem_02", "Enable this function to select resource priorities"))
-GUICtrlSetOnEvent(-1, "chkPrioritySystem")
-$g_hCmbPrioritySystem = GUICtrlCreateCombo("", $x + 180, $y + 95, 70, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
-GUICtrlSetData(-1, "Elixir|Dark Elixir", "Elixir")
-GUICtrlSetState(-1, $GUI_DISABLE)
-GUICtrlSetOnEvent(-1, "PrioritySystem")
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 EndFunc
 Func CreateHeroesSubTab()
@@ -15484,13 +15477,10 @@ $g_hChkPreciseArmyCamp = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Des
 GUICtrlSetOnEvent(-1, "chkPreciseTroops")
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkPreciseArmyCamp_Info_01", "Check precision of troops & spells before training.") & @CRLF & GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkPreciseArmyCamp_Info_02", "Will remove wrong troops or spells if any"))
 $x += 103
-$g_hChkFillArcher = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillArcher", "Fill Archer:"), $x, $y, -1, 15)
+$g_hChkFillArcher = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillArcher", "Fill Archer"), $x, $y, -1, 15)
 GUICtrlSetState(-1, $GUI_DISABLE)
 GUICtrlSetOnEvent(-1, "chkFillArcher")
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillArcher_Info_01", "Train some archers to top-up the camp or queue if it is nearly full"))
-$g_hTxtFillArcher = GUICtrlCreateInput("5", $x + 70, $y-1, 20, 16, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
-GUICtrlSetState(-1, $GUI_DISABLE)
-GUICtrlSetLimit(-1, 2)
 $x += 110
 $g_hChkFillEQ = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillEQ", "Fill 1 EQ"), $x, $y, -1, 15)
 GUICtrlSetState(-1, $GUI_DISABLE)
@@ -23022,11 +23012,12 @@ GUICtrlSetState($g_hLblTotalProgress, $GUI_SHOW)
 Else
 GUICtrlSetState($g_hLblTotalProgress, $GUI_HIDE)
 EndIf
-If $g_iChkAutoCamp = 1 Then
+If $g_bChkFillArcher = True Then
 Local $bLocalBbg = False
-$g_iSpaceForTroopsFill = $g_iTotalCampForcedValue - $TotalTroopsToTrain
-GUICtrlSetData($g_ahTxtTrainArmyTroopCount[$eTroopArcher], $g_aiArmyCompTroops[$eTroopArcher] + $g_iSpaceForTroopsFill)
-$g_aiArmyCompTroops[$eTroopArcher] = $g_aiArmyCompTroops[$eTroopArcher] + $g_iSpaceForTroopsFill
+$g_iSpaceForTroopsFill = $g_iTotalCampForcedValue - $TotalTroopsToTrain + $g_aiArmyCompTroops[$eTroopArcher]
+If $g_iSpaceForTroopsFill < 0 Then $g_iSpaceForTroopsFill = 0
+$g_aiArmyCompTroops[$eTroopArcher] = $g_iSpaceForTroopsFill
+GUICtrlSetData($g_ahTxtTrainArmyTroopCount[$eTroopArcher], $g_iSpaceForTroopsFill)
 If $bLocalBbg then SetLog($g_aiArmyCompTroops[$eTroopArcher] & ", " & $g_iTotalCampForcedValue & ", " & $TotalTroopsToTrain & ", " & $g_iSpaceForTroopsFill)
 EndIf
 lblTotalCountTroop2()
@@ -78057,14 +78048,6 @@ Else
 $g_bChkPrioritySystem = False
 GUICtrlSetState($g_hCmbPrioritySystem, $GUI_DISABLE)
 EndIf
-EndFunc
-Func PrioritySystem()
-Switch _GUICtrlComboBox_GetCurSel($g_hCmbPrioritySystem)
-Case "Elixir"
-$g_iCmbPrioritySystem = 0
-Case "Dark Elixir"
-$g_iCmbPrioritySystem = 1
-EndSwitch
 EndFunc
 Func AreCollectorsOutside($percent)
 If $g_bDBCollectorsNearRedline = 1 Then Return AreCollectorsNearRedline($percent)
