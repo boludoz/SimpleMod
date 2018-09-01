@@ -18,8 +18,12 @@ Func TNRQT()
 	Local $Spelldetect = CheckQueueSpells()
 	Local $iWhatToTrain = WhatToTrainQueue(True, False)
 	_ArrayDisplay($iWhatToTrain)
+	SetDebugLog("$eTroopCount = " & $eTroopCount, $COLOR_INFO)
+	;SetDebugLog("$g_asTroopShortNames = " & $g_asTroopShortNames[$troopIndex], $COLOR_INFO)
+	;SetDebugLog("$g_aiArmyCompTroops = " & $g_aiArmyCompTroops[$troopIndex], $COLOR_INFO)
+
 	If $Troopsdetect = "" Then SetDebugLog("Troops are empty", $COLOR_INFO)
-	If $iWhatToTrain[0] = "Arch" And $iWhatToTrain[1] = 0 Then SetDebugLog("None left troops", $COLOR_INFO)
+	If $iWhatToTrain[0][0] = "Arch" And $iWhatToTrain[0][1] = 0 Then SetDebugLog("None left troops", $COLOR_INFO)
 EndFunc   ;==>TNRQT
 
 Func WhatToTrainQueue($ReturnExtraTroopsOnly = False, $bSetLog = True)
@@ -35,6 +39,7 @@ Func WhatToTrainQueue($ReturnExtraTroopsOnly = False, $bSetLog = True)
 		; Elixir Troops
 		For $i = 0 To $eTroopCount - 1
 			Local $troopIndex = $g_aiTrainOrder[$i]
+			SetDebugLog("$g_aiArmyCompTroops[$troopIndex] = " & $g_aiArmyCompTroops[$troopIndex], $COLOR_INFO)
 			If $g_aiArmyCompTroops[$troopIndex] > 0 Then
 				$ToReturn[UBound($ToReturn) - 1][0] = $g_asTroopShortNames[$troopIndex]
 				$ToReturn[UBound($ToReturn) - 1][1] = $g_aiArmyCompTroops[$troopIndex]
@@ -77,6 +82,7 @@ Func WhatToTrainQueue($ReturnExtraTroopsOnly = False, $bSetLog = True)
 			; Check Elixir Troops needed quantity to Train
 			For $ii = 0 To $eTroopCount - 1
 				Local $troopIndex = $g_aiTrainOrder[$ii]
+				SetDebugLog("$g_aiArmyCompTroops[$troopIndex] = " & $g_aiArmyCompTroops[$troopIndex], $COLOR_INFO)
 				If $g_aiArmyCompTroops[$troopIndex] > 0 Then
 					$ToReturn[UBound($ToReturn) - 1][0] = $g_asTroopShortNames[$troopIndex]
 					$ToReturn[UBound($ToReturn) - 1][1] = $g_aiArmyCompTroops[$troopIndex] - $g_aiCurrentTroops[$troopIndex]
@@ -98,6 +104,7 @@ Func WhatToTrainQueue($ReturnExtraTroopsOnly = False, $bSetLog = True)
 			; Check Elixir Troops Extra Quantity
 			For $ii = 0 To $eTroopCount - 1
 				Local $troopIndex = $g_aiTrainOrder[$ii]
+				SetDebugLog("$g_aiCurrentTroops[$troopIndex] = " & $g_aiCurrentTroops[$troopIndex], $COLOR_INFO)
 				If $g_aiCurrentTroops[$troopIndex] > 0 Then
 					If $g_aiArmyCompTroops[$troopIndex] - $g_aiCurrentTroops[$troopIndex] < 0 Then
 						$ToReturn[UBound($ToReturn) - 1][0] = $g_asTroopShortNames[$troopIndex]
