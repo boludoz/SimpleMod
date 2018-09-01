@@ -211,13 +211,13 @@ Func TrainCustomArmy()
 
 	If IsQueueEmpty("Troops") Then
 		If Not $g_bRunState Then Return
-		If Not OpenArmyTab(False, "TrainRevampOldStyle()") Then Return
+		If Not OpenArmyTab(False, "TrainCustomArmy()") Then Return
 
 		$rWhatToTrain = WhatToTrain(False, False)
 		TrainUsingWhatToTrain($rWhatToTrain)
 	Else
 		If Not $g_bRunState Then Return
-		If Not OpenArmyTab(False, "TrainRevampOldStyle()") Then Return
+		If Not OpenArmyTab(False, "TrainCustomArmy()") Then Return
 	EndIf
 	If _Sleep($DELAYRESPOND) Then Return ; add 5ms delay to catch TrainIt errors, and force return to back to main loop
 
@@ -226,7 +226,7 @@ Func TrainCustomArmy()
 		If IsQueueEmpty("Spells") Then
 			TrainUsingWhatToTrain($rWhatToTrain, True)
 		Else
-			If Not OpenArmyTab(False, "TrainRevampOldStyle()") Then Return
+			If Not OpenArmyTab(False, "TrainCustomArmy()") Then Return
 		EndIf
 	EndIf
 
