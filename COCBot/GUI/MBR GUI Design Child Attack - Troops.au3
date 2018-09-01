@@ -784,13 +784,11 @@ Func CreateTroopsSpellsSubTab()
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkPreciseArmyCamp_Info_01", "Check precision of troops & spells before training.") & @CRLF & _
 							   GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkPreciseArmyCamp_Info_02", "Will remove wrong troops or spells if any"))
 	$x += 103
-		$g_hChkFillArcher = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillArcher", "Fill Archer:"), $x, $y, -1, 15)
+		$g_hChkFillArcher = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillArcher", "Fill Archer"), $x, $y, -1, 15)
 			GUICtrlSetState(-1, $GUI_DISABLE)
-			GUICtrlSetOnEvent(-1, "chkFillArcher")
+			;GUICtrlSetOnEvent(-1, "chkFillArcher")
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillArcher_Info_01", "Train some archers to top-up the camp or queue if it is nearly full"))
-		$g_hTxtFillArcher = GUICtrlCreateInput("5", $x + 70, $y-1, 20, 16, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
-			GUICtrlSetState(-1, $GUI_DISABLE)
-			GUICtrlSetLimit(-1, 2)
+
 	$x += 110
 		$g_hChkFillEQ = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillEQ", "Fill 1 EQ"), $x, $y, -1, 15)
 			GUICtrlSetState(-1, $GUI_DISABLE)
