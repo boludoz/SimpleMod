@@ -25,11 +25,12 @@ Func OneGemBoost()
 			If $g_bChkOneGemBoostHeroes Or $g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells Then
 				If $index = 0 Then SetLog("Checking 1-Gem Army Event", $COLOR_INFO)
 				If $g_bChkOneGemBoostHeroes Then CheckHeroOneGem($index)
-				If $FoundRes = 0 And ($g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells) Then
+				If $index = 2 And $FoundRes = 0 And ($g_bChkOneGemBoostBarracks Or $g_bChkOneGemBoostSpells) Then
 					OpenArmyOverview(True, "OneGemBoost()")
 					If $g_bChkOneGemBoostBarracks Then CheckTroopsOneGem()
 					If $g_bChkOneGemBoostSpells Then CheckSpellsOneGem()
 					ClickP($aAway, 1, 0, "#0161")
+					$FoundRes += 1
 				EndIf
 			EndIf
 			$initBoostTime = _NowCalc()
