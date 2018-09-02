@@ -588,7 +588,7 @@ EndFunc   ;==>LabTroopImages
 
 Func LabPriority()
 	SetLog("Lab Priority Check.", $COLOR_INFO)
-	Local $iLabResults[32][3]=[_
+	Local $iLabResults[32][3]=[ _
 		[0, "Elixir", 1], _
 		[0, "Elixir", 2], _
 		[0, "Elixir", 3], _
