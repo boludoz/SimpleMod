@@ -2371,7 +2371,7 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			chkSmartTrain()
 			; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
 			GUICtrlSetState($g_hChkAutoCamp, $g_bChkAutoCamp ? $GUI_CHECKED : $GUI_UNCHECKED)
-			;chkAutoCamp()
+			chkAutoCamp()
 			
 		Case "Save"
 			; troop/spell levels and counts

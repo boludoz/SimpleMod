@@ -78,10 +78,10 @@ EndFunc   ;==>CheckAutoCamp
 	;		$g_bForceBrewSpells = (GUICtrlRead($g_hChkForceBrewBeforeAttack) = $GUI_CHECKED)
 ; ============
 
-; Func chkAutoCamp()
-    ; If GUICtrlRead($g_hChkAutoCamp) = $GUI_CHECKED Then
-        ; $g_bChkAutoCamp = True
-    ; Else
-        ; $g_bChkAutoCamp = False
-    ; EndIf
-; EndFunc ;==>chkAutoCamp
+Func chkAutoCamp()
+    If GUICtrlRead($g_hChkAutoCamp) = $GUI_CHECKED Then
+        $g_bChkAutoCamp = True
+    Else
+        $g_bChkAutoCamp = False
+    EndIf
+EndFunc ;==>chkAutoCamp

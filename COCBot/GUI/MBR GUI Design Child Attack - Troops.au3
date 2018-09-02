@@ -593,6 +593,7 @@ Func CreateTroopsSpellsSubTab()
 
 	; Auto Camp - Bld
     $g_hChkAutoCamp = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkAutoCamp", "Auto update camps"), $x + 135, $y, -1, 15); ADDED By RK MOD
+	GUICtrlSetOnEvent(-1, "chkAutoCamp")
 
 	$y += 13
 	; Lightning
@@ -793,7 +794,7 @@ Func CreateTroopsSpellsSubTab()
 		$g_hChkFillEQ = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillEQ", "Fill 1 EQ"), $x, $y, -1, 15)
 			GUICtrlSetState(-1, $GUI_DISABLE)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillEQ_Info_01", "Brew 1 EarthQuake Spell to top-up the spell camp or queue"))
-
+        
 
 EndFunc   ;==>CreateTroopsSpellsSubTab
 
