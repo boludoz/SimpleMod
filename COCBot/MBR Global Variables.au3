@@ -461,7 +461,7 @@ Global $g_pStruct_SleepMicro = DllStructGetPtr($g_hStruct_SleepMicro)
 Global Const $g_iEmptyWorkingSetAndroid = 0 ; Empty Android Workingset specified Seconds, 0 for disable
 Global Const $g_iEmptyWorkingSetBot = 300 ; Empty Bot Workingset specified Seconds, 0 for disable
 Global Const $g_bMoveMouseOutBS = False ; If enabled moves mouse out of Android window when bot is running
-Global $g_bDevMode = True ; set to true in mybot.run.au3 if EnableMBRDebug.txt is present in MBR root directory
+Global $g_bDevMode = False ; set to true in mybot.run.au3 if EnableMBRDebug.txt is present in MBR root directory
 
 ; Startup
 Global $g_bBotLaunchOption_HideAndroid = False ; Start bot and hide Android immediately
