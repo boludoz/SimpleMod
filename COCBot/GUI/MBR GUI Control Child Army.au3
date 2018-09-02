@@ -86,9 +86,12 @@ EndFunc   ;==>chkSmartTrain
 Func chkFillArcher()
 	If GUICtrlRead($g_hChkFillArcher) = $GUI_CHECKED Then
 		_GUI_Value_STATE("ENABLE", $g_hTxtFillArcher)
+		$g_bChkFillArcher = True
 	Else
 		_GUI_Value_STATE("DISABLE", $g_hTxtFillArcher)
+		$g_bChkFillArcher = False
 	EndIf
+	lblTotalCountTroop1()
 EndFunc   ;==>chkFillArcher
 
 ;------------------ADDED By RK MOD - END------------------
