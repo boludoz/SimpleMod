@@ -2369,6 +2369,10 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			GUICtrlSetData($g_hTxtFillArcher, $g_iTxtFillArcher)
 			GUICtrlSetState($g_hChkFillEQ, $g_bChkFillEQ ? $GUI_CHECKED : $GUI_UNCHECKED)
 			chkSmartTrain()
+			; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
+			GUICtrlSetState($g_hChkAutoCamp, $g_bChkAutoCamp ? $GUI_CHECKED : $GUI_UNCHECKED)
+			;chkAutoCamp()
+			
 		Case "Save"
 			; troop/spell levels and counts
 			For $T = 0 To $eTroopCount - 1
@@ -2398,6 +2402,9 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			$g_bChkFillArcher = (GUICtrlRead($g_hChkFillArcher) = $GUI_CHECKED)
 			$g_iTxtFillArcher = GUICtrlRead($g_hTxtFillArcher)
 			$g_bChkFillEQ = (GUICtrlRead($g_hChkFillEQ) = $GUI_CHECKED)
+			; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
+			$g_bChkAutoCamp = (GUICtrlRead($g_hChkAutoCamp) = $GUI_CHECKED)
+			
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_52_2
 

@@ -239,7 +239,7 @@ EndFunc   ;==>getBarracksNewTroopQuantity
 
 ;------------------CUSTOM LOGIC By RK MOD - START------------------
 Func getArmyCapacityOnTrainTroops($x_start, $y_start)
-	if $g_iChkAutoCamp = 1 Then
+	If $g_bChkAutoCamp = True Then
 		Return _getArmyCapacityOnTrainTroops($x_start, $y_start)
 	Else
 		Return getOcrAndCapture("coc-NewCapacity", $x_start, $y_start, 67, 14, True)

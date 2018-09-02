@@ -47,10 +47,6 @@ Func ReadConfig_RKMod()
 
 	IniReadS($g_bReqCCFirst, $g_sProfileConfigPath, "planned", "ReqCCFirst", $g_bReqCCFirst, "Bool")
 
-	; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
-
-	IniReadS($g_iChkAutoCamp, $g_sProfileConfigPath, "troop", "ChkAutoCamp", $g_iChkAutoCamp, "Int")
-
 	;================================================== Stop For War - Added by RK MOD ==================== ;
 
 	IniReadS($g_bStopForWar, $g_sProfileConfigPath, "war preparation", "Enable", False, "Bool")
@@ -187,10 +183,6 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	;================================================== Move the Request CC Troops - Added by RK MOD ==================== ;
 
 	_Ini_Add("planned", "ReqCCFirst", $g_bReqCCFirst)
-
-	; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
-
-	_Ini_Add("troop", "ChkAutoCamp", $g_iChkAutoCamp ? 1 : 0)
 
 	;================================================== Stop For War - Added by RK MOD ==================== ;
 
@@ -336,10 +328,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			$g_bReqCCFirst = (GUICtrlRead($g_hChkReqCCFirst) = $GUI_CHECKED)
 
-			; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
-
-			$g_iChkAutoCamp = GUICtrlRead($g_hChkAutoCamp) = $GUI_CHECKED ? 1 : 0
-
 			;================================================== Stop For War - Added by RK MOD ==================== ;
 
 			$g_bStopForWar = GUICtrlRead($g_hChkStopForWar)  = $GUI_CHECKED
@@ -484,10 +472,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			GUICtrlSetState($g_hChkReqCCFirst, $g_bReqCCFirst = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			chkReqCCFirst()
-			; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
-
-			GUICtrlSetState($g_hChkAutoCamp, $g_iChkAutoCamp = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-   		    chkAutoCamp()
 
 			;================================================== Stop For War - Added by RK MOD ==================== ;
 

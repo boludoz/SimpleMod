@@ -65,7 +65,7 @@ Global $g_bReqCCFirst = False
 
 ; ================================================ AutoCamp - by RK MOD ======================================== ;
 
-Global $g_iChkAutoCamp = 0
+Global $g_bChkAutoCamp = False
 
 ; ================================================ Stop For War - Added by RK MOD ======================================== ;
 Global $g_bStopForWar

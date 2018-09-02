@@ -1290,6 +1290,9 @@ Func SaveConfig_600_52_2()
 	_Ini_Add("SmartTrain", "TxtFillArcher", $g_iTxtFillArcher)
 	_Ini_Add("SmartTrain", "ChkFillEQ", $g_bChkFillEQ ? 1 : 0)
 	
+	; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
+	_Ini_Add("troop", "ChkAutoCamp", $g_bChkAutoCamp ? 1 : 0)
+	
 EndFunc   ;==>SaveConfig_600_52_2
 
 Func SaveConfig_600_54()

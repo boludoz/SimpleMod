@@ -1437,6 +1437,8 @@ Func ReadConfig_600_52_2()
 	IniReadS($g_bChkFillArcher, $g_sProfileConfigPath, "SmartTrain", "ChkFillArcher", False, "Bool")
 	IniReadS($g_iTxtFillArcher, $g_sProfileConfigPath, "SmartTrain", "TxtFillArcher", 5, "int")
 	IniReadS($g_bChkFillEQ, $g_sProfileConfigPath, "SmartTrain", "ChkFillEQ", False, "Bool")
+	; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
+	IniReadS($g_bChkAutoCamp, $g_sProfileConfigPath, "troop", "ChkAutoCamp", False, "Bool")
 	
 EndFunc   ;==>ReadConfig_600_52_2
 
