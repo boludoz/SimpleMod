@@ -59,7 +59,8 @@ Func Laboratory()
 	;Create local static array to hold upgrade values
 	Static $aUpgradeValue[33] = [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	Local $iAvailElixir, $iAvailDark, $sElixirCount, $sDarkCount, $TimeDiff, $aArray, $Result
-
+	Local $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], 1)
+	
 	$g_iUpgradeMinElixir = Number($g_iUpgradeMinElixir)
 	$g_iUpgradeMinDark = Number($g_iUpgradeMinDark)
 
@@ -314,7 +315,25 @@ Func Laboratory()
 		ClickP($aAway, 2, $DELAYLABORATORY4, "#0354")
 		Return False
 	EndIf
-
+	
+	; Auto correct the troop/spell/seige level in army tab
+	If $g_bChkPrioritySystem = True Then
+		SetLog("Laboratory Priority Level Check in progress.", $COLOR_INFO)
+		If Int($aUpgradeValue[$g_iCmbLaboratory]) <> Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
+			While Int($aUpgradeValue[$g_iCmbLaboratory]) <> Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel])
+				If Int($aUpgradeValue[$g_iCmbLaboratory]) < Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
+					IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $iLevel - 1)
+				ElseIf Int($aUpgradeValue[$g_iCmbLaboratory]) > Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
+					IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $iLevel + 1)
+				EndIf
+			WEnd
+			SetLog("Upgrade level adjusted. Exiting Upgrade.", $COLOR_ERROR)
+			Return False
+		ElseIf Int($aUpgradeValue[$g_iCmbLaboratory]) = Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
+			SetLog("Laboratory Priority Level Check Verified.", $COLOR_SUCCESS)
+		EndIf
+	EndIf	
+	
 	; Try to upgrade - LabUpgrade(), check insufficient resource first
 	Switch $g_iCmbLaboratory
 		Case 1 To 19 ; regular elixir
@@ -368,6 +387,7 @@ EndFunc   ;==>Laboratory
 ;
 Func LabUpgrade()
 	Local $StartTime, $EndTime, $EndPeriod, $Result, $TimeAdd = 0
+	Local $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], 1)
 	Select
 		Case _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 47, $g_avLabTroops[$g_iCmbLaboratory][1] + 1, True), $sColorNA, 20) = True
 			; check for beige pixel in center just below edge for troop not unlocked
@@ -483,7 +503,7 @@ Func LabUpgrade()
 					ClickP($aAway, 2, $DELAYLABUPGRADE3, "#0360")
 					Return False
 				EndIf
-				IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2] + 1, 0))
+				IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $iLevel + 1)
 				SetLog("Upgrade " & $g_avLabTroops[$g_iCmbLaboratory][3] & " in your laboratory started with success...", $COLOR_SUCCESS)
 				PushMsg("LabSuccess")
 				If _Sleep($DELAYLABUPGRADE2) Then Return
