@@ -9,12 +9,11 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: getArmyCapacityOnTrainTroops(48, 160), _getArmyCapacityOnTrainTroops(48, 160)
 ; ===============================================================================================================================
-Global $g_bFirstRun = False
 
 Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of troops in army Window
     Local $aTempResult[3] = [0, 0, 0]
 	Local $aResult[3] = [0, 0, 0]
-	$aResult[0] = getOcrAndCapture("coc-NewCapacity", $x_start, $y_start, 67, 14, True)
+	$aResult[0] = getOcrAndCapture("coc-NewCapacity", $x_start, $y_start, 70, 16, True)
 
 	Local $dbg = 0
 	
@@ -22,19 +21,18 @@ Func _getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of tr
 		Local $aTempResult = StringSplit($aResult[0], "#", $STR_NOCOUNT)
 		$aResult[1] = Number($aTempResult[0])
 		$aResult[2] = Number($aTempResult[1])
-		$aResult[2] = $aResult[2] / 2
 		; SG Machine
 		;If $aResult[2] <= 2 Then
 		;GUICtrlSetData($g_hTxtTotalMachine, $aResult[2])
 		;$g_iTotalMachine = $aResult[2]
 		; Spell
-			If $aResult[2] <= 11 Then
-				GUICtrlSetData($g_hTxtTotalCountSpell, $aResult[2])
-				$g_iTotalSpellValue = $aResult[2]
+			If $aResult[2] <= 22 Then
+				$g_iTotalSpellValue = $aResult[2] / 2
+				GUICtrlSetData($g_hTxtTotalCountSpell, $g_iTotalSpellValue)
 				; Army
-			  ElseIf $aResult[2] >= 15 Then
-				GUICtrlSetData($g_hTxtTotalCampForced, $aResult[2])
-				$g_iTotalCampForcedValue = $aResult[2]
+			  ElseIf $aResult[2] >= 40 Then
+				$g_iTotalCampForcedValue = $aResult[2] / 2 
+				GUICtrlSetData($g_hTxtTotalCampForced, $g_iTotalCampForcedValue)
 				
 				If $dbg = 1 Then Setlog($aResult[0])
 				If $dbg = 1 Then Setlog($g_iTotalSpellValue)
@@ -52,8 +50,7 @@ EndFunc   ;==>_getArmyCapacityOnTrainTroops
 Func CheckAutoCamp() ; Only first Run and th5 + (Then every time he does the troops he will do it alone.)
 	Local $dbg = 0
 	If $dbg = 1 Then Setlog("campon")
-Sleep(50)
-If $g_bFirstRun = True Then Return
+	Sleep(50)
 
 	;	Local $iCmpSpell = StringCompare($g_iTotalSpellValue, "0")
     ;   If $iCmpSpell = 0 Then ;And $g_iTownHallLevel >= 5 Then ; Spell camp
@@ -62,13 +59,12 @@ If $g_bFirstRun = True Then Return
             If _Sleep(250) Then Return
 			OpenTrainTab("Brew Spells Tab", True)
             If _Sleep(250) Then return
-			Local $NewSpellOCR = getArmyCapacityOnTrainTroops(48, 160) ; Check spell camps
+			Local $NewSpellOCR = _getArmyCapacityOnTrainTroops(43, 160) ; Check spell camps
 			OpenTrainTab("Train Troops Tab", True)
             If _Sleep(250) Then Return
-			Local $NewCampOCR = getArmyCapacityOnTrainTroops(48, 160) ; Check army camps
+			Local $NewCampOCR = _getArmyCapacityOnTrainTroops(43, 160) ; Check army camps
 				Click(825, 122)
 			If _Sleep(250) Then Return
-			$g_bFirstRun = True
 	;	Endif
 EndFunc   ;==>CheckAutoCamp
 
