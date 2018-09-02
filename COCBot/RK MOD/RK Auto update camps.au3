@@ -49,12 +49,12 @@ EndFunc   ;==>_getArmyCapacityOnTrainTroops
 
 Func CheckAutoCamp() ; Only first Run and th5 + (Then every time he does the troops he will do it alone.)
 	Local $dbg = 0
-	If $dbg = 1 Then Setlog("campon")
+	If $dbg = 1 Then Setlog("Auto camp called")
 	Sleep(50)
 
 	;	Local $iCmpSpell = StringCompare($g_iTotalSpellValue, "0")
     ;   If $iCmpSpell = 0 Then ;And $g_iTownHallLevel >= 5 Then ; Spell camp
-		
+			WaitMainscreen()
             Click(30, 584)
             If _Sleep(250) Then Return
 			OpenTrainTab("Brew Spells Tab", True)

@@ -1367,8 +1367,10 @@ Func FirstCheck()
 	VillageReport()
 	
 	If $g_bChkAutoCamp Then 
+	Setlog("Checking camps.", $COLOR_INFO)
 	CheckAutoCamp() ; ADDED By RK MOD(#ID135-)
-	Setlog("Checking camps.", $COLOR_GREEN)
+	Setlog("Checking camps finished.", $COLOR_INFO)
+
 	EndIf
 
 			;If isOnBuilderBase() Or (($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades Or $g_bChkBB_DropTrophies) And SwitchBetweenBases()) Then
