@@ -65,7 +65,7 @@ Func Laboratory()
 
 	$g_iLaboratoryElixirCost = 0
 	If Not $g_bAutoLabUpgradeEnable Then Return ; Lab upgrade not enabled.
-
+	LabPriority()
 	If $g_iCmbLaboratory = 0 Then
 		SetLog("Laboratory enabled, but no troop upgrade selected", $COLOR_WARNING)
 		Return False ; Nothing selected to upgrade
