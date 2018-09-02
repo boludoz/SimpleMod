@@ -233,70 +233,37 @@ Global $CurrHeroBTime[3] = ["", "", ""]
 ; ================================================== ; Priority System - by RK MOD  ======================================== ;
 
 Global $g_bChkPrioritySystem = False, $g_iCmbPrioritySystem = 0
-Global $g_iUpgradeLevel[32][3]=[_
-	["LevelTroop", "Barb", 8], _
-	["LevelTroop", "Arch", 8], _
-	["LevelTroop", "Giant", 9], _
-	["LevelTroop", "Gobl", 7], _
-	["LevelTroop", "Wall", 8], _
-	["LevelTroop", "Ball", 8], _
-	["LevelTroop", "Wiza", 9], _
-	["LevelTroop", "Heal", 5], _
-	["LevelTroop", "Drag", 7], _
-	["LevelTroop", "Pekk", 8], _
-	["LevelTroop", "BabyD", 6], _
-	["LevelTroop", "Mine", 6], _
-	["LevelTroop", "EDrag", 3], _
-	["LevelSpell", "LSpell", 7], _
-	["LevelSpell", "HSpell", 7], _
-	["LevelSpell", "RSpell", 5], _
-	["LevelSpell", "JSpell", 3], _
-	["LevelSpell", "FSpell", 7], _
-	["LevelSpell", "CSpell", 5], _
-	["LevelSpell", "PSpell", 5], _
-	["LevelSpell", "ESpell", 4], _
-	["LevelSpell", "HaSpell", 4], _
-	["LevelSpell", "SkSpell", 5], _
-	["LevelTroop", "Mini", 8], _
-	["LevelTroop", "Hogs", 8], _
-	["LevelTroop", "Valk", 7], _
-	["LevelTroop", "Gole", 8], _
-	["LevelTroop", "Witc", 4], _
-	["LevelTroop", "Lava", 5], _
-	["LevelTroop", "Bowl", 4], _
-	["LevelSiege", "WallW", 3], _
-	["LevelSiege", "BattleB", 3]]
-	
-Global Const $g_iLabCost[32][10]= [_
-	[0, 50000, 150000, 500000, 1500000, 4500000, 6000000, 8000000, "Max"], _					;Barbarian
-	[0, 50000, 250000, 750000, 2250000, 6000000, 7500000, 9000000, "Max"], _  					;Archer
-	[0, 100000, 250000, 750000, 2250000, 5000000, 6000000, 9500000, 12000000, "Max"], _  		;Giant
-	[0, 50000, 250000, 750000, 2250000, 4500000, 6750000, "Max"], _  							;Goblin
-	[0, 100000, 250000, 750000, 200000, 6000000, 9000000, 12000000, "Max"], _ 			 		;Wall Breaker
-	[0, 150000, 450000, 1350000, 2500000, 6000000, 9500000, 12000000, "Max"], _  				;Balloon
-	[0, 150000, 450000, 1350000, 2500000, 5000000, 7000000, 9000000, 11000000, "Max"], _ 	 	;Wizard
-	[0, 750000, 1500000, 3000000, 9500000, "Max"], _  											;Healer
-	[0, 2000000, 3000000, 5000000, 7000000, 9000000, 11000000, "Max"], _ 						;Dragon
-	[0, 3000000, 5000000, 6000000, 7500000, 85000000, 10000000, 12000000, "Max"], _ 			;Pekka
-	[0, 5000000, 6000000, 7000000, 8000000, 9000000, "Max"], _ 							 		;Baby Dragon
-	[0, 6000000, 7000000, 8000000, 9500000, 11000000, "Max"], _ 							 	;Miner
-	[0, 9000000, 11000000, "Max"], _ 													 		;Electro Dragon
-	[0, 200000, 500000, 1000000, 2000000, 6000000, 8000000, "Max"], _ 				 			;Lightning Spell
-	[0, 300000, 600000, 1200000, 2000000, 4000000, 6000000, "Max"], _ 				 			;Healing Spell
-	[0, 450000, 900000, 1800000, 3000000, "Max"], _  											;Rage Spell
-	[0, 3000000, 6000000, "Max"], _ 			 												;Jump Spell
-	[0, 3000000, 4000000, 5000000, 7000000, 9500000, 11000000, "Max"], _  						;Freeze Spell
-	[0, 4000000, 6000000, 8000000, 10000000, "Max"], _  										;Clone Spell
-	[0, 25000, 50000, 75000, 150000, "Max"], _  												;Poison Spell
-	[0, 30000, 60000, 90000, "Max"], _ 												 			;Earthquake Spell
-	[0, 40000, 80000, 100000, "Max"], _ 														;Haste Spell
-	[0, 50000, 75000, 100000, 125000, "Max"], _  												;Skeleton Spell
-	[0, 10000, 20000, 30000, 40000, 100000, 140000, 180000, "Max"], _  							;Minion
-	[0, 20000, 30000, 40000, 50000, 100000, 150000, 200000, "Max"], _  							;Hog Rider
-	[0, 50000, 60000, 70000, 110000, 150000, 190000, "Max"], _ 									;Valkerie
-	[0, 60000, 70000, 80000, 90000, 150000, 200000, 200000, "Max"], _  							;Golem
-	[0, 75000, 160000, 200000, "Max"], _  														;Witch
-	[0, 60000, 70000, 150000, 200000, "Max"], _ 										 		;Lavahound
-	[0, 120000, 200000, 200000, "Max"], _  														;Bowler
-	[0, 6000000, 8000000, "Max"], _  															;Wall Wrecker
-	[0, 6000000, 8000000, "Max"]]  																;Battle Blimp
+Global $g_iUpgradeLevel[32][3] = [["LevelTroop", "Barb", 8], ["LevelTroop", "Arch", 8], ["LevelTroop", "Giant", 9], ["LevelTroop", "Gobl", 7], ["LevelTroop", "Wall", 8], ["LevelTroop", "Ball", 8], ["LevelTroop", "Wiza", 9], ["LevelTroop", "Heal", 5], ["LevelTroop", "Drag", 7], ["LevelTroop", "Pekk", 8], ["LevelTroop", "BabyD", 6], ["LevelTroop", "Mine", 6], ["LevelTroop", "EDrag", 3], ["LevelSpell", "LSpell", 7], ["LevelSpell", "HSpell", 7], ["LevelSpell", "RSpell", 5], ["LevelSpell", "JSpell", 3], ["LevelSpell", "FSpell", 7], ["LevelSpell", "CSpell", 5], ["LevelSpell", "PSpell", 5], ["LevelSpell", "ESpell", 4], ["LevelSpell", "HaSpell", 4], ["LevelSpell", "SkSpell", 5], ["LevelTroop", "Mini", 8], ["LevelTroop", "Hogs", 8], ["LevelTroop", "Valk", 7], ["LevelTroop", "Gole", 8], ["LevelTroop", "Witc", 4], ["LevelTroop", "Lava", 5], ["LevelTroop", "Bowl", 4], ["LevelSiege", "WallW", 3], ["LevelSiege", "BattleB", 3]]
+Global $g_iLabCost[32][10] = [ _
+		[0, 50000, 150000, 500000, 1500000, 4500000, 6000000, 8000000, "Max", "Max"], _				 ;Barbarian
+		[0, 50000, 250000, 750000, 2250000, 6000000, 7500000, 9000000, "Max", "Max"], _  			 ;Archer
+		[0, 100000, 250000, 750000, 2250000, 5000000, 6000000, 9500000, 12000000, "Max"], _  		 ;Giant
+		[0, 50000, 250000, 750000, 2250000, 4500000, 6750000, "Max", "Max", "Max"], _  				 ;Goblin
+		[0, 100000, 250000, 750000, 200000, 6000000, 9000000, 12000000, "Max", "Max"], _ 			 ;Wall Breaker
+		[0, 150000, 450000, 1350000, 2500000, 6000000, 9500000, 12000000, "Max", "Max"], _  		 ;Balloon
+		[0, 150000, 450000, 1350000, 2500000, 5000000, 7000000, 9000000, 11000000, "Max"], _ 	 	 ;Wizard
+		[0, 750000, 1500000, 3000000, 9500000, "Max", "Max", "Max", "Max", "Max"], _  				 ;Healer
+		[0, 2000000, 3000000, 5000000, 7000000, 9000000, 11000000, "Max", "Max", "Max"], _ 			 ;Dragon
+		[0, 3000000, 5000000, 6000000, 7500000, 85000000, 10000000, 12000000, "Max", "Max"], _ 		 ;Pekka
+		[0, 5000000, 6000000, 7000000, 8000000, 9000000, "Max", "Max", "Max", "Max"], _ 			 ;Baby Dragon
+		[0, 6000000, 7000000, 8000000, 9500000, 11000000, "Max", "Max", "Max", "Max"], _ 			 ;Miner
+		[0, 9000000, 11000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"], _ 					 ;Electro Dragon
+		[0, 200000, 500000, 1000000, 2000000, 6000000, 8000000, "Max", "Max", "Max"], _ 			 ;Lightning Spell
+		[0, 300000, 600000, 1200000, 2000000, 4000000, 6000000, "Max", "Max", "Max"], _ 			 ;Healing Spell
+		[0, 450000, 900000, 1800000, 3000000, "Max", "Max", "Max", "Max", "Max"], _  				 ;Rage Spell
+		[0, 3000000, 6000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"], _ 			 		 ;Jump Spell
+		[0, 3000000, 4000000, 5000000, 7000000, 9500000, 11000000, "Max", "Max", "Max"], _  		 ;Freeze Spell
+		[0, 4000000, 6000000, 8000000, 10000000, "Max", "Max", "Max", "Max", "Max"], _  			 ;Clone Spell
+		[0, 25000, 50000, 75000, 150000, "Max", "Max", "Max", "Max", "Max"], _  					 ;Poison Spell
+		[0, 30000, 60000, 90000, "Max", "Max", "Max", "Max", "Max", "Max"], _ 						 ;Earthquake Spell
+		[0, 40000, 80000, 100000, "Max", "Max", "Max", "Max", "Max", "Max"], _ 						 ;Haste Spell
+		[0, 50000, 75000, 100000, 125000, "Max", "Max", "Max", "Max", "Max"], _  					 ;Skeleton Spell
+		[0, 10000, 20000, 30000, 40000, 100000, 140000, 180000, "Max", "Max"], _  					 ;Minion
+		[0, 20000, 30000, 40000, 50000, 100000, 150000, 200000, "Max", "Max"], _  					 ;Hog Rider
+		[0, 50000, 60000, 70000, 110000, 150000, 190000, "Max", "Max", "Max"], _ 					 ;Valkerie
+		[0, 60000, 70000, 80000, 90000, 150000, 200000, 200000, "Max", "Max"], _  					 ;Golem
+		[0, 75000, 160000, 200000, "Max", "Max", "Max", "Max", "Max", "Max"], _  					 ;Witch
+		[0, 60000, 70000, 150000, 200000, "Max", "Max", "Max", "Max", "Max"], _ 					 ;Lavahound
+		[0, 120000, 200000, 200000, "Max", "Max", "Max", "Max", "Max", "Max"], _  					 ;Bowler
+		[0, 6000000, 8000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"], _  					 ;Wall Wrecker
+		[0, 6000000, 8000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"]];Battle Blimp
