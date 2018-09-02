@@ -232,3 +232,7 @@ Global $CurrHeroBTime[3] = ["", "", ""]
 ; ================================================== ; Priority System - by RK MOD  ======================================== ;
 
 Global $g_bChkPrioritySystem = False, $g_iCmbPrioritySystem = 0
+
+; ================================================== ; TNRQT - by RK MOD  ======================================== ;
+
+GLobal $TroopsQueueFull = False
