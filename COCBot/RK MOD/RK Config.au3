@@ -128,8 +128,8 @@ Func ReadConfig_RKMod()
 
 	IniReadS($g_iChkChatGlobal, $g_sProfileConfigPath, "Chatbot", "ChkChatGlobal", $g_iChkChatGlobal, "int")
 	IniReadS($g_iChkScrambleGlobal, $g_sProfileConfigPath, "Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal, "int") 
-	IniReadS($g_bDelayTime, $g_sProfileConfigPath, "Chatbot", "ChkDelayTime", False, "Bool")
-    IniReadS($g_iTxtDelayTimerun, $g_sProfileConfigPath, "Chatbot", "TxtDelayTimerun", $g_iTxtDelayTimerun, "int")
+	IniReadS($g_bChkDelayTime, $g_sProfileConfigPath, "Chatbot", "ChkDelayTime", $g_bChkDelayTime, "Bool")
+    IniReadS($g_iTxtDelayTime, $g_sProfileConfigPath, "Chatbot", "TxtDelayTime", $g_iTxtDelayTime)
 	IniReadS($g_iChkSwitchLang, $g_sProfileConfigPath, "Chatbot", "ChkSwitchLang", $g_iChkSwitchLang, "int")
 	IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chatbot", "CmbLang", 9, "int")
 	IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "int")
@@ -269,8 +269,8 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 
 	_Ini_Add("Chatbot", "ChkChatGlobal", $g_iChkChatGlobal ? 1 : 0)
 	_Ini_Add("Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)  
-    _Ini_Add("Chatbot", "ChkDelayTime", $g_bDelayTime ? 1 : 0)
-    _Ini_Add("Chatbot", "TxtDelayTimerun", $g_iTxtDelayTimerun)
+    _Ini_Add("Chatbot", "ChkDelayTime", $g_bChkDelayTime ? 1 : 0)
+    _Ini_Add("Chatbot", "TxtDelayTime", $g_iTxtDelayTime)
     _Ini_Add("Chatbot", "ChkSwitchLang", $g_iChkSwitchLang ? 1 : 0)
 	_Ini_Add("Chatbot", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmbLang))
 	_Ini_Add("Chatbot", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
@@ -418,8 +418,8 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			$g_iChkChatGlobal = GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED ? 1 : 0
 			$g_iChkScrambleGlobal = GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED ? 1 : 0			
-		    $g_bDelayTime = (GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED)
-            $g_iTxtDelayTimerun = GUICtrlRead($g_hTxtDelayTimerun)
+		    $g_bChkDelayTime = (GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED)
+            $g_iTxtDelayTime = GUICtrlRead($g_hTxtDelayTime)
 			$g_iChkSwitchLang = GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED ? 1 : 0
 			$g_iCmbLang = _GUICtrlComboBox_GetCurSel($g_hCmbLang)
 			$g_iChkRusLang = GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED ? 1 : 0
@@ -571,8 +571,8 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			GUICtrlSetState($g_hChkGlobalChat, $g_iChkChatGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkGlobalScramble, $g_iChkScrambleGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)			
-			GUICtrlSetState($g_hChkDelayTime, $g_bDelayTime ? $GUI_CHECKED : $GUI_UNCHECKED)
-            GUICtrlSetData($g_hTxtDelayTimerun, $g_iTxtDelayTimerun)			
+			GUICtrlSetState($g_hChkDelayTime, $g_bChkDelayTime ? $GUI_CHECKED : $GUI_UNCHECKED)
+            GUICtrlSetData($g_hTxtDelayTime, $g_iTxtDelayTime)			
 			GUICtrlSetState($g_hChkSwitchLang, $g_iChkSwitchLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbLang, $g_iCmbLang)
 			GUICtrlSetState($g_hChkRusLang, $g_iChkRusLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)

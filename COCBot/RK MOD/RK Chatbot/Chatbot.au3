@@ -80,7 +80,7 @@ Func chkGlobalChat()
 EndFunc   ;==>chkGlobalChat
 
 Func chkDelayTime()
-	GUICtrlSetState($g_hTxtDelayTimerun, GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED ? $GUI_ENABLE : $GUI_DISABLE)
+	GUICtrlSetState($g_hTxtDelayTime, GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED ? $GUI_ENABLE : $GUI_DISABLE)
 EndFunc   ;==>chkDelayTime
 
 
@@ -483,14 +483,14 @@ Func DelayTime($chatType)
 			Return True
 		Else
 			Local $sDateTimeDiffOfLastMsgInMin = _DateDiff("s", $g_sGlobalChatLastMsgSentTime, _NowCalc())/60;For getting float value of minutes(s) we divided the diffsec by 60
-			SetDebugLog("$g_iTxtDelayTimerun = " & $g_iTxtDelayTimerun)
+			SetDebugLog("$g_iTxtDelayTime = " & $g_iTxtDelayTime)
 			SetDebugLog("$g_sGlobalChatLastMsgSentTime = " & $g_sGlobalChatLastMsgSentTime &", $sDateTimeDiffOfLastMsgInMin = " & $sDateTimeDiffOfLastMsgInMin )
-			If $sDateTimeDiffOfLastMsgInMin > $g_iTxtDelayTimerun Then ;If GlobalLastMsgSentTime sent time is empty means it's first time sms
+			If $sDateTimeDiffOfLastMsgInMin > $g_iTxtDelayTime Then ;If GlobalLastMsgSentTime sent time is empty means it's first time sms
 				Return True
 			Else
 				;----------- LOGIC JUST FOR BEAUTIFUL TIME LOG -------------------
 				Local $hour = 0, $min = 0, $sec = 0
-				Local $sDateTimeDiffOfLastMsgInSec = _DateDiff("s", _NowCalc() , _DateAdd( 'n',$g_iTxtDelayTimerun, $g_sGlobalChatLastMsgSentTime))
+				Local $sDateTimeDiffOfLastMsgInSec = _DateDiff("s", _NowCalc() , _DateAdd( 'n',$g_iTxtDelayTime, $g_sGlobalChatLastMsgSentTime))
 				SetDebugLog("$sDateTimeDiffOfLastMsgInSec = " & $sDateTimeDiffOfLastMsgInSec)
 				_TicksToTime($sDateTimeDiffOfLastMsgInSec*1000, $hour, $min, $sec)
 				;----------- LOGIC JUST FOR BEAUTIFUL TIME LOG -------------------
@@ -570,11 +570,11 @@ EndFunc   ;==>ChatGlobal
 
 Func ChatbotMessage() ; run the chatbot
 
-	If $g_bDelayTime = False And $g_iChkChatGlobal Then
+	If $g_bChkDelayTime = False And $g_iChkChatGlobal Then
 		ChatGlobal()
 	EndIf
 
-	If $g_bDelayTime = True And $g_iChkChatGlobal Then
+	If $g_bChkDelayTime = True And $g_iChkChatGlobal Then
 		Local $iSendChatGlobalDelay = DelayTime("GLOBAL")
 		If $iSendChatGlobalDelay = True Then
 			ChatGlobal()

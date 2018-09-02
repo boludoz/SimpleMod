@@ -52,7 +52,7 @@ Global $g_ahumanMessage[2] = ["", ""]
 
 ; ================================================== ChatBOT PART ================================================== ;
 
-Global $g_hCmblang = 0, $g_hChkDelayTime = 0, $g_hTxtDelayTimerun = 0
+Global $g_hCmbLang = 0, $g_hChkDelayTime = 0, $g_hTxtDelayTime = 0
 Global $g_hChkGlobalChat = 0, $g_hChkGlobalScramble = 0, $g_hChkSwitchLang = 0, $g_hChkClanChat = 0, $g_hChkCleverbot = 0
 Global $g_hChkUseResponses = 0, $g_hChkUseGeneric = 0, $g_hChkChatNotify = 0, $g_hChkPbSendNewChats = 0, $g_hChkRusLang = 0
 Global $g_hTxtEditGlobalMessages1 = "", $g_hTxtEditGlobalMessages2 = ""
@@ -328,7 +328,7 @@ Func TabItem3()
    $g_hChkDelayTime = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - Chat", "ChkDelayTime_01", "Delay Time"), 80 - $x, 225 - $y, -1, -1)
        GUICtrlSetState(-1, $GUI_UNCHECKED)
        GUICtrlSetOnEvent(-1, "chkDelayTime")
-   $g_hTxtDelayTimerun = GUICtrlCreateInput("10", 160 - $x, 226 - $y, 25, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+   $g_hTxtDelayTime = GUICtrlCreateInput("10", 160 - $x, 226 - $y, 25, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
        GUICtrlSetState(-1, $GUI_DISABLE)
 	   GUICtrlSetLimit(-1, 2)
    GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design MOD - Chat", "Label_15", "min"),  190 - $x, 228 - $y, -1, -1)
