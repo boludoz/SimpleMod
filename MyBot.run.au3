@@ -1247,7 +1247,7 @@ Func _RunFunction($action)
 			EndIf
 			;------------------ADDED By RK MOD - END------------------
 		Case "DonateCC,Train"
-			If $g_bChkAutoCamp = True Then Return ;CheckAutoCamp() ; ADDED By RK MOD(#ID135-)
+			If $g_bChkAutoCamp = True Then CheckAutoCamp() ; ADDED By RK MOD(#ID135-)
 
 			If $g_iActiveDonate And $g_bChkDonate Then
 				;------------------REMOVED By RK MOD - START------------------
