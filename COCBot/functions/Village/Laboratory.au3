@@ -59,14 +59,17 @@ Func Laboratory()
 	;Create local static array to hold upgrade values
 	Static $aUpgradeValue[33] = [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	Local $iAvailElixir, $iAvailDark, $sElixirCount, $sDarkCount, $TimeDiff, $aArray, $Result
-	Local $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], 1)
+	Local $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[Int ($g_iCmbLaboratory - 1)][1], $g_iUpgradeLevel[Int ($g_iCmbLaboratory - 1)][2], 1)
 	
 	$g_iUpgradeMinElixir = Number($g_iUpgradeMinElixir)
 	$g_iUpgradeMinDark = Number($g_iUpgradeMinDark)
 
 	$g_iLaboratoryElixirCost = 0
 	If Not $g_bAutoLabUpgradeEnable Then Return ; Lab upgrade not enabled.
-	LabPriority()
+	If $g_bChkPrioritySystem = True Then
+		LabPriority()
+		Sleep (5000)
+	EndIf
 	If $g_iCmbLaboratory = 0 Then
 		SetLog("Laboratory enabled, but no troop upgrade selected", $COLOR_WARNING)
 		Return False ; Nothing selected to upgrade
@@ -607,7 +610,7 @@ Func LabTroopImages($iStart, $iEnd) ; Debug function to record pixel values for 
 EndFunc   ;==>LabTroopImages
 
 Func LabPriority()
-	SetLog("Lab Priority Check.", $COLOR_INFO)
+	
 	Local $iLabResults[32][3]=[ _
 		[0, "Elixir", 1], _
 		[0, "Elixir", 2], _
@@ -647,7 +650,8 @@ Func LabPriority()
 	Local $minElixerValue = ""
 	Local $minDarkElixerValue = ""
 
-	If $g_bChkPrioritySystem = True Then   ;------------------------------------NEEDS GUI AND GLOBAL VALUE
+	If $g_bChkPrioritySystem = True Then
+	SetLog("Lab Priority Check.", $COLOR_INFO)
 		For $iz = 0 to 31
 			If $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)] = "Max" Or $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)] = 0 Then
 				$iMaxCount =+ 1
@@ -696,18 +700,18 @@ Func LabPriority()
 		Next
 		If $g_iCmbPrioritySystem = 0 Then
 				If ($minElixerValue <> "") And $iElixirCount < 21 Then
-					$g_iCmbLaboratory = $minElixerValue[0][2]
+					$g_iCmbLaboratory = Int($minElixerValue[0][2])
 					Return
 				ElseIf ($minDarkElixerValue <> "") And $iDElixirCount < 11 Then
-					$g_iCmbLaboratory = $minDarkElixerValue[0][2]
+					$g_iCmbLaboratory = Int($minDarkElixerValue[0][2])
 					Return
 				EndIf
 		ElseIf $g_iCmbPrioritySystem = 1 Then
 				If ($minDarkElixerValue <> "") And $iDElixirCount < 11 Then
-					$g_iCmbLaboratory = $minDarkElixerValue[0][2]
+					$g_iCmbLaboratory = Int($minDarkElixerValue[0][2])
 					Return
 				ElseIf ($minElixerValue <> "") And $iElixirCount < 21 Then
-					$g_iCmbLaboratory = $minElixerValue[0][2]
+					$g_iCmbLaboratory = Int($minElixerValue[0][2])
 					Return
 				EndIf
 		EndIf
