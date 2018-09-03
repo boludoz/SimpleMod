@@ -52,19 +52,19 @@ Func btnTestGlobalChatBot()
 	SetLog("Test Global Chat Bot", $COLOR_DEBUG)
 
 	Local $wasRunState = $g_bRunState
-	Local $wasChkChatGlobal = $g_iChkChatGlobal
-	Local $wasChkChatClan = $g_iChkChatClan
+	Local $wasChkChatGlobal = $g_bChkChatGlobal
+	Local $wasChkChatClan = $g_bChkChatClan
 	;For Debug Purpose set these values temporarily
 	$g_bRunState = True
-	$g_iChkChatGlobal = True
-	$g_iChkChatClan = False
+	$g_bChkChatGlobal = True
+	$g_bChkChatClan = False
 
 	ChatbotMessage()
 
 	;Reset to orignal state
 	$g_bRunState = $wasRunState
-	$g_iChkChatGlobal = $wasChkChatGlobal
-	$g_iChkChatClan = $wasChkChatClan
+	$g_bChkChatGlobal = $wasChkChatGlobal
+	$g_bChkChatClan = $wasChkChatClan
 
 EndFunc   ;==>btnTestGlobalChatBot
 
@@ -73,19 +73,19 @@ Func btnTestClanChatBot()
 	SetLog("Test Global Chat Bot", $COLOR_DEBUG)
 
 	Local $wasRunState = $g_bRunState
-	Local $wasChkChatGlobal = $g_iChkChatGlobal
-	Local $wasChkChatClan = $g_iChkChatClan
+	Local $wasChkChatGlobal = $g_bChkChatGlobal
+	Local $wasChkChatClan = $g_bChkChatClan
 	;For Debug Purpose set these values temporarily
 	$g_bRunState = True
-	$g_iChkChatGlobal = False
-	$g_iChkChatClan = True
+	$g_bChkChatGlobal = False
+	$g_bChkChatClan = True
 
 	ChatbotMessage()
 
 	;Reset to orignal state
 	$g_bRunState = $wasRunState
-	$g_iChkChatGlobal = $wasChkChatGlobal
-	$g_iChkChatClan = $wasChkChatClan
+	$g_bChkChatGlobal = $wasChkChatGlobal
+	$g_bChkChatClan = $wasChkChatClan
 
 EndFunc   ;==>btnTestClanChatBot
 

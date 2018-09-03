@@ -110,17 +110,17 @@ Global $g_iChkTrophySwitchMax, $g_iTxtMaxTrophyAmount, $g_iCmbTrophyMaxProfile, 
 Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; flag if AttackBar is dragged or not
 
 ; ================================================ NEW ChatBot - by RK MOD ======================================== ;
-Global $g_iChkChatGlobal = 0
-Global $g_iChkScrambleGlobal = 0
-Global $g_iChkSwitchLang = 0
-Global $g_iChkChatClan = 0
-Global $g_iChkClanUseResponses = 0
-Global $g_iChkClanAlwaysMsg = 0
-Global $g_iChkUseNotify = 0
-Global $g_iChkPbSendNew = 0
-Global $g_iChkRusLang = 0
+Global $g_bChkChatGlobal = False
+Global $g_bChkScrambleGlobal = False
+Global $g_bChkSwitchLang = False
+Global $g_bChkChatClan = False
+Global $g_bChkClanUseResponses = False
+Global $g_bChkClanAlwaysMsg = False
+Global $g_bChkUseNotify = False
+Global $g_bChkPbSendNew = False
+Global $g_bChkRusLang = False
 Global $g_iCmbLang = 9
-Global $g_iChkCleverbot = 0
+Global $g_bChkCleverbot = False
 Global $g_bChkDelayTime = False
 Global $g_iTxtDelayTime = 10
 Global $g_iChkClanMessages = ""
@@ -138,7 +138,7 @@ Global $g_sMessage = ""
 
 ;=============================================== Russian Request - by RK MOD ======================================== ;
 
-Global $g_iChkRusLang2 = 0
+Global $g_bChkRusLang2 = False
 
 ;=============================================== Max logout time - by RK MOD ======================================== ;
 

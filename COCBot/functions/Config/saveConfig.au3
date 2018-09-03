@@ -424,7 +424,7 @@ Func SaveConfig_600_11()
     
 	; ================================================== Russian Request - by RK MOD ================================= ;
 
-	_Ini_Add("Lang", "chkRusLang2", $g_iChkRusLang2 ? 1 : 0)
+	_Ini_Add("Lang", "chkRusLang2", $g_bChkRusLang2 ? True : False)
 	
 EndFunc   ;==>SaveConfig_600_11
 

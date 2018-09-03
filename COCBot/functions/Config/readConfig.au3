@@ -479,7 +479,7 @@ Func ReadConfig_600_11()
 
 	; ================================================== Russian Request - by RK MOD ================================= ;
 
-	IniReadS($g_iChkRusLang2, $g_sProfileConfigPath, "Lang", "ChkRusLang2", $g_iChkRusLang2, "Int")
+	IniReadS($g_bChkRusLang2, $g_sProfileConfigPath, "Lang", "ChkRusLang2", False, "Bool")
 
 EndFunc   ;==>ReadConfig_600_11
 

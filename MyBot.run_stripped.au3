@@ -6932,17 +6932,17 @@ Global $g_iChkElixirSwitchMax, $g_iTxtMaxElixirAmount, $g_iCmbElixirMaxProfile, 
 Global $g_iChkDESwitchMax, $g_iTxtMaxDEAmount, $g_iCmbDEMaxProfile, $g_iChkDESwitchMin, $g_iTxtMinDEAmount, $g_iCmbDEMinProfile
 Global $g_iChkTrophySwitchMax, $g_iTxtMaxTrophyAmount, $g_iCmbTrophyMaxProfile, $g_iChkTrophySwitchMin, $g_iTxtMinTrophyAmount, $g_iCmbTrophyMinProfile
 Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False
-Global $g_iChkChatGlobal = 0
-Global $g_iChkScrambleGlobal = 0
-Global $g_iChkSwitchLang = 0
-Global $g_iChkChatClan = 0
-Global $g_iChkClanUseResponses = 0
-Global $g_iChkClanAlwaysMsg = 0
-Global $g_iChkUseNotify = 0
-Global $g_iChkPbSendNew = 0
-Global $g_iChkRusLang = 0
+Global $g_bChkChatGlobal = False
+Global $g_bChkScrambleGlobal = False
+Global $g_bChkSwitchLang = False
+Global $g_bChkChatClan = False
+Global $g_bChkClanUseResponses = False
+Global $g_bChkClanAlwaysMsg = False
+Global $g_bChkUseNotify = False
+Global $g_bChkPbSendNew = False
+Global $g_bChkRusLang = False
 Global $g_iCmbLang = 9
-Global $g_iChkCleverbot = 0
+Global $g_bChkCleverbot = False
 Global $g_bChkDelayTime = False
 Global $g_iTxtDelayTime = 10
 Global $g_iChkClanMessages = ""
@@ -6957,7 +6957,7 @@ Global $cResp
 Global $cGeneric
 Global $ChatbotStartTime
 Global $g_sMessage = ""
-Global $g_iChkRusLang2 = 0
+Global $g_bChkRusLang2 = False
 Global $g_bTrainLogoutMaxTime = False, $g_iTrainLogoutMaxTime = 4
 Global $g_bRequestCCDefense, $g_sRequestCCDefenseText, $g_bRequestCCDefenseWhenPB, $g_iRequestDefenseTime
 Global $g_iChkBoostBMagic = 0, $g_iCmbBoostBrMagic = 0, $g_iChkBoostCMagic = 0, $g_iCmbBoostClMagic = 0
@@ -15314,6 +15314,7 @@ _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", 
 GUICtrlSetData(-1, "0|2|4|6|7|8|9|10|11", "0")
 GUICtrlSetOnEvent(-1, "TotalSpellCountClick")
 $g_hChkAutoCamp = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkAutoCamp", "Auto update camps"), $x + 135, $y, -1, 15)
+GUICtrlSetOnEvent(-1, "chkAutoCamp")
 $y += 13
 Local $sSpellName = GetTranslatedFileIni("MBR Global GUI Design Names Spells", "TxtLightningSpells", "Lightning Spell")
 $g_ahPicTrainArmySpell[$eSpellLightning] = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnLightSpell, $x, $y + 10, 32, 32)
@@ -15479,6 +15480,7 @@ _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", 
 $x += 103
 $g_hChkFillArcher = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillArcher", "Fill Archer"), $x, $y, -1, 15)
 GUICtrlSetState(-1, $GUI_DISABLE)
+GUICtrlSetOnEvent(-1, "chkFillArcher")
 _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillArcher_Info_01", "Train some archers to top-up the camp or queue if it is nearly full"))
 $x += 110
 $g_hChkFillEQ = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "chkFillEQ", "Fill 1 EQ"), $x, $y, -1, 15)
@@ -22943,9 +22945,12 @@ EndFunc
 Func chkFillArcher()
 If GUICtrlRead($g_hChkFillArcher) = $GUI_CHECKED Then
 _GUI_Value_STATE("ENABLE", $g_hTxtFillArcher)
+$g_bChkFillArcher = True
 Else
 _GUI_Value_STATE("DISABLE", $g_hTxtFillArcher)
+$g_bChkFillArcher = False
 EndIf
+lblTotalCountTroop1()
 EndFunc
 Func SetComboTroopComp()
 Local $bWasRedraw = SetRedrawBotWindow(False, Default, Default, Default, "SetComboTroopComp")
@@ -58319,7 +58324,7 @@ EndSwitch
 If $g_bMeetCondStop Then
 Switch $iCmbBotCommand
 Case 0
-If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
+If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
 ChatbotMessage()
 EndIf
 If $g_bDonationEnabled = False Then
@@ -61561,7 +61566,7 @@ If $g_bChkBackgroundMode = False And $g_bNoFocusTampering = False Then ControlFo
 AndroidSendText($g_sRequestTroopsText, True)
 Click($atxtRequestCCBtn[0], $atxtRequestCCBtn[1], 1, 0, "#0254")
 _Sleep($DELAYMAKEREQUEST2)
-If $g_iChkRusLang2 = 1 Then
+If $g_bChkRusLang2 = True Then
 SetLog("Request in russian", $COLOR_BLUE)
 AutoItWinSetTitle('MyAutoItTitle')
 _WinAPI_SetKeyboardLayout(WinGetHandle(AutoItWinGetTitle()), 0x0419)
@@ -67929,7 +67934,7 @@ chkRequestDefense()
 GUICtrlSetData($g_hTxtRequestCCDefense, $g_sRequestCCDefenseText)
 _GUICtrlComboBox_SetCurSel($g_hCmbRequestCCDefenseWhen, $g_bRequestCCDefenseWhenPB ? 0 : 1)
 GUICtrlSetData($g_hTxtRequestCCDefenseTime, $g_iRequestDefenseTime)
-GUICtrlSetState($g_hChkRusLang2, $g_iChkRusLang2 = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkRusLang2, $g_bChkRusLang2 ? $GUI_CHECKED : $GUI_UNCHECKED)
 chkRusLang2()
 Case "Save"
 $g_bRequestTroopsEnable =(GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED)
@@ -67952,7 +67957,7 @@ $g_bRequestCCDefense =(GUICtrlRead($g_hChkRequestCCDefense) = $GUI_CHECKED)
 $g_sRequestCCDefenseText = GUICtrlRead($g_hTxtRequestCCDefense)
 $g_bRequestCCDefenseWhenPB =(_GUICtrlComboBox_GetCurSel($g_hCmbRequestCCDefenseWhen) = 0)
 $g_iRequestDefenseTime = GUICtrlRead($g_hTxtRequestCCDefenseTime)
-$g_iChkRusLang2 = GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED ? 1 : 0
+$g_bChkRusLang2 =(GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED)
 EndSwitch
 EndFunc
 Func ApplyConfig_600_12($TypeReadSave)
@@ -69618,6 +69623,7 @@ GUICtrlSetData($g_hTxtFillArcher, $g_iTxtFillArcher)
 GUICtrlSetState($g_hChkFillEQ, $g_bChkFillEQ ? $GUI_CHECKED : $GUI_UNCHECKED)
 chkSmartTrain()
 GUICtrlSetState($g_hChkAutoCamp, $g_bChkAutoCamp ? $GUI_CHECKED : $GUI_UNCHECKED)
+chkAutoCamp()
 Case "Save"
 For $T = 0 To $eTroopCount - 1
 $g_aiArmyCompTroops[$T] = GUICtrlRead($g_ahTxtTrainArmyTroopCount[$T])
@@ -70092,7 +70098,7 @@ $g_bRequestCCDefense =(IniRead($g_sProfileConfigPath, "donate", "RequestDefenseE
 $g_sRequestCCDefenseText = IniRead($g_sProfileConfigPath, "donate", "RequestDefenseText", "")
 $g_bRequestCCDefenseWhenPB =(IniRead($g_sProfileConfigPath, "donate", "RequestDefenseWhenPB", "1") = "1")
 $g_iRequestDefenseTime = Int(IniRead($g_sProfileConfigPath, "donate", "RequestDefenseTime", "0"))
-IniReadS($g_iChkRusLang2, $g_sProfileConfigPath, "Lang", "ChkRusLang2", $g_iChkRusLang2, "Int")
+IniReadS($g_bChkRusLang2, $g_sProfileConfigPath, "Lang", "ChkRusLang2", False, "Bool")
 EndFunc
 Func ReadConfig_600_12()
 IniReadS($g_bChkDonate, $g_sProfileConfigPath, "donate", "Doncheck", True, "Bool")
@@ -71221,7 +71227,7 @@ _Ini_Add("donate", "RequestDefenseEnable", $g_bRequestCCDefense ? 1 : 0)
 _Ini_Add("donate", "RequestDefenseText", $g_sRequestCCDefenseText)
 _Ini_Add("donate", "RequestDefenseWhenPB", $g_bRequestCCDefenseWhenPB ? 1 : 0)
 _Ini_Add("donate", "RequestDefenseTime", $g_iRequestDefenseTime)
-_Ini_Add("Lang", "chkRusLang2", $g_iChkRusLang2 ? 1 : 0)
+_Ini_Add("Lang", "chkRusLang2", $g_bChkRusLang2 ? True : False)
 EndFunc
 Func SaveConfig_600_12()
 Local $t = __TimerInit()
@@ -71939,7 +71945,7 @@ _Ini_Add("SmartTrain", "ChkPreciseTroops", $g_bChkPreciseArmyCamp ? 1 : 0)
 _Ini_Add("SmartTrain", "ChkFillArcher", $g_bChkFillArcher ? 1 : 0)
 _Ini_Add("SmartTrain", "TxtFillArcher", $g_iTxtFillArcher)
 _Ini_Add("SmartTrain", "ChkFillEQ", $g_bChkFillEQ ? 1 : 0)
-_Ini_Add("troop", "ChkAutoCamp", $g_bChkAutoCamp ? 1 : 0)
+_Ini_Add("troop", "ChkAutoCamp", $g_bChkAutoCamp ? True : False)
 EndFunc
 Func SaveConfig_600_54()
 ApplyConfig_600_54(GetApplyConfigSaveAction())
@@ -73703,19 +73709,18 @@ EndFunc
 Func _getArmyCapacityOnTrainTroops($x_start, $y_start)
 Local $aTempResult[3] = [0, 0, 0]
 Local $aResult[3] = [0, 0, 0]
-$aResult[0] = getOcrAndCapture("coc-NewCapacity", $x_start, $y_start, 67, 14, True)
+$aResult[0] = getOcrAndCapture("coc-NewCapacity", $x_start, $y_start, 70, 16, True)
 Local $dbg = 0
 If StringInStr($aResult[0], "#") Then
 Local $aTempResult = StringSplit($aResult[0], "#", $STR_NOCOUNT)
 $aResult[1] = Number($aTempResult[0])
 $aResult[2] = Number($aTempResult[1])
-$aResult[2] = $aResult[2] / 2
-If $aResult[2] <= 11 Then
-GUICtrlSetData($g_hTxtTotalCountSpell, $aResult[2])
-$g_iTotalSpellValue = $aResult[2]
-ElseIf $aResult[2] >= 15 Then
-GUICtrlSetData($g_hTxtTotalCampForced, $aResult[2])
-$g_iTotalCampForcedValue = $aResult[2]
+If $aResult[2] <= 22 Then
+$g_iTotalSpellValue = $aResult[2] / 2
+GUICtrlSetData($g_hTxtTotalCountSpell, $g_iTotalSpellValue)
+ElseIf $aResult[2] >= 40 Then
+$g_iTotalCampForcedValue = $aResult[2] / 2
+GUICtrlSetData($g_hTxtTotalCampForced, $g_iTotalCampForcedValue)
 If $dbg = 1 Then Setlog($aResult[0])
 If $dbg = 1 Then Setlog($g_iTotalSpellValue)
 If $dbg = 1 Then Setlog($g_iTotalCampForcedValue)
@@ -73725,6 +73730,29 @@ Else
 SetLog("DEBUG | ERROR on GetCurrentArmy", $COLOR_ERROR)
 EndIf
 Return $aResult[0]
+EndFunc
+Func CheckAutoCamp()
+Local $dbg = 0
+If $dbg = 1 Then Setlog("Auto camp called")
+Sleep(50)
+WaitMainscreen()
+Click(30, 584)
+If _Sleep(250) Then Return
+OpenTrainTab("Brew Spells Tab", True)
+If _Sleep(250) Then return
+Local $NewSpellOCR = _getArmyCapacityOnTrainTroops(43, 160)
+OpenTrainTab("Train Troops Tab", True)
+If _Sleep(250) Then Return
+Local $NewCampOCR = _getArmyCapacityOnTrainTroops(43, 160)
+Click(825, 122)
+If _Sleep(250) Then Return
+EndFunc
+Func chkAutoCamp()
+If GUICtrlRead($g_hChkAutoCamp) = $GUI_CHECKED Then
+$g_bChkAutoCamp = True
+Else
+$g_bChkAutoCamp = False
+EndIf
 EndFunc
 Func CheckStopForWar()
 Local $asResetTimer = ["", "", "", "", "", "", "", ""], $abResetBoolean[8] = [False, False, False, False, False, False, False, False]
@@ -76102,7 +76130,7 @@ Next
 Return False
 EndFunc
 Func chkGlobalChat()
-$g_iChkChatGlobal = 1
+$g_bChkChatGlobal = True
 If GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED Then
 GUICtrlSetState($g_hChkGlobalScramble, $GUI_ENABLE)
 GUICtrlSetState($g_hChkDelayTime, $GUI_ENABLE)
@@ -76112,7 +76140,7 @@ GUICtrlSetState($g_hChkRusLang, $GUI_ENABLE)
 GUICtrlSetState($g_hTxtEditGlobalMessages1, $GUI_ENABLE)
 GUICtrlSetState($g_hTxtEditGlobalMessages2, $GUI_ENABLE)
 Else
-$g_iChkChatGlobal = 0
+$g_bChkChatGlobal = False
 GUICtrlSetState($g_hChkGlobalScramble, $GUI_DISABLE)
 GUICtrlSetState($g_hChkSwitchLang, $GUI_DISABLE)
 GUICtrlSetState($g_hChkDelayTime, $GUI_DISABLE)
@@ -76132,16 +76160,16 @@ GUICtrlSetState($g_hTxtDelayTime, GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED ?
 EndFunc
 Func chkGlobalScramble()
 If GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED Then
-$g_iChkScrambleGlobal = 1
+$g_bChkScrambleGlobal = True
 Else
-$g_iChkScrambleGlobal = 0
+$g_bChkScrambleGlobal = False
 EndIf
 EndFunc
 Func chkSwitchLang()
 If GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED Then
-$g_iChkSwitchLang = 1
+$g_bChkSwitchLang = True
 Else
-$g_iChkSwitchLang = 0
+$g_bChkSwitchLang = False
 EndIf
 If GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED Then
 GUICtrlSetState($g_hCmbLang, $GUI_ENABLE)
@@ -76150,7 +76178,7 @@ GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
 EndIf
 EndFunc
 Func chkClanChat()
-$g_iChkChatClan = 1
+$g_bChkChatClan = True
 If GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED Then
 GUICtrlSetState($g_hChkUseResponses, $GUI_ENABLE)
 GUICtrlSetState($g_hChkUseGeneric, $GUI_ENABLE)
@@ -76160,7 +76188,7 @@ GUICtrlSetState($g_hChkCleverbot, $GUI_ENABLE)
 GUICtrlSetState($g_hTxtEditResponses, $GUI_ENABLE)
 GUICtrlSetState($g_hTxtEditGeneric, $GUI_ENABLE)
 Else
-$g_iChkChatClan = 0
+$g_bChkChatClan = False
 GUICtrlSetState($g_hChkUseResponses, $GUI_DISABLE)
 GUICtrlSetState($g_hChkUseGeneric, $GUI_DISABLE)
 GUICtrlSetState($g_hChkChatNotify, $GUI_DISABLE)
@@ -76172,44 +76200,44 @@ EndIf
 EndFunc
 Func chkUseResponses()
 If GUICtrlRead($g_hChkUseResponses) = $GUI_CHECKED Then
-$g_iChkClanUseResponses = 1
+$g_bChkClanUseResponses = True
 Else
-$g_iChkClanUseResponses = 0
+$g_bChkClanUseResponses = False
 EndIf
 EndFunc
 Func chkUseGeneric()
 If GUICtrlRead($g_hChkUseGeneric) = $GUI_CHECKED Then
-$g_iChkClanAlwaysMsg = 1
+$g_bChkClanAlwaysMsg = True
 Else
-$g_iChkClanAlwaysMsg = 0
+$g_bChkClanAlwaysMsg = False
 EndIf
 EndFunc
 Func chkChatNotify()
 If GUICtrlRead($g_hChkChatNotify) = $GUI_CHECKED Then
-$g_iChkUseNotify = 1
+$g_bChkUseNotify = True
 Else
-$g_iChkUseNotify = 0
+$g_bChkUseNotify = False
 EndIf
 EndFunc
 Func chkPbSendNewChats()
 If GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED Then
-$g_iChkPbSendNew = 1
+$g_bChkPbSendNew = True
 Else
-$g_iChkPbSendNew = 0
+$g_bChkPbSendNew = False
 EndIf
 EndFunc
 Func chkCleverbot()
 If GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED Then
-$g_iChkCleverbot = 1
+$g_bChkCleverbot = True
 Else
-$g_iChkCleverbot = 0
+$g_bChkCleverbot = False
 EndIf
 EndFunc
 Func chkRusLang()
 If GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED Then
-$g_iChkRusLang = 1
+$g_bChkRusLang = True
 Else
-$g_iChkRusLang = 0
+$g_bChkRusLang = False
 EndIf
 EndFunc
 Func ChatGuiEditUpdate()
@@ -76261,7 +76289,7 @@ EndFunc
 Func ChatbotChatInput($g_sMessage)
 If _Sleep(1000) Then Return
 Click(33, 707, 1)
-If $g_iChkRusLang = 1 Then
+If $g_bChkRusLang = True Then
 SetLog("Chat send in russia", $COLOR_BLUE)
 AutoItWinSetTitle('MyAutoItTitle')
 _WinAPI_SetKeyboardLayout(WinGetHandle(AutoItWinGetTitle()), 0x0419)
@@ -76302,7 +76330,7 @@ Return False
 EndIf
 EndFunc
 Func ChatbotNotifySendChat()
-If Not $g_iChkUseNotify Then Return
+If Not $g_bChkUseNotify Then Return
 Local $Date = @YEAR & "-" & @MON & "-" & @MDAY
 Local $Time = @HOUR & "." & @MIN & "." & @SEC
 _CaptureRegion(0, 0, 320, 675)
@@ -76316,11 +76344,11 @@ Local $iDelete = FileDelete($g_sProfileLootsPath & $ChatFile)
 If Not($iDelete) Then SetLog("Chatbot: Failed to delete temp file", $COLOR_RED)
 EndFunc
 Func ChatbotNotifyQueueChat($Chat)
-If Not $g_iChkUseNotify Then Return
+If Not $g_bChkUseNotify Then Return
 _ArrayAdd($ChatbotQueuedChats, $Chat)
 EndFunc
 Func ChatbotNotifyStopChatRead()
-If Not $g_iChkUseNotify Then Return
+If Not $g_bChkUseNotify Then Return
 $ChatbotReadInterval = 0
 $ChatbotIsOnInterval = False
 EndFunc
@@ -76479,7 +76507,7 @@ EndIf
 EndIf
 EndFunc
 Func ChatGlobal()
-If $g_iChkSwitchLang = 1 Then
+If $g_bChkSwitchLang = 1 Then
 Switch GUICtrlRead($g_hCmbLang)
 Case "FR"
 ChangeLanguageToFRA()
@@ -76518,7 +76546,7 @@ Else
 $g_sMessage[0] = ""
 $g_sMessage[1] = $g_iChkGlobalMessages2[Random(0, UBound($g_iChkGlobalMessages2) - 1, 1)]
 EndIf
-If $g_iChkScrambleGlobal Then
+If $g_bChkScrambleGlobal Then
 _ArrayShuffle($g_sMessage)
 EndIf
 If Not ChatbotSelectGlobalChat() Then Return
@@ -76526,7 +76554,7 @@ If Not ChatbotChatGlobalInput() Then Return
 If Not ChatbotChatInput(_ArrayToString($g_sMessage, " ")) Then Return
 If Not ChatbotChatSendGlobal() Then Return
 If Not ChatbotChatClose() Then Return
-If $g_iChkSwitchLang = 1 Then
+If $g_bChkSwitchLang = True Then
 ChangeLanguageToEN()
 _Sleep(3000)
 waitMainScreen()
@@ -76534,17 +76562,17 @@ _Sleep(3000)
 EndIf
 EndFunc
 Func ChatbotMessage()
-If $g_bChkDelayTime = False And $g_iChkChatGlobal Then
+If $g_bChkDelayTime = False And $g_bChkChatGlobal Then
 ChatGlobal()
 EndIf
-If $g_bChkDelayTime = True And $g_iChkChatGlobal Then
+If $g_bChkDelayTime = True And $g_bChkChatGlobal Then
 Local $iSendChatGlobalDelay = DelayTime("GLOBAL")
 If $iSendChatGlobalDelay = True Then
 ChatGlobal()
 $g_sGlobalChatLastMsgSentTime = _NowCalc()
 EndIf
 EndIf
-If $g_iChkChatClan Then
+If $g_bChkChatClan Then
 If Not ChatbotChatOpen() Then Return
 SetLog("Chatbot: Sending chats to clan", $COLOR_GREEN)
 If Not ChatbotSelectClanChat() Then Return
@@ -76583,14 +76611,14 @@ Local $ChatMsg = StringStripWS($sLastChat, 7)
 SetLog("Found chat message: " & $ChatMsg, $COLOR_GREEN)
 Local $SentMessage = False
 If $ChatMsg = "" Or $ChatMsg = " " Then
-If $g_iChkClanAlwaysMsg Then
+If $g_bChkClanAlwaysMsg Then
 If Not ChatbotChatClanInput() Then Return
 If Not ChatbotChatInput($g_iChkClanMessages[Random(0, UBound($g_iChkClanMessages) - 1, 1)]) Then Return
 If Not ChatbotChatSendClan() Then Return
 $SentMessage = True
 EndIf
 EndIf
-If $g_iChkClanUseResponses And Not $SentMessage Then
+If $g_bChkClanUseResponses And Not $SentMessage Then
 For $a = 0 To UBound($g_iChkClanResponses) - 1
 If StringInStr($ChatMsg, $g_iChkClanResponses[$a][0]) Then
 Local $Response = $g_iChkClanResponses[$a][1]
@@ -76603,8 +76631,8 @@ ExitLoop
 EndIf
 Next
 EndIf
-If($g_iChkCleverbot = 1) And Not $SentMessage Then
-Local $Response = runHelper($ChatMsg, $g_iChkCleverbot)
+If($g_bChkCleverbot = True) And Not $SentMessage Then
+Local $Response = runHelper($ChatMsg, $g_bChkCleverbot)
 If Not $Response = False Or Not $ChatMsg = "" Or Not $ChatMsg = " " Then
 SetLog("Got cleverbot response: " & $Response, $COLOR_GREEN)
 If Not ChatbotChatClanInput() Then Return
@@ -76614,29 +76642,29 @@ $SentMessage = True
 EndIf
 EndIf
 If Not $SentMessage Then
-If $g_iChkClanAlwaysMsg Then
+If $g_bChkClanAlwaysMsg Then
 If Not ChatbotChatClanInput() Then Return
 If Not ChatbotChatInput($g_iChkClanMessages[Random(0, UBound($g_iChkClanMessages) - 1, 1)]) Then Return
 If Not ChatbotChatSendClan() Then Return
 EndIf
 EndIf
-If $g_iChkUseNotify And $g_iChkPbSendNew Then
+If $g_bChkUseNotify And $g_bChkPbSendNew Then
 If Not $SentClanChat Then ChatbotNotifySendChat()
 EndIf
-ElseIf $g_iChkClanAlwaysMsg Then
+ElseIf $g_bChkClanAlwaysMsg Then
 If Not ChatbotChatClanInput() Then Return
 If Not ChatbotChatInput($g_iChkClanMessages[Random(0, UBound($g_iChkClanMessages) - 1, 1)]) Then Return
 If Not ChatbotChatSendClan() Then Return
 EndIf
 If Not ChatbotChatClose() Then Return
 EndIf
-If $g_iChkChatGlobal Then
+If $g_bChkChatGlobal Then
 SetLog("Chatbot: Done chatting", $COLOR_GREEN)
-ElseIf $g_iChkChatClan Then
+ElseIf $g_bChkChatClan Then
 SetLog("Chatbot: Done chatting", $COLOR_GREEN)
 EndIf
 EndFunc
-Func runHelper($msg, $g_iChkCleverbot)
+Func runHelper($msg, $g_bChkCleverbot)
 Local $command, $DOS, $HelperStartTime, $Time_Difference, $sString
 Dim $DOS, $g_sMessage = ''
 $command = ' /c "phantomjs.exe phantom-cleverbot-helper.js '
@@ -76810,9 +76838,9 @@ Return Send($sKeys, $iFlag)
 EndFunc
 Func chkRusLang2()
 If GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED Then
-$g_iChkRusLang2 = 1
+$g_bChkRusLang2 = True
 Else
-$g_iChkRusLang2 = 0
+$g_bChkRusLang2 = False
 EndIf
 EndFunc
 Func chkBoostBMagic()
@@ -78709,28 +78737,28 @@ EndFunc
 Func btnTestGlobalChatBot()
 SetLog("Test Global Chat Bot", $COLOR_DEBUG)
 Local $wasRunState = $g_bRunState
-Local $wasChkChatGlobal = $g_iChkChatGlobal
-Local $wasChkChatClan = $g_iChkChatClan
+Local $wasChkChatGlobal = $g_bChkChatGlobal
+Local $wasChkChatClan = $g_bChkChatClan
 $g_bRunState = True
-$g_iChkChatGlobal = True
-$g_iChkChatClan = False
+$g_bChkChatGlobal = True
+$g_bChkChatClan = False
 ChatbotMessage()
 $g_bRunState = $wasRunState
-$g_iChkChatGlobal = $wasChkChatGlobal
-$g_iChkChatClan = $wasChkChatClan
+$g_bChkChatGlobal = $wasChkChatGlobal
+$g_bChkChatClan = $wasChkChatClan
 EndFunc
 Func btnTestClanChatBot()
 SetLog("Test Global Chat Bot", $COLOR_DEBUG)
 Local $wasRunState = $g_bRunState
-Local $wasChkChatGlobal = $g_iChkChatGlobal
-Local $wasChkChatClan = $g_iChkChatClan
+Local $wasChkChatGlobal = $g_bChkChatGlobal
+Local $wasChkChatClan = $g_bChkChatClan
 $g_bRunState = True
-$g_iChkChatGlobal = False
-$g_iChkChatClan = True
+$g_bChkChatGlobal = False
+$g_bChkChatClan = True
 ChatbotMessage()
 $g_bRunState = $wasRunState
-$g_iChkChatGlobal = $wasChkChatGlobal
-$g_iChkChatClan = $wasChkChatClan
+$g_bChkChatGlobal = $wasChkChatGlobal
+$g_bChkChatClan = $wasChkChatClan
 EndFunc
 Func btnTestTNRQT()
 SetLog("Test Hero Time OCR", $COLOR_DEBUG)
@@ -78830,19 +78858,19 @@ IniReadS($g_iTxtMaxTrophyAmount, $g_sProfileConfigPath, "profiles", "txtMaxTroph
 IniReadS($g_iChkTrophySwitchMin, $g_sProfileConfigPath, "profiles", "chkTrophySwitchMin", 0, "int")
 IniReadS($g_iCmbTrophyMinProfile, $g_sProfileConfigPath, "profiles", "cmbTrophyMinProfile", 0, "int")
 IniReadS($g_iTxtMinTrophyAmount, $g_sProfileConfigPath, "profiles", "txtMinTrophyAmount", 1000, "int")
-IniReadS($g_iChkChatGlobal, $g_sProfileConfigPath, "Chatbot", "ChkChatGlobal", $g_iChkChatGlobal, "int")
-IniReadS($g_iChkScrambleGlobal, $g_sProfileConfigPath, "Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal, "int")
-IniReadS($g_bChkDelayTime, $g_sProfileConfigPath, "Chatbot", "ChkDelayTime", $g_bChkDelayTime, "Bool")
+IniReadS($g_bChkChatGlobal, $g_sProfileConfigPath, "Chatbot", "ChkChatGlobal", False, "Bool")
+IniReadS($g_bChkScrambleGlobal, $g_sProfileConfigPath, "Chatbot", "ChkScrambleGlobal", False, "Bool")
+IniReadS($g_bChkDelayTime, $g_sProfileConfigPath, "Chatbot", "ChkDelayTime", False, "Bool")
 IniReadS($g_iTxtDelayTime, $g_sProfileConfigPath, "Chatbot", "TxtDelayTime", $g_iTxtDelayTime)
-IniReadS($g_iChkSwitchLang, $g_sProfileConfigPath, "Chatbot", "ChkSwitchLang", $g_iChkSwitchLang, "int")
-IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chatbot", "CmbLang", 9, "int")
-IniReadS($g_iChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", $g_iChkRusLang, "int")
-IniReadS($g_iChkChatClan, $g_sProfileConfigPath, "Chatbot", "ChkChatClan", $g_iChkChatClan, "int")
-IniReadS($g_iChkClanUseResponses, $g_sProfileConfigPath, "Chatbot", "ChkUseResponses", $g_iChkClanUseResponses, "int")
-IniReadS($g_iChkClanAlwaysMsg, $g_sProfileConfigPath, "Chatbot", "ChkUseGeneric", $g_iChkClanAlwaysMsg, "int")
-IniReadS($g_iChkCleverbot, $g_sProfileConfigPath, "Chatbot", "ChkCleverbot", $g_iChkCleverbot, "int")
-IniReadS($g_iChkUseNotify, $g_sProfileConfigPath, "Chatbot", "ChkChatNotify", $g_iChkUseNotify, "int")
-IniReadS($g_iChkPbSendNew, $g_sProfileConfigPath, "Chatbot", "ChkPbSendNewChats", $g_iChkPbSendNew, "int")
+IniReadS($g_bChkSwitchLang, $g_sProfileConfigPath, "Chatbot", "ChkSwitchLang", False, "Bool")
+IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chatbot", "CmbLang", $g_iCmbLang, "int")
+IniReadS($g_bChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", False, "Bool")
+IniReadS($g_bChkChatClan, $g_sProfileConfigPath, "Chatbot", "ChkChatClan", False, "Bool")
+IniReadS($g_bChkClanUseResponses, $g_sProfileConfigPath, "Chatbot", "ChkUseResponses", False, "Bool")
+IniReadS($g_bChkClanAlwaysMsg, $g_sProfileConfigPath, "Chatbot", "ChkUseGeneric", False, "Bool")
+IniReadS($g_bChkCleverbot, $g_sProfileConfigPath, "Chatbot", "ChkCleverbot", False, "Bool")
+IniReadS($g_bChkUseNotify, $g_sProfileConfigPath, "Chatbot", "ChkChatNotify", False, "Bool")
+IniReadS($g_bChkPbSendNew, $g_sProfileConfigPath, "Chatbot", "ChkPbSendNewChats", False, "Bool")
 IniReadS($g_ibUpdateNewUpgradesOnly, $g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly, "int")
 IniReadS($g_bChkBB_DropTrophies, $g_sProfileConfigPath, "other", "ChkBB_DropTrophies", $g_bChkBB_DropTrophies, "Int")
 IniReadS($g_iTxtBB_DropTrophies, $g_sProfileConfigPath, "other", "TxtBB_DropTrophies", $g_iTxtBB_DropTrophies, "Int")
@@ -78928,19 +78956,19 @@ _Ini_Add("profiles", "txtMaxTrophyAmount", $g_iTxtMaxTrophyAmount)
 _Ini_Add("profiles", "chkTrophySwitchMin", $g_iChkTrophySwitchMin ? 1 : 0)
 _Ini_Add("profiles", "cmbTrophyMinProfile", $g_iCmbTrophyMinProfile)
 _Ini_Add("profiles", "txtMinTrophyAmount", $g_iTxtMinTrophyAmount)
-_Ini_Add("Chatbot", "ChkChatGlobal", $g_iChkChatGlobal ? 1 : 0)
-_Ini_Add("Chatbot", "ChkScrambleGlobal", $g_iChkScrambleGlobal ? 1 : 0)
-_Ini_Add("Chatbot", "ChkDelayTime", $g_bChkDelayTime ? 1 : 0)
+_Ini_Add("Chatbot", "ChkChatGlobal", $g_bChkChatGlobal ? True : False)
+_Ini_Add("Chatbot", "ChkScrambleGlobal", $g_bChkScrambleGlobal ? True : False)
+_Ini_Add("Chatbot", "ChkDelayTime", $g_bChkDelayTime ? True : False)
 _Ini_Add("Chatbot", "TxtDelayTime", $g_iTxtDelayTime)
-_Ini_Add("Chatbot", "ChkSwitchLang", $g_iChkSwitchLang ? 1 : 0)
+_Ini_Add("Chatbot", "ChkSwitchLang", $g_bChkSwitchLang ? True : False)
 _Ini_Add("Chatbot", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmbLang))
-_Ini_Add("Chatbot", "ChkRusLang", $g_iChkRusLang ? 1 : 0)
-_Ini_Add("Chatbot", "ChkChatClan", $g_iChkChatClan ? 1 : 0)
-_Ini_Add("Chatbot", "ChkUseResponses", $g_iChkClanUseResponses ? 1 : 0)
-_Ini_Add("Chatbot", "ChkUseGeneric", $g_iChkClanAlwaysMsg ? 1 : 0)
-_Ini_Add("Chatbot", "ChkCleverbot", $g_iChkCleverbot ? 1 : 0)
-_Ini_Add("Chatbot", "ChkChatNotify", $g_iChkUseNotify ? 1 : 0)
-_Ini_Add("Chatbot", "ChkPbSendNewChats", $g_iChkPbSendNew ? 1 : 0)
+_Ini_Add("Chatbot", "ChkRusLang", $g_bChkRusLang ? True : False)
+_Ini_Add("Chatbot", "ChkChatClan", $g_bChkChatClan ? True : False)
+_Ini_Add("Chatbot", "ChkUseResponses", $g_bChkClanUseResponses ? True : False)
+_Ini_Add("Chatbot", "ChkUseGeneric", $g_bChkClanAlwaysMsg ? True : False)
+_Ini_Add("Chatbot", "ChkCleverbot", $g_bChkCleverbot ? True : False)
+_Ini_Add("Chatbot", "ChkChatNotify", $g_bChkUseNotify ? True : False)
+_Ini_Add("Chatbot", "ChkPbSendNewChats", $g_bChkPbSendNew ? True : False)
 _Ini_Add("Chatbot", "globalMsg1", $glb1)
 _Ini_Add("Chatbot", "globalMsg2", $glb2)
 _Ini_Add("Chatbot", "genericMsgClan", $cGeneric)
@@ -79032,19 +79060,19 @@ $g_iTxtMaxTrophyAmount = GUICtrlRead($g_hTxtMaxTrophyAmount)
 $g_iChkTrophySwitchMin = GUICtrlRead($g_hChkTrophySwitchMin) = $GUI_CHECKED ? 1 : 0
 $g_iCmbTrophyMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbTrophyMinProfile)
 $g_iTxtMinTrophyAmount = GUICtrlRead($g_hTxtMinTrophyAmount)
-$g_iChkChatGlobal = GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED ? 1 : 0
-$g_iChkScrambleGlobal = GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED ? 1 : 0
+$g_bChkChatGlobal =(GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED)
+$g_bChkScrambleGlobal =(GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED)
 $g_bChkDelayTime =(GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED)
 $g_iTxtDelayTime = GUICtrlRead($g_hTxtDelayTime)
-$g_iChkSwitchLang = GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED ? 1 : 0
+$g_bChkSwitchLang =(GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED)
 $g_iCmbLang = _GUICtrlComboBox_GetCurSel($g_hCmbLang)
-$g_iChkRusLang = GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED ? 1 : 0
-$g_iChkChatClan = GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED ? 1 : 0
-$g_iChkClanUseResponses = GUICtrlRead($g_hChkUseResponses) = $GUI_CHECKED ? 1 : 0
-$g_iChkClanAlwaysMsg = GUICtrlRead($g_hChkUseGeneric) = $GUI_CHECKED ? 1 : 0
-$g_iChkCleverbot = GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED ? 1 : 0
-$g_iChkUseNotify = GUICtrlRead($g_hChkChatNotify) = $GUI_CHECKED ? 1 : 0
-$g_iChkPbSendNew = GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED ? 1 : 0
+$g_bChkRusLang =(GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED)
+$g_bChkChatClan =(GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED)
+$g_bChkClanUseResponses =(GUICtrlRead($g_hChkUseResponses) = $GUI_CHECKED)
+$g_bChkClanAlwaysMsg =(GUICtrlRead($g_hChkUseGeneric) = $GUI_CHECKED)
+$g_bChkCleverbot =(GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED)
+$g_bChkUseNotify =(GUICtrlRead($g_hChkChatNotify) = $GUI_CHECKED)
+$g_bChkPbSendNew =(GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED)
 $g_ibUpdateNewUpgradesOnly = GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED ? 1 : 0
 $g_bChkBB_DropTrophies =(GUICtrlRead($g_hChkBB_DropTrophies) = $GUI_CHECKED) ? 1 : 0
 $g_iTxtBB_DropTrophies = GUICtrlRead($g_hTxtBB_DropTrophies)
@@ -79140,19 +79168,19 @@ GUICtrlSetData($g_hTxtMaxTrophyAmount, $g_iTxtMaxTrophyAmount)
 GUICtrlSetState($g_hChkTrophySwitchMin, $g_iChkTrophySwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 _GUICtrlComboBox_SetCurSel($g_hCmbTrophyMinProfile, $g_iCmbTrophyMinProfile)
 GUICtrlSetData($g_hTxtMinTrophyAmount, $g_iTxtMinTrophyAmount)
-GUICtrlSetState($g_hChkGlobalChat, $g_iChkChatGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-GUICtrlSetState($g_hChkGlobalScramble, $g_iChkScrambleGlobal = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkGlobalChat, $g_bChkChatGlobal ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkGlobalScramble, $g_bChkScrambleGlobal ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetState($g_hChkDelayTime, $g_bChkDelayTime ? $GUI_CHECKED : $GUI_UNCHECKED)
 GUICtrlSetData($g_hTxtDelayTime, $g_iTxtDelayTime)
-GUICtrlSetState($g_hChkSwitchLang, $g_iChkSwitchLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkSwitchLang, $g_bChkSwitchLang ? $GUI_CHECKED : $GUI_UNCHECKED)
 _GUICtrlComboBox_SetCurSel($g_hCmbLang, $g_iCmbLang)
-GUICtrlSetState($g_hChkRusLang, $g_iChkRusLang = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-GUICtrlSetState($g_hChkClanChat, $g_iChkChatClan = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-GUICtrlSetState($g_hChkUseResponses, $g_iChkClanUseResponses = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-GUICtrlSetState($g_hChkUseGeneric, $g_iChkClanAlwaysMsg = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-GUICtrlSetState($g_hChkCleverbot, $g_iChkCleverbot = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-GUICtrlSetState($g_hChkChatNotify, $g_iChkUseNotify = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-GUICtrlSetState($g_hChkPbSendNewChats, $g_iChkPbSendNew = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkRusLang, $g_bChkRusLang ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkClanChat, $g_bChkChatClan ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkUseResponses, $g_bChkClanUseResponses ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkUseGeneric, $g_bChkClanAlwaysMsg ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkCleverbot, $g_bChkCleverbot ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkChatNotify, $g_bChkUseNotify ? $GUI_CHECKED : $GUI_UNCHECKED)
+GUICtrlSetState($g_hChkPbSendNewChats, $g_bChkPbSendNew ? $GUI_CHECKED : $GUI_UNCHECKED)
 chkRusLang()
 chkGlobalChat()
 chkGlobalScramble()
@@ -82297,7 +82325,7 @@ CheckAndroidReboot()
 NotifyPendingActions()
 If _Sleep($DELAYIDLE1) Then Return
 If $g_iCommandStop = -1 Then SetLog("====== Waiting for full army ======", $COLOR_SUCCESS)
-If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
+If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
 ChatbotMessage()
 EndIf
 Local $hTimer = __TimerInit()
@@ -82449,7 +82477,7 @@ SetDebugLog(_PadStringCenter(" Hero status check" & BitAND($g_aiAttackUseHeroes[
 SetDebugLog(_PadStringCenter(" Hero status check" & BitAND($g_aiAttackUseHeroes[$LB], $g_aiSearchHeroWaitEnable[$LB], $g_iHeroAvailable) & "|" & $g_aiSearchHeroWaitEnable[$LB] & "|" & $g_iHeroAvailable, 54, "="), $COLOR_DEBUG)
 EndIf
 _ClanGames()
-If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
+If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
 ChatbotMessage()
 EndIf
 ClickP($aAway, 1, 0, "#0000")
@@ -82559,11 +82587,10 @@ If SkipDonateNearFullTroops(True) = False Then DonateCC()
 If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 EndIf
 Case "SendChat"
-If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
+If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
 ChatbotMessage()
 EndIf
 Case "DonateCC,Train"
-If $g_bChkAutoCamp = True Then
 If $g_iActiveDonate And $g_bChkDonate Then
 If SkipDonateNearFullTroops(True) = False Then DonateCC()
 EndIf
@@ -82657,16 +82684,10 @@ $g_iCommandStop = -1
 MainGTFO()
 MainKickout()
 VillageReport()
-If isOnBuilderBase() Or(($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades Or $g_bChkBB_DropTrophies) And SwitchBetweenBases()) Then
-CollectBuilderBase()
-BuilderBaseReport()
-StartClockTowerBoost()
-MainSuggestedUpgradeCode()
-If $g_bChkBB_DropTrophies Then
-BuilderBaseReport(True)
-BB_DropTrophies()
-EndIf
-SwitchBetweenBases()
+If $g_bChkAutoCamp Then
+Setlog("Checking camps.", $COLOR_INFO)
+CheckAutoCamp()
+Setlog("Checking camps finished.", $COLOR_INFO)
 EndIf
 CheckFarmSchedule()
 If $g_bReqCCFirst = 1 Then RequestCC()

@@ -447,7 +447,7 @@ Func ApplyConfig_600_11($TypeReadSave)
 			
 			; ================================================== Russian Request - by RK MOD ======================================== ;
 
-			GUICtrlSetState($g_hChkRusLang2, $g_iChkRusLang2 = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkRusLang2, $g_bChkRusLang2 ? $GUI_CHECKED : $GUI_UNCHECKED)
    		    chkRusLang2()
 			;------------------ADDED By RK MOD - END------------------
 		Case "Save"
@@ -477,7 +477,7 @@ Func ApplyConfig_600_11($TypeReadSave)
 			
 			; ================================================== Russian Request - by RK MOD ================================= ;
 
-			$g_iChkRusLang2 = GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED ? 1 : 0
+			$g_bChkRusLang2 = (GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED)
 			;------------------ADDED By RK MOD - END------------------
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_11
