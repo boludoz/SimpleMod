@@ -2159,7 +2159,7 @@ Func Bind_ImageList($nCtrl, ByRef $hImageList)
 	Switch $nCtrl
 		Case $g_hTabMain
 			; the icons for main tab
-			Local $aIconIndex = [$eIcnHourGlass, $eIcnTH12, $eIcnAttack, $eTitan, $eIcnGUI, $eIcnInfo]; EDITED By RK MOD
+			Local $aIconIndex = [$eIcnHourGlass, $eIcnTH12, $eIcnAttack, $eIcnRK, $eIcnGUI, $eIcnInfo]; EDITED By RK MOD
 
 		Case $g_hGUI_VILLAGE_TAB
 			; the icons for village tab
