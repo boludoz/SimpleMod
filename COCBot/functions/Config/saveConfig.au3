@@ -424,7 +424,7 @@ Func SaveConfig_600_11()
     
 	; ================================================== Russian Request - by RK MOD ================================= ;
 
-	_Ini_Add("Lang", "chkRusLang2", $g_iChkRusLang2 ? 1 : 0)
+	_Ini_Add("Lang", "chkRusLang2", $g_bChkRusLang2 ? True : False)
 	
 EndFunc   ;==>SaveConfig_600_11
 
@@ -1289,6 +1289,9 @@ Func SaveConfig_600_52_2()
 	_Ini_Add("SmartTrain", "ChkFillArcher", $g_bChkFillArcher ? 1 : 0)
 	_Ini_Add("SmartTrain", "TxtFillArcher", $g_iTxtFillArcher)
 	_Ini_Add("SmartTrain", "ChkFillEQ", $g_bChkFillEQ ? 1 : 0)
+	
+	; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
+	_Ini_Add("troop", "ChkAutoCamp", $g_bChkAutoCamp ? True : False)
 	
 EndFunc   ;==>SaveConfig_600_52_2
 

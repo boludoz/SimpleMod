@@ -62,33 +62,36 @@ Func chkSmartTrain()
 	If GUICtrlRead($g_hChkSmartTrain) = $GUI_CHECKED Then
 		If GUICtrlRead($g_hChkUseQuickTrain) = $GUI_UNCHECKED Then _GUI_Value_STATE("ENABLE", $g_hChkPreciseArmyCamp)
 		_GUI_Value_STATE("ENABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-		_GUI_Value_STATE("DISABLE", $g_hChkDoubleTrain)
+		;_GUI_Value_STATE("DISABLE", $g_hChkDoubleTrain)
 		_GUI_Value_STATE("UNCHECKED", $g_hChkDoubleTrain)
-		chkPreciseTroops()
+		;chkPreciseTroops()
 		chkFillArcher()
 	Else
-	    _GUI_Value_STATE("ENABLE", $g_hChkDoubleTrain)
+	   ; _GUI_Value_STATE("ENABLE", $g_hChkDoubleTrain)
 		_GUI_Value_STATE("DISABLE", $g_hChkPreciseArmyCamp & "#" & $g_hChkFillArcher & "#" & $g_hTxtFillArcher & "#" & $g_hChkFillEQ)
 		_GUI_Value_STATE("UNCHECKED", $g_hChkPreciseArmyCamp & "#" & $g_hChkFillArcher & "#" & $g_hChkFillEQ)
 	EndIf
 EndFunc   ;==>chkSmartTrain
 
-Func chkPreciseTroops()
-	If GUICtrlRead($g_hChkPreciseArmyCamp) = $GUI_CHECKED Then
-		_GUI_Value_STATE("DISABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-		_GUI_Value_STATE("UNCHECKED", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-		chkFillArcher()
-	Else
-		_GUI_Value_STATE("ENABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
-	EndIf
-EndFunc   ;==>chkPreciseTroops
+;Func chkPreciseTroops()
+;	If GUICtrlRead($g_hChkPreciseArmyCamp) = $GUI_CHECKED Then
+;		_GUI_Value_STATE("DISABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
+;		_GUI_Value_STATE("UNCHECKED", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
+;		chkFillArcher()
+;	Else
+;		_GUI_Value_STATE("ENABLE", $g_hChkFillArcher & "#" & $g_hChkFillEQ)
+;	EndIf
+;EndFunc   ;==>chkPreciseTroops
 
 Func chkFillArcher()
 	If GUICtrlRead($g_hChkFillArcher) = $GUI_CHECKED Then
 		_GUI_Value_STATE("ENABLE", $g_hTxtFillArcher)
+		$g_bChkFillArcher = True
 	Else
 		_GUI_Value_STATE("DISABLE", $g_hTxtFillArcher)
+		$g_bChkFillArcher = False
 	EndIf
+	lblTotalCountTroop1()
 EndFunc   ;==>chkFillArcher
 
 ;------------------ADDED By RK MOD - END------------------
@@ -162,11 +165,12 @@ Func lblTotalCountTroop1()
 		GUICtrlSetState($g_hLblTotalProgress, $GUI_HIDE)
 	EndIf
 	;------------------ADDED By RK MOD - START------------------
-	If $g_iChkAutoCamp = 1 Then
+	If $g_bChkFillArcher = True Then
 		Local $bLocalBbg = False
-		$g_iSpaceForTroopsFill = $g_iTotalCampForcedValue - $TotalTroopsToTrain
-		GUICtrlSetData($g_ahTxtTrainArmyTroopCount[$eTroopArcher], $g_aiArmyCompTroops[$eTroopArcher] + $g_iSpaceForTroopsFill)
-		$g_aiArmyCompTroops[$eTroopArcher] = $g_aiArmyCompTroops[$eTroopArcher] + $g_iSpaceForTroopsFill
+		$g_iSpaceForTroopsFill = $g_iTotalCampForcedValue - $TotalTroopsToTrain + $g_aiArmyCompTroops[$eTroopArcher]
+		If $g_iSpaceForTroopsFill < 0 Then $g_iSpaceForTroopsFill = 0
+		$g_aiArmyCompTroops[$eTroopArcher] = $g_iSpaceForTroopsFill
+		GUICtrlSetData($g_ahTxtTrainArmyTroopCount[$eTroopArcher], $g_iSpaceForTroopsFill)
 		If $bLocalBbg then SetLog($g_aiArmyCompTroops[$eTroopArcher] & ", " & $g_iTotalCampForcedValue & ", " & $TotalTroopsToTrain & ", " & $g_iSpaceForTroopsFill)
 	EndIf
 	;------------------ADDED By RK MOD - END------------------

@@ -154,7 +154,7 @@ Func _makerequest()
 			Click($atxtRequestCCBtn[0], $atxtRequestCCBtn[1], 1, 0, "#0254") ;Select text for request $atxtRequestCCBtn[2] = [430, 140]
 			_Sleep($DELAYMAKEREQUEST2)
 			; Russian Request- by RK MOD
-			If $g_iChkRusLang2 = 1 Then
+			If $g_bChkRusLang2 = True Then
 				SetLog("Request in russian", $COLOR_BLUE)
 				AutoItWinSetTitle('MyAutoItTitle')
 				_WinAPI_SetKeyboardLayout(WinGetHandle(AutoItWinGetTitle()), 0x0419)

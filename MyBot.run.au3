@@ -948,7 +948,7 @@ Func _Idle() ;Sequence that runs until Full Army
 		If _Sleep($DELAYIDLE1) Then Return
 		If $g_iCommandStop = -1 Then SetLog("====== Waiting for full army ======", $COLOR_SUCCESS)
 		;------------------ADDED By RK MOD - START------------------
-		If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
+		If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
 			ChatbotMessage()
 		EndIf
 		;------------------ADDED By RK MOD - END------------------
@@ -1116,7 +1116,7 @@ Func AttackMain() ;Main control for attack functions
 			EndIf
 			_ClanGames()
 			;------------------ADDED By RK MOD - END------------------
-			If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
+			If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
 				ChatbotMessage()
 			EndIf
 			;------------------ADDED By RK MOD - END------------------
@@ -1242,13 +1242,11 @@ Func _RunFunction($action)
 			EndIf
 			;------------------ADDED By RK MOD - START------------------
 		Case "SendChat"
-			If $g_iChkChatGlobal = True Or $g_iChkChatClan = True Then
+			If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
 				ChatbotMessage()
 			EndIf
 			;------------------ADDED By RK MOD - END------------------
-		Case "DonateCC,Train"
-			If $g_iChkAutoCamp = 1 Then CheckAutoCamp() ; ADDED By RK MOD(#ID135-)
-
+		Case "DonateCC,Train"			
 			If $g_iActiveDonate And $g_bChkDonate Then
 				;------------------REMOVED By RK MOD - START------------------
 				;If $g_bFirstStart Then
@@ -1367,19 +1365,26 @@ Func FirstCheck()
 	MainGTFO()
 	MainKickout()
 	VillageReport()
+	
+	If $g_bChkAutoCamp Then 
+	Setlog("Checking camps.", $COLOR_INFO)
+	CheckAutoCamp() ; ADDED By RK MOD(#ID135-)
+	Setlog("Checking camps finished.", $COLOR_INFO)
 
-			If isOnBuilderBase() Or (($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades Or $g_bChkBB_DropTrophies) And SwitchBetweenBases()) Then
-				CollectBuilderBase()
-				BuilderBaseReport()
-				StartClockTowerBoost()
-				MainSuggestedUpgradeCode()
-				If $g_bChkBB_DropTrophies Then
-				BuilderBaseReport(True)
-				BB_DropTrophies() ;------------------ADDED By RK MOD - by Chacal GYN - Drop Trophies (ID70) ------------------
-				; switch back to normal village
-				EndIf
-				SwitchBetweenBases()
-			EndIf
+	EndIf
+
+			;If isOnBuilderBase() Or (($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades Or $g_bChkBB_DropTrophies) And SwitchBetweenBases()) Then
+			;	CollectBuilderBase()
+			;	BuilderBaseReport()
+			;	StartClockTowerBoost()
+			;	MainSuggestedUpgradeCode()
+			;	If $g_bChkBB_DropTrophies Then
+			;	BuilderBaseReport(True)
+			;	BB_DropTrophies() ;------------------ADDED By RK MOD - by Chacal GYN - Drop Trophies (ID70) ------------------
+			;	; switch back to normal village
+			;	EndIf
+			;	SwitchBetweenBases()
+			;EndIf
 
 	CheckFarmSchedule()
 

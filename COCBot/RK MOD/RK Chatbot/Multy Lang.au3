@@ -37,8 +37,8 @@ EndFunc   ;==>_SendExEx
 
 Func chkRusLang2()
 	If GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED Then
-	$g_iChkRusLang2 = 1
+	    $g_bChkRusLang2 = True
 	Else
-	$g_iChkRusLang2 = 0
+	    $g_bChkRusLang2 = False
 	EndIf
 EndFunc ;==>chkRusLangRequest 

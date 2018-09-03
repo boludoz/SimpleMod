@@ -65,7 +65,7 @@ Global $g_bReqCCFirst = False
 
 ; ================================================ AutoCamp - by RK MOD ======================================== ;
 
-Global $g_iChkAutoCamp = 0
+Global $g_bChkAutoCamp = False
 
 ; ================================================ Stop For War - Added by RK MOD ======================================== ;
 Global $g_bStopForWar
@@ -110,19 +110,19 @@ Global $g_iChkTrophySwitchMax, $g_iTxtMaxTrophyAmount, $g_iCmbTrophyMaxProfile, 
 Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; flag if AttackBar is dragged or not
 
 ; ================================================ NEW ChatBot - by RK MOD ======================================== ;
-Global $g_iChkChatGlobal = 0
-Global $g_iChkScrambleGlobal = 0
-Global $g_iChkSwitchLang = 0
-Global $g_iChkChatClan = 0
-Global $g_iChkClanUseResponses = 0
-Global $g_iChkClanAlwaysMsg = 0
-Global $g_iChkUseNotify = 0
-Global $g_iChkPbSendNew = 0
-Global $g_iChkRusLang = 0
+Global $g_bChkChatGlobal = False
+Global $g_bChkScrambleGlobal = False
+Global $g_bChkSwitchLang = False
+Global $g_bChkChatClan = False
+Global $g_bChkClanUseResponses = False
+Global $g_bChkClanAlwaysMsg = False
+Global $g_bChkUseNotify = False
+Global $g_bChkPbSendNew = False
+Global $g_bChkRusLang = False
 Global $g_iCmbLang = 9
-Global $g_iChkCleverbot = 0
-Global $g_bDelayTime = False
-Global $g_iTxtDelayTimerun = 10
+Global $g_bChkCleverbot = False
+Global $g_bChkDelayTime = False
+Global $g_iTxtDelayTime = 10
 Global $g_iChkClanMessages = ""
 Global $g_iChkClanResponses = ""
 Global $g_iChkClanResponses0
@@ -138,7 +138,7 @@ Global $g_sMessage = ""
 
 ;=============================================== Russian Request - by RK MOD ======================================== ;
 
-Global $g_iChkRusLang2 = 0
+Global $g_bChkRusLang2 = False
 
 ;=============================================== Max logout time - by RK MOD ======================================== ;
 
@@ -207,9 +207,8 @@ Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 5
 
 Global $g_bChkOneGemBoostBarracks = False, $g_bChkOneGemBoostSpells = False, $g_bChkOneGemBoostHeroes = False
 
-; --------------------------------------------
-; Builder Base Drop Trophies (ID70)
-; --------------------------------------------
+; ================================================== Builder Base Drop Trophies (ID70) ================================= ;
+
 Global $g_iTxtBB_DropTrophies = 0
 Global $g_bChkBB_DropTrophies = False
 Global $aBB_FindMatchButton[4] = [555, 240 + $g_iBottomOffsetY, 0xFFC346, 10]
@@ -229,41 +228,11 @@ Global $g_bChkAttackPriority = False
 
 Global $CTime[8][3] = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]]
 Global $CurrHeroBTime[3] = ["", "", ""]
-=======
+
 ; ================================================== ; Priority System - by RK MOD  ======================================== ;
 
 Global $g_bChkPrioritySystem = False, $g_iCmbPrioritySystem = 0
-Global $g_iUpgradeLevel[32][3] = [["LevelTroop", "Barb", 8], ["LevelTroop", "Arch", 8], ["LevelTroop", "Giant", 9], ["LevelTroop", "Gobl", 7], ["LevelTroop", "Wall", 8], ["LevelTroop", "Ball", 8], ["LevelTroop", "Wiza", 9], ["LevelTroop", "Heal", 5], ["LevelTroop", "Drag", 7], ["LevelTroop", "Pekk", 8], ["LevelTroop", "BabyD", 6], ["LevelTroop", "Mine", 6], ["LevelTroop", "EDrag", 3], ["LevelSpell", "LSpell", 7], ["LevelSpell", "HSpell", 7], ["LevelSpell", "RSpell", 5], ["LevelSpell", "JSpell", 3], ["LevelSpell", "FSpell", 7], ["LevelSpell", "CSpell", 5], ["LevelSpell", "PSpell", 5], ["LevelSpell", "ESpell", 4], ["LevelSpell", "HaSpell", 4], ["LevelSpell", "SkSpell", 5], ["LevelTroop", "Mini", 8], ["LevelTroop", "Hogs", 8], ["LevelTroop", "Valk", 7], ["LevelTroop", "Gole", 8], ["LevelTroop", "Witc", 4], ["LevelTroop", "Lava", 5], ["LevelTroop", "Bowl", 4], ["LevelSiege", "WallW", 3], ["LevelSiege", "BattleB", 3]]
-Global $g_iLabCost[32][10] = [ _
-		[0, 50000, 150000, 500000, 1500000, 4500000, 6000000, 8000000, "Max", "Max"], _				 ;Barbarian
-		[0, 50000, 250000, 750000, 2250000, 6000000, 7500000, 9000000, "Max", "Max"], _  			 ;Archer
-		[0, 100000, 250000, 750000, 2250000, 5000000, 6000000, 9500000, 12000000, "Max"], _  		 ;Giant
-		[0, 50000, 250000, 750000, 2250000, 4500000, 6750000, "Max", "Max", "Max"], _  				 ;Goblin
-		[0, 100000, 250000, 750000, 200000, 6000000, 9000000, 12000000, "Max", "Max"], _ 			 ;Wall Breaker
-		[0, 150000, 450000, 1350000, 2500000, 6000000, 9500000, 12000000, "Max", "Max"], _  		 ;Balloon
-		[0, 150000, 450000, 1350000, 2500000, 5000000, 7000000, 9000000, 11000000, "Max"], _ 	 	 ;Wizard
-		[0, 750000, 1500000, 3000000, 9500000, "Max", "Max", "Max", "Max", "Max"], _  				 ;Healer
-		[0, 2000000, 3000000, 5000000, 7000000, 9000000, 11000000, "Max", "Max", "Max"], _ 			 ;Dragon
-		[0, 3000000, 5000000, 6000000, 7500000, 85000000, 10000000, 12000000, "Max", "Max"], _ 		 ;Pekka
-		[0, 5000000, 6000000, 7000000, 8000000, 9000000, "Max", "Max", "Max", "Max"], _ 			 ;Baby Dragon
-		[0, 6000000, 7000000, 8000000, 9500000, 11000000, "Max", "Max", "Max", "Max"], _ 			 ;Miner
-		[0, 9000000, 11000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"], _ 					 ;Electro Dragon
-		[0, 200000, 500000, 1000000, 2000000, 6000000, 8000000, "Max", "Max", "Max"], _ 			 ;Lightning Spell
-		[0, 300000, 600000, 1200000, 2000000, 4000000, 6000000, "Max", "Max", "Max"], _ 			 ;Healing Spell
-		[0, 450000, 900000, 1800000, 3000000, "Max", "Max", "Max", "Max", "Max"], _  				 ;Rage Spell
-		[0, 3000000, 6000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"], _ 			 		 ;Jump Spell
-		[0, 3000000, 4000000, 5000000, 7000000, 9500000, 11000000, "Max", "Max", "Max"], _  		 ;Freeze Spell
-		[0, 4000000, 6000000, 8000000, 10000000, "Max", "Max", "Max", "Max", "Max"], _  			 ;Clone Spell
-		[0, 25000, 50000, 75000, 150000, "Max", "Max", "Max", "Max", "Max"], _  					 ;Poison Spell
-		[0, 30000, 60000, 90000, "Max", "Max", "Max", "Max", "Max", "Max"], _ 						 ;Earthquake Spell
-		[0, 40000, 80000, 100000, "Max", "Max", "Max", "Max", "Max", "Max"], _ 						 ;Haste Spell
-		[0, 50000, 75000, 100000, 125000, "Max", "Max", "Max", "Max", "Max"], _  					 ;Skeleton Spell
-		[0, 10000, 20000, 30000, 40000, 100000, 140000, 180000, "Max", "Max"], _  					 ;Minion
-		[0, 20000, 30000, 40000, 50000, 100000, 150000, 200000, "Max", "Max"], _  					 ;Hog Rider
-		[0, 50000, 60000, 70000, 110000, 150000, 190000, "Max", "Max", "Max"], _ 					 ;Valkerie
-		[0, 60000, 70000, 80000, 90000, 150000, 200000, 200000, "Max", "Max"], _  					 ;Golem
-		[0, 75000, 160000, 200000, "Max", "Max", "Max", "Max", "Max", "Max"], _  					 ;Witch
-		[0, 60000, 70000, 150000, 200000, "Max", "Max", "Max", "Max", "Max"], _ 					 ;Lavahound
-		[0, 120000, 200000, 200000, "Max", "Max", "Max", "Max", "Max", "Max"], _  					 ;Bowler
-		[0, 6000000, 8000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"], _  					 ;Wall Wrecker
-		[0, 6000000, 8000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"]];Battle Blimp
+
+; ================================================== ; TNRQT - by RK MOD  ======================================== ;
+
+GLobal $TroopsQueueFull = False

@@ -12,19 +12,33 @@
 
 Local $Troopsdetect
 Local $Spelldetect
+Local $TroopCamp
 
-Func TNRQT()
+Func TNRQT($TroopsQueueFullOnly = False, $TroopsQueueTrain = True, $TroopsQueueRemove = True)
+
 	OpenTroopsTab(True, "TNRQT()")
-	Local $TroopCamp = GetCurrentArmy(48, 160)
+	$TroopCamp = GetCurrentArmy(48, 160)
 	$Troopsdetect = CheckQueueTroops()
 	OpenSpellsTab(True, "TNRQT()")
 	$Spelldetect = CheckQueueSpells()
+
 	Local $TroopsToTrain = WhatToTrainQueue(False, False)
 	Local $TroopsToRemove = WhatToTrainQueue(True, False)
 
-	If $Troopsdetect = "" Then SetDebugLog("Troops are empty", $COLOR_DEBUG)
+	If ($TroopsToRemove[0][0] = "Arch" And $TroopsToRemove[0][1] = 0) And ($TroopsToTrain[0][0] = "Arch" And $TroopsToTrain[0][1] = 0) Then
+		$TroopsQueueFull = True
+	Else
+		$TroopsQueueFull = False
+	EndIf
+	If $TroopsQueueFullOnly = True Then Return
+
+	If $TroopsQueueTrain = True Then
+		TrainUsingWhatToTrain($TroopsToTrain)
+		TrainUsingWhatToTrain($TroopsToTrain, True)
+	EndIf
 	
 	If $g_bDebugSetlog Then
+		If $Troopsdetect = "" Then SetDebugLog("Troops are empty", $COLOR_DEBUG)
 		If $TroopsToTrain[0][0] = "Arch" And $TroopsToTrain[0][1] = 0 Then
 			SetDebugLog("None Troops Left To Train", $COLOR_DEBUG)
 		Else
@@ -42,13 +56,11 @@ Func TNRQT()
 				SetDebugLog("  - " & $TroopsToRemove[$i][0] & ": " & $TroopsToRemove[$i][1] & "x", $COLOR_SUCCESS)
 			Next
 		EndIf
-
 	EndIf
-	
 EndFunc   ;==>TNRQT
 
 Func WhatToTrainQueue($ReturnExtraTroopsOnly = False, $bSetLog = True)
-	;OpenArmyTab(True, "WhatToTrain()"); was False EDITED By RK MOD
+	OpenArmyTab(True, "WhatToTrain()")
 	Local $ToReturn[1][2] = [["Arch", 0]]
 	Local $FoundRes = 0
 
@@ -99,10 +111,6 @@ Func WhatToTrainQueue($ReturnExtraTroopsOnly = False, $bSetLog = True)
 		Next
 		Return $ToReturn
 	EndIf
-
-	; Get Current available troops
-	;getArmyTroops(False, False, False, False)
-	;getArmySpells(False, False, False, False)
 
 	Switch $ReturnExtraTroopsOnly
 		Case False
@@ -164,6 +172,6 @@ Func WhatToTrainQueue($ReturnExtraTroopsOnly = False, $bSetLog = True)
 				EndIf
 			Next
 	EndSwitch
-	;DeleteInvalidTroopInArray($ToReturn)
 	Return $ToReturn
 EndFunc   ;==>WhatToTrainQueue
+
