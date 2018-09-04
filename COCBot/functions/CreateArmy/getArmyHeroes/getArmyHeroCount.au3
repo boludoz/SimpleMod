@@ -216,16 +216,19 @@ Func ArmyHeroStatus($i)
 							GUICtrlSetState($g_hPicWardenGreen, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenRed, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenBlue, $GUI_SHOW)
+							$g_iWallWarden = 0
 						Case "upgrade" ; Red
 							GUICtrlSetState($g_hPicWardenGray, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenGreen, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenBlue, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenRed, $GUI_SHOW)
+							$g_iWallWarden = 1
 						Case "warden" ; Green
 							GUICtrlSetState($g_hPicWardenGray, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenRed, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenBlue, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenGreen, $GUI_SHOW)
+							$g_iWallWarden = 0
 					EndSwitch
 			EndSelect
 			Return $sResult
