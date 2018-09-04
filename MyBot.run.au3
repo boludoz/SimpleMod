@@ -1117,7 +1117,7 @@ Func AttackMain() ;Main control for attack functions
 			EndIf
 			_ClanGames()
 			;------------------ADDED By RK MOD - END------------------
-			If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
+			If $g_iGlobalChat = True Or $g_iClanChat = True Then
 				ChatbotMessage()
 			EndIf
 			;------------------ADDED By RK MOD - END------------------
