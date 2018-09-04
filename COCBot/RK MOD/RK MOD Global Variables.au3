@@ -110,32 +110,39 @@ Global $g_iChkTrophySwitchMax, $g_iTxtMaxTrophyAmount, $g_iCmbTrophyMaxProfile, 
 Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; flag if AttackBar is dragged or not
 
 ; ================================================ NEW ChatBot - by RK MOD ======================================== ;
-Global $g_bChkChatGlobal = False
-Global $g_bChkScrambleGlobal = False
-Global $g_bChkSwitchLang = False
-Global $g_bChkChatClan = False
-Global $g_bChkClanUseResponses = False
-Global $g_bChkClanAlwaysMsg = False
-Global $g_bChkUseNotify = False
-Global $g_bChkPbSendNew = False
-Global $g_bChkRusLang = False
-Global $g_iCmbLang = 9
-Global $g_bChkCleverbot = False
-Global $g_bChkDelayTime = False
-Global $g_iTxtDelayTime = 10
-Global $g_iChkClanMessages = ""
-Global $g_iChkClanResponses = ""
-Global $g_iChkClanResponses0
-Global $g_iChkGlobalMessages1 = ""
-Global $g_iChkGlobalMessages2 = ""
-Global $g_sGlobalChatLastMsgSentTime = ""
-Global $glb1
-Global $glb2
-Global $cResp
-Global $cGeneric
+;Global $g_bChkChatGlobal = False
+;Global $g_bChkScrambleGlobal = False
+;Global $g_bChkSwitchLang = False
+;Global $g_bChkChatClan = False
+;Global $g_bChkClanUseResponses = False
+;Global $g_bChkClanAlwaysMsg = False
+;Global $g_bChkUseNotify = False
+;Global $g_bChkPbSendNew = False
+;Global $g_bChkRusLang = False
+;Global $g_iCmbLang = 9
+;Global $g_bChkCleverbot = False
+;Global $g_bChkDelayTime = False
+;Global $g_iTxtDelayTime = 10
+;Global $g_iChkClanMessages = ""
+;Global $g_iChkClanResponses = ""
+;Global $g_iChkClanResponses0
+;Global $g_iChkGlobalMessages1 = ""
+;Global $g_iChkGlobalMessages2 = ""
+;Global $g_sGlobalChatLastMsgSentTime = ""
+;Global $glb1
+;Global $glb2
+;Global $cResp
+;Global $cGeneric
+;Global $ChatbotStartTime
+;Global $g_sMessage = ""
+Global $chatIni = ""
+Global $GlobalMessages[4] = ["", "", "", ""], $GlobalMessagesFix
+Global $GlobalMessagesGUI_0, $GlobalMessagesGUI_1, $GlobalMessagesGUI_2, $GlobalMessagesGUI_3
+Global $ClanMessages = "", $ClanResponses = ""
+Global $g_iGlobalChat = False, $g_iGlobalScramble = False, $g_iSwitchLang = False, $g_iCmbLang = 1
+Global $g_iClanChat = False, $g_iRusLang = 0, $g_iUseResponses = False, $g_iUseGeneric = False, $g_iChatPushbullet = False, $g_iPbSendNewChats = False
 Global $ChatbotStartTime
-Global $g_sMessage = ""
-
+Global $ChatbotQueuedChats[0], $ChatbotReadQueued = False, $ChatbotReadInterval = 0, $ChatbotIsOnInterval = False
 ;=============================================== Russian Request - by RK MOD ======================================== ;
 
 Global $g_bChkRusLang2 = False

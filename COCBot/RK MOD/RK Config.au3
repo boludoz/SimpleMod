@@ -122,19 +122,19 @@ Func ReadConfig_RKMod()
 
 	; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
-	IniReadS($g_bChkChatGlobal, $g_sProfileConfigPath, "Chatbot", "ChkChatGlobal", False, "Bool")
-	IniReadS($g_bChkScrambleGlobal, $g_sProfileConfigPath, "Chatbot", "ChkScrambleGlobal", False, "Bool") 	
-	IniReadS($g_bChkDelayTime, $g_sProfileConfigPath, "Chatbot", "ChkDelayTime", False, "Bool")
-    IniReadS($g_iTxtDelayTime, $g_sProfileConfigPath, "Chatbot", "TxtDelayTime", $g_iTxtDelayTime)
-	IniReadS($g_bChkSwitchLang, $g_sProfileConfigPath, "Chatbot", "ChkSwitchLang", False, "Bool")
-	IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chatbot", "CmbLang", $g_iCmbLang, "int")	
-	IniReadS($g_bChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", False, "Bool")	
-	IniReadS($g_bChkChatClan, $g_sProfileConfigPath, "Chatbot", "ChkChatClan", False, "Bool")	
-	IniReadS($g_bChkClanUseResponses, $g_sProfileConfigPath, "Chatbot", "ChkUseResponses", False, "Bool")
-	IniReadS($g_bChkClanAlwaysMsg, $g_sProfileConfigPath, "Chatbot", "ChkUseGeneric", False, "Bool")
-	IniReadS($g_bChkCleverbot, $g_sProfileConfigPath, "Chatbot", "ChkCleverbot", False, "Bool")
-	IniReadS($g_bChkUseNotify, $g_sProfileConfigPath, "Chatbot", "ChkChatNotify", False, "Bool")
-	IniReadS($g_bChkPbSendNew, $g_sProfileConfigPath, "Chatbot", "ChkPbSendNewChats", False, "Bool")
+	;IniReadS($g_bChkChatGlobal, $g_sProfileConfigPath, "Chatbot", "ChkChatGlobal", False, "Bool")
+	;IniReadS($g_bChkScrambleGlobal, $g_sProfileConfigPath, "Chatbot", "ChkScrambleGlobal", False, "Bool") 	
+	;IniReadS($g_bChkDelayTime, $g_sProfileConfigPath, "Chatbot", "ChkDelayTime", False, "Bool")
+    ;IniReadS($g_iTxtDelayTime, $g_sProfileConfigPath, "Chatbot", "TxtDelayTime", $g_iTxtDelayTime)
+	;IniReadS($g_bChkSwitchLang, $g_sProfileConfigPath, "Chatbot", "ChkSwitchLang", False, "Bool")
+	;IniReadS($g_iCmbLang, $g_sProfileConfigPath, "Chatbot", "CmbLang", $g_iCmbLang, "int")	
+	;IniReadS($g_bChkRusLang, $g_sProfileConfigPath, "Chatbot", "ChkRusLang", False, "Bool")	
+	;IniReadS($g_bChkChatClan, $g_sProfileConfigPath, "Chatbot", "ChkChatClan", False, "Bool")	
+	;IniReadS($g_bChkClanUseResponses, $g_sProfileConfigPath, "Chatbot", "ChkUseResponses", False, "Bool")
+	;IniReadS($g_bChkClanAlwaysMsg, $g_sProfileConfigPath, "Chatbot", "ChkUseGeneric", False, "Bool")
+	;IniReadS($g_bChkCleverbot, $g_sProfileConfigPath, "Chatbot", "ChkCleverbot", False, "Bool")
+	;IniReadS($g_bChkUseNotify, $g_sProfileConfigPath, "Chatbot", "ChkChatNotify", False, "Bool")
+	;IniReadS($g_bChkPbSendNew, $g_sProfileConfigPath, "Chatbot", "ChkPbSendNewChats", False, "Bool")
 
 	; ==================================================  Upgrade Management - Added by RK MOD ==================== ;
 
@@ -260,25 +260,25 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 
 	; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
-	_Ini_Add("Chatbot", "ChkChatGlobal", $g_bChkChatGlobal ? True : False)	
-	_Ini_Add("Chatbot", "ChkScrambleGlobal", $g_bChkScrambleGlobal ? True : False)  
-    _Ini_Add("Chatbot", "ChkDelayTime", $g_bChkDelayTime ? True : False)	
-    _Ini_Add("Chatbot", "TxtDelayTime", $g_iTxtDelayTime)	
-    _Ini_Add("Chatbot", "ChkSwitchLang", $g_bChkSwitchLang ? True : False)
-	_Ini_Add("Chatbot", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmbLang))	
-	_Ini_Add("Chatbot", "ChkRusLang", $g_bChkRusLang ? True : False)	
-	_Ini_Add("Chatbot", "ChkChatClan", $g_bChkChatClan ? True : False)
-	
-	_Ini_Add("Chatbot", "ChkUseResponses", $g_bChkClanUseResponses ? True : False)
-	_Ini_Add("Chatbot", "ChkUseGeneric", $g_bChkClanAlwaysMsg ? True : False)
-	_Ini_Add("Chatbot", "ChkCleverbot", $g_bChkCleverbot ? True : False)
-	_Ini_Add("Chatbot", "ChkChatNotify", $g_bChkUseNotify ? True : False)
-	_Ini_Add("Chatbot", "ChkPbSendNewChats", $g_bChkPbSendNew ? True : False)
-
-    _Ini_Add("Chatbot", "globalMsg1", $glb1)
-	_Ini_Add("Chatbot", "globalMsg2", $glb2)
-	_Ini_Add("Chatbot", "genericMsgClan", $cGeneric)
-	_Ini_Add("Chatbot", "responseMsgClan", $cResp)
+	;_Ini_Add("Chatbot", "ChkChatGlobal", $g_bChkChatGlobal ? True : False)	
+	;_Ini_Add("Chatbot", "ChkScrambleGlobal", $g_bChkScrambleGlobal ? True : False)  
+    ;_Ini_Add("Chatbot", "ChkDelayTime", $g_bChkDelayTime ? True : False)	
+    ;_Ini_Add("Chatbot", "TxtDelayTime", $g_iTxtDelayTime)	
+    ;_Ini_Add("Chatbot", "ChkSwitchLang", $g_bChkSwitchLang ? True : False)
+	;_Ini_Add("Chatbot", "CmbLang", _GUICtrlComboBox_GetCurSel($g_hCmbLang))	
+	;_Ini_Add("Chatbot", "ChkRusLang", $g_bChkRusLang ? True : False)	
+	;_Ini_Add("Chatbot", "ChkChatClan", $g_bChkChatClan ? True : False)
+	;
+	;_Ini_Add("Chatbot", "ChkUseResponses", $g_bChkClanUseResponses ? True : False)
+	;_Ini_Add("Chatbot", "ChkUseGeneric", $g_bChkClanAlwaysMsg ? True : False)
+	;_Ini_Add("Chatbot", "ChkCleverbot", $g_bChkCleverbot ? True : False)
+	;_Ini_Add("Chatbot", "ChkChatNotify", $g_bChkUseNotify ? True : False)
+	;_Ini_Add("Chatbot", "ChkPbSendNewChats", $g_bChkPbSendNew ? True : False)
+    ;
+    ;_Ini_Add("Chatbot", "globalMsg1", $glb1)
+	;_Ini_Add("Chatbot", "globalMsg2", $glb2)
+	;_Ini_Add("Chatbot", "genericMsgClan", $cGeneric)
+	;_Ini_Add("Chatbot", "responseMsgClan", $cResp)
 
 	; ================================================== Upgrade Management - Added by RK MOD ================================== ;
 
@@ -406,19 +406,19 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
-			$g_bChkChatGlobal = (GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED)
-			$g_bChkScrambleGlobal = (GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED)			
-		    $g_bChkDelayTime = (GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED)
-            $g_iTxtDelayTime = GUICtrlRead($g_hTxtDelayTime)			
-			$g_bChkSwitchLang = (GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED) 
-			$g_iCmbLang = _GUICtrlComboBox_GetCurSel($g_hCmbLang)			
-			$g_bChkRusLang = (GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED)			
-			$g_bChkChatClan = (GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED)				
-			$g_bChkClanUseResponses = (GUICtrlRead($g_hChkUseResponses) = $GUI_CHECKED)
-			$g_bChkClanAlwaysMsg = (GUICtrlRead($g_hChkUseGeneric) = $GUI_CHECKED) 
-			$g_bChkCleverbot = (GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED)
-			$g_bChkUseNotify = (GUICtrlRead($g_hChkChatNotify) = $GUI_CHECKED)
-			$g_bChkPbSendNew = (GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED)
+			;$g_bChkChatGlobal = (GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED)
+			;$g_bChkScrambleGlobal = (GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED)			
+		    ;$g_bChkDelayTime = (GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED)
+            ;$g_iTxtDelayTime = GUICtrlRead($g_hTxtDelayTime)			
+			;$g_bChkSwitchLang = (GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED) 
+			;$g_iCmbLang = _GUICtrlComboBox_GetCurSel($g_hCmbLang)			
+			;$g_bChkRusLang = (GUICtrlRead($g_hChkRusLang) = $GUI_CHECKED)			
+			;$g_bChkChatClan = (GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED)				
+			;$g_bChkClanUseResponses = (GUICtrlRead($g_hChkUseResponses) = $GUI_CHECKED)
+			;$g_bChkClanAlwaysMsg = (GUICtrlRead($g_hChkUseGeneric) = $GUI_CHECKED) 
+			;$g_bChkCleverbot = (GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED)
+			;$g_bChkUseNotify = (GUICtrlRead($g_hChkChatNotify) = $GUI_CHECKED)
+			;$g_bChkPbSendNew = (GUICtrlRead($g_hChkPbSendNewChats) = $GUI_CHECKED)
 
 			; ================================================== Upgrade Management - Added by RK MOD ============================= ;
 
@@ -555,31 +555,31 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			; ================================================== NEW ChatBot - by RK MOD ======================================== ;
 
-			GUICtrlSetState($g_hChkGlobalChat, $g_bChkChatGlobal ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkGlobalScramble, $g_bChkScrambleGlobal ? $GUI_CHECKED : $GUI_UNCHECKED)			
-			GUICtrlSetState($g_hChkDelayTime, $g_bChkDelayTime ? $GUI_CHECKED : $GUI_UNCHECKED)
-            GUICtrlSetData($g_hTxtDelayTime, $g_iTxtDelayTime)			
-			GUICtrlSetState($g_hChkSwitchLang, $g_bChkSwitchLang ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbLang, $g_iCmbLang)			
-			GUICtrlSetState($g_hChkRusLang, $g_bChkRusLang ? $GUI_CHECKED : $GUI_UNCHECKED)			
-			GUICtrlSetState($g_hChkClanChat, $g_bChkChatClan ? $GUI_CHECKED : $GUI_UNCHECKED)		
-			GUICtrlSetState($g_hChkUseResponses, $g_bChkClanUseResponses ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkUseGeneric, $g_bChkClanAlwaysMsg ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkCleverbot, $g_bChkCleverbot ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkChatNotify, $g_bChkUseNotify ? $GUI_CHECKED : $GUI_UNCHECKED)
-			GUICtrlSetState($g_hChkPbSendNewChats, $g_bChkPbSendNew ? $GUI_CHECKED : $GUI_UNCHECKED)
-   		    chkRusLang()
-			chkGlobalChat()
-			chkGlobalScramble()
-			chkCleverbot()
-			chkSwitchLang()
-			chkClanChat()
-			chkUseResponses()
-			chkUseGeneric()
-			chkChatNotify()
-			chkPbSendNewChats()
-			ChatGuiEditUpdate()
-            chkDelayTime()
+			;GUICtrlSetState($g_hChkGlobalChat, $g_bChkChatGlobal ? $GUI_CHECKED : $GUI_UNCHECKED)
+			;GUICtrlSetState($g_hChkGlobalScramble, $g_bChkScrambleGlobal ? $GUI_CHECKED : $GUI_UNCHECKED)			
+			;GUICtrlSetState($g_hChkDelayTime, $g_bChkDelayTime ? $GUI_CHECKED : $GUI_UNCHECKED)
+            ;GUICtrlSetData($g_hTxtDelayTime, $g_iTxtDelayTime)			
+			;GUICtrlSetState($g_hChkSwitchLang, $g_bChkSwitchLang ? $GUI_CHECKED : $GUI_UNCHECKED)
+			;_GUICtrlComboBox_SetCurSel($g_hCmbLang, $g_iCmbLang)			
+			;GUICtrlSetState($g_hChkRusLang, $g_bChkRusLang ? $GUI_CHECKED : $GUI_UNCHECKED)			
+			;GUICtrlSetState($g_hChkClanChat, $g_bChkChatClan ? $GUI_CHECKED : $GUI_UNCHECKED)		
+			;GUICtrlSetState($g_hChkUseResponses, $g_bChkClanUseResponses ? $GUI_CHECKED : $GUI_UNCHECKED)
+			;GUICtrlSetState($g_hChkUseGeneric, $g_bChkClanAlwaysMsg ? $GUI_CHECKED : $GUI_UNCHECKED)
+			;GUICtrlSetState($g_hChkCleverbot, $g_bChkCleverbot ? $GUI_CHECKED : $GUI_UNCHECKED)
+			;GUICtrlSetState($g_hChkChatNotify, $g_bChkUseNotify ? $GUI_CHECKED : $GUI_UNCHECKED)
+			;GUICtrlSetState($g_hChkPbSendNewChats, $g_bChkPbSendNew ? $GUI_CHECKED : $GUI_UNCHECKED)
+
+
+
+
+
+
+
+
+
+
+
+   
 			
 			; ==================================================  Upgrade Management - Added by RK MOD ======================================== ;
 
