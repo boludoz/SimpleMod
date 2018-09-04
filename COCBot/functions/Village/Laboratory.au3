@@ -60,7 +60,7 @@ Func Laboratory()
 	Static $aUpgradeValue[33] = [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	Local $iAvailElixir, $iAvailDark, $sElixirCount, $sDarkCount, $TimeDiff, $aArray, $Result
 	Local $iLevel = 0
- If $g_iCmbLaboratory>0 Then 
+ If $g_iCmbLaboratory > 0 Then 
   $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][1], $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][2], 1)
 EndIf
 	
@@ -69,6 +69,10 @@ EndIf
 
 	$g_iLaboratoryElixirCost = 0
 	If Not $g_bAutoLabUpgradeEnable Then Return ; Lab upgrade not enabled.
+	If $g_iLabUpgradeProgress = 1 Then
+		SetLog("Lab Upgrade in progress", $COLOR_INFO)
+		Return False
+	EndIf
 	If $g_bChkPrioritySystem = True Then
 		LabPriority()
 	EndIf
@@ -322,7 +326,7 @@ EndIf
 	EndIf
 	
 	; Auto correct the troop/spell/seige level in army tab
-	If $g_bChkPrioritySystem = True Then
+	If $g_bChkPrioritySystem = True And $g_iLabUpgradeProgress = 0 Then
 		SetLog("Laboratory Priority Level Check in progress.", $COLOR_INFO)
 		If Int($aUpgradeValue[$g_iCmbLaboratory]) <> Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
 			While Int($aUpgradeValue[$g_iCmbLaboratory]) <> Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel])
