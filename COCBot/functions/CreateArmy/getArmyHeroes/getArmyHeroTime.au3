@@ -127,7 +127,7 @@ Func getArmyHeroTime($iHeroType, $bOpenArmyWindow = False, $bCloseArmyWindow = F
 	ElseIf StringInStr($iHeroType, "all", $STR_NOCASESENSEBASIC) > 0 Then
 		; Grab Healed Heroes - RK MOD
 		For $i = 0 To 2
-			If $aResultHeroes[$i] <> "" And $aResultHeroes[$i] > 0 Then $g_asHeroHealTime[$i] = _DateAdd("s", $aResultHeroes[$i] * 60, _NowCalc())
+			If $aResultHeroes[$i] <> "" And $aResultHeroes[$i] > 0 Then $g_asHeroHealTime[$i] = _DateAdd("s", Int($aResultHeroes[$i] * 60), _NowCalc()) ; EDITED BY RK MOD Bug fix if hero heal time is in float in case of boost or time difference this was returning zero converted into Int
 			SetDebugLog($aHeroRemainData[$i][2] & " heal time: " & $g_asHeroHealTime[$i])
 		Next
 		; calling function needs to check if heroattack enabled & herowait enabled for attack mode used!

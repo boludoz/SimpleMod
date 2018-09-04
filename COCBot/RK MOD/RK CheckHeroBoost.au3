@@ -15,7 +15,7 @@ Local $sHeroTime[3] = ["", "", ""]
 
 Func CheckHeroBoost()
 	SetLog("Checking Hero Boost Time", $COLOR_INFO)
-	
+
 	Local $sHeroName[3] = ["King", "Queen", "Warden"]
 	Local $bIsBoostedImg = @ScriptDir & "\imgxml\boost\BoostC\BoostCCheck"
 	Local $bHeroTimeOCRImgs = @ScriptDir & "\imgxml\HeroTime"
@@ -53,7 +53,7 @@ Func CheckHeroBoost()
 			If $index = 2 Then BuildingClickP($g_aiWardenAltarPos, "#0462")
 
 			_Sleep($DELAYBOOSTHEROES1)
-			
+
 			If $index = 0 Or $index = 1 Then
 				If $g_bDebugSetlog Then SetLog("In Index " & $index, $COLOR_INFO)
 
@@ -125,6 +125,7 @@ Func HeroBoostTimeDiv($aResultHeroes, $i)
 	If $CurrHeroBTime[$i] <> "" Or $CurrHeroBTime[$i] <> 0 Then
 
 		If $g_bDebugSetlog Then
+			SetLog("$aResultHeroes = " & $aResultHeroes, $COLOR_INFO)
 			SetLog("$CurrHeroBTime = " & $CurrHeroBTime[$i], $COLOR_INFO)
 			SetLog("$CTime[" & $i & "] = " & $CTime[$g_iCurAccount][$i], $COLOR_INFO)
 			SetLog("Time Diff HeroTime = " & $iheroTime, $COLOR_INFO)
@@ -132,11 +133,11 @@ Func HeroBoostTimeDiv($aResultHeroes, $i)
 
 		If $iheroTime > 0 Then
 			If ($aResultHeroes - ($iheroTime * 4)) < 0 Then
-				If $g_bDebugSetlog Then SetLog("$aResultHeroes /= 4", $COLOR_INFO)
 				$aResultHeroes /= 4
+				If $g_bDebugSetlog Then SetLog("$aResultHeroes /= 4 ---> " & $aResultHeroes, $COLOR_INFO)
 			ElseIf ($aResultHeroes - ($iheroTime * 4)) > 0 Then
-				If $g_bDebugSetlog Then SetLog("$aResultHeroes = $aResultHeroes - ($iheroTime * 4)", $COLOR_INFO)
 				$aResultHeroes = ($aResultHeroes - ($iheroTime * 4)) + ($aResultHeroes / 4)
+				If $g_bDebugSetlog Then SetLog("$aResultHeroes = $aResultHeroes - ($iheroTime * 4) ---> " & $aResultHeroes, $COLOR_INFO)
 			EndIf
 		EndIf
 		Return $aResultHeroes
