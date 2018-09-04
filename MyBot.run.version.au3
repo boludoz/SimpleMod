@@ -21,5 +21,5 @@
 
 Global $g_sBotVersion = "v7.6.2" ;~ Don't add more here, but below. Version can't be longer than vX.y.z because it is also use on Checkversion()
 
-Global $g_sModversion = "v3.0.6 r2 beta" ;<== Just Change This to Version Number
+Global $g_sModversion = "v3.0.6 r3 beta" ;<== Just Change This to Version Number
 Global $g_sModSupportUrl = "https://github.com/rulesss2/MyBot-MBR_v7.6.2_RK_MOD/releases" ;<== Our Website Link Download

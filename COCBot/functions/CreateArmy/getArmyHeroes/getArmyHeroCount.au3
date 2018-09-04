@@ -216,16 +216,19 @@ Func ArmyHeroStatus($i)
 							GUICtrlSetState($g_hPicWardenGreen, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenRed, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenBlue, $GUI_SHOW)
+							$g_iWallWarden = 0
 						Case "upgrade" ; Red
 							GUICtrlSetState($g_hPicWardenGray, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenGreen, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenBlue, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenRed, $GUI_SHOW)
+							$g_iWallWarden = 1
 						Case "warden" ; Green
 							GUICtrlSetState($g_hPicWardenGray, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenRed, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenBlue, $GUI_HIDE)
 							GUICtrlSetState($g_hPicWardenGreen, $GUI_SHOW)
+							$g_iWallWarden = 0
 					EndSwitch
 			EndSelect
 			Return $sResult
@@ -322,6 +325,7 @@ Func LabGuiDisplay() ; called from main loop to get an early status for indictor
 
 	; check for upgrade in process - look for green in finish upgrade with gems button
 	If _ColorCheck(_GetPixelColor(730, 200, True), Hex(0xA2CB6C, 6), 20) Then ; Look for light green in upper right corner of lab window.
+		$g_iLabUpgradeProgress = 1
 		SetLog("Laboratory is Running. ", $COLOR_INFO)
 		;==========Hide Red  Show Green Hide Gray===
 		GUICtrlSetState($g_hPicLabGray, $GUI_HIDE)
@@ -332,6 +336,7 @@ Func LabGuiDisplay() ; called from main loop to get an early status for indictor
 		ClickP($aAway, 2, $DELAYLABORATORY4, "#0359")
 		Return True
 	ElseIf _ColorCheck(_GetPixelColor(730, 200, True), Hex(0x8088B0, 6), 20) Then ; Look for light purple in upper right corner of lab window.
+		$g_iLabUpgradeProgress = 0
 		SetLog("Laboratory has Stopped", $COLOR_INFO)
 		ClickP($aAway, 2, $DELAYLABORATORY4, "#0359")
 		;========Show Red  Hide Green  Hide Gray=====
@@ -344,6 +349,7 @@ Func LabGuiDisplay() ; called from main loop to get an early status for indictor
 		Return
 	Else
 		SetLog("Unable to determine Lab Status", $COLOR_INFO)
+		$g_iLabUpgradeProgress = 0
 		ClickP($aAway, 2, $DELAYLABORATORY4, "#0359")
 		;========Hide Red  Hide Green  Show Gray======
 		GUICtrlSetState($g_hPicLabGreen, $GUI_HIDE)

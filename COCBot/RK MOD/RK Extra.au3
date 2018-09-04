@@ -1,11 +1,11 @@
 ; #FUNCTION# ====================================================================================================================
 ; Name ..........: RK MOD Extra
-; Description ...: 
-; Syntax ........: 
+; Description ...:
+; Syntax ........:
 ; Parameters ....: ---
 ; Return values .: ---
 ; Author ........: RK
-; Modified ......: 
+; Modified ......:
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2017
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......: ---
@@ -13,29 +13,30 @@
 ; Example .......: ---
 ; ===============================================================================================================================
 
-Func AttackPriority() ;------------------ADDED By RK MOD------------------
-	TrainSystem()
-	If Not $g_bRunState Then Return
-	SetDebugLog("Are you ready? " & String($g_bIsFullArmywithHeroesAndSpells))
-	If $g_bIsFullArmywithHeroesAndSpells Then
-		BoostAllWithMagicSpell()
-		OneGemBoost()
-		If (isInsideDiamond($g_aiTownHallPos) = False) Then
-			BotDetectFirstTime()
-		EndIf
-		If $g_iCommandStop <> 0 And $g_iCommandStop <> 3 Then
-			Setlog("Before any other routine let's attack!!", $COLOR_INFO)
-			If Not $g_bRunState Then Return
-			AttackMain()
-			$g_bSkipFirstZoomout = False
-			If $g_bOutOfGold = True Then
-				SetLog("Switching to Halt Attack, Stay Online/Collect mode ...", $COLOR_ERROR)
-				$g_bFirstStart = True
-				Return
+Func AttackPriority()
+	If $g_iCommandStop <> 0 And $g_iCommandStop <> 3 Then
+		TrainSystem()
+		If Not $g_bRunState Then Return
+		SetDebugLog("Are you ready? " & String($g_bIsFullArmywithHeroesAndSpells))
+		If $g_bIsFullArmywithHeroesAndSpells Then
+			BoostAllWithMagicSpell()
+			OneGemBoost()
+			If (isInsideDiamond($g_aiTownHallPos) = False) Then
+				BotDetectFirstTime()
 			EndIf
-			If _Sleep($DELAYRUNBOT1) Then Return
+			If $g_iCommandStop <> 0 And $g_iCommandStop <> 3 Then
+				Setlog("Before any other routine let's attack!!", $COLOR_INFO)
+				If Not $g_bRunState Then Return
+				AttackMain()
+				$g_bSkipFirstZoomout = False
+				If $g_bOutOfGold = True Then
+					SetLog("Switching to Halt Attack, Stay Online/Collect mode ...", $COLOR_ERROR)
+					$g_bFirstStart = True
+					Return
+				EndIf
+				If _Sleep($DELAYRUNBOT1) Then Return
+			EndIf
 		EndIf
-	Else
 	EndIf
 EndFunc   ;==>AttackPriority
 

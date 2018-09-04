@@ -100,10 +100,10 @@ Global $g_iLastLayout = 0
 ; ================================================ Switch Profile - Added by RK MOD ======================================== ;
 
 Global $profileString = ""
-Global $g_iChkGoldSwitchMax, $g_iTxtMaxGoldAmount, $g_iCmbGoldMaxProfile, $g_iChkGoldSwitchMin, $g_iTxtMinGoldAmount, $g_iCmbGoldMinProfile
-Global $g_iChkElixirSwitchMax, $g_iTxtMaxElixirAmount, $g_iCmbElixirMaxProfile, $g_iChkElixirSwitchMin, $g_iTxtMinElixirAmount, $g_iCmbElixirMinProfile
-Global $g_iChkDESwitchMax, $g_iTxtMaxDEAmount, $g_iCmbDEMaxProfile, $g_iChkDESwitchMin, $g_iTxtMinDEAmount, $g_iCmbDEMinProfile
-Global $g_iChkTrophySwitchMax, $g_iTxtMaxTrophyAmount, $g_iCmbTrophyMaxProfile, $g_iChkTrophySwitchMin, $g_iTxtMinTrophyAmount, $g_iCmbTrophyMinProfile
+Global $g_bChkGoldSwitchMax = False, $g_iTxtMaxGoldAmount = 12000000, $g_iCmbGoldMaxProfile = 0, $g_bChkGoldSwitchMin = False, $g_iTxtMinGoldAmount = 10000000, $g_iCmbGoldMinProfile = 0
+Global $g_bChkElixirSwitchMax = False, $g_iTxtMaxElixirAmount = 12000000, $g_iCmbElixirMaxProfile = 0, $g_bChkElixirSwitchMin = False, $g_iTxtMinElixirAmount = 10000000, $g_iCmbElixirMinProfile = 0
+Global $g_bChkDESwitchMax = False, $g_iTxtMaxDEAmount = 200000, $g_iCmbDEMaxProfile = 0, $g_bChkDESwitchMin = False, $g_iTxtMinDEAmount = 10000, $g_iCmbDEMinProfile = 0
+Global $g_bChkTrophySwitchMax = False, $g_iTxtMaxTrophyAmount = 3000, $g_iCmbTrophyMaxProfile = 0, $g_bChkTrophySwitchMin = False, $g_iTxtMinTrophyAmount = 1000, $g_iCmbTrophyMinProfile = 0
 
 ; ========================= Slot11 - Added by RK MOD (ID193-) =============================================================================================;
 
@@ -205,6 +205,8 @@ Global $g_iCycle = 0
 Global $g_iChkUpgrPriority = 0, $g_iCmbUpgrdPriority = 0
 Global Const $g_iLimitBreakGE[12] = [2250, 6300, 90000, 450000, 900000, 1800000, 3600000, 5400000, 7200000, 7650000, 9000000, 10800000];Gold And Elixir Town Hall Level max resource storages at 90%
 Global Const $g_iLimitBreakDE[12] = [0, 0, 0, 0, 0, 0, 18000, 72000, 171000, 180000, 180000, 216000];Dark Elixir Town Hall Level max resource storage at 90%
+Global $g_iLabUpgradeProgress = 0
+Global $g_iWallWarden = 0
 
 ; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
 
@@ -239,6 +241,40 @@ Global $CurrHeroBTime[3] = ["", "", ""]
 ; ================================================== ; Priority System - by RK MOD  ======================================== ;
 
 Global $g_bChkPrioritySystem = False, $g_iCmbPrioritySystem = 0
+Global $g_iUpgradeLevel[32][3] = [["LevelTroop", "Barb", 8], ["LevelTroop", "Arch", 8], ["LevelTroop", "Giant", 9], ["LevelTroop", "Gobl", 7], ["LevelTroop", "Wall", 8], ["LevelTroop", "Ball", 8], ["LevelTroop", "Wiza", 9], ["LevelTroop", "Heal", 5], ["LevelTroop", "Drag", 7], ["LevelTroop", "Pekk", 8], ["LevelTroop", "BabyD", 6], ["LevelTroop", "Mine", 6], ["LevelTroop", "EDrag", 3], ["LevelSpell", "LSpell", 7], ["LevelSpell", "HSpell", 7], ["LevelSpell", "RSpell", 5], ["LevelSpell", "JSpell", 3], ["LevelSpell", "FSpell", 7], ["LevelSpell", "CSpell", 5], ["LevelSpell", "PSpell", 5], ["LevelSpell", "ESpell", 4], ["LevelSpell", "HaSpell", 4], ["LevelSpell", "SkSpell", 5], ["LevelTroop", "Mini", 8], ["LevelTroop", "Hogs", 8], ["LevelTroop", "Valk", 7], ["LevelTroop", "Gole", 8], ["LevelTroop", "Witc", 4], ["LevelTroop", "Lava", 5], ["LevelTroop", "Bowl", 4], ["LevelSiege", "WallW", 3], ["LevelSiege", "BattleB", 3]]
+Global $g_iLabCost[32][10] = [ _
+		[0, 50000, 150000, 500000, 1500000, 4500000, 6000000, 8000000, "Max", "Max"], _				 ;Barbarian
+		[0, 50000, 250000, 750000, 2250000, 6000000, 7500000, 9000000, "Max", "Max"], _  			 ;Archer
+		[0, 100000, 250000, 750000, 2250000, 5000000, 6000000, 9500000, 12000000, "Max"], _  		 ;Giant
+		[0, 50000, 250000, 750000, 2250000, 4500000, 6750000, "Max", "Max", "Max"], _  				 ;Goblin
+		[0, 100000, 250000, 750000, 200000, 6000000, 9000000, 12000000, "Max", "Max"], _ 			 ;Wall Breaker
+		[0, 150000, 450000, 1350000, 2500000, 6000000, 9500000, 12000000, "Max", "Max"], _  		 ;Balloon
+		[0, 150000, 450000, 1350000, 2500000, 5000000, 7000000, 9000000, 11000000, "Max"], _ 	 	 ;Wizard
+		[0, 750000, 1500000, 3000000, 9500000, "Max", "Max", "Max", "Max", "Max"], _  				 ;Healer
+		[0, 2000000, 3000000, 5000000, 7000000, 9000000, 11000000, "Max", "Max", "Max"], _ 			 ;Dragon
+		[0, 3000000, 5000000, 6000000, 7500000, 85000000, 10000000, 12000000, "Max", "Max"], _ 		 ;Pekka
+		[0, 5000000, 6000000, 7000000, 8000000, 9000000, "Max", "Max", "Max", "Max"], _ 			 ;Baby Dragon
+		[0, 6000000, 7000000, 8000000, 9500000, 11000000, "Max", "Max", "Max", "Max"], _ 			 ;Miner
+		[0, 9000000, 11000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"], _ 					 ;Electro Dragon
+		[0, 200000, 500000, 1000000, 2000000, 6000000, 8000000, "Max", "Max", "Max"], _ 			 ;Lightning Spell
+		[0, 300000, 600000, 1200000, 2000000, 4000000, 6000000, "Max", "Max", "Max"], _ 			 ;Healing Spell
+		[0, 450000, 900000, 1800000, 3000000, "Max", "Max", "Max", "Max", "Max"], _  				 ;Rage Spell
+		[0, 3000000, 6000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"], _ 			 		 ;Jump Spell
+		[0, 3000000, 4000000, 5000000, 7000000, 9500000, 11000000, "Max", "Max", "Max"], _  		 ;Freeze Spell
+		[0, 4000000, 6000000, 8000000, 10000000, "Max", "Max", "Max", "Max", "Max"], _  			 ;Clone Spell
+		[0, 25000, 50000, 75000, 150000, "Max", "Max", "Max", "Max", "Max"], _  					 ;Poison Spell
+		[0, 30000, 60000, 90000, "Max", "Max", "Max", "Max", "Max", "Max"], _ 						 ;Earthquake Spell
+		[0, 40000, 80000, 100000, "Max", "Max", "Max", "Max", "Max", "Max"], _ 						 ;Haste Spell
+		[0, 50000, 75000, 100000, 125000, "Max", "Max", "Max", "Max", "Max"], _  					 ;Skeleton Spell
+		[0, 10000, 20000, 30000, 40000, 100000, 140000, 180000, "Max", "Max"], _  					 ;Minion
+		[0, 20000, 30000, 40000, 50000, 100000, 150000, 200000, "Max", "Max"], _  					 ;Hog Rider
+		[0, 50000, 60000, 70000, 110000, 150000, 190000, "Max", "Max", "Max"], _ 					 ;Valkerie
+		[0, 60000, 70000, 80000, 90000, 150000, 200000, 200000, "Max", "Max"], _  					 ;Golem
+		[0, 75000, 160000, 200000, "Max", "Max", "Max", "Max", "Max", "Max"], _  					 ;Witch
+		[0, 60000, 70000, 150000, 200000, "Max", "Max", "Max", "Max", "Max"], _ 					 ;Lavahound
+		[0, 120000, 200000, 200000, "Max", "Max", "Max", "Max", "Max", "Max"], _  					 ;Bowler
+		[0, 6000000, 8000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"], _  					 ;Wall Wrecker
+		[0, 6000000, 8000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"]] ;Battle Blimp
 
 ; ================================================== ; TNRQT - by RK MOD  ======================================== ;
 
