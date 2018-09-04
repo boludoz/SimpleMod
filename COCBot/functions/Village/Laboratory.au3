@@ -59,7 +59,10 @@ Func Laboratory()
 	;Create local static array to hold upgrade values
 	Static $aUpgradeValue[33] = [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	Local $iAvailElixir, $iAvailDark, $sElixirCount, $sDarkCount, $TimeDiff, $aArray, $Result
-	Local $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[Int ($g_iCmbLaboratory - 1)][1], $g_iUpgradeLevel[Int ($g_iCmbLaboratory - 1)][2], 1)
+	Local $iLevel = 0
+ If $g_iCmbLaboratory>0 Then 
+  $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][1], $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][2], 1)
+EndIf
 	
 	$g_iUpgradeMinElixir = Number($g_iUpgradeMinElixir)
 	$g_iUpgradeMinDark = Number($g_iUpgradeMinDark)
@@ -68,7 +71,6 @@ Func Laboratory()
 	If Not $g_bAutoLabUpgradeEnable Then Return ; Lab upgrade not enabled.
 	If $g_bChkPrioritySystem = True Then
 		LabPriority()
-		Sleep (5000)
 	EndIf
 	If $g_iCmbLaboratory = 0 Then
 		SetLog("Laboratory enabled, but no troop upgrade selected", $COLOR_WARNING)
@@ -326,8 +328,10 @@ Func Laboratory()
 			While Int($aUpgradeValue[$g_iCmbLaboratory]) <> Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel])
 				If Int($aUpgradeValue[$g_iCmbLaboratory]) < Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
 					IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $iLevel - 1)
+					SetLog("Decreasing upgrade level.", $COLOR_INFO)
 				ElseIf Int($aUpgradeValue[$g_iCmbLaboratory]) > Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
 					IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $iLevel + 1)
+					SetLog("Increasing upgrade level.", $COLOR_INFO)
 				EndIf
 			WEnd
 			SetLog("Upgrade level adjusted. Exiting Upgrade.", $COLOR_ERROR)
@@ -701,17 +705,21 @@ Func LabPriority()
 		If $g_iCmbPrioritySystem = 0 Then
 				If ($minElixerValue <> "") And $iElixirCount < 21 Then
 					$g_iCmbLaboratory = Int($minElixerValue[0][2])
+					SetLog("Elixir Upgrade set.", $COLOR_INFO)
 					Return
 				ElseIf ($minDarkElixerValue <> "") And $iDElixirCount < 11 Then
 					$g_iCmbLaboratory = Int($minDarkElixerValue[0][2])
+					SetLog("Elixir complete, Dark Elixir Upgrade set.", $COLOR_INFO)
 					Return
 				EndIf
 		ElseIf $g_iCmbPrioritySystem = 1 Then
 				If ($minDarkElixerValue <> "") And $iDElixirCount < 11 Then
 					$g_iCmbLaboratory = Int($minDarkElixerValue[0][2])
+					SetLog("Dark Elixir Upgrade set.", $COLOR_INFO)
 					Return
 				ElseIf ($minElixerValue <> "") And $iElixirCount < 21 Then
 					$g_iCmbLaboratory = Int($minElixerValue[0][2])
+					SetLog("Dark Elixir complete, Elixir Upgrade set.", $COLOR_INFO)
 					Return
 				EndIf
 		EndIf
