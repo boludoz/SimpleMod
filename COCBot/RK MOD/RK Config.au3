@@ -92,33 +92,33 @@ Func ReadConfig_RKMod()
 
 	;================================================== ; Switch Profile - Added by RK MOD ==================== ;
 
-	IniReadS($g_iChkGoldSwitchMax, $g_sProfileConfigPath, "profiles", "chkGoldSwitchMax", 0, "int")
-	IniReadS($g_iCmbGoldMaxProfile, $g_sProfileConfigPath, "profiles", "cmbGoldMaxProfile", 0, "int")
-	IniReadS($g_iTxtMaxGoldAmount, $g_sProfileConfigPath, "profiles", "txtMaxGoldAmount", 12000000, "int")
-	IniReadS($g_iChkGoldSwitchMin, $g_sProfileConfigPath, "profiles", "chkGoldSwitchMin", 0, "int")
-	IniReadS($g_iCmbGoldMinProfile, $g_sProfileConfigPath, "profiles", "cmbGoldMinProfile", 0, "int")
-	IniReadS($g_iTxtMinGoldAmount, $g_sProfileConfigPath, "profiles", "txtMinGoldAmount", 10000000, "int")
+	IniReadS($g_bChkGoldSwitchMax, $g_sProfileConfigPath, "profiles", "GoldSwitchMax", $g_bChkGoldSwitchMax, "Bool")
+	IniReadS($g_iCmbGoldMaxProfile, $g_sProfileConfigPath, "profiles", "GoldMaxProfile", $g_iCmbGoldMaxProfile, "int")
+	IniReadS($g_iTxtMaxGoldAmount, $g_sProfileConfigPath, "profiles", "MaxGoldAmount", $g_iTxtMaxGoldAmount, "int")
+	IniReadS($g_bChkGoldSwitchMin, $g_sProfileConfigPath, "profiles", "GoldSwitchMin", $g_bChkGoldSwitchMin, "Bool")
+	IniReadS($g_iCmbGoldMinProfile, $g_sProfileConfigPath, "profiles", "GoldMinProfile", $g_iCmbGoldMinProfile, "int")
+	IniReadS($g_iTxtMinGoldAmount, $g_sProfileConfigPath, "profiles", "MinGoldAmount", $g_iTxtMinGoldAmount, "int")
 
-	IniReadS($g_iChkElixirSwitchMax, $g_sProfileConfigPath, "profiles", "chkElixirSwitchMax", 0, "int")
-	IniReadS($g_iCmbElixirMaxProfile, $g_sProfileConfigPath, "profiles", "cmbElixirMaxProfile", 0, "int")
-	IniReadS($g_iTxtMaxElixirAmount, $g_sProfileConfigPath, "profiles", "txtMaxElixirAmount", 10000000, "int")
-	IniReadS($g_iChkElixirSwitchMin, $g_sProfileConfigPath, "profiles", "chkElixirSwitchMin", 0, "int")
-	IniReadS($g_iCmbElixirMinProfile, $g_sProfileConfigPath, "profiles", "cmbElixirMinProfile", 0, "int")
-	IniReadS($g_iTxtMinElixirAmount, $g_sProfileConfigPath, "profiles", "txtMinElixirAmount", 10000000, "int")
+	IniReadS($g_bChkElixirSwitchMax, $g_sProfileConfigPath, "profiles", "ElixirSwitchMax", $g_bChkElixirSwitchMax, "Bool")
+	IniReadS($g_iCmbElixirMaxProfile, $g_sProfileConfigPath, "profiles", "ElixirMaxProfile", $g_iCmbElixirMaxProfile, "int")
+	IniReadS($g_iTxtMaxElixirAmount, $g_sProfileConfigPath, "profiles", "MaxElixirAmount", $g_iTxtMaxElixirAmount, "int")
+	IniReadS($g_bChkElixirSwitchMin, $g_sProfileConfigPath, "profiles", "ElixirSwitchMin", $g_bChkElixirSwitchMin, "Bool")
+	IniReadS($g_iCmbElixirMinProfile, $g_sProfileConfigPath, "profiles", "ElixirMinProfile", $g_iCmbElixirMinProfile, "int")
+	IniReadS($g_iTxtMinElixirAmount, $g_sProfileConfigPath, "profiles", "MinElixirAmount", $g_iTxtMinElixirAmount, "int")
 
-	IniReadS($g_iChkDESwitchMax, $g_sProfileConfigPath, "profiles", "chkDESwitchMax", 0, "int")
-	IniReadS($g_iCmbDEMaxProfile, $g_sProfileConfigPath, "profiles", "cmbDEMaxProfile", 0, "int")
-	IniReadS($g_iTxtMaxDEAmount, $g_sProfileConfigPath, "profiles", "txtMaxDEAmount", 200000, "int")
-	IniReadS($g_iChkDESwitchMin, $g_sProfileConfigPath, "profiles", "chkDESwitchMin", 0, "int")
-	IniReadS($g_iCmbDEMinProfile, $g_sProfileConfigPath, "profiles", "cmbDEMinProfile", 0, "int")
-	IniReadS($g_iTxtMinDEAmount, $g_sProfileConfigPath, "profiles", "txtMinDEAmount", 10000, "int")
+	IniReadS($g_bChkDESwitchMax, $g_sProfileConfigPath, "profiles", "DESwitchMax", $g_bChkDESwitchMax, "Bool")
+	IniReadS($g_iCmbDEMaxProfile, $g_sProfileConfigPath, "profiles", "DEMaxProfile", $g_iCmbDEMaxProfile, "Bool")
+	IniReadS($g_iTxtMaxDEAmount, $g_sProfileConfigPath, "profiles", "MaxDEAmount", $g_iTxtMaxDEAmount, "int")
+	IniReadS($g_bChkDESwitchMin, $g_sProfileConfigPath, "profiles", "DESwitchMin", $g_bChkDESwitchMin, "Bool")
+	IniReadS($g_iCmbDEMinProfile, $g_sProfileConfigPath, "profiles", "DEMinProfile", $g_iCmbDEMinProfile, "int")
+	IniReadS($g_iTxtMinDEAmount, $g_sProfileConfigPath, "profiles", "MinDEAmount", $g_iTxtMinDEAmount, "int")
 
-	IniReadS($g_iChkTrophySwitchMax, $g_sProfileConfigPath, "profiles", "chkTrophySwitchMax", 0, "int")
-	IniReadS($g_iCmbTrophyMaxProfile, $g_sProfileConfigPath, "profiles", "cmbTrophyMaxProfile", 0, "int")
-	IniReadS($g_iTxtMaxTrophyAmount, $g_sProfileConfigPath, "profiles", "txtMaxTrophyAmount", 3000, "int")
-	IniReadS($g_iChkTrophySwitchMin, $g_sProfileConfigPath, "profiles", "chkTrophySwitchMin", 0, "int")
-	IniReadS($g_iCmbTrophyMinProfile, $g_sProfileConfigPath, "profiles", "cmbTrophyMinProfile", 0, "int")
-	IniReadS($g_iTxtMinTrophyAmount, $g_sProfileConfigPath, "profiles", "txtMinTrophyAmount", 1000, "int")
+	IniReadS($g_bChkTrophySwitchMax, $g_sProfileConfigPath, "profiles", "TrophySwitchMax", $g_bChkTrophySwitchMax, "Bool")
+	IniReadS($g_iCmbTrophyMaxProfile, $g_sProfileConfigPath, "profiles", "TrophyMaxProfile", $g_iCmbTrophyMaxProfile, "int")
+	IniReadS($g_iTxtMaxTrophyAmount, $g_sProfileConfigPath, "profiles", "MaxTrophyAmount", $g_iTxtMaxTrophyAmount, "int")
+	IniReadS($g_bChkTrophySwitchMin, $g_sProfileConfigPath, "profiles", "TrophySwitchMin", $g_bChkTrophySwitchMin, "Bool")
+	IniReadS($g_iCmbTrophyMinProfile, $g_sProfileConfigPath, "profiles", "TrophyMinProfile", $g_iCmbTrophyMinProfile, "int")
+	IniReadS($g_iTxtMinTrophyAmount, $g_sProfileConfigPath, "profiles", "MinTrophyAmount", $g_iTxtMinTrophyAmount, "int")
 
 	; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
@@ -230,33 +230,33 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 
 	; ================================================ Switch Profile - Added by RK MOD ======================================== ;
 
-	_Ini_Add("profiles", "chkGoldSwitchMax", $g_iChkGoldSwitchMax ? 1 : 0)
-	_Ini_Add("profiles", "cmbGoldMaxProfile", $g_iCmbGoldMaxProfile)
-	_Ini_Add("profiles", "txtMaxGoldAmount", $g_iTxtMaxGoldAmount)
-	_Ini_Add("profiles", "chkGoldSwitchMin", $g_iChkGoldSwitchMin ? 1 : 0)
-	_Ini_Add("profiles", "cmbGoldMinProfile", $g_iCmbGoldMinProfile)
-	_Ini_Add("profiles", "txtMinGoldAmount", $g_iTxtMinGoldAmount)
+	_Ini_Add("profiles", "GoldSwitchMax", $g_bChkGoldSwitchMax ? True : False)
+	_Ini_Add("profiles", "GoldMaxProfile", $g_iCmbGoldMaxProfile)
+	_Ini_Add("profiles", "MaxGoldAmount", $g_iTxtMaxGoldAmount)
+	_Ini_Add("profiles", "GoldSwitchMin", $g_bChkGoldSwitchMin ? True : False)
+	_Ini_Add("profiles", "GoldMinProfile", $g_iCmbGoldMinProfile)
+	_Ini_Add("profiles", "MinGoldAmount", $g_iTxtMinGoldAmount)
 
-	_Ini_Add("profiles", "chkElixirSwitchMax", $g_iChkElixirSwitchMax ? 1 : 0)
-	_Ini_Add("profiles", "cmbElixirMaxProfile", $g_iCmbElixirMaxProfile)
-	_Ini_Add("profiles", "txtMaxElixirAmount", $g_iTxtMaxElixirAmount)
-	_Ini_Add("profiles", "chkElixirSwitchMin", $g_iChkElixirSwitchMin ? 1 : 0)
-	_Ini_Add("profiles", "cmbElixirMinProfile", $g_iCmbElixirMinProfile)
-	_Ini_Add("profiles", "txtMinElixirAmount", $g_iTxtMinElixirAmount)
+	_Ini_Add("profiles", "ElixirSwitchMax", $g_bChkElixirSwitchMax ? True : False)
+	_Ini_Add("profiles", "ElixirMaxProfile", $g_iCmbElixirMaxProfile)
+	_Ini_Add("profiles", "MaxElixirAmount", $g_iTxtMaxElixirAmount)
+	_Ini_Add("profiles", "ElixirSwitchMin", $g_bChkElixirSwitchMin ? True : False)
+	_Ini_Add("profiles", "ElixirMinProfile", $g_iCmbElixirMinProfile)
+	_Ini_Add("profiles", "MinElixirAmount", $g_iTxtMinElixirAmount)
 
-	_Ini_Add("profiles", "chkDESwitchMax", $g_iChkDESwitchMax ? 1 : 0)
-	_Ini_Add("profiles", "cmbDEMaxProfile", $g_iCmbDEMaxProfile)
-	_Ini_Add("profiles", "txtMaxDEAmount", $g_iTxtMaxDEAmount)
-	_Ini_Add("profiles", "chkDESwitchMin", $g_iChkDESwitchMin ? 1 : 0)
-	_Ini_Add("profiles", "cmbDEMinProfile", $g_iCmbDEMinProfile)
-	_Ini_Add("profiles", "txtMinDEAmount", $g_iTxtMinDEAmount)
+	_Ini_Add("profiles", "DESwitchMax", $g_bChkDESwitchMax ? True : False)
+	_Ini_Add("profiles", "DEMaxProfile", $g_iCmbDEMaxProfile)
+	_Ini_Add("profiles", "MaxDEAmount", $g_iTxtMaxDEAmount)
+	_Ini_Add("profiles", "DESwitchMin", $g_bChkDESwitchMin ? True : False)
+	_Ini_Add("profiles", "DEMinProfile", $g_iCmbDEMinProfile)
+	_Ini_Add("profiles", "MinDEAmount", $g_iTxtMinDEAmount)
 
-	_Ini_Add("profiles", "chkTrophySwitchMax", $g_iChkTrophySwitchMax ? 1 : 0)
-	_Ini_Add("profiles", "cmbTrophyMaxProfile", $g_iCmbTrophyMaxProfile)
-	_Ini_Add("profiles", "txtMaxTrophyAmount", $g_iTxtMaxTrophyAmount)
-	_Ini_Add("profiles", "chkTrophySwitchMin", $g_iChkTrophySwitchMin ? 1 : 0)
-	_Ini_Add("profiles", "cmbTrophyMinProfile", $g_iCmbTrophyMinProfile)
-	_Ini_Add("profiles", "txtMinTrophyAmount", $g_iTxtMinTrophyAmount)
+	_Ini_Add("profiles", "TrophySwitchMax", $g_bChkTrophySwitchMax ? True : False)
+	_Ini_Add("profiles", "TrophyMaxProfile", $g_iCmbTrophyMaxProfile)
+	_Ini_Add("profiles", "MaxTrophyAmount", $g_iTxtMaxTrophyAmount)
+	_Ini_Add("profiles", "TrophySwitchMin", $g_bChkTrophySwitchMin ? True : False)
+	_Ini_Add("profiles", "TrophyMinProfile", $g_iCmbTrophyMinProfile)
+	_Ini_Add("profiles", "MinTrophyAmount", $g_iTxtMinTrophyAmount)
 
 	; ================================================== NEW ChatBot - by RK MOD ================================= ;
 
@@ -376,31 +376,31 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			; ================================================ Switch Profile - Added by RK MOD ======================================== ;
 
-			$g_iChkGoldSwitchMax = GUICtrlRead($g_hChkGoldSwitchMax) = $GUI_CHECKED ? 1 : 0
+			$g_bChkGoldSwitchMax = (GUICtrlRead($g_hChkGoldSwitchMax) = $GUI_CHECKED)
 			$g_iCmbGoldMaxProfile = _GUICtrlComboBox_GetCurSel($g_hCmbGoldMaxProfile)
 			$g_iTxtMaxGoldAmount = GUICtrlRead($g_hTxtMaxGoldAmount)
-			$g_iChkGoldSwitchMin = GUICtrlRead($g_hChkGoldSwitchMin) = $GUI_CHECKED ? 1 : 0
+			$g_bChkGoldSwitchMin = (GUICtrlRead($g_hChkGoldSwitchMin) = $GUI_CHECKED)
 			$g_iCmbGoldMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbGoldMinProfile)
 			$g_iTxtMinGoldAmount = GUICtrlRead($g_hTxtMinGoldAmount)
 
-			$g_iChkElixirSwitchMax = GUICtrlRead($g_hChkElixirSwitchMax) = $GUI_CHECKED ? 1 : 0
+			$g_bChkElixirSwitchMax = (GUICtrlRead($g_hChkElixirSwitchMax) = $GUI_CHECKED)
 			$g_iCmbElixirMaxProfile = _GUICtrlComboBox_GetCurSel($g_hCmbElixirMaxProfile)
 			$g_iTxtMaxElixirAmount = GUICtrlRead($g_hTxtMaxElixirAmount)
-			$g_iChkElixirSwitchMin = GUICtrlRead($g_hChkElixirSwitchMin) = $GUI_CHECKED ? 1 : 0
+			$g_bChkElixirSwitchMin = (GUICtrlRead($g_hChkElixirSwitchMin) = $GUI_CHECKED)
 			$g_iCmbElixirMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbElixirMinProfile)
 			$g_iTxtMinElixirAmount = GUICtrlRead($g_hTxtMinElixirAmount)
 
-			$g_iChkDESwitchMax = GUICtrlRead($g_hChkDESwitchMax) = $GUI_CHECKED ? 1 : 0
+			$g_bChkDESwitchMax = (GUICtrlRead($g_hChkDESwitchMax) = $GUI_CHECKED)
 			$g_iCmbDEMaxProfile = _GUICtrlComboBox_GetCurSel($g_hCmbDEMaxProfile)
 			$g_iTxtMaxDEAmount = GUICtrlRead($g_hTxtMaxDEAmount)
-			$g_iChkDESwitchMin = GUICtrlRead($g_hChkDESwitchMin) = $GUI_CHECKED ? 1 : 0
+			$g_bChkDESwitchMin = (GUICtrlRead($g_hChkDESwitchMin) = $GUI_CHECKED)
 			$g_iCmbDEMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbDEMinProfile)
 			$g_iTxtMinDEAmount = GUICtrlRead($g_hTxtMinDEAmount)
 
-			$g_iChkTrophySwitchMax = GUICtrlRead($g_hChkTrophySwitchMax) = $GUI_CHECKED ? 1 : 0
+			$g_bChkTrophySwitchMax = (GUICtrlRead($g_hChkTrophySwitchMax) = $GUI_CHECKED)
 			$g_iCmbTrophyMaxProfile = _GUICtrlComboBox_GetCurSel($g_hCmbTrophyMaxProfile)
 			$g_iTxtMaxTrophyAmount = GUICtrlRead($g_hTxtMaxTrophyAmount)
-			$g_iChkTrophySwitchMin = GUICtrlRead($g_hChkTrophySwitchMin) = $GUI_CHECKED ? 1 : 0
+			$g_bChkTrophySwitchMin = (GUICtrlRead($g_hChkTrophySwitchMin) = $GUI_CHECKED)
 			$g_iCmbTrophyMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbTrophyMinProfile)
 			$g_iTxtMinTrophyAmount = GUICtrlRead($g_hTxtMinTrophyAmount)
 
@@ -525,33 +525,45 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 			; ================================================  Switch Profile - Added by RK MOD ======================================== ;
 
-			GUICtrlSetState($g_hChkGoldSwitchMax, $g_iChkGoldSwitchMax = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			GUICtrlSetState($g_hChkGoldSwitchMax, $g_bChkGoldSwitchMax ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbGoldMaxProfile, $g_iCmbGoldMaxProfile)
 			GUICtrlSetData($g_hTxtMaxGoldAmount, $g_iTxtMaxGoldAmount)
-			GUICtrlSetState($g_hChkGoldSwitchMin, $g_iChkGoldSwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			chkGoldSwitchMax()
+
+			GUICtrlSetState($g_hChkGoldSwitchMin, $g_bChkGoldSwitchMin ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbGoldMinProfile, $g_iCmbGoldMinProfile)
 			GUICtrlSetData($g_hTxtMinGoldAmount, $g_iTxtMinGoldAmount)
-
-			GUICtrlSetState($g_hChkElixirSwitchMax, $g_iChkElixirSwitchMax = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+            chkGoldSwitchMin()
+			 
+			GUICtrlSetState($g_hChkElixirSwitchMax, $g_bChkElixirSwitchMax ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbElixirMaxProfile, $g_iCmbElixirMaxProfile)
 			GUICtrlSetData($g_hTxtMaxElixirAmount, $g_iTxtMaxElixirAmount)
-			GUICtrlSetState($g_hChkElixirSwitchMin, $g_iChkElixirSwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			chkElixirSwitchMax()
+			
+			GUICtrlSetState($g_hChkElixirSwitchMin, $g_bChkElixirSwitchMin ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbElixirMinProfile, $g_iCmbElixirMinProfile)
 			GUICtrlSetData($g_hTxtMinElixirAmount, $g_iTxtMinElixirAmount)
-
-			GUICtrlSetState($g_hChkDESwitchMax, $g_iChkDESwitchMax = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+            chkElixirSwitchMin()
+			
+			GUICtrlSetState($g_hChkDESwitchMax, $g_bChkDESwitchMax ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbDEMaxProfile, $g_iCmbDEMaxProfile)
 			GUICtrlSetData($g_hTxtMaxDEAmount, $g_iTxtMaxDEAmount)
-			GUICtrlSetState($g_hChkDESwitchMin, $g_iChkDESwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			chkDESwitchMax()
+			
+			GUICtrlSetState($g_hChkDESwitchMin, $g_bChkDESwitchMin ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbDEMinProfile, $g_iCmbDEMinProfile)
 			GUICtrlSetData($g_hTxtMinDEAmount, $g_iTxtMinDEAmount)
-
-			GUICtrlSetState($g_hChkTrophySwitchMax, $g_iChkTrophySwitchMax = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+            chkDESwitchMin()
+			
+			GUICtrlSetState($g_hChkTrophySwitchMax, $g_bChkTrophySwitchMax ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbTrophyMaxProfile, $g_iCmbTrophyMaxProfile)
 			GUICtrlSetData($g_hTxtMaxTrophyAmount, $g_iTxtMaxTrophyAmount)
-			GUICtrlSetState($g_hChkTrophySwitchMin, $g_iChkTrophySwitchMin = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+			chkTrophySwitchMax()
+			
+			GUICtrlSetState($g_hChkTrophySwitchMin, $g_bChkTrophySwitchMin ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbTrophyMinProfile, $g_iCmbTrophyMinProfile)
 			GUICtrlSetData($g_hTxtMinTrophyAmount, $g_iTxtMinTrophyAmount)
+			chkTrophySwitchMin()
 
 			; ================================================== NEW ChatBot - by RK MOD ======================================== ;
 
