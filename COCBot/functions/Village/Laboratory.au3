@@ -303,6 +303,7 @@ EndIf
 	If $aUpgradeValue[$g_iCmbLaboratory] = -1 Then
 		SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " already max level, select another troop", $COLOR_WARNING)
 		ClickP($aAway, 2, $DELAYLABORATORY4, "#0353")
+		IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][3])
 		Return False
 	EndIf
 
