@@ -460,7 +460,7 @@ Func ElixirPriority()
 				SetLog("Auto Upgrade: Priority Failure.", $COLOR_ERROR)
 				Return False
 		EndIf
-		If ($g_bAutoLabUpgradeEnable = False) Or ($g_bAutoLabUpgradeEnable = True And (($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0)) Or ($g_sLabUpgradeTime = "") Then
+		If ($g_bAutoLabUpgradeEnable = False) Or ($g_bAutoLabUpgradeEnable = True And (($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0)) Or ($g_iLabUpgradeProgress = 1) Then
 			SetLog("Laboratory: Priority Pass.", $COLOR_SUCCESS)
 			$iDecision += 1
 			Else
