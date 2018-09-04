@@ -14,11 +14,11 @@
 ; Example .......:  =====================================================================================================================
 
 Func ProfileSwitch()
-	If $g_iChkGoldSwitchMax = 1 Or $g_iChkGoldSwitchMin = 1 Or $g_iChkElixirSwitchMax = 1 Or $g_iChkElixirSwitchMin = 1 Or _
-			$g_iChkDESwitchMax = 1 Or $g_iChkDESwitchMin = 1 Or $g_iChkTrophySwitchMax = 1 Or $g_iChkTrophySwitchMin = 1 Then
+	If $g_bChkGoldSwitchMax = True Or $g_bChkGoldSwitchMin = True Or $g_bChkElixirSwitchMax = True Or $g_bChkElixirSwitchMin = True Or _
+			$g_bChkDESwitchMax = True Or $g_bChkDESwitchMin = True Or $g_bChkTrophySwitchMax = True Or $g_bChkTrophySwitchMin = True Then
 		Local $SwitchtoProfile = ""
 		While True
-			If $g_iChkGoldSwitchMax = 1 Then
+			If $g_bChkGoldSwitchMax = True Then
 				If Number($g_aiCurrentLoot[$eLootGold]) >= Number($g_iTxtMaxGoldAmount) Then
 					$SwitchtoProfile = $g_iCmbGoldMaxProfile
 					SetLog("Village Gold detected Above Gold Profile Switch Conditions")
@@ -26,7 +26,7 @@ Func ProfileSwitch()
 					ExitLoop
 				EndIf
 			EndIf
-			If $g_iChkGoldSwitchMin = 1 Then
+			If $g_bChkGoldSwitchMin = True Then
 				If Number($g_aiCurrentLoot[$eLootGold]) < Number($g_iTxtMinGoldAmount) And Number($g_aiCurrentLoot[$eLootGold]) > 1 Then
 					$SwitchtoProfile = $g_iCmbGoldMinProfile
 					Setlog("Village Gold detected Below Gold Profile Switch Conditions")
@@ -34,7 +34,7 @@ Func ProfileSwitch()
 					ExitLoop
 				EndIf
 			EndIf
-			If $g_iChkElixirSwitchMax = 1 Then
+			If $g_bChkElixirSwitchMax = True Then
 				If Number($g_aiCurrentLoot[$eLootElixir]) >= Number($g_iTxtMaxElixirAmount) Then
 					$SwitchtoProfile = $g_iCmbElixirMaxProfile
 					SetLog("Village Gold detected Above Elixir Profile Switch Conditions")
@@ -42,7 +42,7 @@ Func ProfileSwitch()
 					ExitLoop
 				EndIf
 			EndIf
-			If $g_iChkElixirSwitchMin = 1 Then
+			If $g_bChkElixirSwitchMin = True Then
 				If Number($g_aiCurrentLoot[$eLootElixir]) < Number($g_iTxtMinElixirAmount) And Number($g_aiCurrentLoot[$eLootElixir]) > 1 Then
 					$SwitchtoProfile = $g_iCmbElixirMinProfile
 					SetLog("Village Gold detected Below Elixir Switch Conditions")
@@ -50,7 +50,7 @@ Func ProfileSwitch()
 					ExitLoop
 				EndIf
 			EndIf
-			If $g_iChkDESwitchMax = 1 Then
+			If $g_bChkDESwitchMax = True Then
 				If Number($g_aiCurrentLoot[$eLootDarkElixir]) >= Number($g_iTxtMaxDEAmount) Then
 					$SwitchtoProfile = $g_iCmbDEMaxProfile
 					SetLog("Village Dark Elixir detected Above Dark Elixir Profile Switch Conditions")
@@ -58,7 +58,7 @@ Func ProfileSwitch()
 					ExitLoop
 				EndIf
 			EndIf
-			If $g_iChkDESwitchMin = 1 Then
+			If $g_bChkDESwitchMin = True Then
 				If Number($g_aiCurrentLoot[$eLootDarkElixir]) < Number($g_iTxtMinDEAmount) And Number($g_aiCurrentLoot[$eLootDarkElixir]) > 1 Then
 					$SwitchtoProfile = $g_iCmbDEMinProfile
 					SetLog("Village Dark Elixir detected Below Dark Elixir Profile Switch Conditions")
@@ -66,7 +66,7 @@ Func ProfileSwitch()
 					ExitLoop
 				EndIf
 			EndIf
-			If $g_iChkTrophySwitchMax = 1 Then
+			If $g_bChkTrophySwitchMax = True Then
 				If Number($g_aiCurrentLoot[$eLootTrophy]) >= Number($g_iTxtMaxTrophyAmount) Then
 					$SwitchtoProfile = $g_iCmbTrophyMaxProfile
 					SetLog("Village Trophies detected Above Throphy Profile Switch Conditions")
@@ -74,7 +74,7 @@ Func ProfileSwitch()
 					ExitLoop
 				EndIf
 			EndIf
-			If $g_iChkTrophySwitchMin = 1 Then
+			If $g_bChkTrophySwitchMin = True Then
 				If Number($g_aiCurrentLoot[$eLootTrophy]) < Number($g_iTxtMinTrophyAmount) And Number($g_aiCurrentLoot[$eLootTrophy]) > 1 Then
 					$SwitchtoProfile = $g_iCmbTrophyMinProfile
 					SetLog("Village Trophies detected Below Trophy Profile Switch Conditions")
@@ -102,7 +102,71 @@ Func ProfileSwitch()
 
 EndFunc   ;==>ProfileSwitch
 
+; ---------------------------------GUI Control ----------------------------------;
 
+Func chkGoldSwitchMax()
+    If GUICtrlRead($g_hChkGoldSwitchMax) = $GUI_CHECKED Then
+        $g_bChkGoldSwitchMax = True
+    Else
+        $g_bChkGoldSwitchMax = False
+    EndIf
+EndFunc ;==>chkGoldSwitchMax
+
+Func chkGoldSwitchMin()
+    If GUICtrlRead($g_hChkGoldSwitchMin) = $GUI_CHECKED Then
+        $g_bChkGoldSwitchMin = True
+    Else
+        $g_bChkGoldSwitchMin = False
+    EndIf
+EndFunc ;==>chkGoldSwitchMin
+
+Func chkElixirSwitchMax()
+    If GUICtrlRead($g_hChkElixirSwitchMax) = $GUI_CHECKED Then
+        $g_bChkElixirSwitchMax = True
+    Else
+        $g_bChkElixirSwitchMax = False
+    EndIf
+EndFunc ;==>chkElixirSwitchMax
+
+Func chkElixirSwitchMin()
+    If GUICtrlRead($g_hChkElixirSwitchMin) = $GUI_CHECKED Then
+        $g_bChkElixirSwitchMin = True
+    Else
+        $g_bChkElixirSwitchMin = False
+    EndIf
+EndFunc ;==>chkElixirSwitchMin
+
+Func chkDESwitchMax()
+    If GUICtrlRead($g_hChkDESwitchMax) = $GUI_CHECKED Then
+        $g_bChkDESwitchMax = True
+    Else
+        $g_bChkDESwitchMax = False
+    EndIf
+EndFunc ;==>chkDESwitchMax
+
+Func chkDESwitchMin()
+    If GUICtrlRead($g_hChkDESwitchMin) = $GUI_CHECKED Then
+        $g_bChkDESwitchMin = True
+    Else
+        $g_bChkDESwitchMin = False
+    EndIf
+EndFunc ;==>chkDESwitchMin
+
+Func chkTrophySwitchMax()
+    If GUICtrlRead($g_hChkTrophySwitchMax) = $GUI_CHECKED Then
+        $g_bChkTrophySwitchMax = True
+    Else
+        $g_bChkTrophySwitchMax = False
+    EndIf
+EndFunc ;==>chkTrophySwitchMax
+
+Func chkTrophySwitchMin()
+    If GUICtrlRead($g_hChkTrophySwitchMin) = $GUI_CHECKED Then
+        $g_bChkTrophySwitchMin = True
+    Else
+        $g_bChkTrophySwitchMin = False
+    EndIf
+EndFunc ;==>chkTrophySwitchMin
 
 ; Switch Profiles 
 Func btnRecycle()

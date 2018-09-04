@@ -100,10 +100,10 @@ Global $g_iLastLayout = 0
 ; ================================================ Switch Profile - Added by RK MOD ======================================== ;
 
 Global $profileString = ""
-Global $g_iChkGoldSwitchMax, $g_iTxtMaxGoldAmount, $g_iCmbGoldMaxProfile, $g_iChkGoldSwitchMin, $g_iTxtMinGoldAmount, $g_iCmbGoldMinProfile
-Global $g_iChkElixirSwitchMax, $g_iTxtMaxElixirAmount, $g_iCmbElixirMaxProfile, $g_iChkElixirSwitchMin, $g_iTxtMinElixirAmount, $g_iCmbElixirMinProfile
-Global $g_iChkDESwitchMax, $g_iTxtMaxDEAmount, $g_iCmbDEMaxProfile, $g_iChkDESwitchMin, $g_iTxtMinDEAmount, $g_iCmbDEMinProfile
-Global $g_iChkTrophySwitchMax, $g_iTxtMaxTrophyAmount, $g_iCmbTrophyMaxProfile, $g_iChkTrophySwitchMin, $g_iTxtMinTrophyAmount, $g_iCmbTrophyMinProfile
+Global $g_bChkGoldSwitchMax = False, $g_iTxtMaxGoldAmount = 12000000, $g_iCmbGoldMaxProfile = 0, $g_bChkGoldSwitchMin = False, $g_iTxtMinGoldAmount = 10000000, $g_iCmbGoldMinProfile = 0
+Global $g_bChkElixirSwitchMax = False, $g_iTxtMaxElixirAmount = 12000000, $g_iCmbElixirMaxProfile = 0, $g_bChkElixirSwitchMin = False, $g_iTxtMinElixirAmount = 10000000, $g_iCmbElixirMinProfile = 0
+Global $g_bChkDESwitchMax = False, $g_iTxtMaxDEAmount = 200000, $g_iCmbDEMaxProfile = 0, $g_bChkDESwitchMin = False, $g_iTxtMinDEAmount = 10000, $g_iCmbDEMinProfile = 0
+Global $g_bChkTrophySwitchMax = False, $g_iTxtMaxTrophyAmount = 3000, $g_iCmbTrophyMaxProfile = 0, $g_bChkTrophySwitchMin = False, $g_iTxtMinTrophyAmount = 1000, $g_iCmbTrophyMinProfile = 0
 
 ; ========================= Slot11 - Added by RK MOD (ID193-) =============================================================================================;
 
