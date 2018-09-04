@@ -334,6 +334,7 @@ EndFunc   ;==>InitializeAndroid
 ; ===============================================================================================================================
 Func SetupProfileFolder()
 	SetDebugLog("SetupProfileFolder: " & $g_sProfilePath & "\" & $g_sProfileCurrentName)
+	$g_sModConfigPath = $g_sProfilePath & "\" & $g_sProfileCurrentName & "\rk_config.ini"
 	$g_sProfileConfigPath = $g_sProfilePath & "\" & $g_sProfileCurrentName & "\config.ini"
 	$g_sProfileBuildingStatsPath = $g_sProfilePath & "\" & $g_sProfileCurrentName & "\stats_buildings.ini"
 	$g_sProfileBuildingPath = $g_sProfilePath & "\" & $g_sProfileCurrentName & "\building.ini"
