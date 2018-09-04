@@ -3306,6 +3306,52 @@ Return SetError(2, 0, False)
 EndSwitch
 Return UBound($aArray, $UBOUND_ROWS)
 EndFunc
+Func _ArrayExtract(Const ByRef $aArray, $iStart_Row = -1, $iEnd_Row = -1, $iStart_Col = -1, $iEnd_Col = -1)
+If $iStart_Row = Default Then $iStart_Row = -1
+If $iEnd_Row = Default Then $iEnd_Row = -1
+If $iStart_Col = Default Then $iStart_Col = -1
+If $iEnd_Col = Default Then $iEnd_Col = -1
+If Not IsArray($aArray) Then Return SetError(1, 0, -1)
+Local $iDim_1 = UBound($aArray, $UBOUND_ROWS) - 1
+If $iEnd_Row = -1 Then $iEnd_Row = $iDim_1
+If $iStart_Row = -1 Then $iStart_Row = 0
+If $iStart_Row < -1 Or $iEnd_Row < -1 Then Return SetError(3, 0, -1)
+If $iStart_Row > $iDim_1 Or $iEnd_Row > $iDim_1 Then Return SetError(3, 0, -1)
+If $iStart_Row > $iEnd_Row Then Return SetError(4, 0, -1)
+Switch UBound($aArray, $UBOUND_DIMENSIONS)
+Case 1
+Local $aRetArray[$iEnd_Row - $iStart_Row + 1]
+For $i = 0 To $iEnd_Row - $iStart_Row
+$aRetArray[$i] = $aArray[$i + $iStart_Row]
+Next
+Return $aRetArray
+Case 2
+Local $iDim_2 = UBound($aArray, $UBOUND_COLUMNS) - 1
+If $iEnd_Col = -1 Then $iEnd_Col = $iDim_2
+If $iStart_Col = -1 Then $iStart_Col = 0
+If $iStart_Col < -1 Or $iEnd_Col < -1 Then Return SetError(5, 0, -1)
+If $iStart_Col > $iDim_2 Or $iEnd_Col > $iDim_2 Then Return SetError(5, 0, -1)
+If $iStart_Col > $iEnd_Col Then Return SetError(6, 0, -1)
+If $iStart_Col = $iEnd_Col Then
+Local $aRetArray[$iEnd_Row - $iStart_Row + 1]
+Else
+Local $aRetArray[$iEnd_Row - $iStart_Row + 1][$iEnd_Col - $iStart_Col + 1]
+EndIf
+For $i = 0 To $iEnd_Row - $iStart_Row
+For $j = 0 To $iEnd_Col - $iStart_Col
+If $iStart_Col = $iEnd_Col Then
+$aRetArray[$i] = $aArray[$i + $iStart_Row][$j + $iStart_Col]
+Else
+$aRetArray[$i][$j] = $aArray[$i + $iStart_Row][$j + $iStart_Col]
+EndIf
+Next
+Next
+Return $aRetArray
+Case Else
+Return SetError(2, 0, -1)
+EndSwitch
+Return 1
+EndFunc
 Func _ArrayFindAll(Const ByRef $aArray, $vValue, $iStart = 0, $iEnd = 0, $iCase = 0, $iCompare = 0, $iSubItem = 0, $bRow = False)
 If $iStart = Default Then $iStart = 0
 If $iEnd = Default Then $iEnd = 0
@@ -6204,7 +6250,7 @@ Global Const $g_sIcnBldGold = @ScriptDir & "\Images\gold.png"
 Global Const $g_sIcnBldElixir = @ScriptDir & "\Images\elixir.png"
 Global Const $g_sIcnBldTrophy = @ScriptDir & "\Images\trophy.png"
 Global $g_iRedrawBotWindowMode = 2
-Global Enum $eIcnArcher = 1, $eIcnDonArcher, $eIcnBalloon, $eIcnDonBalloon, $eIcnBarbarian, $eIcnDonBarbarian, $eBtnTest, $eIcnBuilder, $eIcnCC, $eIcnGUI, $eIcnDark, $eIcnDragon, $eIcnDonDragon, $eIcnDrill, $eIcnElixir, $eIcnCollector, $eIcnFreezeSpell, $eIcnGem, $eIcnGiant, $eIcnDonGiant, $eIcnTrap, $eIcnGoblin, $eIcnDonGoblin, $eIcnGold, $eIcnGolem, $eIcnDonGolem, $eIcnHealer, $eIcnDonHealer, $eIcnHogRider, $eIcnDonHogRider, $eIcnHealSpell, $eIcnInferno, $eIcnJumpSpell, $eIcnLavaHound, $eIcnDonLavaHound, $eIcnLightSpell, $eIcnMinion, $eIcnDonMinion, $eIcnPekka, $eIcnDonPekka, $eIcnTreasury, $eIcnRageSpell, $eIcnTroops, $eIcnHourGlass, $eIcnTH1, $eIcnTH10, $eIcnTrophy, $eIcnValkyrie, $eIcnDonValkyrie, $eIcnWall, $eIcnWallBreaker, $eIcnDonWallBreaker, $eIcnWitch, $eIcnDonWitch, $eIcnWizard, $eIcnDonWizard, $eIcnXbow, $eIcnBarrackBoost, $eIcnMine, $eIcnCamp, $eIcnBarrack, $eIcnSpellFactory, $eIcnDonBlacklist, $eIcnSpellFactoryBoost, $eIcnMortar, $eIcnWizTower, $eIcnPayPal, $eIcnNotify, $eIcnGreenLight, $eIcnLaboratory, $eIcnRedLight, $eIcnBlank, $eIcnYellowLight, $eIcnDonCustom, $eIcnTombstone, $eIcnSilverStar, $eIcnGoldStar, $eIcnDarkBarrack, $eIcnCollectorLocate, $eIcnDrillLocate, $eIcnMineLocate, $eIcnBarrackLocate, $eIcnDarkBarrackLocate, $eIcnDarkSpellFactoryLocate, $eIcnDarkSpellFactory, $eIcnEarthQuakeSpell, $eIcnHasteSpell, $eIcnPoisonSpell, $eIcnBldgTarget, $eIcnBldgX, $eIcnRecycle, $eIcnHeroes, $eIcnBldgElixir, $eIcnBldgGold, $eIcnMagnifier, $eIcnWallElixir, $eIcnWallGold, $eIcnKing, $eIcnQueen, $eIcnDarkSpellBoost, $eIcnQueenBoostLocate, $eIcnKingBoostLocate, $eIcnKingUpgr, $eIcnQueenUpgr, $eIcnWardenUpgr, $eIcnWarden, $eIcnWardenBoostLocate, $eIcnKingBoost, $eIcnQueenBoost, $eIcnWardenBoost, $eEmpty3, $eIcnReload, $eIcnCopy, $eIcnAddcvs, $eIcnEdit, $eIcnTreeSnow, $eIcnSleepingQueen, $eIcnSleepingKing, $eIcnGoldElixir, $eIcnBowler, $eIcnDonBowler, $eIcnCCDonate, $eIcnEagleArt, $eIcnGembox, $eIcnInferno4, $eIcnInfo, $eIcnMain, $eIcnTree, $eIcnProfile, $eIcnCCRequest, $eIcnTelegram, $eIcnTiles, $eIcnXbow3, $eIcnBark, $eIcnDailyProgram, $eIcnLootCart, $eIcnSleepMode, $eIcnTH11, $eIcnTrainMode, $eIcnSleepingWarden, $eIcnCloneSpell, $eIcnSkeletonSpell, $eIcnBabyDragon, $eIcnDonBabyDragon, $eIcnMiner, $eIcnDonMiner, $eIcnNoShield, $eIcnDonCustomB, $eIcnAirdefense, $eIcnDarkBarrackBoost, $eIcnDarkElixirStorage, $eIcnSpellsCost, $eIcnTroopsCost, $eIcnResetButton, $eIcnNewSmartZap, $eIcnTrain, $eIcnAttack, $eIcnDelay, $eIcnReOrder, $eIcn2Arrow, $eIcnArrowLeft, $eIcnArrowRight, $eIcnAndroid, $eHdV04, $eHdV05, $eHdV06, $eHdV07, $eHdV08, $eHdV09, $eHdV10, $eHdV11, $eUnranked, $eBronze, $eSilver, $eGold, $eCrystal, $eMaster, $eChampion, $eTitan, $eLegend, $eWall04, $eWall05, $eWall06, $eWall07, $eWall08, $eWall09, $eWall10, $eWall11, $eIcnPBNotify, $eIcnCCTroops, $eIcnCCSpells, $eIcnSpellsGroup, $eBahasaIND, $eChinese_S, $eChinese_T, $eEnglish, $eFrench, $eGerman, $eItalian, $ePersian, $eRussian, $eSpanish, $eTurkish, $eMissingLangIcon, $eWall12, $ePortuguese, $eIcnDonPoisonSpell, $eIcnDonEarthQuakeSpell, $eIcnDonHasteSpell, $eIcnDonSkeletonSpell, $eVietnamese, $eKorean, $eAzerbaijani, $eArabic, $eIcnBuilderHall, $eIcnClockTower, $eIcnElixirCollectorL5, $eIcnGemMine, $eIcnGoldMineL5, $eIcnDebug, $eIcnBoostMagic, $eIcnClanHop, $eIcnBoostClMagic, $eIcnHumanization, $eIcnNEWChat, $eIcnNEWChat1, $eIcnChat, $eIcnRepeat, $eIcnClan, $eIcnTarget, $eIcnSettings, $eIcnClanGames, $eIcnFarmingSchedule, $eIcnWarPreparation, $eIcnSwitchAcc, $eIcnSwitchProfile, $eIcnElectroDragon, $eIcnTH12, $eHdV12, $eWall13, $eIcnGrayShield, $eIcnBlueShield, $eIcnGreenShield, $eIcnRedShield, $eIcnBattleB , $eIcnWallW, $eIcnSiegeCost
+Global Enum $eIcnArcher = 1, $eIcnDonArcher, $eIcnBalloon, $eIcnDonBalloon, $eIcnBarbarian, $eIcnDonBarbarian, $eBtnTest, $eIcnBuilder, $eIcnCC, $eIcnGUI, $eIcnDark, $eIcnDragon, $eIcnDonDragon, $eIcnDrill, $eIcnElixir, $eIcnCollector, $eIcnFreezeSpell, $eIcnGem, $eIcnGiant, $eIcnDonGiant, $eIcnTrap, $eIcnGoblin, $eIcnDonGoblin, $eIcnGold, $eIcnGolem, $eIcnDonGolem, $eIcnHealer, $eIcnDonHealer, $eIcnHogRider, $eIcnDonHogRider, $eIcnHealSpell, $eIcnInferno, $eIcnJumpSpell, $eIcnLavaHound, $eIcnDonLavaHound, $eIcnLightSpell, $eIcnMinion, $eIcnDonMinion, $eIcnPekka, $eIcnDonPekka, $eIcnTreasury, $eIcnRageSpell, $eIcnTroops, $eIcnHourGlass, $eIcnTH1, $eIcnTH10, $eIcnTrophy, $eIcnValkyrie, $eIcnDonValkyrie, $eIcnWall, $eIcnWallBreaker, $eIcnDonWallBreaker, $eIcnWitch, $eIcnDonWitch, $eIcnWizard, $eIcnDonWizard, $eIcnXbow, $eIcnBarrackBoost, $eIcnMine, $eIcnCamp, $eIcnBarrack, $eIcnSpellFactory, $eIcnDonBlacklist, $eIcnSpellFactoryBoost, $eIcnMortar, $eIcnWizTower, $eIcnPayPal, $eIcnNotify, $eIcnGreenLight, $eIcnLaboratory, $eIcnRedLight, $eIcnBlank, $eIcnYellowLight, $eIcnDonCustom, $eIcnTombstone, $eIcnSilverStar, $eIcnGoldStar, $eIcnDarkBarrack, $eIcnCollectorLocate, $eIcnDrillLocate, $eIcnMineLocate, $eIcnBarrackLocate, $eIcnDarkBarrackLocate, $eIcnDarkSpellFactoryLocate, $eIcnDarkSpellFactory, $eIcnEarthQuakeSpell, $eIcnHasteSpell, $eIcnPoisonSpell, $eIcnBldgTarget, $eIcnBldgX, $eIcnRecycle, $eIcnHeroes, $eIcnBldgElixir, $eIcnBldgGold, $eIcnMagnifier, $eIcnWallElixir, $eIcnWallGold, $eIcnKing, $eIcnQueen, $eIcnDarkSpellBoost, $eIcnQueenBoostLocate, $eIcnKingBoostLocate, $eIcnKingUpgr, $eIcnQueenUpgr, $eIcnWardenUpgr, $eIcnWarden, $eIcnWardenBoostLocate, $eIcnKingBoost, $eIcnQueenBoost, $eIcnWardenBoost, $eEmpty3, $eIcnReload, $eIcnCopy, $eIcnAddcvs, $eIcnEdit, $eIcnTreeSnow, $eIcnSleepingQueen, $eIcnSleepingKing, $eIcnGoldElixir, $eIcnBowler, $eIcnDonBowler, $eIcnCCDonate, $eIcnEagleArt, $eIcnGembox, $eIcnInferno4, $eIcnInfo, $eIcnMain, $eIcnTree, $eIcnProfile, $eIcnCCRequest, $eIcnTelegram, $eIcnTiles, $eIcnXbow3, $eIcnBark, $eIcnDailyProgram, $eIcnLootCart, $eIcnSleepMode, $eIcnTH11, $eIcnTrainMode, $eIcnSleepingWarden, $eIcnCloneSpell, $eIcnSkeletonSpell, $eIcnBabyDragon, $eIcnDonBabyDragon, $eIcnMiner, $eIcnDonMiner, $eIcnNoShield, $eIcnDonCustomB, $eIcnAirdefense, $eIcnDarkBarrackBoost, $eIcnDarkElixirStorage, $eIcnSpellsCost, $eIcnTroopsCost, $eIcnResetButton, $eIcnNewSmartZap, $eIcnTrain, $eIcnAttack, $eIcnDelay, $eIcnReOrder, $eIcn2Arrow, $eIcnArrowLeft, $eIcnArrowRight, $eIcnAndroid, $eHdV04, $eHdV05, $eHdV06, $eHdV07, $eHdV08, $eHdV09, $eHdV10, $eHdV11, $eUnranked, $eBronze, $eSilver, $eGold, $eCrystal, $eMaster, $eChampion, $eTitan, $eLegend, $eWall04, $eWall05, $eWall06, $eWall07, $eWall08, $eWall09, $eWall10, $eWall11, $eIcnPBNotify, $eIcnCCTroops, $eIcnCCSpells, $eIcnSpellsGroup, $eBahasaIND, $eChinese_S, $eChinese_T, $eEnglish, $eFrench, $eGerman, $eItalian, $ePersian, $eRussian, $eSpanish, $eTurkish, $eMissingLangIcon, $eWall12, $ePortuguese, $eIcnDonPoisonSpell, $eIcnDonEarthQuakeSpell, $eIcnDonHasteSpell, $eIcnDonSkeletonSpell, $eVietnamese, $eKorean, $eAzerbaijani, $eArabic, $eIcnBuilderHall, $eIcnClockTower, $eIcnElixirCollectorL5, $eIcnGemMine, $eIcnGoldMineL5, $eIcnDebug, $eIcnBoostMagic, $eIcnClanHop, $eIcnBoostClMagic, $eIcnHumanization, $eIcnNEWChat, $eIcnNEWChat1, $eIcnChat, $eIcnRepeat, $eIcnClan, $eIcnTarget, $eIcnSettings, $eIcnClanGames, $eIcnFarmingSchedule, $eIcnWarPreparation, $eIcnSwitchAcc, $eIcnSwitchProfile, $eIcnElectroDragon, $eIcnTH12, $eHdV12, $eWall13, $eIcnGrayShield, $eIcnBlueShield, $eIcnGreenShield, $eIcnRedShield, $eIcnBattleB , $eIcnWallW, $eIcnSiegeCost, $eIcnRK
 Global $eIcnDonBlank = $eIcnDonBlacklist
 Global $eIcnOptions = $eIcnDonBlacklist
 Global $eIcnAchievements = $eIcnMain
@@ -6981,6 +7027,8 @@ Global $g_bChkGTFOClanHop = False, $g_bChkGTFOReturnClan = False
 Global $g_iChkUpgrPriority = 0, $g_iCmbUpgrdPriority = 0
 Global Const $g_iLimitBreakGE[12] = [2250, 6300, 90000, 450000, 900000, 1800000, 3600000, 5400000, 7200000, 7650000, 9000000, 10800000]
 Global Const $g_iLimitBreakDE[12] = [0, 0, 0, 0, 0, 0, 18000, 72000, 171000, 180000, 180000, 216000]
+Global $g_iLabUpgradeProgress = 0
+Global $g_iWallWarden = 0
 Global $g_bReturnTimerEnable = False, $g_iTxtReturnTimer = 5
 Global $g_bChkOneGemBoostBarracks = False, $g_bChkOneGemBoostSpells = False, $g_bChkOneGemBoostHeroes = False
 Global $g_iTxtBB_DropTrophies = 0
@@ -6994,6 +7042,8 @@ Global $g_bChkAttackPriority = False
 Global $CTime[8][3] = [["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""], ["", "", ""]]
 Global $CurrHeroBTime[3] = ["", "", ""]
 Global $g_bChkPrioritySystem = False, $g_iCmbPrioritySystem = 0
+Global $g_iUpgradeLevel[32][3] = [["LevelTroop", "Barb", 8], ["LevelTroop", "Arch", 8], ["LevelTroop", "Giant", 9], ["LevelTroop", "Gobl", 7], ["LevelTroop", "Wall", 8], ["LevelTroop", "Ball", 8], ["LevelTroop", "Wiza", 9], ["LevelTroop", "Heal", 5], ["LevelTroop", "Drag", 7], ["LevelTroop", "Pekk", 8], ["LevelTroop", "BabyD", 6], ["LevelTroop", "Mine", 6], ["LevelTroop", "EDrag", 3], ["LevelSpell", "LSpell", 7], ["LevelSpell", "HSpell", 7], ["LevelSpell", "RSpell", 5], ["LevelSpell", "JSpell", 3], ["LevelSpell", "FSpell", 7], ["LevelSpell", "CSpell", 5], ["LevelSpell", "PSpell", 5], ["LevelSpell", "ESpell", 4], ["LevelSpell", "HaSpell", 4], ["LevelSpell", "SkSpell", 5], ["LevelTroop", "Mini", 8], ["LevelTroop", "Hogs", 8], ["LevelTroop", "Valk", 7], ["LevelTroop", "Gole", 8], ["LevelTroop", "Witc", 4], ["LevelTroop", "Lava", 5], ["LevelTroop", "Bowl", 4], ["LevelSiege", "WallW", 3], ["LevelSiege", "BattleB", 3]]
+Global $g_iLabCost[32][10] = [ [0, 50000, 150000, 500000, 1500000, 4500000, 6000000, 8000000, "Max", "Max"], [0, 50000, 250000, 750000, 2250000, 6000000, 7500000, 9000000, "Max", "Max"], [0, 100000, 250000, 750000, 2250000, 5000000, 6000000, 9500000, 12000000, "Max"], [0, 50000, 250000, 750000, 2250000, 4500000, 6750000, "Max", "Max", "Max"], [0, 100000, 250000, 750000, 200000, 6000000, 9000000, 12000000, "Max", "Max"], [0, 150000, 450000, 1350000, 2500000, 6000000, 9500000, 12000000, "Max", "Max"], [0, 150000, 450000, 1350000, 2500000, 5000000, 7000000, 9000000, 11000000, "Max"], [0, 750000, 1500000, 3000000, 9500000, "Max", "Max", "Max", "Max", "Max"], [0, 2000000, 3000000, 5000000, 7000000, 9000000, 11000000, "Max", "Max", "Max"], [0, 3000000, 5000000, 6000000, 7500000, 85000000, 10000000, 12000000, "Max", "Max"], [0, 5000000, 6000000, 7000000, 8000000, 9000000, "Max", "Max", "Max", "Max"], [0, 6000000, 7000000, 8000000, 9500000, 11000000, "Max", "Max", "Max", "Max"], [0, 9000000, 11000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"], [0, 200000, 500000, 1000000, 2000000, 6000000, 8000000, "Max", "Max", "Max"], [0, 300000, 600000, 1200000, 2000000, 4000000, 6000000, "Max", "Max", "Max"], [0, 450000, 900000, 1800000, 3000000, "Max", "Max", "Max", "Max", "Max"], [0, 3000000, 6000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"], [0, 3000000, 4000000, 5000000, 7000000, 9500000, 11000000, "Max", "Max", "Max"], [0, 4000000, 6000000, 8000000, 10000000, "Max", "Max", "Max", "Max", "Max"], [0, 25000, 50000, 75000, 150000, "Max", "Max", "Max", "Max", "Max"], [0, 30000, 60000, 90000, "Max", "Max", "Max", "Max", "Max", "Max"], [0, 40000, 80000, 100000, "Max", "Max", "Max", "Max", "Max", "Max"], [0, 50000, 75000, 100000, 125000, "Max", "Max", "Max", "Max", "Max"], [0, 10000, 20000, 30000, 40000, 100000, 140000, 180000, "Max", "Max"], [0, 20000, 30000, 40000, 50000, 100000, 150000, 200000, "Max", "Max"], [0, 50000, 60000, 70000, 110000, 150000, 190000, "Max", "Max", "Max"], [0, 60000, 70000, 80000, 90000, 150000, 200000, 200000, "Max", "Max"], [0, 75000, 160000, 200000, "Max", "Max", "Max", "Max", "Max", "Max"], [0, 60000, 70000, 150000, 200000, "Max", "Max", "Max", "Max", "Max"], [0, 120000, 200000, 200000, "Max", "Max", "Max", "Max", "Max", "Max"], [0, 6000000, 8000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"], [0, 6000000, 8000000, "Max", "Max", "Max", "Max", "Max", "Max", "Max"]]
 GLobal $TroopsQueueFull = False
 Global $g_bChkClanGamesDestruction = 0
 Global $g_bChkClanGamesAirTroop = 0
@@ -14292,6 +14342,13 @@ GUICtrlSetState(-1, $GUI_HIDE)
 GUICtrlSetOnEvent(-1, "ResetLabUpgradeTime")
 $g_hPicLabUpgrade = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBlank, $x + 330, $y, 64, 64)
 GUICtrlSetState(-1, $GUI_HIDE)
+$g_hChkPrioritySystem = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Laboratory", "ChkPrioritySystem_01", "Priority System") & ": ", $x + 85, $y + 95, -1, -1)
+_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Laboratory", "ChkPrioritySystem_02", "Enable this function to select resource priorities"))
+GUICtrlSetOnEvent(-1, "chkPrioritySystem")
+$g_hCmbPrioritySystem = GUICtrlCreateCombo("", $x + 180, $y + 95, 70, 18, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
+GUICtrlSetData(-1, "Elixir|Dark Elixir", "Elixir")
+GUICtrlSetState(-1, $GUI_DISABLE)
+GUICtrlSetOnEvent(-1, "PrioritySystem")
 GUICtrlCreateGroup("", -99, -99, 1, 1)
 EndFunc
 Func CreateHeroesSubTab()
@@ -30267,7 +30324,7 @@ Local $tTcItem = DllStructCreate("uint;dword;dword;ptr;int;int;int")
 DllStructSetData($tTcItem, 1, 0x0002)
 Switch $nCtrl
 Case $g_hTabMain
-Local $aIconIndex = [$eIcnHourGlass, $eIcnTH12, $eIcnAttack, $eTitan, $eIcnGUI, $eIcnInfo]
+Local $aIconIndex = [$eIcnHourGlass, $eIcnTH12, $eIcnAttack, $eIcnRK, $eIcnGUI, $eIcnInfo]
 Case $g_hGUI_VILLAGE_TAB
 Local $aIconIndex = [$eIcnTH1, $eIcnCC, $eIcnLaboratory, $eIcnAchievements, $eIcnTelegram]
 Case $g_hGUI_TRAINARMY_TAB
@@ -43748,16 +43805,19 @@ GUICtrlSetState($g_hPicWardenGray, $GUI_HIDE)
 GUICtrlSetState($g_hPicWardenGreen, $GUI_HIDE)
 GUICtrlSetState($g_hPicWardenRed, $GUI_HIDE)
 GUICtrlSetState($g_hPicWardenBlue, $GUI_SHOW)
+$g_iWallWarden = 0
 Case "upgrade"
 GUICtrlSetState($g_hPicWardenGray, $GUI_HIDE)
 GUICtrlSetState($g_hPicWardenGreen, $GUI_HIDE)
 GUICtrlSetState($g_hPicWardenBlue, $GUI_HIDE)
 GUICtrlSetState($g_hPicWardenRed, $GUI_SHOW)
+$g_iWallWarden = 1
 Case "warden"
 GUICtrlSetState($g_hPicWardenGray, $GUI_HIDE)
 GUICtrlSetState($g_hPicWardenRed, $GUI_HIDE)
 GUICtrlSetState($g_hPicWardenBlue, $GUI_HIDE)
 GUICtrlSetState($g_hPicWardenGreen, $GUI_SHOW)
+$g_iWallWarden = 0
 EndSwitch
 EndSelect
 Return $sResult
@@ -43826,6 +43886,7 @@ GUICtrlSetState($g_hPicLabGray, $GUI_SHOW)
 Return
 EndIf
 If _ColorCheck(_GetPixelColor(730, 200, True), Hex(0xA2CB6C, 6), 20) Then
+$g_iLabUpgradeProgress = 1
 SetLog("Laboratory is Running. ", $COLOR_INFO)
 GUICtrlSetState($g_hPicLabGray, $GUI_HIDE)
 GUICtrlSetState($g_hPicLabRed, $GUI_HIDE)
@@ -43834,6 +43895,7 @@ If _Sleep($DELAYLABORATORY2) Then Return
 ClickP($aAway, 2, $DELAYLABORATORY4, "#0359")
 Return True
 ElseIf _ColorCheck(_GetPixelColor(730, 200, True), Hex(0x8088B0, 6), 20) Then
+$g_iLabUpgradeProgress = 0
 SetLog("Laboratory has Stopped", $COLOR_INFO)
 ClickP($aAway, 2, $DELAYLABORATORY4, "#0359")
 GUICtrlSetState($g_hPicLabGray, $GUI_HIDE)
@@ -43844,6 +43906,7 @@ $g_sLabUpgradeTime = ""
 Return
 Else
 SetLog("Unable to determine Lab Status", $COLOR_INFO)
+$g_iLabUpgradeProgress = 0
 ClickP($aAway, 2, $DELAYLABORATORY4, "#0359")
 GUICtrlSetState($g_hPicLabGreen, $GUI_HIDE)
 GUICtrlSetState($g_hPicLabRed, $GUI_HIDE)
@@ -43942,7 +44005,7 @@ If $iHeroType = $eHeroKing Or $iHeroType = $eHeroQueen Or $iHeroType = $eHeroWar
 Return $iRemainTrainHeroTimer
 ElseIf StringInStr($iHeroType, "all", $STR_NOCASESENSEBASIC) > 0 Then
 For $i = 0 To 2
-If $aResultHeroes[$i] <> "" And $aResultHeroes[$i] > 0 Then $g_asHeroHealTime[$i] = _DateAdd("s", $aResultHeroes[$i] * 60, _NowCalc())
+If $aResultHeroes[$i] <> "" And $aResultHeroes[$i] > 0 Then $g_asHeroHealTime[$i] = _DateAdd("s", Int($aResultHeroes[$i] * 60), _NowCalc())
 SetDebugLog($aHeroRemainData[$i][2] & " heal time: " & $g_asHeroHealTime[$i])
 Next
 Return $aResultHeroes
@@ -62879,7 +62942,7 @@ Local $iBuildingsNeedGold = 0
 Local $iGoldBuildings = 0
 Local $iUpgradeAction = 0
 Local $iDecision = 0
-Local $MinWallGold = Number($g_aiCurrentLoot[$eLootGold] - $g_iWallCost) > Number($g_iUpgradeWallMinGold)
+Local $iMinWallGold = Number($g_aiCurrentLoot[$eLootGold] - $g_iWallCost) > Number($g_iUpgradeWallMinGold)
 If $g_iCmbUpgrdPriority = 1 Then
 SetLog("Gold Priority is enabled.", $COLOR_INFO)
 For $iz = 0 To UBound($g_avBuildingUpgrades, 1) - 1
@@ -62894,21 +62957,21 @@ $iGoldBuildings += 1
 EndSwitch
 EndIf
 Next
-If($iUpgradeAction = 0) Or($iUpgradeAction > 0 And $iGoldBuildings = 0) Or($iUpgradeAction > 0 And $iGoldBuildings > 0 And $g_iFreeBuilderCount = 1) Then
+If($iUpgradeAction = 0) Or($iUpgradeAction > 0 And $iGoldBuildings = 0) Or($iUpgradeAction > 0 And $iGoldBuildings > 0 And $g_iFreeBuilderCount =($g_iHeroReservedBuilder + 1)) Then
 SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
 $iDecision += 1
 Else
 SetLog("Building: Priority Failure.", $COLOR_ERROR)
 Return False
 EndIf
-If($g_iChkAutoUpgrade = 0) Or($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[0] = 1) Or($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1) Then
+If($g_iChkAutoUpgrade = 0) Or($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[0] = 1) Or($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount =($g_iHeroReservedBuilder + 1)) Then
 SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
 $iDecision += 1
 Else
 SetLog("Auto Upgrade: Priority Failure.", $COLOR_ERROR)
 Return False
 EndIf
-If $MinWallGold Then
+If $iMinWallGold Then
 SetLog("Enough gold to continue with upgrade.", $COLOR_SUCCESS)
 $iDecision += 1
 Else
@@ -62943,21 +63006,21 @@ $iElixirBuildings += 1
 EndSwitch
 EndIf
 Next
-If($iUpgradeAction = 0) Or($iUpgradeAction > 0 And $iElixirBuildings = 0) Or($iUpgradeAction > 0 And $iElixirBuildings > 0 And $g_iFreeBuilderCount = 1) Then
+If($iUpgradeAction = 0) Or($iUpgradeAction > 0 And $iElixirBuildings = 0) Or($iUpgradeAction > 0 And $iElixirBuildings > 0 And(($g_bUpgradeWardenEnable = True And($g_iFreeBuilderCount =($g_iHeroReservedBuilder + 1) And $g_iWallWarden = 1)) Or($g_bUpgradeWardenEnable = True And($g_iFreeBuilderCount = 1 And $g_iWallWarden = 0)) Or($g_bUpgradeWardenEnable = False And($g_iFreeBuilderCount =($g_iHeroReservedBuilder + 1))))) Then
 SetLog("Building: Priority Pass.", $COLOR_SUCCESS)
 $iDecision += 1
 Else
 SetLog("Building: Priority Failure.", $COLOR_ERROR)
 Return False
 EndIf
-If($g_iChkAutoUpgrade = 0) Or($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or($g_iChkAutoUpgrade = 1 And $g_iFreeBuilderCount = 1 And $g_bUpgradeWallSaveBuilder = 1) Then
+If($g_iChkAutoUpgrade = 0) Or($g_iChkAutoUpgrade = 1 And $g_iChkResourcesToIgnore[1] = 1) Or($g_iChkAutoUpgrade = 1 And(($g_bUpgradeWardenEnable = True And($g_iFreeBuilderCount =($g_iHeroReservedBuilder + 1) And $g_iWallWarden = 1)) Or($g_bUpgradeWardenEnable = True And($g_iFreeBuilderCount = 1 And $g_iWallWarden = 0)) Or($g_bUpgradeWardenEnable = False And($g_iFreeBuilderCount =($g_iHeroReservedBuilder + 1))))) Then
 SetLog("Auto Upgrade: Priority Pass.", $COLOR_SUCCESS)
 $iDecision += 1
 Else
 SetLog("Auto Upgrade: Priority Failure.", $COLOR_ERROR)
 Return False
 EndIf
-If($g_bAutoLabUpgradeEnable = False) Or($g_bAutoLabUpgradeEnable = True And(($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0)) Or($g_sLabUpgradeTime <> "") Then
+If($g_bAutoLabUpgradeEnable = False) Or($g_bAutoLabUpgradeEnable = True And(($g_iCmbLaboratory >= 20 And $g_iCmbLaboratory <= 30) Or $g_iCmbLaboratory = 0)) Or($g_iLabUpgradeProgress = 1) Then
 SetLog("Laboratory: Priority Pass.", $COLOR_SUCCESS)
 $iDecision += 1
 Else
@@ -63611,21 +63674,24 @@ Global Const $aiIconDefaultPOS[33][2] = [ [-1, -1], [120, 337 + $g_iMidOffsetY],
 Func Laboratory()
 Static $aUpgradeValue[33] = [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Local $iAvailElixir, $iAvailDark, $sElixirCount, $sDarkCount, $TimeDiff, $aArray, $Result
+Local $iLevel = 0
+If $g_iCmbLaboratory > 0 Then
+$iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][1], $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][2], 1)
+EndIf
 $g_iUpgradeMinElixir = Number($g_iUpgradeMinElixir)
 $g_iUpgradeMinDark = Number($g_iUpgradeMinDark)
 $g_iLaboratoryElixirCost = 0
 If Not $g_bAutoLabUpgradeEnable Then Return
+If $g_iLabUpgradeProgress = 1 Then
+SetLog("Lab Upgrade in progress", $COLOR_INFO)
+Return False
+EndIf
+If $g_bChkPrioritySystem = True Then
+LabPriority()
+EndIf
 If $g_iCmbLaboratory = 0 Then
 SetLog("Laboratory enabled, but no troop upgrade selected", $COLOR_WARNING)
-EnableGuiControls()
-$g_iCmbLaboratory += 1
-_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
-SaveConfig()
-DisableGuiControls()
-EndIf
-If $g_iCmbLaboratory = 33 Then
-$g_iCmbLaboratory = 1
-SetLog("All troops upgrade, starting from the top again", $COLOR_WARNING)
+Return False
 EndIf
 If $g_aiLaboratoryPos[0] = 0 Or $g_aiLaboratoryPos[1] = 0 Then
 SetLog("Laboratory Location not found!", $COLOR_WARNING)
@@ -63820,35 +63886,40 @@ ClickP($aAway, 2, $DELAYLABORATORY4, "#0328")
 Return False
 EndIf
 If $aUpgradeValue[$g_iCmbLaboratory] = -1 Then
-SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " already max level, selecting another troop", $COLOR_ERROR)
-EnableGuiControls()
-$g_iCmbLaboratory += 1
-_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
-SaveConfig()
-DisableGuiControls()
+SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " already max level, select another troop", $COLOR_WARNING)
+ClickP($aAway, 2, $DELAYLABORATORY4, "#0353")
+Return False
 EndIf
 If $aUpgradeValue[$g_iCmbLaboratory] = 0 Then
 If _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0], $g_avLabTroops[$g_iCmbLaboratory][1] + 20, True), $sColorLabUgReq, 25) = True Or  _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 93, $g_avLabTroops[$g_iCmbLaboratory][1] + 20, True), $sColorLabUgReq, 25) = True Then
 SetLog("Lab upgrade required for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", select another troop", $COLOR_WARNING)
-EnableGuiControls()
-$g_iCmbLaboratory += 1
-_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
-SaveConfig()
-DisableGuiControls()
 If _Sleep($DELAYLABUPGRADE2) Then Return
 ElseIf _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 47, $g_avLabTroops[$g_iCmbLaboratory][1] + 1, True), $sColorNA, 20) = True Then
 SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " not unlocked yet, try later or select another troop", $COLOR_WARNING)
-EnableGuiControls()
-$g_iCmbLaboratory += 1
-_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
-SaveConfig()
-DisableGuiControls()
 Else
 SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " value read error, close bot and try again!", $COLOR_ERROR)
 $g_iFirstTimeLab = 0
 EndIf
 ClickP($aAway, 2, $DELAYLABORATORY4, "#0354")
 Return False
+EndIf
+If $g_bChkPrioritySystem = True And $g_iLabUpgradeProgress = 0 Then
+SetLog("Laboratory Priority Level Check in progress.", $COLOR_INFO)
+If Int($aUpgradeValue[$g_iCmbLaboratory]) <> Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
+While Int($aUpgradeValue[$g_iCmbLaboratory]) <> Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel])
+If Int($aUpgradeValue[$g_iCmbLaboratory]) < Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
+IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $iLevel - 1)
+SetLog("Decreasing upgrade level.", $COLOR_INFO)
+ElseIf Int($aUpgradeValue[$g_iCmbLaboratory]) > Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
+IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $iLevel + 1)
+SetLog("Increasing upgrade level.", $COLOR_INFO)
+EndIf
+WEnd
+SetLog("Upgrade level adjusted. Exiting Upgrade.", $COLOR_ERROR)
+Return False
+ElseIf Int($aUpgradeValue[$g_iCmbLaboratory]) = Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
+SetLog("Laboratory Priority Level Check Verified.", $COLOR_SUCCESS)
+EndIf
 EndIf
 Switch $g_iCmbLaboratory
 Case 1 To 19
@@ -63878,28 +63949,15 @@ Return False
 SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
 EndIf
 Case 20 To 30
-If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel < 13 Then
-If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakDE[$g_iTownHallLevel - 1] Then
-If $iAvailDark <($aUpgradeValue[$g_iCmbLaboratory]) Then
-SetLog("Insufficent Dark Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " available: " & $iAvailDark, $COLOR_INFO)
-ClickP($aAway, 2, $DELAYLABORATORY4, "#0357")
-Return False
-EndIf
-ElseIf $aUpgradeValue[$g_iCmbLaboratory] < $g_iLimitBreakDE[$g_iTownHallLevel - 1] Then
-If $iAvailDark <($aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinDark) Then
+If $iAvailDark < $aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinDark Then
 SetLog("Insufficent Dark Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinDark & " user reserve, available: " & $iAvailDark, $COLOR_INFO)
 ClickP($aAway, 2, $DELAYLABORATORY4, "#0357")
 Return False
-EndIf
 EndIf
 If LabUpgrade() = True Then
 SetLog("Dark Elixir used = " & $aUpgradeValue[$g_iCmbLaboratory], $COLOR_INFO)
 ClickP($aAway, 2, $DELAYLABORATORY4, "#0358")
 Return True
-EndIf
-Else
-Return False
-SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
 EndIf
 Case Else
 SetLog("Something went wrong with loot value on Lab upgrade on #" & $g_avLabTroops[$g_iCmbLaboratory][3], $COLOR_ERROR)
@@ -63910,45 +63968,28 @@ Return False
 EndFunc
 Func LabUpgrade()
 Local $StartTime, $EndTime, $EndPeriod, $Result, $TimeAdd = 0
+Local $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], 1)
 Select
 Case _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 47, $g_avLabTroops[$g_iCmbLaboratory][1] + 1, True), $sColorNA, 20) = True
 SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " not unlocked yet, select another troop", $COLOR_WARNING)
-EnableGuiControls()
-$g_iCmbLaboratory += 1
-_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
-SaveConfig()
-DisableGuiControls()
 If _Sleep($DELAYLABUPGRADE2) Then Return
 Case _PixelSearch($g_avLabTroops[$g_iCmbLaboratory][0] + 67, $g_avLabTroops[$g_iCmbLaboratory][1] + 79, $g_avLabTroops[$g_iCmbLaboratory][0] + 69, $g_avLabTroops[$g_iCmbLaboratory][0] + 84, $sColorNoLoot, 20) <> 0
 SetLog("Value check error and Not enough Loot to upgrade " & $g_avLabTroops[$g_iCmbLaboratory][3] & "...", $COLOR_ERROR)
 If _Sleep($DELAYLABUPGRADE2) Then Return
 Case _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 22, $g_avLabTroops[$g_iCmbLaboratory][1] + 60, True), Hex(0xFFC360, 6), 20) = True
+IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][3])
 SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " already max level, select another troop", $COLOR_ERROR)
-EnableGuiControls()
-$g_iCmbLaboratory += 1
-_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
-SaveConfig()
-DisableGuiControls()
 If _Sleep($DELAYLABUPGRADE2) Then Return
 Case _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 3, $g_avLabTroops[$g_iCmbLaboratory][1] + 19, True), Hex(0xB7B7B7, 6), 20) = True
 SetLog("Laboratory upgrade not available now for " & $g_avLabTroops[$g_iCmbLaboratory][3] & "...", $COLOR_ERROR)
-EnableGuiControls()
-$g_iCmbLaboratory += 1
-_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
-SaveConfig()
-DisableGuiControls()
 If _Sleep($DELAYLABUPGRADE2) Then Return
 Case Else
 Click($g_avLabTroops[$g_iCmbLaboratory][0] + 40, $g_avLabTroops[$g_iCmbLaboratory][1] + 40, 1, 0, "#0200")
 If _Sleep($DELAYLABUPGRADE1) Then Return
 If $g_bDebugImageSave Then DebugImageSave("LabUpgrade")
 If _ColorCheck(_GetPixelColor(258, 192, True), Hex(0xFF1919, 6), 20) And _ColorCheck(_GetPixelColor(272, 194, True), Hex(0xFF1919, 6), 20) Then
+IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][3])
 SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " Previously maxxed, select another troop", $COLOR_ERROR)
-EnableGuiControls()
-$g_iCmbLaboratory += 1
-_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
-SaveConfig()
-DisableGuiControls()
 If _Sleep($DELAYLABUPGRADE2) Then Return
 ClickP($aAway, 2, $DELAYLABUPGRADE3, "#0201")
 Return False
@@ -64016,14 +64057,12 @@ SetLog("Something went wrong with " & $g_avLabTroops[$g_iCmbLaboratory][3] & " U
 ClickP($aAway, 2, $DELAYLABUPGRADE3, "#0360")
 Return False
 EndIf
-SetLog("Upgrade " & $g_avLabTroops[$g_iCmbLaboratory][3] & " in your laboratory started successfully...", $COLOR_SUCCESS)
+IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $iLevel + 1)
+SetLog("Upgrade " & $g_avLabTroops[$g_iCmbLaboratory][3] & " in your laboratory started with success...", $COLOR_SUCCESS)
 PushMsg("LabSuccess")
-EnableGuiControls()
-$g_iCmbLaboratory += 1
-_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
-SaveConfig()
-DisableGuiControls()
 If _Sleep($DELAYLABUPGRADE2) Then Return
+$g_bAutoLabUpgradeEnable = False
+GUICtrlSetState($g_hChkAutoLabUpgrades, $GUI_UNCHECKED)
 ClickP($aAway, 2, 0, "#0204")
 Return True
 Else
@@ -64110,6 +64149,83 @@ SetLog("_GetPixelColor(+0, +20): " & _GetPixelColor($g_avLabTroops[$i][0] + 0, $
 SetLog("_GetPixelColor(+93, +20): " & _GetPixelColor($g_avLabTroops[$i][0] + 93, $g_avLabTroops[$i][1] + 20, True) & ":838383 =Lab Upgrade", $COLOR_DEBUG)
 SetLog("_GetPixelColor(+8, +59): " & _GetPixelColor($g_avLabTroops[$i][0] + 23, $g_avLabTroops[$i][1] + 60, True) & ":FFC360 =Max troop", $COLOR_DEBUG)
 Next
+EndFunc
+Func LabPriority()
+Local $iLabResults[32][3]=[ [0, "Elixir", 1], [0, "Elixir", 2], [0, "Elixir", 3], [0, "Elixir", 4], [0, "Elixir", 5], [0, "Elixir", 6], [0, "Elixir" ,7], [0, "Elixir", 8], [0, "Elixir", 9], [0, "Elixir", 10], [0, "Elixir", 11], [0, "Elixir", 12], [0, "Elixir", 13], [0, "Elixir", 14], [0, "Elixir", 15], [0, "Elixir", 16], [0, "Elixir", 17], [0, "Elixir", 18], [0, "Elixir", 19], [0, "Dark Elixir", 20], [0, "Dark Elixir", 21], [0, "Dark Elixir", 22], [0, "Dark Elixir", 23], [0, "Dark Elixir", 24], [0, "Dark Elixir", 25], [0, "Dark Elixir", 26], [0, "Dark Elixir", 27], [0, "Dark Elixir", 28], [0, "Dark Elixir", 29], [0, "Dark Elixir", 30], [0, "Elixir", 31], [0, "Elixir", 32]]
+Local $iElixirCount = 0
+Local $iDElixirCount = 0
+Local $iMaxCount = 0
+Local $minElixerValue = ""
+Local $minDarkElixerValue = ""
+If $g_bChkPrioritySystem = True Then
+SetLog("Lab Priority Check.", $COLOR_INFO)
+For $iz = 0 to 31
+If $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)] = "Max" Or $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)] = 0 Then
+$iMaxCount =+ 1
+EndIf
+Next
+If $iMaxCount = 32 Then
+$g_iCmbLaboratory = 0
+SetLog("No upgrades available at this time", $COLOR_INFO)
+Return
+EndIf
+For $iz = 0 to 31
+If $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)] > 0 And Not $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)] = "Max" Then
+$iLabResults[$iz][1] =+ Number($g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)])
+EndIf
+Next
+For $iz = 0 to 31
+If $iLabResults[$iz][1] = "Max" Or $iLabResults[$iz][1] = 0 Then
+ContinueLoop
+Else
+Switch $iLabResults[$iz][2]
+Case "Elixir"
+$iElixirCount =+ 1
+Case "Dark Elixir"
+$iDElixirCount =+ 1
+EndSwitch
+EndIf
+Next
+For $iz = 0 To 31
+If $iLabResults[$iz][0] <> "Max" And $iLabResults[$iz][0] <> "0" Then
+If $minElixerValue = "" And $iLabResults[$iz][1] = "Elixir" Then
+$minElixerValue = _ArrayExtract($iLabResults, $iz, $iz)
+EndIf
+If $minDarkElixerValue = "" And $iLabResults[$iz][1] = "Dark Elixir" Then
+$minDarkElixerValue = _ArrayExtract($iLabResults, $iz, $iz)
+EndIf
+If($minElixerValue <> "" And $iLabResults[$iz][0] < $minElixerValue[0][0] And $iLabResults[$iz][1] = "Elixir") Then
+$minElixerValue = _ArrayExtract($iLabResults, $iz, $iz)
+EndIf
+If($minDarkElixerValue <> "" And $iLabResults[$iz][0] < $minDarkElixerValue[0][0] And $iLabResults[$iz][1] = "Dark Elixir") Then
+$minDarkElixerValue = _ArrayExtract($iLabResults, $iz, $iz)
+EndIf
+EndIf
+Next
+If $g_iCmbPrioritySystem = 0 Then
+If($minElixerValue <> "") And $iElixirCount < 21 Then
+$g_iCmbLaboratory = Int($minElixerValue[0][2])
+SetLog("Elixir Upgrade set.", $COLOR_INFO)
+Return
+ElseIf($minDarkElixerValue <> "") And $iDElixirCount < 11 Then
+$g_iCmbLaboratory = Int($minDarkElixerValue[0][2])
+SetLog("Elixir complete, Dark Elixir Upgrade set.", $COLOR_INFO)
+Return
+EndIf
+ElseIf $g_iCmbPrioritySystem = 1 Then
+If($minDarkElixerValue <> "") And $iDElixirCount < 11 Then
+$g_iCmbLaboratory = Int($minDarkElixerValue[0][2])
+SetLog("Dark Elixir Upgrade set.", $COLOR_INFO)
+Return
+ElseIf($minElixerValue <> "") And $iElixirCount < 21 Then
+$g_iCmbLaboratory = Int($minElixerValue[0][2])
+SetLog("Dark Elixir complete, Elixir Upgrade set.", $COLOR_INFO)
+Return
+EndIf
+EndIf
+ElseIf $g_bChkPrioritySystem = False Then
+Return
+EndIf
 EndFunc
 Func ReplayShare($bShareLastReplay)
 If Not $g_bShareAttackEnable Or Not $bShareLastReplay Then Return
@@ -64307,9 +64423,11 @@ If $g_bDebugSetlog Then SetDebugLog("Updating village values [D]: " & $g_aiCurre
 Else
 If $g_bDebugSetlog Then SetDebugLog("getResourcesMainScreen didn't get the DE value", $COLOR_DEBUG)
 EndIf
-If $g_aiCurrentLoot[$eLootDarkElixir] <($g_afQueenUpgCost[$aHeroLevel] * 1000) + $g_iUpgradeMinDark Then
+If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel < 13 Then
+If(($g_aiCurrentLoot[$eLootDarkElixir] <($g_afQueenUpgCost[$aHeroLevel] * 1000) + $g_iUpgradeMinDark) And(($g_afQueenUpgCost[$aHeroLevel] * 1000) < $g_iLimitBreakDE[$g_iTownHallLevel - 1])) Or(($g_aiCurrentLoot[$eLootDarkElixir] <($g_afQueenUpgCost[$aHeroLevel] * 1000)) And(($g_afQueenUpgCost[$aHeroLevel] * 1000) >= $g_iLimitBreakDE[$g_iTownHallLevel - 1])) Then
 SetLog("Insufficient DE for Upg Queen, requires: " &($g_afQueenUpgCost[$aHeroLevel] * 1000) & " + " & $g_iUpgradeMinDark, $COLOR_INFO)
 Return
+EndIf
 EndIf
 Local $offColors[3][3] = [[0xE07B50, 41, 23], [0x282020, 72, 0], [0xF5F9F2, 79, 0]]
 Local $ButtonPixel = _MultiPixelSearch(240, 563 + $g_iBottomOffsetY, 670, 620 + $g_iBottomOffsetY, 1, 1, Hex(0xF5F6F2, 6), $offColors, 30)
@@ -64401,9 +64519,11 @@ Else
 If $g_bDebugSetlog Then SetDebugLog("getResourcesMainScreen didn't get the DE value", $COLOR_DEBUG)
 EndIf
 If _Sleep(100) Then Return
-If $g_aiCurrentLoot[$eLootDarkElixir] <($g_afKingUpgCost[$aHeroLevel] * 1000) + $g_iUpgradeMinDark Then
+If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel < 13 Then
+If(($g_aiCurrentLoot[$eLootDarkElixir] <($g_afKingUpgCost[$aHeroLevel] * 1000) + $g_iUpgradeMinDark) And(($g_afKingUpgCost[$aHeroLevel] * 1000) < $g_iLimitBreakDE[$g_iTownHallLevel - 1])) Or(($g_aiCurrentLoot[$eLootDarkElixir] <($g_afKingUpgCost[$aHeroLevel] * 1000)) And(($g_afKingUpgCost[$aHeroLevel] * 1000) >= $g_iLimitBreakDE[$g_iTownHallLevel - 1])) Then
 SetLog("Insufficient DE for Upg King, requires: " &($g_afKingUpgCost[$aHeroLevel] * 1000) & " + " & $g_iUpgradeMinDark, $COLOR_INFO)
 Return
+EndIf
 EndIf
 Local $offColors[3][3] = [[0xE07B50, 41, 23], [0x282020, 72, 0], [0xF4F5F2, 79, 0]]
 Local $ButtonPixel = _MultiPixelSearch(240, 563 + $g_iBottomOffsetY, 670, 620 + $g_iBottomOffsetY, 1, 1, Hex(0xF5F6F2, 6), $offColors, 30)
@@ -64498,9 +64618,11 @@ Else
 $g_aiCurrentLoot[$eLootElixir] = getResourcesMainScreen(710, 74)
 EndIf
 If _Sleep(100) Then Return
-If $g_aiCurrentLoot[$eLootElixir] <($g_afWardenUpgCost[$g_iWardenLevel] * 1000000) + $g_iUpgradeMinElixir Then
+If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel < 13 Then
+If(($g_aiCurrentLoot[$eLootElixir] <($g_afWardenUpgCost[$g_iWardenLevel] * 1000000) + $g_iUpgradeMinElixir) And(($g_afWardenUpgCost[$g_iWardenLevel] * 1000000) < $g_iLimitBreakGE[$g_iTownHallLevel - 1])) Or(($g_aiCurrentLoot[$eLootElixir] <($g_afWardenUpgCost[$g_iWardenLevel] * 1000000)) And(($g_afWardenUpgCost[$g_iWardenLevel] * 1000000) >= $g_iLimitBreakGE[$g_iTownHallLevel - 1])) Then
 SetLog("Insufficient Elixir for Warden Upgrade, requires: " &($g_afWardenUpgCost[$g_iWardenLevel] * 1000000) & " + " & $g_iUpgradeMinElixir, $COLOR_INFO)
 Return
+EndIf
 EndIf
 If _Sleep($DELAYUPGRADEHERO2) Then Return
 Local $offColors[3][3] = [[0xBC5B31, 38, 32], [0xF84CF9, 72, 0], [0xF5F9F2, 79, 0]]
@@ -78045,6 +78167,14 @@ $g_bChkPrioritySystem = False
 GUICtrlSetState($g_hCmbPrioritySystem, $GUI_DISABLE)
 EndIf
 EndFunc
+Func PrioritySystem()
+Switch _GUICtrlComboBox_GetCurSel($g_hCmbPrioritySystem)
+Case "Elixir"
+$g_iCmbPrioritySystem = 0
+Case "Dark Elixir"
+$g_iCmbPrioritySystem = 1
+EndSwitch
+EndFunc
 Func AreCollectorsOutside($percent)
 If $g_bDBCollectorsNearRedline = 1 Then Return AreCollectorsNearRedline($percent)
 SetLog("Locating Mines & Collectors", $COLOR_INFO)
@@ -78403,17 +78533,18 @@ Func HeroBoostTimeDiv($aResultHeroes, $i)
 Local $iheroTime =($CurrHeroBTime[$i] -(_DateDiff("n", $CTime[$g_iCurAccount][$i], _NowCalc())))
 If $CurrHeroBTime[$i] <> "" Or $CurrHeroBTime[$i] <> 0 Then
 If $g_bDebugSetlog Then
+SetLog("$aResultHeroes = " & $aResultHeroes, $COLOR_INFO)
 SetLog("$CurrHeroBTime = " & $CurrHeroBTime[$i], $COLOR_INFO)
 SetLog("$CTime[" & $i & "] = " & $CTime[$g_iCurAccount][$i], $COLOR_INFO)
 SetLog("Time Diff HeroTime = " & $iheroTime, $COLOR_INFO)
 EndIf
 If $iheroTime > 0 Then
 If($aResultHeroes -($iheroTime * 4)) < 0 Then
-If $g_bDebugSetlog Then SetLog("$aResultHeroes /= 4", $COLOR_INFO)
 $aResultHeroes /= 4
+If $g_bDebugSetlog Then SetLog("$aResultHeroes /= 4 ---> " & $aResultHeroes, $COLOR_INFO)
 ElseIf($aResultHeroes -($iheroTime * 4)) > 0 Then
-If $g_bDebugSetlog Then SetLog("$aResultHeroes = $aResultHeroes - ($iheroTime * 4)", $COLOR_INFO)
 $aResultHeroes =($aResultHeroes -($iheroTime * 4)) +($aResultHeroes / 4)
+If $g_bDebugSetlog Then SetLog("$aResultHeroes = $aResultHeroes - ($iheroTime * 4) ---> " & $aResultHeroes, $COLOR_INFO)
 EndIf
 EndIf
 Return $aResultHeroes
