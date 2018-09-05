@@ -152,7 +152,7 @@ Func UpgradeBuilding()
 					$iAvailElixir -= $g_avBuildingUpgrades[$iz][2]
 					$iAvailBldr -= 1
 				Case "Dark"
-					If (($iAvailDark < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinDark) And ($g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakGE[$g_iTownHallLevel - 1] - $g_iUpgradeMinDark)) Or (($iAvailDark < $g_avBuildingUpgrades[$iz][2]) And ($g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] - $g_iUpgradeMinDark)) Then
+					If (($iAvailDark < $g_avBuildingUpgrades[$iz][2] + $g_iUpgradeMinDark) And ($g_avBuildingUpgrades[$iz][2] < $g_iLimitBreakDE[$g_iTownHallLevel - 1] - $g_iUpgradeMinDark)) Or (($iAvailDark < $g_avBuildingUpgrades[$iz][2]) And ($g_avBuildingUpgrades[$iz][2] >= $g_iLimitBreakDE[$g_iTownHallLevel - 1] - $g_iUpgradeMinDark)) Then
 						SetLog("Insufficent Dark for #" & $iz + 1 & ", requires: " & $g_avBuildingUpgrades[$iz][2] & " + " & $g_iUpgradeMinDark, $COLOR_INFO)
 						ContinueLoop
 					EndIf
