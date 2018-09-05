@@ -60,9 +60,10 @@ Func Laboratory()
 	Static $aUpgradeValue[33] = [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	Local $iAvailElixir, $iAvailDark, $sElixirCount, $sDarkCount, $TimeDiff, $aArray, $Result
 	Local $iLevel = 0
- If $g_iCmbLaboratory > 0 Then 
-  $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][0], $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][1], 1)
-EndIf
+	
+	If $g_iCmbLaboratory > 0 Then 
+	  $iLevel = Int(IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][0], $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][1], 1))
+	EndIf
 	
 	$g_iUpgradeMinElixir = Number($g_iUpgradeMinElixir)
 	$g_iUpgradeMinDark = Number($g_iUpgradeMinDark)
@@ -327,17 +328,15 @@ EndIf
 	EndIf
 	
 	; Auto correct the troop/spell/seige level in army tab
-	If $g_bChkPrioritySystem = True And $g_iLabUpgradeProgress = 0 Then
+	If $g_bChkPrioritySystem = True And $g_iLabUpgradeProgress = 0 And $g_iCmbLaboratory > 0 Then
 		SetLog("Laboratory Priority Level Check in progress.", $COLOR_INFO)
-		If Int($aUpgradeValue[$g_iCmbLaboratory]) <> Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
+		If $aUpgradeValue[$g_iCmbLaboratory] <> $g_iLabCost[$g_iCmbLaboratory - 1][$iLevel] Then
+			$iLevel = 1
 			While Int($aUpgradeValue[$g_iCmbLaboratory]) <> Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel])
-				If Int($aUpgradeValue[$g_iCmbLaboratory]) < Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
-					IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $iLevel - 1)
-					SetLog("Decreasing upgrade level.", $COLOR_INFO)
-				ElseIf Int($aUpgradeValue[$g_iCmbLaboratory]) > Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
-					IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $iLevel + 1)
-					SetLog("Increasing upgrade level.", $COLOR_INFO)
-				EndIf
+				$iLevel += 1
+				IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], ($iLevel))
+				SetLog("Standby..." & $iLevel, $COLOR_INFO)
+				If Int($aUpgradeValue[$g_iCmbLaboratory]) = Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then ExitLoop
 			WEnd
 			SetLog("Upgrade level adjusted. Exiting Upgrade.", $COLOR_ERROR)
 			Return False
@@ -345,7 +344,7 @@ EndIf
 			SetLog("Laboratory Priority Level Check Verified.", $COLOR_SUCCESS)
 		EndIf
 	EndIf	
-	
+		
 	; Try to upgrade - LabUpgrade(), check insufficient resource first
 	Switch $g_iCmbLaboratory
 		Case 1 To 19 ; regular elixir
@@ -729,11 +728,11 @@ Func LabPriority()
 				EndIf
 		ElseIf $g_iCmbPrioritySystem = 1 Then
 				If ($minDarkElixerValue <> "") And $iDElixirCount < 11 Then
-					$g_iCmbLaboratory = Int($minDarkElixerValue[0][2])
+					$g_iCmbLaboratory = $minDarkElixerValue[0][2]
 					SetLog("Dark Elixir Upgrade set.", $COLOR_INFO)
 					Return
 				ElseIf ($minElixerValue <> "") And $iElixirCount < 21 Then
-					$g_iCmbLaboratory = Int($minElixerValue[0][2])
+					$g_iCmbLaboratory = $minElixerValue[0][2]
 					SetLog("Dark Elixir complete, Elixir Upgrade set.", $COLOR_INFO)
 					Return
 				EndIf
