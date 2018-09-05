@@ -120,12 +120,12 @@ Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; flag if AttackBa
 ;Global $g_bChkPbSendNew = False
 ;Global $g_bChkRusLang = False
 ;Global $g_iCmbLang = 9
-;Global $g_bChkCleverbot = False
-;Global $g_bChkDelayTime = False
-;Global $g_iTxtDelayTime = 10
+Global $g_bChkCleverbot = False
+Global $g_bChkDelayTime = False
+Global $g_iTxtDelayTime = 10
 ;Global $g_iChkClanMessages = ""
-;Global $g_iChkClanResponses = ""
-;Global $g_iChkClanResponses0
+;Global $g_sClanResponses = ""
+;Global $g_sClanResponses0
 ;Global $g_iChkGlobalMessages1 = ""
 ;Global $g_iChkGlobalMessages2 = ""
 ;Global $g_sGlobalChatLastMsgSentTime = ""
@@ -135,12 +135,12 @@ Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; flag if AttackBa
 ;Global $cGeneric
 ;Global $ChatbotStartTime
 ;Global $g_sMessage = ""
-Global $chatIni = ""
+Global $sChatIni = ""
 Global $GlobalMessages[4] = ["", "", "", ""], $GlobalMessagesFix
 Global $GlobalMessagesGUI_0, $GlobalMessagesGUI_1, $GlobalMessagesGUI_2, $GlobalMessagesGUI_3
-Global $ClanMessages = "", $ClanResponses = ""
-Global $g_iGlobalChat = False, $g_iGlobalScramble = False, $g_iSwitchLang = False, $g_iCmbLang = 1
-Global $g_iClanChat = False, $g_iRusLang = 0, $g_iUseResponses = False, $g_iUseGeneric = False, $g_iChatPushbullet = False, $g_iPbSendNewChats = False
+Global $ClanMessages = "", $g_sClanResponses = ""
+Global $g_bChkChatGlobal = False, $g_bChkScrambleGlobal = False, $g_bChkSwitchLang = False, $g_iCmbLang = 1
+Global $g_bChkChatClan = False, $g_iRusLang = 0, $g_bChkClanUseResponses = False, $g_bChkClanAlwaysMsg = False, $g_iChatPushbullet = False, $g_iPbSendNewChats = False
 Global $ChatbotStartTime
 Global $ChatbotQueuedChats[0], $ChatbotReadQueued = False, $ChatbotReadInterval = 0, $ChatbotIsOnInterval = False
 ;=============================================== Russian Request - by RK MOD ======================================== ;

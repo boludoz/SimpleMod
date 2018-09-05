@@ -178,13 +178,9 @@ Func CheckSwitchAcc()
 			If $g_iNextAccount > $g_iTotalAcc Then $g_iNextAccount = 0
 			While $abAccountNo[$g_iNextAccount] = False
 				$g_iNextAccount += 1
-				If $g_iNextAccount > $g_iTotalAcc Then $g_iNextAccount = 0 ; avoid idle Account
 				SetDebugLog("- While Account: " & $g_asProfileName[$g_iNextAccount] & " number: " & $g_iNextAccount + 1)
+				If $g_iNextAccount > $g_iTotalAcc Then $g_iNextAccount = 0 ; avoid idle Account
 			WEnd
-			If $g_abPBActive[$g_iNextAccount] Then ;   updated remain train time if PBT active
-				If $g_aiTimerStart[$g_iNextAccount] <> 0 Then $g_aiRemainTrainTime[$g_iNextAccount] -= Round(TimerDiff($g_aiTimerStart[$g_iNextAccount]) / 1000 / 60, 1)
-				$g_aiTimerStart[$g_iNextAccount] = TimerInit() ; reset timer
-			EndIf
 		EndIf
 
 		SetDebugLog("- Current Account: " & $g_asProfileName[$g_iCurAccount] & " number: " & $g_iCurAccount + 1)
@@ -193,8 +189,8 @@ Func CheckSwitchAcc()
 		; Just a loop for all acc to check it if necessary
 		For $i = 0 To $g_iTotalAcc
 			; Check if the next account is PBT and IF the remain Train Time is Less/More than 2 minutes OR the account is disable
-			If ($g_abPBActive[$g_iNextAccount] And $g_aiRemainTrainTime[$g_iNextAccount] > 2) Or $abAccountNo[$g_iNextAccount] = False Then
-				If $abAccountNo[$g_iNextAccount] = False Then
+			If($g_abPBActive[$g_iNextAccount] And $g_aiRemainTrainTime[$g_iNextAccount] > 2) Or $abAccountNo[$g_iNextAccount] = False Then
+				if $abAccountNo[$g_iNextAccount] = False Then
 					SetLog("Account " & $g_iNextAccount + 1 & " disabled!", $COLOR_INFO)
 					SetSwitchAccLog(" - Account " & $g_iNextAccount + 1 & " disabled")
 				Else
@@ -204,10 +200,6 @@ Func CheckSwitchAcc()
 
 				$g_iNextAccount = $g_iNextAccount + 1
 				If $g_iNextAccount > $g_iTotalAcc Then $g_iNextAccount = 0
-				While $abAccountNo[$g_iNextAccount] = False
-					$g_iNextAccount += 1
-					If $g_iNextAccount > $g_iTotalAcc Then $g_iNextAccount = 0 ; avoid idle Account
-				WEnd
 			Else
 				ExitLoop
 			EndIf
@@ -225,7 +217,6 @@ Func CheckSwitchAcc()
 
 		If $g_iNextAccount <> $g_iCurAccount Then
 			If $g_bRequestTroopsEnable And $g_bCanRequestCC Then
-				If _Sleep(1000) Then Return ;EDITED BY RK MOD
 				SetLog("Try Request troops before switching account", $COLOR_INFO)
 				RequestCC(True)
 			EndIf
@@ -665,7 +656,6 @@ Func SwitchCOCAcc_ConfirmSCID(ByRef $bResult)
 				If _Sleep(900) Then Return "Exit"
 			Next
 		EndIf
-
 		If $i = 30 Then
 			$bResult = False
 			;ExitLoop 2
@@ -692,9 +682,7 @@ Func SwitchCOCAcc_ClickAccountSCID(ByRef $bResult, $NextAccount, $iStep = 4)
 					Local $bDragDone = False
 					If $NextAccount >= 4 Then
 						$YCoord = Int(408 - 73.5 * ($g_iTotalAcc - $NextAccount))
-						SetLog("Dragging accounts")
-						;Local $iRandomDragX = Random(237, 550, 1)
-						;ClickDrag($iRandomDragX, 590, $iRandomDragX, 172, 2000)
+						SetLog("     drag for more accounts")
 						ClickDrag(700, 590, 700, 172, 2000)
 						If _Sleep(250) Then Return "Exit"
 						For $x = 0 To 5
@@ -720,9 +708,7 @@ Func SwitchCOCAcc_ClickAccountSCID(ByRef $bResult, $NextAccount, $iStep = 4)
 
 				If $bResult Then
 					SetLog("   " & ($iStep + 1) & ". Click Account [" & $NextAccount + 1 & "] Supercell ID")
-
 					SetLog("Please wait for loading CoC...!")
-
 					Return "OK"
 				EndIf
 
@@ -740,10 +726,8 @@ Func SwitchCOCAcc_ClickAccountSCID(ByRef $bResult, $NextAccount, $iStep = 4)
 						Return "Error"
 					EndIf
 				EndIf
-
 				If _Sleep(900) Then Return "Exit"
 			Next
-
 		EndIf
 
 		SetDebugLog("Checking 'Log in with SuperCell ID' buttonn' x:" & $aLoginWithSupercellID[0] & " y:" & $aLoginWithSupercellID[1] & " : " & _GetPixelColor($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], True))
@@ -802,7 +786,7 @@ Func CheckTroopTimeAllAccount($bExcludeCurrent = False) ; Return the minimum rem
 	Local $abAccountNo = AccountNoActive()
 	Local $iMinRemainTrain
 	If $bExcludeCurrent = False Then
-		If $g_abPBActive[$g_iCurAccount] = False Then $g_aiRemainTrainTime[$g_iCurAccount] = _ArrayMax($g_aiTimeTrain, 1, 0, 2) ; remaintraintime of current account - in minutes If not PBT
+		If $g_abPBActive[$g_iCurAccount] = False Then $g_aiRemainTrainTime[$g_iCurAccount] = _ArrayMax($g_aiTimeTrain) ; remaintraintime of current account - in minutes If not PBT
 		$g_aiTimerStart[$g_iCurAccount] = TimerInit() ; start counting elapse of training time of current account
 	EndIf
 
@@ -851,7 +835,7 @@ Func DisableGUI_AfterLoadNewProfile()
 	$g_bGUIControlDisabled = True
 	For $i = $g_hFirstControlToHide To $g_hLastControlToHide
 		If IsAlwaysEnabledControl($i) Then ContinueLoop
-		;If $g_bNotifyPBEnable And $i = $g_hBtnNotifyDeleteMessages Then ContinueLoop ; exclude the DeleteAllMesages button when PushBullet is enabled
+		If $g_bNotifyPBEnable And $i = $g_hBtnNotifyDeleteMessages Then ContinueLoop ; exclude the DeleteAllMesages button when PushBullet is enabled
 		If BitAND(GUICtrlGetState($i), $GUI_ENABLE) Then GUICtrlSetState($i, $GUI_DISABLE)
 	Next
 	ControlEnable("", "", $g_hCmbGUILanguage)
@@ -950,43 +934,54 @@ EndFunc   ;==>CheckGoogleSelectAccount
 Func CheckLoginWithSupercellID()
 
 	Local $bResult = False
+	Local $pColor = _GetPixelColor($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], False)
+	Local $pColor1 = _GetPixelColor($aLoginWithSupercellID2[0], $aLoginWithSupercellID2[1], False)
+	; Green Button and White Font
+	If _ColorCheck($pColor, Hex($aLoginWithSupercellID[2], 6), $aLoginWithSupercellID[3]) And _ColorCheck($pColor1, Hex($aLoginWithSupercellID2[2], 6), $aLoginWithSupercellID2[3]) Then
 
-	; Account List check be there, validate with imgloc
-	If UBound(decodeSingleCoord(FindImageInPlace("LoginWithSupercellID", $g_sImgLoginWithSupercellID, "318,678(125,30)", False))) > 1 Then
-		; Google Account selection found
-		SetLog("Verified Log in with Supercell ID boot screen")
+		SetDebugLog("Found Log in with Supercell ID pixel")
 
-		If HaveSharedPrefs($g_sProfileCurrentName) Then
-			SetLog("Close CoC and push shared_prefs for Supercell ID screen...")
-			PushSharedPrefs()
-			Return True
-		Else
-			If $g_bChkSuperCellID And ProfileSwitchAccountEnabled() Then ; select the correct account matching with current profile
-				Local $NextAccount = 0
-				;$bResult = True ;RK MOD
-				For $i = 0 To $g_iTotalAcc
-					If $g_abAccountNo[$i] = True And SwitchAccountEnabled($i) And $g_asProfileName[$i] = $g_sProfileCurrentName Then $NextAccount = $i
-				Next
+		; Account List check be there, validate with imgloc
+		If UBound(decodeSingleCoord(FindImageInPlace("LoginWithSupercellID", $g_sImgLoginWithSupercellID, "318,678(125,30)", False))) > 1 Then
+			; Google Account selection found
+			SetLog("Verified Log in with Supercell ID boot screen")
 
-				Switch SwitchCOCAcc_ClickAccountSCID($bResult, $NextAccount, 1)
-					Case "OK"
-						; all good
-					Case "Error"
-						; some problem
-						Return
-					Case "Exit"
-						; no $g_bRunState
-						Return
-				EndSwitch
+			If HaveSharedPrefs($g_sProfileCurrentName) Then
+				SetLog("Close CoC and push shared_prefs for Supercell ID screen...")
+				PushSharedPrefs()
+				Return True
 			Else
-				SetLog("Cannot close Supercell ID screen, shared_prefs not pulled.", $COLOR_ERROR)
-				SetLog("Please resolve Supercell ID screen manually, close CoC", $COLOR_INFO)
-				SetLog("and then pull shared_prefs in tab Bot/Profiles.", $COLOR_INFO)
-			EndIf
-		EndIf
+				If $g_bChkSuperCellID And ProfileSwitchAccountEnabled() Then ; select the correct account matching with current profile
+					Local $NextAccount = 0
+					For $i = 0 To $g_iTotalAcc
+						If $g_abAccountNo[$i] = True And SwitchAccountEnabled($i) And $g_asProfileName[$i] = $g_sProfileCurrentName Then $NextAccount = $i
+					Next
 
+					Switch SwitchCOCAcc_ClickAccountSCID($bResult, $NextAccount, 1)
+						Case "OK"
+							; all good
+						Case "Error"
+							; some problem
+							Return
+						Case "Exit"
+							; no $g_bRunState
+							Return
+					EndSwitch
+				Else
+					SetLog("Cannot close Supercell ID screen, shared_prefs not pulled.", $COLOR_ERROR)
+					SetLog("Please resolve Supercell ID screen manually, close CoC", $COLOR_INFO)
+					SetLog("and then pull shared_prefs in tab Bot/Profiles.", $COLOR_INFO)
+				EndIf
+			EndIf
+
+		Else
+			SetDebugLog("Log in with Supercell ID boot screen not verified")
+		EndIf
 	Else
-		SetDebugLog("Log in with Supercell ID boot screen not verified")
+		If $g_bDebugSetlog Then
+			SetDebugLog("LoginWithSupercellID Button pixel color: " & $pColor)
+			SetDebugLog("LoginWithSupercellID Font pixel color: " & $pColor1)
+		EndIf
 	EndIf
 
 	Return $bResult
@@ -994,53 +989,46 @@ EndFunc   ;==>CheckLoginWithSupercellID
 
 Func CheckLoginWithSupercellIDScreen()
 
-	Local $g_sImgSCID = @ScriptDir & "\imgxml\SuperCellID\Accounts"
+	Local $g_sImgSCID = @ScriptDir &"\imgxml\SuperCellID\Accounts"
 	Local $AccountsCoord[0][2]
-	Local $acount = $g_iWhatSCIDAccount2Use
-
-	If $g_bChkSuperCellID And ProfileSwitchAccountEnabled() Then
-		$acount = $g_iCurAccount
-	EndIf
 
 	; Account List check be there, validate with imgloc
-	If UBound(decodeSingleCoord(FindImageInPlace("LoginWithSupercellID", $g_sImgLoginWithSupercellID, "318,678(125,30)", False))) > 1 Then
-		; Google Account selection found
-		SetLog("Verified Log in with Supercell ID boot screen")
+		If UBound(decodeSingleCoord(FindImageInPlace("LoginWithSupercellID", $g_sImgLoginWithSupercellID, "318,678(125,30)", False))) > 1 Then
+			; Google Account selection found
+			SetLog("Verified Log in with Supercell ID boot screen")
 
-		Click($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], 1, 0, "Click Log in with SC_ID")
-		If _Sleep(2000) Then Return
-		For $i = 0 To 10
-			Local $XCoordinates = QuickMIS("CX", $g_sImgSCID, 550, 165, 690, 605, True, $g_bDebugImageSave)
-			If UBound($XCoordinates) > 0 Then
-				SetDebugLog("[SCID Accounts]: " & UBound($XCoordinates), $COLOR_DEBUG)
-				ReDim $AccountsCoord[UBound($XCoordinates)][2]
-				For $j = 0 To UBound($XCoordinates) - 1
-					Local $Coordinates = StringSplit($XCoordinates[$j], ",", 2)
-					$AccountsCoord[$j][0] = $Coordinates[0] + 550
-					$AccountsCoord[$j][1] = $Coordinates[1] + 165
-				Next
-				_ArraySort($AccountsCoord, 0, 0, 0, 1) ; short by column 1 [Y]
-				For $j = 0 To UBound($AccountsCoord) - 1
-					SetDebugLog("[" & $j & "] Account coordinates: " & $AccountsCoord[$j][0] & "," & $AccountsCoord[$j][1] & " named: " & $g_asProfileName[$j])
-				Next
-				Setlog("SC_ID account number " & $acount + 1 & " named: " & $g_asProfileName[$acount])
-				If $acount + 1 > UBound($XCoordinates) Then
-					setlog("You selected a SCID undetected account!!", $COLOR_ERROR)
+			Click($aLoginWithSupercellID[0], $aLoginWithSupercellID[1], 1, 0, "Click Log in with SC_ID")
+			If _Sleep(2000) Then return
+			For $i = 0 to 10
+				Local $XCoordinates = QuickMIS("CX", $g_sImgSCID, 600, 165, 690, 605, True, $g_bDebugImageSave)
+				If UBound($XCoordinates) > 0 Then
+					SetDebugLog("[SCID Accounts]: " & UBound($XCoordinates), $COLOR_DEBUG)
+					Redim $AccountsCoord[UBound($XCoordinates)][2]
+					For $j = 0 to UBound($XCoordinates) - 1
+						Local $Coordinates = StringSplit($XCoordinates[$j], ",", 2)
+						$AccountsCoord[$j][0] = $Coordinates[0] + 600
+						$AccountsCoord[$j][1] = $Coordinates[1] + 165
+						SetDebugLog("[" & $j &  "] Account coordinates: " & $AccountsCoord[$j][0] & "," & $AccountsCoord[$j][1])
+					Next
+					_ArraySort($AccountsCoord, 0, 0, 0, 1)  ; short by column 1 [Y]
+					Setlog("SC_ID account number " & $g_iWhatSCIDAccount2Use + 1)
+					If $g_iWhatSCIDAccount2Use + 1 > UBound($XCoordinates) then
+						setlog("You selected a SCID undetected account!!", $COLOR_ERROR)
+						ExitLoop
+					EndIf
+					Click($AccountsCoord[$g_iWhatSCIDAccount2Use][0] - 150 , $AccountsCoord[$g_iWhatSCIDAccount2Use][1], 1)
+					SetLog("Please wait for loading CoC...!")
 					ExitLoop
 				EndIf
-				Click($AccountsCoord[$acount][0] - 150, $AccountsCoord[$acount][1], 1)
-				SetLog("Please wait for loading CoC...!")
-				ExitLoop
-			EndIf
 
-			If $g_bRunState = False Then Return
-			If _sleep(1000) Then Return
-		Next
-	Else
-		SetDebugLog("Log in with Supercell ID boot screen not verified")
-	EndIf
+				If $g_bRunState = False Then Return
+				If _sleep(1000) then return
+			NExt
+		Else
+			SetDebugLog("Log in with Supercell ID boot screen not verified")
+		EndIf
 
-EndFunc   ;==>CheckLoginWithSupercellIDScreen
+EndFunc
 
 Func SwitchAccountCheckProfileInUse($sNewProfile)
 	; now check if profile is used in another group
@@ -1299,3 +1287,4 @@ Func CheckLastActiveAccount($i)
 	Return $iSleeptime
 
 EndFunc   ;==>CheckLastActiveAccount
+

@@ -334,7 +334,7 @@ EndFunc   ;==>InitializeAndroid
 ; ===============================================================================================================================
 Func SetupProfileFolder()
 	SetDebugLog("SetupProfileFolder: " & $g_sProfilePath & "\" & $g_sProfileCurrentName)
-	$g_sModConfigPath = $g_sProfilePath & "\" & $g_sProfileCurrentName & "\rk_config.ini"
+	$sChatIni = $g_sProfilePath & "\" & $g_sProfileCurrentName & "\rk_config.ini"
 	$g_sProfileConfigPath = $g_sProfilePath & "\" & $g_sProfileCurrentName & "\config.ini"
 	$g_sProfileBuildingStatsPath = $g_sProfilePath & "\" & $g_sProfileCurrentName & "\stats_buildings.ini"
 	$g_sProfileBuildingPath = $g_sProfilePath & "\" & $g_sProfileCurrentName & "\building.ini"
@@ -1117,7 +1117,7 @@ Func AttackMain() ;Main control for attack functions
 			EndIf
 			_ClanGames()
 			;------------------ADDED By RK MOD - END------------------
-			If $g_iGlobalChat = True Or $g_iClanChat = True Then
+			If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
 				ChatbotMessage()
 			EndIf
 			;------------------ADDED By RK MOD - END------------------
