@@ -147,10 +147,13 @@ Func QueenUpgrade()
 	EndIf
 
 	If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel < 13 Then
-		If (($g_aiCurrentLoot[$eLootDarkElixir] < ($g_afQueenUpgCost[$aHeroLevel] * 1000) + $g_iUpgradeMinDark) And (($g_afQueenUpgCost[$aHeroLevel] * 1000) < $g_iLimitBreakDE[$g_iTownHallLevel - 1])) Or (($g_aiCurrentLoot[$eLootDarkElixir] < ($g_afQueenUpgCost[$aHeroLevel] * 1000)) And (($g_afQueenUpgCost[$aHeroLevel] * 1000) >= $g_iLimitBreakDE[$g_iTownHallLevel - 1])) Then
+		If (($g_aiCurrentLoot[$eLootDarkElixir] < ($g_afQueenUpgCost[$aHeroLevel] * 1000) + $g_iUpgradeMinDark) And (($g_afQueenUpgCost[$aHeroLevel] * 1000) < $g_iLimitBreakDE[$g_iTownHallLevel - 1] - $g_iUpgradeMinDark)) Or (($g_aiCurrentLoot[$eLootDarkElixir] < ($g_afQueenUpgCost[$aHeroLevel] * 1000)) And (($g_afQueenUpgCost[$aHeroLevel] * 1000) >= $g_iLimitBreakDE[$g_iTownHallLevel - 1] - $g_iUpgradeMinDark)) Then
 			SetLog("Insufficient DE for Upg Queen, requires: " & ($g_afQueenUpgCost[$aHeroLevel] * 1000) & " + " & $g_iUpgradeMinDark, $COLOR_INFO)
 			Return
 		EndIf
+	Else
+		SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
+		Return
 	EndIf
 
 	Local $offColors[3][3] = [[0xE07B50, 41, 23], [0x282020, 72, 0], [0xF5F9F2, 79, 0]] ; 2nd pixel brown hammer, 3rd pixel black, 4th pixel edge of button
@@ -258,10 +261,13 @@ Func KingUpgrade()
 	If _Sleep(100) Then Return
 
 	If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel < 13 Then
-		If (($g_aiCurrentLoot[$eLootDarkElixir] < ($g_afKingUpgCost[$aHeroLevel] * 1000) + $g_iUpgradeMinDark) And (($g_afKingUpgCost[$aHeroLevel] * 1000) < $g_iLimitBreakDE[$g_iTownHallLevel - 1])) Or (($g_aiCurrentLoot[$eLootDarkElixir] < ($g_afKingUpgCost[$aHeroLevel] * 1000)) And (($g_afKingUpgCost[$aHeroLevel] * 1000) >= $g_iLimitBreakDE[$g_iTownHallLevel - 1])) Then
+		If (($g_aiCurrentLoot[$eLootDarkElixir] < ($g_afKingUpgCost[$aHeroLevel] * 1000) + $g_iUpgradeMinDark) And (($g_afKingUpgCost[$aHeroLevel] * 1000) < $g_iLimitBreakDE[$g_iTownHallLevel - 1] - $g_iUpgradeMinDark)) Or (($g_aiCurrentLoot[$eLootDarkElixir] < ($g_afKingUpgCost[$aHeroLevel] * 1000)) And (($g_afKingUpgCost[$aHeroLevel] * 1000) >= $g_iLimitBreakDE[$g_iTownHallLevel - 1] - $g_iUpgradeMinDark)) Then
 			SetLog("Insufficient DE for Upg King, requires: " & ($g_afKingUpgCost[$aHeroLevel] * 1000) & " + " & $g_iUpgradeMinDark, $COLOR_INFO)
 			Return
 		EndIf
+	Else
+		SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
+		Return
 	EndIf
 
 	Local $offColors[3][3] = [[0xE07B50, 41, 23], [0x282020, 72, 0], [0xF4F5F2, 79, 0]] ; 2nd pixel brown hammer, 3rd pixel black, 4th pixel edge of button
@@ -373,10 +379,13 @@ Func WardenUpgrade()
 	If _Sleep(100) Then Return
 
 	If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel < 13 Then
-		If (($g_aiCurrentLoot[$eLootElixir] < ($g_afWardenUpgCost[$g_iWardenLevel] * 1000000) + $g_iUpgradeMinElixir) And (($g_afWardenUpgCost[$g_iWardenLevel] * 1000000) < $g_iLimitBreakGE[$g_iTownHallLevel - 1])) Or (($g_aiCurrentLoot[$eLootElixir] < ($g_afWardenUpgCost[$g_iWardenLevel] * 1000000)) And (($g_afWardenUpgCost[$g_iWardenLevel] * 1000000) >= $g_iLimitBreakGE[$g_iTownHallLevel - 1])) Then
+		If (($g_aiCurrentLoot[$eLootElixir] < ($g_afWardenUpgCost[$g_iWardenLevel] * 1000000) + $g_iUpgradeMinElixir) And (($g_afWardenUpgCost[$g_iWardenLevel] * 1000000) < $g_iLimitBreakGE[$g_iTownHallLevel - 1] - $g_iUpgradeMinElixir)) Or (($g_aiCurrentLoot[$eLootElixir] < ($g_afWardenUpgCost[$g_iWardenLevel] * 1000000)) And (($g_afWardenUpgCost[$g_iWardenLevel] * 1000000) >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] - $g_iUpgradeMinElixir)) Then
 			SetLog("Insufficient Elixir for Warden Upgrade, requires: " & ($g_afWardenUpgCost[$g_iWardenLevel] * 1000000) & " + " & $g_iUpgradeMinElixir, $COLOR_INFO)
 			Return
 		EndIf
+	Else
+		SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
+		Return
 	EndIf
 	If _Sleep($DELAYUPGRADEHERO2) Then Return
 	Local $offColors[3][3] = [[0xBC5B31, 38, 32], [0xF84CF9, 72, 0], [0xF5F9F2, 79, 0]] ; 2nd pixel brown hammer, 3rd pixel pink, 4th pixel edge of button

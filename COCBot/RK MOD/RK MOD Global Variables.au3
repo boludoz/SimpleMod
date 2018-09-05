@@ -203,8 +203,8 @@ Global $g_iCycle = 0
 ; ================================================== Wall/Building Upgrading Priority/Management by RK MOD	======================================== ;
 
 Global $g_iChkUpgrPriority = 0, $g_iCmbUpgrdPriority = 0
-Global Const $g_iLimitBreakGE[12] = [2250, 6300, 90000, 450000, 900000, 1800000, 3600000, 5400000, 7200000, 7650000, 9000000, 10800000];Gold And Elixir Town Hall Level max resource storages at 90%
-Global Const $g_iLimitBreakDE[12] = [0, 0, 0, 0, 0, 0, 18000, 72000, 171000, 180000, 180000, 216000];Dark Elixir Town Hall Level max resource storage at 90%
+Global Const $g_iLimitBreakGE[12] = [2500, 7000, 100000, 500000, 1000000, 2000000, 4000000, 6000000, 8000000, 8500000, 10000000, 12000000];Gold And Elixir Town Hall Level max resource storages at 90%
+Global Const $g_iLimitBreakDE[12] = [0, 0, 0, 0, 0, 0, 20000, 80000, 190000, 200000, 20000, 240000];Dark Elixir Town Hall Level max resource storage at 90%
 Global $g_iLabUpgradeProgress = 0
 Global $g_iWallWarden = 0
 
