@@ -668,12 +668,13 @@ Func LabPriority()
 	Local $minDarkElixerValue = ""
 
 	If $g_bChkPrioritySystem = True Then
-	SetLog("Lab Priority Check.", $COLOR_INFO)
+		SetLog("Lab Priority Check.", $COLOR_INFO)
 		For $iz = 0 to 31
 			If $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)] = "Max" Or $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)] = 0 Then
 				$iMaxCount =+ 1
 			EndIf
 		Next
+		Setlog("Max TPS Count: " & $iMaxCount, $COLOR_INFO)
 		If $iMaxCount = 32 Then
 			$g_iCmbLaboratory = 0
 			SetLog("No upgrades available at this time", $COLOR_INFO)
@@ -696,6 +697,7 @@ Func LabPriority()
 				EndSwitch
 			EndIf
 		Next
+		SetLog("Max Elixir Count: " & $iElixirCount & " Max Dark Count: " & $iDElixirCount, $COLOR_INFO)
 		For $iz = 0 To 31
 			If $iLabResults[$iz][0] <> "Max" And $iLabResults[$iz][0] <> "0" Then
 				If $minElixerValue = "" And $iLabResults[$iz][1] = "Elixir" Then
@@ -717,7 +719,7 @@ Func LabPriority()
 		Next
 		If $g_iCmbPrioritySystem = 0 Then
 				If ($minElixerValue <> "") And $iElixirCount < 21 Then
-					$g_iCmbLaboratory = Int($minElixerValue[0][2])
+					$g_iCmbLaboratory = $minElixerValue[0][2]
 					SetLog("Elixir Upgrade set.", $COLOR_INFO)
 					Return
 				ElseIf ($minDarkElixerValue <> "") And $iDElixirCount < 11 Then
