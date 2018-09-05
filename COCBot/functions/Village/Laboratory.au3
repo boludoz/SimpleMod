@@ -61,7 +61,7 @@ Func Laboratory()
 	Local $iAvailElixir, $iAvailDark, $sElixirCount, $sDarkCount, $TimeDiff, $aArray, $Result
 	Local $iLevel = 0
  If $g_iCmbLaboratory > 0 Then 
-  $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][1], $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][2], 1)
+  $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][0], $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][1], 1)
 EndIf
 	
 	$g_iUpgradeMinElixir = Number($g_iUpgradeMinElixir)
@@ -303,7 +303,7 @@ EndIf
 	If $aUpgradeValue[$g_iCmbLaboratory] = -1 Then
 		SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " already max level, select another troop", $COLOR_WARNING)
 		ClickP($aAway, 2, $DELAYLABORATORY4, "#0353")
-		IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][3])
+		IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2])
 		Return False
 	EndIf
 
@@ -332,10 +332,10 @@ EndIf
 		If Int($aUpgradeValue[$g_iCmbLaboratory]) <> Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
 			While Int($aUpgradeValue[$g_iCmbLaboratory]) <> Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel])
 				If Int($aUpgradeValue[$g_iCmbLaboratory]) < Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
-					IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $iLevel - 1)
+					IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $iLevel - 1)
 					SetLog("Decreasing upgrade level.", $COLOR_INFO)
 				ElseIf Int($aUpgradeValue[$g_iCmbLaboratory]) > Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
-					IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $iLevel + 1)
+					IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $iLevel + 1)
 					SetLog("Increasing upgrade level.", $COLOR_INFO)
 				EndIf
 			WEnd
@@ -407,7 +407,7 @@ EndFunc   ;==>Laboratory
 ;
 Func LabUpgrade()
 	Local $StartTime, $EndTime, $EndPeriod, $Result, $TimeAdd = 0
-	Local $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], 1)
+	Local $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], 1)
 	Select
 		Case _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 47, $g_avLabTroops[$g_iCmbLaboratory][1] + 1, True), $sColorNA, 20) = True
 			; check for beige pixel in center just below edge for troop not unlocked
@@ -421,7 +421,7 @@ Func LabUpgrade()
 			If _Sleep($DELAYLABUPGRADE2) Then Return
 
 		Case _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 22, $g_avLabTroops[$g_iCmbLaboratory][1] + 60, True), Hex(0xFFC360, 6), 20) = True
-			IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][3])
+			IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2])
 			; Look for Golden pixel inside level indicator for max troops
 			SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " already max level, select another troop", $COLOR_ERROR)
 			If _Sleep($DELAYLABUPGRADE2) Then Return
@@ -439,7 +439,7 @@ Func LabUpgrade()
 
 			; double check if maxed?
 			If _ColorCheck(_GetPixelColor(258, 192, True), Hex(0xFF1919, 6), 20) And _ColorCheck(_GetPixelColor(272, 194, True), Hex(0xFF1919, 6), 20) Then
-				IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][3])
+				IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2])
 				SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " Previously maxxed, select another troop", $COLOR_ERROR) ; oops, we found the red warning message
 				If _Sleep($DELAYLABUPGRADE2) Then Return
 				ClickP($aAway, 2, $DELAYLABUPGRADE3, "#0201")
@@ -523,7 +523,7 @@ Func LabUpgrade()
 					ClickP($aAway, 2, $DELAYLABUPGRADE3, "#0360")
 					Return False
 				EndIf
-				IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2], $iLevel + 1)
+				IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $iLevel + 1)
 				SetLog("Upgrade " & $g_avLabTroops[$g_iCmbLaboratory][3] & " in your laboratory started with success...", $COLOR_SUCCESS)
 				PushMsg("LabSuccess")
 				If _Sleep($DELAYLABUPGRADE2) Then Return
@@ -670,7 +670,7 @@ Func LabPriority()
 	If $g_bChkPrioritySystem = True Then
 		SetLog("Lab Priority Check.", $COLOR_INFO)
 		For $iz = 0 to 31
-			If $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)] = "Max" Or $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)] = 0 Then
+			If $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][0], $g_iUpgradeLevel[$iz][1], 0)] = "Max" Or $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][0], $g_iUpgradeLevel[$iz][1], 0)] = 0 Then
 				$iMaxCount =+ 1
 			EndIf
 		Next
@@ -681,15 +681,15 @@ Func LabPriority()
 			Return
 		EndIf
 		For $iz = 0 to 31
-			If $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)] > 0 And Not $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)] = "Max" Then
-				$iLabResults[$iz][1] =+ Number($g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][1], $g_iUpgradeLevel[$iz][2], 0)])
+			If $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][0], $g_iUpgradeLevel[$iz][1], 0)] > 0 And Not $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][0], $g_iUpgradeLevel[$iz][1], 0)] = "Max" Then
+				$iLabResults[$iz][0] =+ Number($g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][0], $g_iUpgradeLevel[$iz][1], 0)])
 			EndIf
 		Next
 		For $iz = 0 to 31 ;
-			If $iLabResults[$iz][1] = "Max" Or $iLabResults[$iz][1] = 0 Then
+			If $iLabResults[$iz][0] = "Max" Or $iLabResults[$iz][0] = 0 Then
 				ContinueLoop
 			Else
-				Switch $iLabResults[$iz][2]
+				Switch $iLabResults[$iz][1]
 					Case "Elixir"
 						$iElixirCount =+ 1
 					Case "Dark Elixir"
