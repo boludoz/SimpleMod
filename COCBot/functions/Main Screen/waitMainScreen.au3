@@ -36,9 +36,8 @@ Func waitMainScreen() ;Waits for main screen to popup
 			getBSPos() ; Update $g_hAndroidWindow and Android Window Positions
 		EndIf
 		;------------------CUSTOM LOGIC By RK MOD - START------------------
-		If Mod($i, 3) = 0 Then
-			Local $Googleimg = @ScriptDir & "\imgxml\other\Google*"
-			If QuickMis("BC1", $Googleimg, 350, 0, 350 + 88, 0 + 386) Then
+		If Mod($i, 2) = 1 Then
+			If QuickMis("BC1", $g_sImgGoogleSelectAccount, 350, 0, 350 + 88, 0 + 386) Then
 				ClickP($aAway, 1, 0, "#0161")
 			EndIf
 		EndIf
