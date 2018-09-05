@@ -120,9 +120,6 @@ Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; flag if AttackBa
 ;Global $g_bChkPbSendNew = False
 ;Global $g_bChkRusLang = False
 ;Global $g_iCmbLang = 9
-Global $g_bChkCleverbot = False
-Global $g_bChkDelayTime = False
-Global $g_iTxtDelayTime = 10
 ;Global $g_iChkClanMessages = ""
 ;Global $g_sClanResponses = ""
 ;Global $g_sClanResponses0
@@ -143,6 +140,9 @@ Global $g_bChkChatGlobal = False, $g_bChkScrambleGlobal = False, $g_bChkSwitchLa
 Global $g_bChkChatClan = False, $g_iRusLang = 0, $g_bChkClanUseResponses = False, $g_bChkClanAlwaysMsg = False, $g_iChatPushbullet = False, $g_iPbSendNewChats = False
 Global $ChatbotStartTime
 Global $ChatbotQueuedChats[0], $ChatbotReadQueued = False, $ChatbotReadInterval = 0, $ChatbotIsOnInterval = False
+Global $g_bChkCleverbot = False
+Global $g_bChkDelayTime = False
+Global $g_iTxtDelayTime = 10
 ;=============================================== Russian Request - by RK MOD ======================================== ;
 
 Global $g_bChkRusLang2 = False

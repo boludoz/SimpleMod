@@ -949,9 +949,9 @@ Func _Idle() ;Sequence that runs until Full Army
 		If _Sleep($DELAYIDLE1) Then Return
 		If $g_iCommandStop = -1 Then SetLog("====== Waiting for full army ======", $COLOR_SUCCESS)
 		;------------------ADDED By RK MOD - START------------------
-		;If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
-		;	ChatbotMessage()
-		;EndIf
+		If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
+			ChatbotMessage()
+		EndIf
 		;------------------ADDED By RK MOD - END------------------
 		Local $hTimer = __TimerInit()
 		Local $iReHere = 0, $bNoCheckRedChatIcon = True

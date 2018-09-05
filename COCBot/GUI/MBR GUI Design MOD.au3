@@ -322,10 +322,9 @@ Func TabItem3()
 			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
 	$y += 18
 		$g_hChkDelayTime = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - Chatbot", "ChkDelayTime_01", "Delay Time"), $x - 10, $y, -1, -1)
-			GUICtrlSetState(-1, $GUI_UNCHECKED)
-			GUICtrlSetOnEvent(-1, "chkDelayTime")
+			GUICtrlSetState(-1, $g_bChkDelayTime)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
 		$g_hTxtDelayTime = GUICtrlCreateInput("10", $x + 120, $y - 2, 25, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
-			GUICtrlSetState(-1, $GUI_DISABLE)
 			GUICtrlSetLimit(-1, 2)
 			GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design MOD - Chatbot", "Label_15", "Min."),  $x + 148, $y, -1, -1)
 	$y += 18
@@ -376,9 +375,10 @@ Func TabItem3()
 			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
 	$y += 22
 		$g_hChkCleverbot = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkCleverbot_01", "Cleverbot"), $x - 10, $y, -1, -1)
+			GUICtrlSetState(-1, $g_bChkCleverbot)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design MOD - Chat", "chkCleverbot_02", "Enabele on this function to communicate Cleverbot with your clan"))
-			GUICtrlSetState(-1, $GUI_UNCHECKED)
-			GUICtrlSetOnEvent(-1, "chkCleverbot")
+			;GUICtrlSetState(-1, $GUI_UNCHECKED)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
 	$y += 22
 		$g_hChkChatPushbullet = GUICtrlCreateCheckbox(GetTranslatedFileIni("MOD GUI Design - Chatbot", "ChatPushbullet", "Use remote for chatting"), $x - 10, $y, -1, -1)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MOD GUI Design - Chatbot", "ChatPushbullet_Info_01", "Send and recieve chats via pushbullet or telegram.") & @CRLF & _

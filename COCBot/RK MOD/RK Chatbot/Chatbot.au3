@@ -28,6 +28,9 @@ Func ChatbotReadMessages()
 	If IniRead($sChatIni, "ChatClan", "Generic", "False") = "True" Then $g_bChkClanAlwaysMsg = True
 	If IniRead($sChatIni, "ChatClan", "ChatPushbullet", "False") = "True" Then $g_iChatPushbullet = True
 	If IniRead($sChatIni, "ChatClan", "PbSendNewChats", "False") = "True" Then $g_iPbSendNewChats = True
+	If IniRead($sChatIni, "ChatClan", "ChkCleverbot", "False") = "True" Then $g_bChkCleverbot = True
+	If IniRead($sChatIni, "ChatGlobal", "ChkDelayTime", "False") = "True" Then $g_bChkDelayTime = True
+    $g_iTxtDelayTime = IniRead($sChatIni, "ChatGlobal", "TxtDelayTime", "10") 
 	
 	$ClanMessages = StringSplit(IniRead($sChatIni, "ChatClan", "GenericMessages", "Testing on Chat|Hey all"), "|", 2)
 	Global $g_sClanResponses0 = StringSplit(IniRead($sChatIni, "ChatClan", "ResponseMessages", "keyword:Response|hello:Hi, Welcome to the clan|hey:Hey, how's it going?"), "|", 2)
@@ -76,6 +79,11 @@ Func ChatbotGUICheckbox()
 		$g_iRusLang = 0
 	EndIf
 	$g_iCmbLang = _GUICtrlComboBox_GetCurSel($g_hCmbLang)
+	$g_iTxtDelayTime = GUICtrlRead($g_hTxtDelayTime)
+	$g_bChkCleverbot = GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED
+	$g_bChkDelayTime = GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED
+	$g_bChkDelayTime = GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED
+	$g_bChkCleverbot = GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED
 
 	IniWrite($sChatIni, "Lang", "cmbLang", $g_iCmbLang)
 	IniWrite($sChatIni, "ChatGlobal", "Enable", $g_bChkChatGlobal)
@@ -88,11 +96,15 @@ Func ChatbotGUICheckbox()
 	IniWrite($sChatIni, "ChatClan", "ChatPushbullet", $g_iChatPushbullet)
 	IniWrite($sChatIni, "ChatClan", "PbSendNewChats", $g_iPbSendNewChats)
     IniWrite($sChatIni, "Lang", "RusLang", $g_iRusLang)
-	ChatbotGUICheckboxControl()
+	IniWrite($sChatIni, "ChatClan", "ChkCleverbot", $g_bChkCleverbot)
+	IniWrite($sChatIni, "ChatGlobal", "ChkDelayTime", $g_bChkDelayTime)
+	IniWrite($sChatIni, "ChatGlobal", "TxtDelayTime", $g_iTxtDelayTime)
+	
+    ChatbotGUICheckboxControl()
 
 EndFunc   ;==>ChatbotGUICheckbox
 
-Func ChatbotGUICheckboxControl()
+Func ChatbotGUICheckboxControl()	
 	If GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_ENABLE)
@@ -100,6 +112,8 @@ Func ChatbotGUICheckboxControl()
 		For $i = 0 To 3
 			GUICtrlSetState($g_hEditGlobalMessages[$i], $GUI_ENABLE)
 		Next
+		; Delay RK
+		GUICtrlSetState($g_hChkDelayTime, $GUI_ENABLE)
 	Else
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_DISABLE)
@@ -107,6 +121,8 @@ Func ChatbotGUICheckboxControl()
 		For $i = 0 To 3
 			GUICtrlSetState($g_hEditGlobalMessages[$i], $GUI_DISABLE)
 		Next
+		; Delay RK
+		GUICtrlSetState($g_hChkDelayTime, $GUI_DISABLE)
 	EndIf
 	If GUICtrlRead($g_hChkClanChat) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hChkUseResponses, $GUI_ENABLE)
@@ -115,6 +131,8 @@ Func ChatbotGUICheckboxControl()
 		GUICtrlSetState($g_hChkPbSendNewChats, $GUI_ENABLE)
 		GUICtrlSetState($g_hEditResponses, $GUI_ENABLE)
 		GUICtrlSetState($g_hEditGeneric, $GUI_ENABLE)
+		; RK Cleverbot
+		GUICtrlSetState($g_hChkCleverbot, $GUI_ENABLE)
 	Else
 		GUICtrlSetState($g_hChkUseResponses, $GUI_DISABLE)
 		GUICtrlSetState($g_hChkUseGeneric, $GUI_DISABLE)
@@ -122,22 +140,35 @@ Func ChatbotGUICheckboxControl()
 		GUICtrlSetState($g_hChkPbSendNewChats, $GUI_DISABLE)
 		GUICtrlSetState($g_hEditResponses, $GUI_DISABLE)
 		GUICtrlSetState($g_hEditGeneric, $GUI_DISABLE)
+		; RK Cleverbot
+		GUICtrlSetState($g_hChkCleverbot, $GUI_DISABLE)
 	EndIf
-	If  GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED And GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED Then
-	    GUICtrlSetState($g_hCmbLang, $GUI_ENABLE)
-	Else
-     	GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
+	If  GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED Then
+		If GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED Then
+			GUICtrlSetState($g_hCmbLang, $GUI_ENABLE)
+		Else
+			GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
+		EndIf
+		; Delay Time RK
+		If GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED Then
+			GUICtrlSetState($g_hTxtDelayTime, $GUI_ENABLE)
+		Else
+			GUICtrlSetState($g_hTxtDelayTime, $GUI_DISABLE)
+		EndIf
 	EndIf
-
+	
 	If $g_iRusLang = 1 Then
 		GUICtrlSetState($g_hChkRusLang, $GUI_CHECKED)
 
 	ElseIf $g_iRusLang = 0 Then
 		GUICtrlSetState($g_hChkRusLang, $GUI_UNCHECKED)
-
 	EndIf
+	
 	_GUICtrlComboBox_SetCurSel($g_hCmbLang, $g_iCmbLang)
 	$g_iCmbLang = _GUICtrlComboBox_GetCurSel($g_hCmbLang)
+	
+	GUICtrlSetData($g_hTxtDelayTime, $g_iTxtDelayTime)
+	$g_iTxtDelayTime = GUICtrlRead($g_hTxtDelayTime)
 EndFunc   ;==>ChatbotGUICheckboxControl
 
 Func ChatbotGUICheckboxDisable()
