@@ -155,6 +155,9 @@ Func ChatbotGUICheckboxControl()
 		Else
 			GUICtrlSetState($g_hTxtDelayTime, $GUI_DISABLE)
 		EndIf
+	Else
+		GUICtrlSetState($g_hCmbLang, $GUI_DISABLE)
+		GUICtrlSetState($g_hTxtDelayTime, $GUI_DISABLE)
 	EndIf
 	
 	If $g_iRusLang = 1 Then
@@ -446,6 +449,19 @@ Func ChatbotMessage() ; run the chatbot
 					$SentMessage = True
 				EndIf
 			EndIf
+			
+			If ($g_bChkCleverbot = True) And Not $SentMessage Then
+				Local $Response = runHelper($ChatMsg)
+				If (Not $Response = False) And Not $ChatMsg = "" And Not $ChatMsg = " " Then
+					;If Not _Encoding_JavaUnicodeDecode($sString) Then Return
+					SetLog("Got cleverbot response: " & $Response, $COLOR_GREEN)
+					If Not ChatbotChatClanInput() Then Return
+					If Not ChatbotChatInput($Response) Then Return
+					If Not ChatbotChatSendClan() Then Return
+					$SentMessage = True
+				EndIf
+				_RunDos("taskkill /im phantomjs.exe") ; force kill
+			EndIf
 
 			If $g_bChkClanUseResponses And Not $SentMessage Then
 				For $a = 0 To UBound($g_sClanResponses) - 1
@@ -456,22 +472,10 @@ Func ChatbotMessage() ; run the chatbot
 						If Not ChatbotChatInput($Response) Then Return
 						If Not ChatbotChatSendClan() Then Return
 						$SentMessage = True
-						ExitLoop
 					EndIf
 				Next
 			EndIf
 
-			If ($g_bChkCleverbot = True) And Not $SentMessage Then
-				Local $Response = runHelper($ChatMsg, $g_bChkCleverbot)
-				If Not $Response = False Or Not $ChatMsg = "" Or Not $ChatMsg = " " Then
-					;If Not _Encoding_JavaUnicodeDecode($sString) Then Return
-					SetLog("Got cleverbot response: " & $Response, $COLOR_GREEN)
-					If Not ChatbotChatClanInput() Then Return
-					If Not ChatbotChatInput($Response) Then Return
-					If Not ChatbotChatSendClan() Then Return
-					$SentMessage = True
-				EndIf
-			EndIf
 			If Not $SentMessage Then
 				If $g_bChkClanAlwaysMsg Then
 					If Not ChatbotChatClanInput() Then Return
@@ -578,14 +582,13 @@ Func runHelper($msg) ; run a script to get a response from cleverbot.com or sims
 	$HelperStartTime = TimerInit()
 	SetLog("Waiting for chatbot helper...")
 	While ProcessExists($DOS)
-		ProcessWaitClose($DOS, 10)
+		ProcessWaitClose($DOS, 20)
 		SetLog("Still waiting for chatbot helper...")
 		$Time_Difference = TimerDiff($HelperStartTime)
-		If $Time_Difference > 50000 Then
+		If $Time_Difference > 100000 Then
 			SetLog("Chatbot helper is taking too long!", $COLOR_RED)
 			ProcessClose($DOS)
-			_RunDos("taskkill -f -im phantomjs.exe") ; force kill
-			Return ""
+			Return False
 		EndIf
 	WEnd
 	$g_sMessage = ''
