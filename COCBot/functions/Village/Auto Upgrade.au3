@@ -190,18 +190,18 @@ Func _AutoUpgrade()
 		If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel < 13 Then
 			Switch $g_aUpgradeResourceCostDuration[0]
 				Case "Gold"
-					If ((($g_aiCurrentLoot[$eLootGold] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinGold)) And ($g_aUpgradeResourceCostDuration[1] < $g_iLimitBreakGE[$g_iTownHallLevel - 1])) Or _
-					   (($g_aiCurrentLoot[$eLootGold] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1]))) Then
+					If ((($g_aiCurrentLoot[$eLootGold] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinGold)) And ($g_aUpgradeResourceCostDuration[1] < $g_iLimitBreakGE[$g_iTownHallLevel - 1] - $g_iTxtSmartMinGold)) Or _
+					   (($g_aiCurrentLoot[$eLootGold] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] - $g_iTxtSmartMinGold))) Then
 					   $bSufficentResourceToUpgrade = True
 					EndIf
 				Case "Elixir"
-					If ((($g_aiCurrentLoot[$eLootElixir] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinElixir)) And ($g_aUpgradeResourceCostDuration[1] < $g_iLimitBreakGE[$g_iTownHallLevel - 1])) Or _
-					   (($g_aiCurrentLoot[$eLootElixir] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1]))) Then
+					If ((($g_aiCurrentLoot[$eLootElixir] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinElixir)) And ($g_aUpgradeResourceCostDuration[1] < $g_iLimitBreakGE[$g_iTownHallLevel - 1] - $g_iTxtSmartMinElixir)) Or _
+					   (($g_aiCurrentLoot[$eLootElixir] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] - $g_iTxtSmartMinElixir))) Then
 						$bSufficentResourceToUpgrade = True
 					EndIf
 				Case "Dark Elixir"
-					If ((($g_aiCurrentLoot[$eLootDarkElixir] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinDark)) And ($g_aUpgradeResourceCostDuration[1] < $g_iLimitBreakDE[$g_iTownHallLevel - 1])) Or _
-					   (($g_aiCurrentLoot[$eLootDarkElixir] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] >= $g_iLimitBreakDE[$g_iTownHallLevel - 1]))) Then
+					If ((($g_aiCurrentLoot[$eLootDarkElixir] >= ($g_aUpgradeResourceCostDuration[1] + $g_iTxtSmartMinDark)) And ($g_aUpgradeResourceCostDuration[1] < $g_iLimitBreakDE[$g_iTownHallLevel - 1] - $g_iTxtSmartMinDark)) Or _
+					   (($g_aiCurrentLoot[$eLootDarkElixir] >= $g_aUpgradeResourceCostDuration[1]) And ($g_aUpgradeResourceCostDuration[1] >= $g_iLimitBreakDE[$g_iTownHallLevel - 1] - $g_iTxtSmartMinDark))) Then
 					   $bSufficentResourceToUpgrade = True
 					EndIf
 			EndSwitch
