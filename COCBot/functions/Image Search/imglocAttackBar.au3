@@ -246,7 +246,7 @@ Func SlotAttack($PosX, $CheckSlot12, $CheckSlotwHero)
 
 EndFunc   ;==>SlotAttack
 
-; Slot11 - RK MOD (ID193-)
+; Slot11 - Simple Mod (ID193-)
 Func ExtendedAttackBarCheck($aLastTroop1stPage, $bRemaining)
 
 	Local $iX1 = 0, $iY1 = 659, $iX2 = 853, $iY2 = 698

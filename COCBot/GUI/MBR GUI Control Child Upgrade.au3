@@ -285,7 +285,7 @@ Func chkWalls()
 	If GUICtrlRead($g_hChkWalls) = $GUI_CHECKED Then
 		$g_bAutoUpgradeWallsEnable = True
 		GUICtrlSetState($g_hRdoUseGold, $GUI_ENABLE)
-		GUICtrlSetState($g_hChkUpgrPriority, $GUI_ENABLE); ADDED By RK MOD
+		GUICtrlSetState($g_hChkUpgrPriority, $GUI_ENABLE); ADDED By Simple Mod
 		; GUICtrlSetState($sldMaxNbWall, $GUI_ENABLE)
 		;GUICtrlSetState($sldToleranceWall, $GUI_ENABLE)
 		;GUICtrlSetState($g_hBtnFindWalls, $GUI_ENABLE)
@@ -293,7 +293,7 @@ Func chkWalls()
 		;		GUICtrlSetState($g_hRdoUseElixirGold, $GUI_ENABLE)
 		GUICtrlSetState($g_hCmbWalls, $GUI_ENABLE)
 		GUICtrlSetState($g_hTxtWallMinGold, $GUI_ENABLE)
-		GUICtrlSetState($g_hCmbUpgrdPriority, $GUI_ENABLE); ADDED By RK MOD
+		GUICtrlSetState($g_hCmbUpgrdPriority, $GUI_ENABLE); ADDED By Simple Mod
 		;		GUICtrlSetState($g_hTxtWallMinElixir, $GUI_ENABLE)
 		cmbWalls()
 	Else
@@ -304,8 +304,8 @@ Func chkWalls()
 		GUICtrlSetState($g_hCmbWalls, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtWallMinGold, $GUI_DISABLE)
 		GUICtrlSetState($g_hTxtWallMinElixir, $GUI_DISABLE)
-		GUICtrlSetState($g_hChkUpgrPriority, $GUI_DISABLE); ADDED By RK MOD
-		GUICtrlSetState($g_hCmbUpgrdPriority, $GUI_DISABLE); ADDED By RK MOD
+		GUICtrlSetState($g_hChkUpgrPriority, $GUI_DISABLE); ADDED By Simple Mod
+		GUICtrlSetState($g_hCmbUpgrdPriority, $GUI_DISABLE); ADDED By Simple Mod
 		; GUICtrlSetState($sldMaxNbWall, $GUI_DISABLE)
 		;GUICtrlSetState($sldToleranceWall, $GUI_DISABLE)
 		;GUICtrlSetState($g_hBtnFindWalls, $GUI_DISABLE)

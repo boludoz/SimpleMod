@@ -17,11 +17,11 @@
 Global $g_hCmbProfile = 0, $g_hTxtVillageName = 0, $g_hBtnAddProfile = 0, $g_hBtnConfirmAddProfile = 0, $g_hBtnConfirmRenameProfile = 0, $g_hChkOnlySCIDAccounts = 0, $g_hCmbWhatSCIDAccount2Use = 0 , _
 	   $g_hBtnDeleteProfile = 0, $g_hBtnCancelProfileChange = 0, $g_hBtnRenameProfile = 0, $g_hBtnPullSharedPrefs = 0, $g_hBtnPushSharedPrefs = 0 , $g_hBtnSaveprofile = 0, $g_hBtnRecycle = 0
 	   
-;------------------REMOVED By RK MOD - START------------------
+;------------------REMOVED By Simple Mod - START------------------
 ;Global $g_hChkSwitchAcc = 0, $g_hCmbSwitchAcc = 0, $g_hChkSharedPrefs = 0, $g_hCmbTotalAccount = 0, $g_hChkSmartSwitch = 0, $g_hCmbTrainTimeToSkip = 0, $g_hChkDonateLikeCrazy = 0, _
 	   ;$g_ahChkAccount[8], $g_ahCmbProfile[8], $g_ahChkDonate[8], _
 	   ;$g_hRadSwitchGooglePlay = 0, $g_hRadSwitchSuperCellID = 0, $g_hRadSwitchSharedPrefs = 0
-;------------------REMOVED By RK MOD - END------------------
+;------------------REMOVED By Simple Mod - END------------------
 Func CreateBotProfiles()
 
 	Local $x = 25, $y = 45

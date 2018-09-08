@@ -14,14 +14,14 @@
 ; ===============================================================================================================================
 #include-once
 
-;------------------EDITED By RK MOD - START------------------
-; GFTO- RK MOD
+;------------------EDITED By Simple Mod - START------------------
+; GFTO- Simple Mod
 Global $g_hGUI_DONATE = 0, $g_hGUI_DONATE_TAB = 0, $g_hGUI_DONATE_TAB_ITEM1 = 0, $g_hGUI_DONATE_TAB_ITEM2 = 0, $g_hGUI_DONATE_TAB_ITEM3 = 0, $g_hGUI_DONATE_TAB_ITEM4 = 0
 Global $g_hLblGFTO = 0, $g_hChkUseGTFO = 0, $g_hTxtMinSaveGTFO_Elixir = 0, $g_hTxtMinSaveGTFO_DE = 0, $g_hTxtCyclesGTFO = 0
 Global $g_hLblKickout = 0, $g_hChkUseKickOut = 0, $g_hTxtDonatedCap = 0, $g_hTxtReceivedCap = 0, $g_hChkKickOutSpammers = 0, $g_hTxtKickLimit = 0
 Global $g_hLblInitialDonated = 0, $g_hLblCurrentDonated = 0, $g_hGUI_GTFOMOD = 0
 Global $g_hChkGTFOClanHop = False, $g_hChkGTFOReturnClan = False
-;------------------EDITED By RK MOD - END------------------
+;------------------EDITED By Simple Mod - END------------------
 
 ; Request
 Global $g_hChkRequestTroopsEnable = 0, $g_hTxtRequestCC = 0, $g_ahChkRequestCCHours[24] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
@@ -33,14 +33,14 @@ Global $g_hLblRequestType, $g_hChkRequestType_Troops, $g_hChkRequestType_Spells,
 Global $g_hTxtRequestCountCCTroop, $g_hTxtRequestCountCCSpell, $g_hChkClanCastleSpell = 0, $g_hCmbClanCastleSpell = 0, $g_hCmbClanCastleSpell = 0,$g_hCmbClanCastleSpell2 = 0, $g_hTxtClanCastleSpell
 Global $g_ahCmbClanCastleTroop[3], $g_ahTxtClanCastleTroop[3]
 
-; Request CC Troops CC First - Add RK MOD
+; Request CC Troops CC First - Add Simple Mod
 Global $g_hChkReqCCFirst = 0
 Global $g_hLblEarly
 
-; Russian Request - by RK MOD
+; Russian Request - by Simple Mod
 Global $g_hChkRusLang2 = 0
 
-; Request troops for defense Add RK MOD
+; Request troops for defense Add Simple Mod
 Global $g_hChkRequestCCDefense, $g_hTxtRequestCCDefense, $g_hCmbRequestCCDefenseWhen, $g_hTxtRequestCCDefenseTime
 
 ; Donate
@@ -145,14 +145,14 @@ Func CreateRequestSubTab()
 			GUICtrlSetState(-1, $GUI_DISABLE)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "TxtRequestCC_Info_01", "This text is used on your request for troops in the Clan chat."))
 
-	 ; Russian Request- by RK MOD
+	 ; Russian Request- by Simple Mod
 	$y += 20
 		$g_hChkRusLang2 = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkRusLang2_01", "Russian request"), $x + 295, $y - 25, -1, -1)
 		_GUICtrlSetTip(-1,  GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkRusLang2_02", "On. Russian request for troops. Note: The input language in the Android emulator must be RUSSIAN."))
 		GUICtrlSetState(-1, $GUI_UNCHECKED)
 		GUICtrlSetOnEvent(-1, "chkRusLang2")
 
-	 ; move the Request CC Troops function to the beginning of the run loop	- Add RK MOD
+	 ; move the Request CC Troops function to the beginning of the run loop	- Add Simple Mod
 	 $y += 23
  		$g_hChkReqCCFirst = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkReqCCFirst", "Request early"), $x + 295, $y - 27 , -1, -1)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Donate-CC", "ChkReqCCFirst_Info_01", "Request troops at the beginning of the run loop"))

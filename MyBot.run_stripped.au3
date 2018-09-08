@@ -22147,7 +22147,7 @@ $g_hTabMain = GUICtrlCreateTab(5, 85 + $_GUI_MAIN_TOP, $_GUI_MAIN_WIDTH - 9, $_G
 $g_hTabLog = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_01", "Log"))
 $g_hTabVillage = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_02", "Village"))
 $g_hTabAttack = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_03", "Attack Plan"))
-$g_hTabMOD = GUICtrlCreateTabItem(" RK MOD")
+$g_hTabMOD = GUICtrlCreateTabItem(" Simple Mod")
 $g_hTabBot = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_04", "Bot"))
 $g_hTabAbout = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_05", "About Us"))
 GUICtrlCreateTabItem("")
@@ -53985,19 +53985,19 @@ Func CheckVersion()
 If $g_bCheckVersion Then
 CheckVersionHTML()
 If $g_sLastModversion = "" Then
-SetLog("WE CANNOT OBTAIN RK MOD VERSION AT THIS TIME", $COLOR_ACTION)
+SetLog("WE CANNOT OBTAIN Simple Mod VERSION AT THIS TIME", $COLOR_ACTION)
 CheckModVersion()
 ElseIf VersionNumFromVersionTXT($g_sModversion) < VersionNumFromVersionTXT($g_sLastModversion) Then
-SetLog("WARNING, YOUR RK MOD VERSION (" & $g_sModversion & ") IS OUT OF DATE.", $COLOR_ERROR)
+SetLog("WARNING, YOUR Simple Mod VERSION (" & $g_sModversion & ") IS OUT OF DATE.", $COLOR_ERROR)
 SetLog("CHIEF, PLEASE DOWNLOAD THE LATEST (" & $g_sLastModversion & ")", $COLOR_ERROR)
 SetLog("FROM https://MyBot.run               ", $COLOR_ERROR)
 SetLog(" ")
 _PrintLogVersion($g_sOldModversmessage)
 CheckModVersion()
 ElseIf VersionNumFromVersionTXT($g_sModversion) > VersionNumFromVersionTXT($g_sLastModversion) Then
-SetLog("YOU ARE USING A FUTURE VERSION OF RK MOD CHIEF!", $COLOR_SUCCESS)
-SetLog("YOUR RK MOD VERSION: " & $g_sModversion, $COLOR_SUCCESS)
-SetLog("OFFICIAL RK MOD VERSION: " & $g_sLastModversion, $COLOR_SUCCESS)
+SetLog("YOU ARE USING A FUTURE VERSION OF Simple Mod CHIEF!", $COLOR_SUCCESS)
+SetLog("YOUR Simple Mod VERSION: " & $g_sModversion, $COLOR_SUCCESS)
+SetLog("OFFICIAL Simple Mod VERSION: " & $g_sLastModversion, $COLOR_SUCCESS)
 SetLog(" ")
 Else
 SetLog("WELCOME CHIEF, YOU HAVE THE LATEST MOD VERSION", $COLOR_SUCCESS)
@@ -54116,7 +54116,7 @@ ShellExecute($g_sModSupportUrl)
 Return False
 EndIf
 Else
-MsgBox($MB_ICONINFORMATION, "Notify", "You Are Using The Latest Version Of by RK MOD" & @CRLF & "Thanks..", 15)
+MsgBox($MB_ICONINFORMATION, "Notify", "You Are Using The Latest Version Of by Simple Mod" & @CRLF & "Thanks..", 15)
 EndIf
 EndFunc
 Func CloseRunningBot($sBotWindowTitle = $g_sBotTitle, $bCheckOnly = False, $bGuiInitialized = IsHWnd($g_hFrmBot))
@@ -81940,7 +81940,7 @@ Opt("TrayOnEventMode", 1)
 InitializeBot()
 MainLoop(CheckPrerequisites())
 Func UpdateBotTitle()
-Local $sTitle = "My Bot " & $g_sBotVersion & " RK MOD " & $g_sModversion
+Local $sTitle = "My Bot " & $g_sBotVersion & " Simple Mod " & $g_sModversion
 Local $sConsoleTitle
 If $g_sBotTitle = "" Then
 $g_sBotTitle = $sTitle
@@ -82243,7 +82243,7 @@ SetDebugLog("Linked to GUI Process " & $g_iGuiPID)
 EndIf
 EndIf
 SetLog(" ", $COLOR_SUCCESS)
-SetLog("_________" & " [  MyBot RK MOD  ]" & "_________", $COLOR_MONEYGREEN, "Impact", 14)
+SetLog("_________" & " [  MyBot Simple Mod  ]" & "_________", $COLOR_MONEYGREEN, "Impact", 14)
 SetLog("                               » " & "Warning" & " «", $COLOR_TEAL, "Segoe UI Semibold", 12)
 SetLog("                                    » " & "Make a Fresh Config" & " «", $COLOR_TEAL, "Segoe UI Semibold", 9)
 SetLog("                                   » " & "Don't Use Old Profile" & " «", $COLOR_TEAL, "Segoe UI Semibold", 9)

@@ -437,7 +437,7 @@ Func ApplyConfig_600_11($TypeReadSave)
 			For $i = 0 To 23
 				GUICtrlSetState($g_ahChkRequestCCHours[$i], $g_abRequestCCHours[$i] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			Next
-			;------------------ADDED By RK MOD - START------------------
+			;------------------ADDED By Simple Mod - START------------------
 			; Request defense CC (Demen)
           	GUICtrlSetState($g_hChkRequestCCDefense, $g_bRequestCCDefense ? $GUI_CHECKED : $GUI_UNCHECKED)
            	chkRequestDefense()
@@ -445,11 +445,11 @@ Func ApplyConfig_600_11($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbRequestCCDefenseWhen, $g_bRequestCCDefenseWhenPB ? 0 : 1)
             GUICtrlSetData($g_hTxtRequestCCDefenseTime, $g_iRequestDefenseTime)
 			
-			; ================================================== Russian Request - by RK MOD ======================================== ;
+			; ================================================== Russian Request - by Simple Mod ======================================== ;
 
 			GUICtrlSetState($g_hChkRusLang2, $g_bChkRusLang2 ? $GUI_CHECKED : $GUI_UNCHECKED)
    		    chkRusLang2()
-			;------------------ADDED By RK MOD - END------------------
+			;------------------ADDED By Simple Mod - END------------------
 		Case "Save"
 			$g_bRequestTroopsEnable = (GUICtrlRead($g_hChkRequestTroopsEnable) = $GUI_CHECKED)
 			$g_sRequestTroopsText = GUICtrlRead($g_hTxtRequestCC)
@@ -468,17 +468,17 @@ Func ApplyConfig_600_11($TypeReadSave)
 			For $i = 0 To 23
 				$g_abRequestCCHours[$i] = (GUICtrlRead($g_ahChkRequestCCHours[$i]) = $GUI_CHECKED)
 			Next
-			;------------------ADDED By RK MOD - START------------------
+			;------------------ADDED By Simple Mod - START------------------
 			; Request defense CC (Demen)
            		 $g_bRequestCCDefense = (GUICtrlRead($g_hChkRequestCCDefense) = $GUI_CHECKED)
             		$g_sRequestCCDefenseText = GUICtrlRead($g_hTxtRequestCCDefense)
 			$g_bRequestCCDefenseWhenPB = (_GUICtrlComboBox_GetCurSel($g_hCmbRequestCCDefenseWhen) = 0)
             		$g_iRequestDefenseTime = GUICtrlRead($g_hTxtRequestCCDefenseTime)
 			
-			; ================================================== Russian Request - by RK MOD ================================= ;
+			; ================================================== Russian Request - by Simple Mod ================================= ;
 
 			$g_bChkRusLang2 = (GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED)
-			;------------------ADDED By RK MOD - END------------------
+			;------------------ADDED By Simple Mod - END------------------
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_11
 
@@ -637,7 +637,7 @@ Func ApplyConfig_600_13($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbCCDonated, $g_iCCDonated - 1)
 			_GUICtrlComboBox_SetCurSel($g_hCmbCCReceived, $g_iCCReceived - 1)
 			chkBalanceDR()
-			; ================================================== GTFO - Added by RK MOD ======================================== ;
+			; ================================================== GTFO - Added by Simple Mod ======================================== ;
 			
 			GUICtrlSetState($g_hChkGTFOClanHop, $g_bChkGTFOClanHop = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkGTFOReturnClan, $g_bChkGTFOReturnClan = True ? $GUI_CHECKED : $GUI_UNCHECKED)
@@ -666,7 +666,7 @@ Func ApplyConfig_600_13($TypeReadSave)
 			$g_bUseCCBalanced = (GUICtrlRead($g_hChkUseCCBalanced) = $GUI_CHECKED)
 			$g_iCCDonated = _GUICtrlComboBox_GetCurSel($g_hCmbCCDonated) + 1
 			$g_iCCReceived = _GUICtrlComboBox_GetCurSel($g_hCmbCCReceived) + 1
-			; ================================================== GTFO - Added by RK MOD =========================================== ;
+			; ================================================== GTFO - Added by Simple Mod =========================================== ;
 			$g_bChkGTFOClanHop = (GUICtrlRead($g_hChkGTFOClanHop) = $GUI_CHECKED)
 			$g_bChkGTFOReturnClan = (GUICtrlRead($g_hChkGTFOReturnClan) = $GUI_CHECKED)
 			
@@ -694,14 +694,14 @@ Func ApplyConfig_600_14($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
 			_GUICtrlSetImage($g_hPicLabUpgrade, $g_sLibIconPath, $g_avLabTroops[$g_iCmbLaboratory][4])
 			chkLab()
-			; ================================================== ; Priority System - by RK MOD  ======================================== ; 
+			; ================================================== ; Priority System - by Simple Mod  ======================================== ; 
 			GUICtrlSetState($g_hChkPrioritySystem, $g_bChkPrioritySystem ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbPrioritySystem, $g_iCmbPrioritySystem)
 			chkPrioritySystem()
 		Case "Save"
 			$g_bAutoLabUpgradeEnable = (GUICtrlRead($g_hChkAutoLabUpgrades) = $GUI_CHECKED)
 			$g_iCmbLaboratory = _GUICtrlComboBox_GetCurSel($g_hCmbLaboratory)
-			; ================================================== ; Priority System - by RK MOD  ======================================== ;
+			; ================================================== ; Priority System - by Simple Mod  ======================================== ;
 			$g_bChkPrioritySystem = (GUICtrlRead($g_hChkPrioritySystem) = $GUI_CHECKED)
 			$g_iCmbPrioritySystem = _GUICtrlComboBox_GetCurSel($g_hCmbPrioritySystem)
 			
@@ -824,7 +824,7 @@ Func ApplyConfig_600_17($TypeReadSave)
 			EndSwitch
 			GUICtrlSetState($g_hChkSaveWallBldr, $g_bUpgradeWallSaveBuilder ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbWalls, $g_iCmbUpgradeWallsLevel)
-			; ================================================== Wall/Building Upgrading Priority by RK MOD	========================;
+			; ================================================== Wall/Building Upgrading Priority by Simple Mod	========================;
 			GUICtrlSetState($g_hChkUpgrPriority, $g_iChkUpgrPriority = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbUpgrdPriority, $g_iCmbUpgrdPriority)
 			chkUpgrPriority()
@@ -847,7 +847,7 @@ Func ApplyConfig_600_17($TypeReadSave)
 			EndIf
 			$g_bUpgradeWallSaveBuilder = (GUICtrlRead($g_hChkSaveWallBldr) = $GUI_CHECKED)
 			$g_iCmbUpgradeWallsLevel = _GUICtrlComboBox_GetCurSel($g_hCmbWalls)
-			; ================================================== Wall/Building Upgrading Priority by RK MOD	========================;
+			; ================================================== Wall/Building Upgrading Priority by Simple Mod	========================;
 			$g_iChkUpgrPriority = GUICtrlRead($g_hChkUpgrPriority) = $GUI_CHECKED ? 1 : 0
 			$g_iCmbUpgrdPriority = _GUICtrlComboBox_GetCurSel($g_hCmbUpgrdPriority)
 			For $i = 4 To 13
@@ -949,7 +949,7 @@ Func ApplyConfig_600_22($TypeReadSave)
 			For $i = 0 To 23
 				GUICtrlSetState($g_hChkBoostBarracksHours[$i], $g_abBoostBarracksHours[$i] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			Next
-			; ================================================== Boost for Magic Spell by RK MOD ================================= ;
+			; ================================================== Boost for Magic Spell by Simple Mod ================================= ;
 
 			GUICtrlSetState($g_hChkBoostBMagic, $g_iChkBoostBMagic = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbBoostBrMagic, $g_iCmbBoostBrMagic)
@@ -960,7 +960,7 @@ Func ApplyConfig_600_22($TypeReadSave)
 			chkBoostCMagic()
 			BoostClMagic()
 			
-			; ================================================== One Gem Boost by RK MOD ================================= ;
+			; ================================================== One Gem Boost by Simple Mod ================================= ;
 			
 			GUICtrlSetState($g_hChkOneGemBoostBarracks, $g_bChkOneGemBoostBarracks ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkOneGemBoostSpells, $g_bChkOneGemBoostSpells ? $GUI_CHECKED : $GUI_UNCHECKED)
@@ -976,14 +976,14 @@ Func ApplyConfig_600_22($TypeReadSave)
 			For $i = 0 To 23
 				$g_abBoostBarracksHours[$i] = (GUICtrlRead($g_hChkBoostBarracksHours[$i]) = $GUI_CHECKED)
 			Next
-			; ================================================== Boost for Magic Spell by RK MOD ================================= ;
+			; ================================================== Boost for Magic Spell by Simple Mod ================================= ;
 
 			$g_iChkBoostBMagic = GUICtrlRead($g_hChkBoostBMagic) = $GUI_CHECKED ? 1 : 0
 			$g_iCmbBoostBrMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic)
 			$g_iChkBoostCMagic = GUICtrlRead($g_hChkBoostCMagic) = $GUI_CHECKED ? 1 : 0
 			$g_iCmbBoostClMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic)
 			
-			; ================================================== One Gem Boost by RK MOD ================================= ;
+			; ================================================== One Gem Boost by Simple Mod ================================= ;
 			
 			$g_bChkOneGemBoostBarracks = (GUICtrlRead($g_hChkOneGemBoostBarracks) = $GUI_CHECKED)
 			$g_bChkOneGemBoostSpells = (GUICtrlRead($g_hChkOneGemBoostSpells) = $GUI_CHECKED)
@@ -1038,12 +1038,12 @@ Func ApplyConfig_600_28($TypeReadSave)
 			
 
 			
-			; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
+			; ================================================== ; Return Home by Time - by Simple Mod  ======================================== ;
 			GUICtrlSetState($g_hChkReturnTimerEnable, $g_bReturnTimerEnable ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtReturnTimer, $g_iTxtReturnTimer)
 			chkReturnTimer()
 			
-			; ================================================== ; Attack Priority - by RK MOD  ======================================== ;
+			; ================================================== ; Attack Priority - by Simple Mod  ======================================== ;
 			
 			GUICtrlSetState($g_hChkAttackPriority, $g_bChkAttackPriority ? $GUI_CHECKED : $GUI_UNCHECKED)
 			
@@ -1064,12 +1064,12 @@ Func ApplyConfig_600_28($TypeReadSave)
 			$g_bSearchRestartPickupHero = (GUICtrlRead($g_hChkRestartSearchPickupHero) = $GUI_CHECKED)
 			$g_bSearchAlertMe = (GUICtrlRead($g_hChkAlertSearch) = $GUI_CHECKED)
 		
-			; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
+			; ================================================== ; Return Home by Time - by Simple Mod  ======================================== ;
 			
 			$g_bReturnTimerEnable = (GUICtrlRead($g_hChkReturnTimerEnable) = $GUI_CHECKED)
 			$g_iTxtReturnTimer = GUICtrlRead($g_hTxtReturnTimer)
 			
-			; ================================================== ; Attack Priority - by RK MOD  ======================================== ;
+			; ================================================== ; Attack Priority - by Simple Mod  ======================================== ;
 			
 			$g_bChkAttackPriority = (GUICtrlRead($g_hChkAttackPriority) = $GUI_CHECKED)
 			
@@ -1517,14 +1517,14 @@ Func ApplyConfig_600_29_DB_Standard($TypeReadSave)
 			GUICtrlSetState($g_hChkAttackNearGoldMineDB, $g_abAttackStdSmartNearCollectors[$DB][0] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkAttackNearElixirCollectorDB, $g_abAttackStdSmartNearCollectors[$DB][1] ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkAttackNearDarkElixirDrillDB, $g_abAttackStdSmartNearCollectors[$DB][2] ? $GUI_CHECKED : $GUI_UNCHECKED)
-			; ================================================= Classic Foure Fingers - Added by RK MOD ========================= ;
+			; ================================================= Classic Foure Fingers - Added by Simple Mod ========================= ;
 			cmbStandardDropSidesAB()
 			Bridge()
-			; ================================================== Multi Finger - Added by RK MOD ======================================== ;
+			; ================================================== Multi Finger - Added by Simple Mod ======================================== ;
 
 			_GUICtrlComboBox_SetCurSel($g_hCmbDBMultiFinger, $g_iMultiFingerStyle)
 
-			; ================================================== Unit/Wave Factor  - Added by RK MOD ======================================== ;
+			; ================================================== Unit/Wave Factor  - Added by Simple Mod ======================================== ;
 
 			GUICtrlSetState($g_hChkUnitFactor, $g_iChkUnitFactor ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtUnitFactor, $g_iTxtUnitFactor)
@@ -1545,10 +1545,10 @@ Func ApplyConfig_600_29_DB_Standard($TypeReadSave)
 			$g_abAttackStdSmartNearCollectors[$DB][1] = (GUICtrlRead($g_hChkAttackNearElixirCollectorDB) = $GUI_CHECKED)
 			$g_abAttackStdSmartNearCollectors[$DB][2] = (GUICtrlRead($g_hChkAttackNearDarkElixirDrillDB) = $GUI_CHECKED)
             
-			; ================================================== Multi Finger - Added by RK MOD =================================== ;
+			; ================================================== Multi Finger - Added by Simple Mod =================================== ;
 			$g_iMultiFingerStyle = _GUICtrlComboBox_GetCurSel($g_hCmbDBMultiFinger)
 
-			; ================================================== Unit/Wave Factor - Added by RK MOD =============================== ;
+			; ================================================== Unit/Wave Factor - Added by Simple Mod =============================== ;
 			$g_iChkUnitFactor = (GUICtrlRead($g_hChkUnitFactor) = $GUI_CHECKED)
 			$g_iChkWaveFactor = (GUICtrlRead($g_hChkWaveFactor) = $GUI_CHECKED)
 			$g_iTxtUnitFactor = GUICtrlRead($g_hTxtUnitFactor)
@@ -2036,7 +2036,7 @@ Func ApplyConfig_600_31($TypeReadSave)
 			GUICtrlSetData($g_hSldCollectorTolerance, $g_iCollectorToleranceOffset)
 			checkCollectors()
 			
-			; Check Collector Outside - RK MOD
+			; Check Collector Outside - Simple Mod
 			GUICtrlSetState($g_hChkDBMeetCollOutside, $g_bDBMeetCollOutside = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtDBMinCollOutsidePercent, $g_iTxtDBMinCollOutsidePercent)
 			GUICtrlSetState($g_hChkDBCollectorsNearRedline, $g_bDBCollectorsNearRedline = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
@@ -2058,7 +2058,7 @@ Func ApplyConfig_600_31($TypeReadSave)
 			$g_iCollectorMatchesMin = _GUICtrlComboBox_GetCurSel($g_hCmbMinCollectorMatches) + 1
 			$g_iCollectorToleranceOffset = GUICtrlRead($g_hSldCollectorTolerance)
 			
-			; Check Collector Outside - RK MOD
+			; Check Collector Outside - Simple Mod
 			$g_bDBMeetCollOutside = (GUICtrlRead($g_hChkDBMeetCollOutside) = $GUI_CHECKED)
 			$g_iTxtDBMinCollOutsidePercent = GUICtrlRead($g_hTxtDBMinCollOutsidePercent)
 			$g_bDBCollectorsNearRedline = GUICtrlRead($g_hChkDBCollectorsNearRedline) = $GUI_CHECKED ? 1 : 0
@@ -2362,14 +2362,14 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			GUICtrlSetState($g_hChkForceBrewBeforeAttack, $g_bForceBrewSpells ? $GUI_CHECKED : $GUI_UNCHECKED)
 			; DoubleTrain - Demen
 			GUICtrlSetState($g_hChkDoubleTrain, $g_bDoubleTrain ? $GUI_CHECKED : $GUI_UNCHECKED)
-			;SmartTrain - RK MOD (Demen)
+			;SmartTrain - Simple Mod (Demen)
 			GUICtrlSetState($g_hChkSmartTrain, $g_bChkSmartTrain ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkPreciseArmyCamp, $g_bChkPreciseArmyCamp ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkFillArcher, $g_bChkFillArcher ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtFillArcher, $g_iTxtFillArcher)
 			GUICtrlSetState($g_hChkFillEQ, $g_bChkFillEQ ? $GUI_CHECKED : $GUI_UNCHECKED)
 			chkSmartTrain()
-			; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
+			; ================================================ AutoCamp - by Simple Mod (#ID135-) ========================================
 			GUICtrlSetState($g_hChkAutoCamp, $g_bChkAutoCamp ? $GUI_CHECKED : $GUI_UNCHECKED)
 			chkAutoCamp()
 			
@@ -2396,13 +2396,13 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			$g_bForceBrewSpells = (GUICtrlRead($g_hChkForceBrewBeforeAttack) = $GUI_CHECKED)
 			; DoubleTrain - Demen
 			$g_bDoubleTrain = (GUICtrlRead($g_hChkDoubleTrain) = $GUI_CHECKED)
-			;SmartTrain - RK MOD (Demen)
+			;SmartTrain - Simple Mod (Demen)
 			$g_bChkSmartTrain = (GUICtrlRead($g_hChkSmartTrain) = $GUI_CHECKED)
 			$g_bChkPreciseArmyCamp = (GUICtrlRead($g_hChkPreciseArmyCamp) = $GUI_CHECKED)
 			$g_bChkFillArcher = (GUICtrlRead($g_hChkFillArcher) = $GUI_CHECKED)
 			$g_iTxtFillArcher = GUICtrlRead($g_hTxtFillArcher)
 			$g_bChkFillEQ = (GUICtrlRead($g_hChkFillEQ) = $GUI_CHECKED)
-			; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
+			; ================================================ AutoCamp - by Simple Mod (#ID135-) ========================================
 			$g_bChkAutoCamp = (GUICtrlRead($g_hChkAutoCamp) = $GUI_CHECKED)
 			
 	EndSwitch
@@ -2512,7 +2512,7 @@ Func ApplyConfig_641_1($TypeReadSave)
 				GUICtrlSetState($g_hCmbMinimumTimeClose, $GUI_ENABLE)
 				GUICtrlSetState($g_hLblSymbolWaiting, $GUI_ENABLE)
 				GUICtrlSetState($g_hLblWaitingInMinutes, $GUI_ENABLE)
-				; Max logout time - RK MOD
+				; Max logout time - Simple Mod
 				GUICtrlSetState($g_hChkTrainLogoutMaxTime, $GUI_ENABLE)
 			Else
 				GUICtrlSetState($g_hChkCloseWhileTraining, $GUI_UNCHECKED)
@@ -2521,7 +2521,7 @@ Func ApplyConfig_641_1($TypeReadSave)
 				GUICtrlSetState($g_hCmbMinimumTimeClose, $GUI_DISABLE)
 				GUICtrlSetState($g_hLblSymbolWaiting, $GUI_DISABLE)
 				GUICtrlSetState($g_hLblWaitingInMinutes, $GUI_DISABLE)
-				; Max logout time - RK MOD
+				; Max logout time - Simple Mod
 				GUICtrlSetState($g_hChkTrainLogoutMaxTime, $GUI_DISABLE)
 			EndIf
 			GUICtrlSetState($g_hChkCloseWithoutShield, $g_bCloseWithoutShield ? $GUI_CHECKED : $GUI_UNCHECKED)
@@ -2540,7 +2540,7 @@ Func ApplyConfig_641_1($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbCloseWaitRdmPercent, $g_iCloseRandomTimePercent)
 			btnCloseWaitRandom()
 			GUICtrlSetData($g_hCmbMinimumTimeClose, $g_iCloseMinimumTime)
-			; ================================================== Max logout time - by RK MOD ======================================== ;
+			; ================================================== Max logout time - by Simple Mod ======================================== ;
 
 			GUICtrlSetState($g_hChkTrainLogoutMaxTime, $g_bTrainLogoutMaxTime = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtTrainLogoutMaxTime, $g_iTrainLogoutMaxTime)
@@ -2554,7 +2554,7 @@ Func ApplyConfig_641_1($TypeReadSave)
 			GUICtrlSetData($g_hTxtAddRandomDelayMin, $g_iTrainAddRandomDelayMin)
 			GUICtrlSetData($g_hTxtAddRandomDelayMax, $g_iTrainAddRandomDelayMax)
 			chkAddDelayIdlePhaseEnable()
-			; ================================================== Check Grand Warden Mode - Added by RK MOD ======================================== ;
+			; ================================================== Check Grand Warden Mode - Added by Simple Mod ======================================== ;
 
 			GUICtrlSetState($g_hChkCheckWardenMode, $g_bCheckWardenMode ? $GUI_CHECKED : $GUI_UNCHECKED)
 			chkCheckWardenMode()
@@ -2571,7 +2571,7 @@ Func ApplyConfig_641_1($TypeReadSave)
 			$g_bCloseRandomTime = (GUICtrlRead($g_hRdoCloseWaitRandom) = $GUI_CHECKED)
 			$g_iCloseRandomTimePercent = _GUICtrlComboBox_GetCurSel($g_hCmbCloseWaitRdmPercent)
 			$g_iCloseMinimumTime = GUICtrlRead($g_hCmbMinimumTimeClose)
-			; ================================================== Max logout time - by RK MOD ======================================== ;
+			; ================================================== Max logout time - by Simple Mod ======================================== ;
 			$g_bTrainLogoutMaxTime = (GUICtrlRead($g_hChkTrainLogoutMaxTime) = $GUI_CHECKED)
 			$g_iTrainLogoutMaxTime = GUICtrlRead($g_hTxtTrainLogoutMaxTime)
 			
@@ -2581,7 +2581,7 @@ Func ApplyConfig_641_1($TypeReadSave)
 			$g_bTrainAddRandomDelayEnable = (GUICtrlRead($g_hChkTrainAddRandomDelayEnable) = $GUI_CHECKED)
 			$g_iTrainAddRandomDelayMin = Int(GUICtrlRead($g_hTxtAddRandomDelayMin))
 			$g_iTrainAddRandomDelayMax = Int(GUICtrlRead($g_hTxtAddRandomDelayMax))
-			; ================================================== Check Grand Warden Mode - Added by RK MOD ======================== ;
+			; ================================================== Check Grand Warden Mode - Added by Simple Mod ======================== ;
 
 			$g_bCheckWardenMode = (GUICtrlRead($g_hChkCheckWardenMode) = $GUI_CHECKED)
 			$g_iCheckWardenMode = _GUICtrlComboBox_GetCurSel($g_hCmbCheckWardenMode)

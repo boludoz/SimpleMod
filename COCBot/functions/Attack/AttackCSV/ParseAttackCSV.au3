@@ -21,12 +21,12 @@ Func ParseAttackCSV($debug = False)
 	Local $SWIPE = ""
     Local $sides2drop[4] = [False, False , False , False]
 	
-;====================== RK MOD ===========================
+;====================== Simple Mod ===========================
     For $v = 0 To 25 ; Zero all 26 vectors from last atttack in case here is error MAKE'ing new vectors
 		Assign("ATTACKVECTOR_" & Chr(65 + $v), "", $ASSIGN_EXISTFAIL) ; start with character "A" = ASCII 65
 		If @error Then SetLog("Failed to erase old vector: " & Chr(65 + $v) & ", ask code monkey to fix!", $COLOR_ERROR)
 	Next
-;====================== RK MOD ===========================
+;====================== Simple Mod ===========================
 
 	;Local $filename = "attack1"
 	If $g_iMatchMode = $DB Then
@@ -313,7 +313,7 @@ Func ParseAttackCSV($debug = False)
 								$sleepdrop2 = 1
 							EndIf
 						EndIf
-;====================== RK MOD ===========================
+;====================== Simple Mod ===========================
                         ;sleep time before drop
                         Local $sleepbeforedrop1 = 0, $sleepbeforedrop2 = 0, $sleepbeforedroppvect
                         $sleepbeforedroppvect = StringSplit($value8, "-", 2)
@@ -334,7 +334,7 @@ Func ParseAttackCSV($debug = False)
                                 $sleepbeforedrop2 = 0
                             EndIf
                         EndIf
-;====================== RK MOD ===========================
+;====================== Simple Mod ===========================
 						; check for targeted vectors and validate index numbers, need too many values for check logic to use CheckCSVValues()
 						Local $tmpVectorList = StringSplit($value1, "-", $STR_NOCOUNT) ; get array with all vector(s) used
 						For $v = 0 To UBound($tmpVectorList) - 1 ; loop thru each vector in target list
@@ -366,7 +366,7 @@ Func ParseAttackCSV($debug = False)
 							SetLog("Discard row, " & $sErrorText & ": row " & $iLine + 1)
 							debugAttackCSV("Discard row, " & $sErrorText & ": row " & $iLine + 1)
 						Else
-; ============= RK MOD - REMAIN TROOPS CVS ========================
+; ============= Simple Mod - REMAIN TROOPS CVS ========================
                             ; REMAIN CMD from @chalicucu | ProMac Updated 
                             ;If $value4 = "REMAIN" or DropRemain Then
                             If $value4 = "REMAIN" Then
@@ -394,7 +394,7 @@ Func ParseAttackCSV($debug = False)
                             Else
                                 DropTroopFromINI($value1, $index1, $index2, $indexArray, $qty1, $qty2, $value4, $delaypoints1, $delaypoints2, $delaydrop1, $delaydrop2, $sleepdrop1, $sleepdrop2, $sleepbeforedrop1, $sleepbeforedrop2, $debug)
                             EndIf
-; ============= RK MOD - REMAIN TROOPS CVS ========================
+; ============= Simple Mod - REMAIN TROOPS CVS ========================
 						EndIf
 						ReleaseClicks($g_iAndroidAdbClicksTroopDeploySize)
 						If _Sleep($DELAYRESPOND) Then Return ; check for pause/stop

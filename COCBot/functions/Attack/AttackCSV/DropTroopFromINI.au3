@@ -25,7 +25,7 @@
 ; Link ..........: https://github.com/MyBotRun/MyBot/wiki
 ; Example .......: No
 ; ===============================================================================================================================
-Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $qtaMax, $troopName, $delayPointmin, $delayPointmax, $delayDropMin, $delayDropMax, $sleepafterMin, $sleepAfterMax, $sleepBeforeMin, $sleepBeforeMax, $debug = False) ; RK MOD
+Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $qtaMax, $troopName, $delayPointmin, $delayPointmax, $delayDropMin, $delayDropMax, $sleepafterMin, $sleepAfterMax, $sleepBeforeMin, $sleepBeforeMax, $debug = False) ; Simple Mod
 	If IsArray($indexArray) = 0 Then
 		debugAttackCSV("drop using vectors " & $vectors & " index " & $indexStart & "-" & $indexEnd & " and using " & $qtaMin & "-" & $qtaMax & " of " & $troopName)
 	Else
@@ -34,7 +34,7 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 	debugAttackCSV(" - delay for multiple troops in same point: " & $delayPointmin & "-" & $delayPointmax)
 	debugAttackCSV(" - delay when  change deploy point : " & $delayDropMin & "-" & $delayDropMax)
 	debugAttackCSV(" - delay after drop all troops : " & $sleepafterMin & "-" & $sleepAfterMax)
-    debugAttackCSV(" - delay before drop all troops : " & $sleepBeforeMin & "-" & $sleepBeforeMax) ; RK MOD
+    debugAttackCSV(" - delay before drop all troops : " & $sleepBeforeMin & "-" & $sleepBeforeMax) ; Simple Mod
 
 	;how many vectors need to manage...
 	Local $temp = StringSplit($vectors, "-")
@@ -78,7 +78,7 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 	EndIf
 	Local $bHeroDrop = ($iTroopIndex = $eWarden ? True : False) ;set flag TRUE if Warden was dropped
 
-	;=========== Slot11 - RK MOD (ID193-) ==============
+	;=========== Slot11 - Simple Mod (ID193-) ==============
 	;search slot where is the troop...
 	Local $troopPosition = -1
 	Local $troopSlotConst = -1 ; $troopSlotConst = xx/22 (the unique slot number of troop) - Slot11+
@@ -102,7 +102,7 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 		$troopPosition = $troopSlotConst - ($g_iTotalAttackSlot - 10)
 		debugAttackCSV("New troop position: " & $troopPosition)
 	EndIf
-	;=========== Slot11 - RK MOD (ID193-) ==============
+	;=========== Slot11 - Simple Mod (ID193-) ==============
 
 	Local $usespell = True
 	Switch $iTroopIndex
@@ -147,7 +147,7 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 			$g_iCSVLastTroopPositionDropTroopFromINI = $troopPosition
 			ReleaseClicks()
 		EndIf
-;================== RK MOD =================
+;================== Simple Mod =================
         ;sleep time Before deploy all troops
         Local $sleepBefore = 0
         If $sleepBeforeMin <> $sleepBeforeMax Then
@@ -172,7 +172,7 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
                 CheckHeroesHealth() ; check hero health == does nothing if hero not dropped
             EndIf
         EndIf
-;================== RK MOD =================
+;================== Simple Mod =================
 
 		;drop
 		For $i = $indexStart To $indexEnd
@@ -188,14 +188,14 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 				;delay time between 2 drops in different point
 				If $delayDropMin <> $delayDropMax Then
 					$delayDrop = Random($delayDropMin, $delayDropMax, 1)
-; ================================================== ADDITION BY ROROTITI - RK MOD ================================================== ;
+; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                     $delayDrop = Int($delayDrop / $g_CSVSpeedDivider)
-; ================================================== ADDITION BY ROROTITI - RK MOD ================================================== ;
+; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                 Else
                     $delayDrop = $delayDropMin
-; ================================================== ADDITION BY ROROTITI - RK MOD ================================================== ;
+; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                     $delayDrop = Int($delayDrop / $g_CSVSpeedDivider)
-; ================================================== ADDITION BY ROROTITI - RK MOD ================================================== ;
+; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
 				debugAttackCSV(">> delay change drop point: " & $delayDrop)
 			EndIf
 		 EndIf
@@ -212,14 +212,14 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 					;delay time between 2 drops in same point
 					If $delayPointmin <> $delayPointmax Then
 						Local $delayPoint = Random($delayPointmin, $delayPointmax, 1)
-; ================================================== ADDITION BY ROROTITI - RK MOD ================================================== ;
+; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                         $delayPoint = Int($delayPoint / $g_CSVSpeedDivider)
-; ================================================== ADDITION BY ROROTITI - RK MOD ================================================== ;
+; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                     Else
                         Local $delayPoint = $delayPointmin
-; ================================================== ADDITION BY ROROTITI - RK MOD ================================================== ;
+; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                         $delayPoint = Int($delayPoint / $g_CSVSpeedDivider)
-; ================================================== ADDITION BY ROROTITI - RK MOD ================================================== ;
+; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                     EndIf
 					Switch $iTroopIndex
 						Case $eBarb To $eBowl ; drop normal troops
@@ -279,14 +279,14 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 		Local $sleepafter = 0
 		If $sleepafterMin <> $sleepAfterMax Then
 			$sleepafter = Random($sleepafterMin, $sleepAfterMax, 1)
-; ================================================== ADDITION BY ROROTITI - RK MOD ================================================== ;
+; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
             $sleepafter = Int($sleepafter / $g_CSVSpeedDivider)
-; ================================================== ADDITION BY ROROTITI - RK MOD ================================================== ;
+; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
         Else
             $sleepafter = Int($sleepafterMin)
-; ================================================== ADDITION BY ROROTITI - RK MOD ================================================== ;
+; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
             $sleepafter = Int($sleepafter / $g_CSVSpeedDivider)
-; ================================================== ADDITION BY ROROTITI - RK MOD ================================================== ;
+; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
         EndIf
 		If $sleepafter > 0 And IsKeepClicksActive() = False Then
 			debugAttackCSV(">> delay after drop all troops: " & $sleepafter)

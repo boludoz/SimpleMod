@@ -98,11 +98,11 @@ Func chkRestartSearchLimit()
 	GUICtrlSetState($g_hTxtRestartSearchlimit, GUICtrlRead($g_hChkRestartSearchLimit) = $GUI_CHECKED ? $GUI_ENABLE : $GUI_DISABLE)
 EndFunc   ;==>chkRestartSearchLimit
 
-;------------------RK MOD ADD Return Home by Time START ------------------
+;------------------Simple Mod ADD Return Home by Time START ------------------
 Func chkReturnTimer()
 	GUICtrlSetState($g_hTxtReturnTimer, GUICtrlRead($g_hChkReturnTimerEnable) = $GUI_CHECKED ? $GUI_ENABLE : $GUI_DISABLE)
 EndFunc   ;==>chkReturnTimer
-;------------------ADDED By RK MOD - END------------------
+;------------------ADDED By Simple Mod - END------------------
 Func btnConfigureCollectors()
 ;~ 	OpenGUI2()
 EndFunc   ;==>btnConfigureCollectors

@@ -101,7 +101,7 @@ Func BotCommand()
 		If $g_bMeetCondStop Then
 			Switch $iCmbBotCommand
 				Case 0
-				    If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then ;ChatBot by RK MOD
+				    If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then ;ChatBot by Simple Mod
 					    ChatbotMessage()
 					EndIf
 					If $g_bDonationEnabled = False Then

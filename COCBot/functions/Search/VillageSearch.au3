@@ -262,7 +262,7 @@ Func _VillageSearch() ;Control for searching a village that meets conditions
 			SetLog("      " & "Dead Base Found!", $COLOR_SUCCESS, "Lucida Console", 7.5)
 			$logwrited = True
 
-			; Check Collector Outside - RK MOD
+			; Check Collector Outside - Simple Mod
 			Local $g_bFlagSearchAnotherBase = False
 			If Not $g_bFlagSearchAnotherBase Then
 				If $g_bDBMeetCollOutside Then ; check is that collector  near outside
@@ -456,13 +456,13 @@ Func _VillageSearch() ;Control for searching a village that meets conditions
 			Else
 				If $g_bDebugSetlog Then SetDebugLog("Wait to see Next Button... " & $i, $COLOR_DEBUG)
 			EndIf
-			;------------------CUSTOM LOGIC By RK MOD - START------------------
+			;------------------CUSTOM LOGIC By Simple Mod - START------------------
 			If Mod($i, 2) = 1 Then
 				If QuickMis("BC1", $g_sImgGoogleSelectAccount, 350, 0, 350 + 88, 0 + 386) Then
 					ClickP($aAway, 1, 0, "#0161")
 				EndIf
 			EndIf
-			;------------------CUSTOM LOGIC By RK MOD - END------------------
+			;------------------CUSTOM LOGIC By Simple Mod - END------------------
 			If $i >= 99 Or isProblemAffect() Or (Mod($i, 10) = 0 And checkObstacles_Network(False, False)) Then ; if we can't find the next button or there is an error, then restart
 				$g_bIsClientSyncError = True
 				checkMainScreen()

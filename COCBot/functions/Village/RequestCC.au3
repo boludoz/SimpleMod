@@ -15,7 +15,7 @@
 
 Func RequestCC($ClickPAtEnd = True, $specifyText = "")
 
-	; Request troops for defense Add RK MOD
+	; Request troops for defense Add Simple Mod
 	Local $bRequestDefense = False
 	If $g_bRequestCCDefense And $g_bCanRequestCC Then
 		Local $sTime = $g_bRequestCCDefenseWhenPB ? $g_sPBStartTime : $g_asShieldStatus[2]
@@ -153,7 +153,7 @@ Func _makerequest()
 			AndroidSendText($g_sRequestTroopsText, True)
 			Click($atxtRequestCCBtn[0], $atxtRequestCCBtn[1], 1, 0, "#0254") ;Select text for request $atxtRequestCCBtn[2] = [430, 140]
 			_Sleep($DELAYMAKEREQUEST2)
-			; Russian Request- by RK MOD
+			; Russian Request- by Simple Mod
 			If $g_bChkRusLang2 = True Then
 				SetLog("Request in russian", $COLOR_BLUE)
 				AutoItWinSetTitle('MyAutoItTitle')
@@ -173,7 +173,7 @@ Func _makerequest()
 					Return
 				EndIf
 			EndIf
-			; Russian Request- by RK MOD
+			; Russian Request- by Simple Mod
 		EndIf
 		If _Sleep($DELAYMAKEREQUEST2) Then Return ; wait time for text request to complete
 		$iCount = 0
@@ -286,7 +286,7 @@ Func CheckCCArmy()
 
 	If Not $g_bRunState Then Return
 	If $g_abRequestType[1] And $g_iClanCastleSpellsWaitFirst > 0 And $g_iCurrentCCSpells > 0 And $g_iTotalCCSpells > 0 Then
-		;If $g_abRequestType[1] And $g_iClanCastleSpellsWaitFirst > 0 And $g_iCurrentCCSpells = $g_iTotalCCSpells And $g_iTotalCCSpells > 0 Then ;Removed By RK MOD Bug Fix
+		;If $g_abRequestType[1] And $g_iClanCastleSpellsWaitFirst > 0 And $g_iCurrentCCSpells = $g_iTotalCCSpells And $g_iTotalCCSpells > 0 Then ;Removed By Simple Mod Bug Fix
 		If $g_bDebugSetlog Then SetLog("Getting current available spell in Clan Castle.")
 		; Imgloc Detection
 		If $g_iTotalCCSpells >= 1 Then $sCurCCSpell1 = GetCurCCSpell(1)
@@ -463,7 +463,7 @@ Func CompareCCSpellWithGUI($CCSpell1, $CCSpell2, $CastleCapacity)
 			If $sCCSpell <> "Any" Then
 				If $sCCSpell <> $CCSpell1[0][0] Then ; First Spell not in Slot 1
 					If $g_bDebugSetlog Then SetLog("First Spell not in Slot 1")
-					If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 And Not ($CCSpell1[0][0] = "LSpell" Or $CCSpell1[0][0] = "HSpell" Or $CCSpell1[0][0] = "RSpell" Or $CCSpell1[0][0] = "JSpell") Then ;Was If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 Then  EDITED BY RK MOD
+					If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 And Not ($CCSpell1[0][0] = "LSpell" Or $CCSpell1[0][0] = "HSpell" Or $CCSpell1[0][0] = "RSpell" Or $CCSpell1[0][0] = "JSpell") Then ;Was If $CastleCapacity = 2 And $g_iClanCastleSpellsWaitFirst > 4 Then  EDITED BY Simple Mod
 						If $CCSpell2 = "" Then ; Slot 2 empty
 							If $g_bDebugSetlog Then SetLog("Slot 2 empty")
 							If $sCCSpell2 <> "Any" Then

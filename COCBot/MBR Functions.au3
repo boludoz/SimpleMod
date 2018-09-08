@@ -306,4 +306,4 @@
 #include "functions\Config\readConfig.au3"
 #include "functions\Config\saveConfig.au3"
 
-#include "RK MOD\RK MOD Functions.au3"; ADDED By RK MOD
+#include "Simple Mod\MOD Functions.au3"; ADDED By Simple Mod

@@ -27,8 +27,8 @@ Func chkUseQTrain()
 		GUICtrlSetData($g_hLblElixirCostSpell, "0")
 		GUICtrlSetData($g_hLblDarkCostSpell, "0")
 	Else
-        chkQuickTrainCombo() ; ADDED By RK MOD Multi-Click Army3 Demen
-		chkSmartTrain() ;SmartTrain - ADDED By RK MOD (Demen)
+        chkQuickTrainCombo() ; ADDED By Simple Mod Multi-Click Army3 Demen
+		chkSmartTrain() ;SmartTrain - ADDED By Simple Mod (Demen)
 		_GUI_Value_STATE("DISABLE", $g_ahChkArmy[0] & "#" & $g_ahChkArmy[1] & "#" & $g_ahChkArmy[2])
 		_GUI_Value_STATE("ENABLE", $grpTrainTroops)
 		_GUI_Value_STATE("ENABLE", $grpCookSpell)
@@ -45,7 +45,7 @@ Func chkQuickTrainCombo()
 		Sleep(2000)
 		ToolTip('')
 	EndIf
-    ;------------------ADDED By RK MOD - START------------------
+    ;------------------ADDED By Simple Mod - START------------------
     ; Multi-Click Army3 Demen
     If GUICtrlRead($g_ahChkArmy[2]) = $GUI_CHECKED And GUICtrlRead($g_hChkUseQuickTrain) = $GUI_CHECKED Then
         _GUI_Value_STATE("HIDE", $g_hLblRemoveArmy & "#" & $g_hBtnRemoveArmy)
@@ -54,10 +54,10 @@ Func chkQuickTrainCombo()
         _GUI_Value_STATE("HIDE", $g_hChkMultiClick)
         _GUI_Value_STATE("SHOW", $g_hLblRemoveArmy & "#" & $g_hBtnRemoveArmy)
 	EndIf
-    ;------------------ADDED By RK MOD - END------------------
+    ;------------------ADDED By Simple Mod - END------------------
 EndFunc   ;==>chkQuickTrainCombo
 
- ;------------------ADDED By RK MOD - START------------------
+ ;------------------ADDED By Simple Mod - START------------------
 Func chkSmartTrain()
 	If GUICtrlRead($g_hChkSmartTrain) = $GUI_CHECKED Then
 		If GUICtrlRead($g_hChkUseQuickTrain) = $GUI_UNCHECKED Then _GUI_Value_STATE("ENABLE", $g_hChkPreciseArmyCamp)
@@ -94,7 +94,7 @@ Func chkFillArcher()
 	lblTotalCountTroop1()
 EndFunc   ;==>chkFillArcher
 
-;------------------ADDED By RK MOD - END------------------
+;------------------ADDED By Simple Mod - END------------------
 
 Func SetComboTroopComp()
 	Local $bWasRedraw = SetRedrawBotWindow(False, Default, Default, Default, "SetComboTroopComp")
@@ -164,7 +164,7 @@ Func lblTotalCountTroop1()
 	Else
 		GUICtrlSetState($g_hLblTotalProgress, $GUI_HIDE)
 	EndIf
-	;------------------ADDED By RK MOD - START------------------
+	;------------------ADDED By Simple Mod - START------------------
 	If $g_bChkFillArcher = True Then
 		Local $bLocalBbg = False
 		$g_iSpaceForTroopsFill = $g_iTotalCampForcedValue - $TotalTroopsToTrain + $g_aiArmyCompTroops[$eTroopArcher]
@@ -173,7 +173,7 @@ Func lblTotalCountTroop1()
 		GUICtrlSetData($g_ahTxtTrainArmyTroopCount[$eTroopArcher], $g_iSpaceForTroopsFill)
 		If $bLocalBbg then SetLog($g_aiArmyCompTroops[$eTroopArcher] & ", " & $g_iTotalCampForcedValue & ", " & $TotalTroopsToTrain & ", " & $g_iSpaceForTroopsFill)
 	EndIf
-	;------------------ADDED By RK MOD - END------------------
+	;------------------ADDED By Simple Mod - END------------------
 	lblTotalCountTroop2()
 EndFunc   ;==>lblTotalCountTroop1
 
@@ -360,11 +360,11 @@ Func chkCloseWaitEnable()
 	If GUICtrlRead($g_hChkCloseWhileTraining) = $GUI_CHECKED Then
 		$g_bCloseWhileTrainingEnable = True
 		_GUI_Value_STATE("ENABLE", $groupCloseWhileTraining)
-		_GUI_Value_STATE("ENABLE", $g_hLblCloseWaitingTroops & "#" & $g_hCmbMinimumTimeClose & "#" & $g_hLblSymbolWaiting & "#" & $g_hLblWaitingInMinutes  & "#" & $g_hChkTrainLogoutMaxTime & "#" & $g_hTxtTrainLogoutMaxTime & "#" &  $g_hLblTrainLogoutMaxTime); EDITED By RK MOD
+		_GUI_Value_STATE("ENABLE", $g_hLblCloseWaitingTroops & "#" & $g_hCmbMinimumTimeClose & "#" & $g_hLblSymbolWaiting & "#" & $g_hLblWaitingInMinutes  & "#" & $g_hChkTrainLogoutMaxTime & "#" & $g_hTxtTrainLogoutMaxTime & "#" &  $g_hLblTrainLogoutMaxTime); EDITED By Simple Mod
 	Else
 		$g_bCloseWhileTrainingEnable = False
 		_GUI_Value_STATE("DISABLE", $groupCloseWhileTraining)
-		_GUI_Value_STATE("DISABLE", $g_hLblCloseWaitingTroops & "#" & $g_hCmbMinimumTimeClose & "#" & $g_hLblSymbolWaiting & "#" & $g_hLblWaitingInMinutes & "#" & $g_hChkTrainLogoutMaxTime & "#" & $g_hTxtTrainLogoutMaxTime & "#" &  $g_hLblTrainLogoutMaxTime); EDITED By RK MOD
+		_GUI_Value_STATE("DISABLE", $g_hLblCloseWaitingTroops & "#" & $g_hCmbMinimumTimeClose & "#" & $g_hLblSymbolWaiting & "#" & $g_hLblWaitingInMinutes & "#" & $g_hChkTrainLogoutMaxTime & "#" & $g_hTxtTrainLogoutMaxTime & "#" &  $g_hLblTrainLogoutMaxTime); EDITED By Simple Mod
 	EndIf
 	If GUICtrlRead($g_hChkRandomClose) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hChkCloseEmulator, BitOR($GUI_DISABLE, $GUI_UNCHECKED))

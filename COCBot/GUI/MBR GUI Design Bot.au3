@@ -14,14 +14,14 @@
 ; ===============================================================================================================================
 #include-once
 
-Global $g_hGUI_BOT = 0 ; EDITED By RK MOD
+Global $g_hGUI_BOT = 0 ; EDITED By Simple Mod
 
 #include "MBR GUI Design Child Bot - Options.au3"
 #include "MBR GUI Design Child Bot - Android.au3"
 #include "MBR GUI Design Child Bot - Debug.au3"
 #include "MBR GUI Design Child Bot - Profiles.au3"
 #include "MBR GUI Design Child Bot - Stats.au3"
-#include "MBR GUI Design Child Bot - SwitchOptions.au3" ; ADDED By RK MOD
+#include "MBR GUI Design Child Bot - SwitchOptions.au3" ; ADDED By Simple Mod
 
 Global $g_hGUI_BOT_TAB = 0, $g_hGUI_BOT_TAB_ITEM1 = 0, $g_hGUI_BOT_TAB_ITEM2 = 0, $g_hGUI_BOT_TAB_ITEM3 = 0, $g_hGUI_BOT_TAB_ITEM4 = 0, $g_hGUI_BOT_TAB_ITEM5 = 0
 Global $g_hTxtSALog = 0
@@ -30,8 +30,8 @@ Func CreateBotTab()
 	$g_hGUI_BOT = _GUICreate("", $g_iSizeWGrpTab1, $g_iSizeHGrpTab1, $_GUI_CHILD_LEFT, $_GUI_CHILD_TOP, BitOR($WS_CHILD, $WS_TABSTOP), -1, $g_hFrmBotEx)
 	;GUISetBkColor($COLOR_WHITE, $g_hGUI_BOT)
 
-	$g_hGUI_SWITCH_OPTIONS = _GUICreate("", $g_iSizeWGrpTab2 + 2, $g_iSizeHGrpTab4 + 5, 5, 80, BitOR($WS_CHILD, $WS_TABSTOP), -1, $g_hGUI_BOT) ; EDITED By RK MOD
-		CreateSwitchOptions() ; EDITED By RK MOD
+	$g_hGUI_SWITCH_OPTIONS = _GUICreate("", $g_iSizeWGrpTab2 + 2, $g_iSizeHGrpTab4 + 5, 5, 80, BitOR($WS_CHILD, $WS_TABSTOP), -1, $g_hGUI_BOT) ; EDITED By Simple Mod
+		CreateSwitchOptions() ; EDITED By Simple Mod
 
 	$g_hGUI_STATS = _GUICreate("", $g_iSizeWGrpTab2, $g_iSizeHGrpTab2, 5, 25, BitOR($WS_CHILD, $WS_TABSTOP), -1, $g_hGUI_BOT)
 
@@ -51,12 +51,12 @@ Func CreateBotTab()
 	ReDim $g_aiControlPrevState[$g_hLastControlToHide + 1]
 		CreateBotStats()
 
-	;CreateBotSwitchAccLog(); REMOVED By RK MOD
+	;CreateBotSwitchAccLog(); REMOVED By Simple Mod
 	GUICtrlCreateTabItem("")
 
 EndFunc   ;==>CreateBotTab
 
-;------------------REMOVED By RK MOD - START------------------
+;------------------REMOVED By Simple Mod - START------------------
 ;Func CreateBotSwitchAccLog()
 
 	;Local $x = 0, $y = 0
@@ -65,4 +65,4 @@ EndFunc   ;==>CreateBotTab
 	;WinActivate($activeHWnD1) ; restore current active window
 
 ;EndFunc   ;==>CreateBotSwitchAccLog
-;------------------REMOVED By RK MOD - END------------------
+;------------------REMOVED By Simple Mod - END------------------

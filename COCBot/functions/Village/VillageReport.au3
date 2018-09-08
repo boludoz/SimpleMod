@@ -30,7 +30,7 @@ Func VillageReport($bBypass = False, $bSuppressLog = False)
 	getBuilderCount($bSuppressLog) ; update builder data
 	If _Sleep($DELAYRESPOND) Then Return
 
-	; Builder Status - RK MOD
+	; Builder Status - Simple Mod
 	If Not $bBypass Then getBuilderTime()
 
 	$g_aiCurrentLoot[$eLootTrophy] = getTrophyMainScreen($aTrophies[0], $aTrophies[1])
@@ -71,7 +71,7 @@ Func VillageReport($bBypass = False, $bSuppressLog = False)
 
 EndFunc   ;==>VillageReport
 
-; Builder Status - RK MOD
+; Builder Status - Simple Mod
 Func getBuilderTime()
 	Local $iBuilderTime = -1
 	Static $sBuilderTimeLastCheck = ""

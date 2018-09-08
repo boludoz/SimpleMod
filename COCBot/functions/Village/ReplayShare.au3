@@ -18,7 +18,7 @@ Func ReplayShare($bShareLastReplay)
 	If Not $g_bShareAttackEnable Or Not $bShareLastReplay Then Return
 
 	Local Static $sLastTimeShared = ""
-	;Editind By Rk MOD Offical Bug fixed "n" is for difference in minutes was _DateDiff("m"
+	;Editind By Simple Mod Offical Bug fixed "n" is for difference in minutes was _DateDiff("m"
 	If $sLastTimeShared = "" Or _DateDiff("n", $sLastTimeShared, _NowCalc()) > 30  Then ;  Go into here when Function got called the first time or Cooldown between shares is already over
 		SetLog("Going to share the last Attack!")
 

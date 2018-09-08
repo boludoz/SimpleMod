@@ -116,7 +116,7 @@ Func SaveBuildingConfig()
 	_Ini_Add("upgrade", "upgradetroops", $g_bAutoLabUpgradeEnable ? 1 : 0)
 	_Ini_Add("upgrade", "upgradetroopname", $g_iCmbLaboratory)
 	_Ini_Add("upgrade", "upgradelabtime", $g_sLabUpgradeTime)
-	; ================================================== ; Priority System - by RK MOD  ======================================== ; 
+	; ================================================== ; Priority System - by Simple Mod  ======================================== ; 
 	_Ini_Add("upgrade", "ChkPrioritySystem", $g_bChkPrioritySystem ? 1 : 0)
 	_Ini_Add("upgrade", "CmbPrioritySystem", $g_iCmbPrioritySystem)
 
@@ -422,7 +422,7 @@ Func SaveConfig_600_11()
 	_Ini_Add("donate", "RequestDefenseWhenPB", $g_bRequestCCDefenseWhenPB ? 1 : 0)
     _Ini_Add("donate", "RequestDefenseTime", $g_iRequestDefenseTime)
     
-	; ================================================== Russian Request - by RK MOD ================================= ;
+	; ================================================== Russian Request - by Simple Mod ================================= ;
 
 	_Ini_Add("Lang", "chkRusLang2", $g_bChkRusLang2 ? True : False)
 	
@@ -505,7 +505,7 @@ Func SaveConfig_600_13()
 	_Ini_Add("donate", "cmbFilterDonationsCC", $g_iCmbDonateFilter)
 	_Ini_Add("donate", "SkipDonateNearFulLTroopsEnable", $g_bDonateSkipNearFullEnable ? 1 : 0)
 	_Ini_Add("donate", "SkipDonateNearFulLTroopsPercentual", $g_iDonateSkipNearFullPercent)
-	; ==================================================  GTFO - Added by RK MOD ================================================ ;
+	; ==================================================  GTFO - Added by Simple Mod ================================================ ;
 	_Ini_Add("GTFO", "chkGTFOClanHop", $g_bChkGTFOClanHop)
 	_Ini_Add("GTFO", "chkGTFOReturnClan", $g_bChkGTFOReturnClan)
 	_Ini_Add("GTFO", "chkUseGTFO", $g_bChkUseGTFO)
@@ -562,7 +562,7 @@ Func SaveConfig_600_17()
 	_Ini_Add("upgrade", "use-storage", $g_iUpgradeWallLootType)
 	_Ini_Add("upgrade", "savebldr", $g_bUpgradeWallSaveBuilder ? 1 : 0)
 	_Ini_Add("upgrade", "walllvl", $g_iCmbUpgradeWallsLevel)
-	; ================================================== Wall/Building Upgrading Priority by RK MOD	========================;
+	; ================================================== Wall/Building Upgrading Priority by Simple Mod	========================;
 	_Ini_Add("Priority upgrade", "chkUpgrPriority", $g_iChkUpgrPriority ? 1 : 0)
 	_Ini_Add("Priority upgrade", "cmbUpgrdPriority", _GUICtrlComboBox_GetCurSel($g_hCmbUpgrdPriority))
 	For $i = 4 To 13
@@ -625,14 +625,14 @@ Func SaveConfig_600_22()
 		$string &= ($g_abBoostBarracksHours[$i] ? "1" : "0") & "|"
 	Next
 	_Ini_Add("planned", "BoostBarracksHours", $string)
-	; ================================================== Boost for Magic Spell by RK MOD ================================= ;
+	; ================================================== Boost for Magic Spell by Simple Mod ================================= ;
 
 	_Ini_Add("boost", "chkBoostBMagic", $g_iChkBoostBMagic ? 1 : 0)
 	_Ini_Add("boost", "cmbBoostBrMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic))
 	_Ini_Add("boost", "chkBoostCMagic", $g_iChkBoostCMagic ? 1 : 0)
 	_Ini_Add("boost", "cmbBoostClMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic))
 	
-	; ================================================== One Gem Boost by RK MOD ================================= ;
+	; ================================================== One Gem Boost by Simple Mod ================================= ;
 	
 	_Ini_Add("boost", "ChkOneGemBoostBarracks", $g_bChkOneGemBoostBarracks ? 1 : 0)
 	_Ini_Add("boost", "ChkOneGemBoostSpells", $g_bChkOneGemBoostSpells ? 1 : 0)
@@ -673,12 +673,12 @@ Func SaveConfig_600_28()
 	_Ini_Add("search", "RestartSearchPickupHero", $g_bSearchRestartPickupHero ? 1 : 0)
 	_Ini_Add("general", "AlertSearch", $g_bSearchAlertMe ? 1 : 0)
 
-	; ================================================== ; Return Home by Time - by RK MOD  ======================================== ;
+	; ================================================== ; Return Home by Time - by Simple Mod  ======================================== ;
 	
 	_Ini_Add("search", "ChkReturnTimerEnable", $g_bReturnTimerEnable ? 1 : 0)
 	_Ini_Add("search", "ReturnTimer", $g_iTxtReturnTimer)
 	
-	; ================================================== ; Attack Prioriti - by RK MOD  ======================================== ;
+	; ================================================== ; Attack Prioriti - by Simple Mod  ======================================== ;
 	
 	_Ini_Add("search", "ChkAttackPriority", $g_bChkAttackPriority ? 1 : 0)
 	
@@ -889,11 +889,11 @@ Func SaveConfig_600_29_DB_Standard()
 	_Ini_Add("attack", "DBSmartAttackGoldMine", $g_abAttackStdSmartNearCollectors[$DB][0] ? 1 : 0)
 	_Ini_Add("attack", "DBSmartAttackElixirCollector", $g_abAttackStdSmartNearCollectors[$DB][1] ? 1 : 0)
 	_Ini_Add("attack", "DBSmartAttackDarkElixirDrill", $g_abAttackStdSmartNearCollectors[$DB][2] ? 1 : 0)
-	; ================================================== Multi Finger - Added by RK MOD ======================================== ;
+	; ================================================== Multi Finger - Added by Simple Mod ======================================== ;
 
 	_Ini_Add("MultiFinger", "Select", _GUICtrlComboBox_GetCurSel($g_hCmbDBMultiFinger))
 
-	; ================================================== Unit/Wave Factor - Added by RK MOD ======================================== ;
+	; ================================================== Unit/Wave Factor - Added by Simple Mod ======================================== ;
 
 	_Ini_Add("SetSleep", "EnableUnitFactor", $g_iChkUnitFactor ? 1 : 0)
 	_Ini_Add("SetSleep", "EnableWaveFactor", $g_iChkWaveFactor ? 1 : 0)
@@ -1109,7 +1109,7 @@ Func SaveConfig_600_31()
 	_Ini_Add("collectors", "minmatches", $g_iCollectorMatchesMin)
 	_Ini_Add("collectors", "tolerance", $g_iCollectorToleranceOffset)
 	
-	; Check Collector Outside - RK MOD
+	; Check Collector Outside - Simple Mod
 	_Ini_Add("search", "DBMeetCollOutside", $g_bDBMeetCollOutside)
 	_Ini_Add("search", "TxtDBMinCollOutsidePercent", GUICtrlRead($g_hTxtDBMinCollOutsidePercent))
 	_Ini_Add("search", "DBCollectorsNearRedline", $g_bDBCollectorsNearRedline ? 1 : 0)
@@ -1283,14 +1283,14 @@ Func SaveConfig_600_52_2()
 	; DoubleTrain - Demen
 	_Ini_Add("troop", "DoubleTrain", $g_bDoubleTrain ? 1 : 0)
 	
-	;SmartTrain - RK MOD (Demen)
+	;SmartTrain - Simple Mod (Demen)
 	_Ini_Add("SmartTrain", "Enable", $g_bChkSmartTrain ? 1 : 0)
 	_Ini_Add("SmartTrain", "ChkPreciseTroops", $g_bChkPreciseArmyCamp ? 1 : 0)
 	_Ini_Add("SmartTrain", "ChkFillArcher", $g_bChkFillArcher ? 1 : 0)
 	_Ini_Add("SmartTrain", "TxtFillArcher", $g_iTxtFillArcher)
 	_Ini_Add("SmartTrain", "ChkFillEQ", $g_bChkFillEQ ? 1 : 0)
 	
-	; ================================================ AutoCamp - by RK MOD (#ID135-) ========================================
+	; ================================================ AutoCamp - by Simple Mod (#ID135-) ========================================
 	_Ini_Add("troop", "ChkAutoCamp", $g_bChkAutoCamp ? True : False)
 	
 EndFunc   ;==>SaveConfig_600_52_2
@@ -1338,7 +1338,7 @@ Func SaveConfig_641_1()
 	_Ini_Add("other", "btnCloseWaitRandom", $g_bCloseRandomTime ? 1 : 0)
 	_Ini_Add("other", "CloseWaitRdmPercent", $g_iCloseRandomTimePercent)
 	_Ini_Add("other", "MinimumTimeToClose", $g_iCloseMinimumTime)
-	; ================================================== Max logout time - by RK MOD ================================= ;
+	; ================================================== Max logout time - by Simple Mod ================================= ;
 
 	_Ini_Add("TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime)
 	_Ini_Add("TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime)
@@ -1349,7 +1349,7 @@ Func SaveConfig_641_1()
 	_Ini_Add("other", "chkAddIdleTime", $g_bTrainAddRandomDelayEnable ? 1 : 0)
 	_Ini_Add("other", "txtAddDelayIdlePhaseTimeMin", $g_iTrainAddRandomDelayMin)
 	_Ini_Add("other", "txtAddDelayIdlePhaseTimeMax", $g_iTrainAddRandomDelayMax)
-	; ================================================== Check Grand Warden Mode - Added by RK MOD ================================== ;
+	; ================================================== Check Grand Warden Mode - Added by Simple Mod ================================== ;
 
 	_Ini_Add("other", "chkCheckWardenMode", $g_bCheckWardenMode ? 1 : 0)
 	_Ini_Add("other", "cmbCheckWardenMode", $g_iCheckWardenMode)

@@ -28,8 +28,8 @@
 	; $g_bChkCollect = (GUICtrlRead($g_hChkCollect) = $GUI_CHECKED)
 ; EndFunc   ;==>ChkCollect
 
-;------------------ADDED By RK MOD - START------------------
-; Request troops for defense Add RK MOD
+;------------------ADDED By Simple Mod - START------------------
+; Request troops for defense Add Simple Mod
 Func chkRequestDefense()
     If GUICtrlRead($g_hChkRequestCCDefense) = $GUI_CHECKED Then
         For $i = $g_hTxtRequestCCDefense To $g_hTxtRequestCCDefenseTime
@@ -41,7 +41,7 @@ Func chkRequestDefense()
         Next
     EndIf
 EndFunc   ;==>chkRequestDefense
-;------------------ADDED By RK MOD - END------------------
+;------------------ADDED By Simple Mod - END------------------
 
 Func chkRequestCCHours()
 	Local $bWasRedraw = SetRedrawBotWindow(False, Default, Default, Default, "chkRequestCCHours")
@@ -181,9 +181,9 @@ Func chkDonateHoursE2()
 	GUICtrlSetState($g_ahChkDonateHoursE2, $GUI_UNCHECKED)
 EndFunc   ;==>chkDonateHoursE2
 
-;------------------ADDED By RK MOD - START------------------
-; Request CC Troops at first - RK MOD
+;------------------ADDED By Simple Mod - START------------------
+; Request CC Troops at first - Simple Mod
 Func chkReqCCFirst()
 	$g_bReqCCFirst = (GUICtrlRead($g_hChkReqCCFirst) = $GUI_CHECKED)
 EndFunc   ;==>chkReqCCFirst
-;------------------ADDED By RK MOD - END------------------
+;------------------ADDED By Simple Mod - END------------------

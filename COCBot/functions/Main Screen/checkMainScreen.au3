@@ -45,11 +45,11 @@ Func _checkMainScreen($bSetLog = Default, $bBuilderBase = Default) ;Checks if in
 	$i = 0
 	$iErrorCount = 0
 	$iCheckBeforeRestartAndroidCount = 3
-	;------------------CUSTOM LOGIC By RK MOD - START------------------
+	;------------------CUSTOM LOGIC By Simple Mod - START------------------
 	If QuickMis("BC1", $g_sImgGoogleSelectAccount, 350, 0, 350 + 88, 0 + 386) Then
 		ClickP($aAway, 1, 0, "#0161")
 	EndIf
-	;------------------CUSTOM LOGIC By RK MOD - END------------------
+	;------------------CUSTOM LOGIC By Simple Mod - END------------------
 	
 
 	If $bBuilderBase Then $aPixelToCheck = $aIsOnBuilderBase

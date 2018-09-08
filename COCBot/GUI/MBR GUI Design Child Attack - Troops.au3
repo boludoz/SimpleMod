@@ -26,10 +26,10 @@ Global $g_ahLblTrainArmySpellLevel[$eSpellCount] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0
 Global $g_ahTxtTrainArmySiegeCount[$eSiegeMachineCount] = [0, 0]
 Global $g_ahLblTrainArmySiegeLevel[$eSiegeMachineCount] = [0, 0]
 Global $g_hTxtFullTroop = 0, $g_hChkTotalCampForced = 0, $g_hTxtTotalCampForced = 0, $g_hChkForceBrewBeforeAttack = 0
-Global $g_hLblRemoveArmy = 0, $g_hBtnRemoveArmy = 0 ; To hide for Multi-Click Army3 Demen ; ADDED By RK MOD
-Global $g_hChkDoubleTrain = 0, $g_hChkMultiClick = 0 ; DoubleTrain & Multi-Click Army3 - Demen ; ADDED By RK MOD
+Global $g_hLblRemoveArmy = 0, $g_hBtnRemoveArmy = 0 ; To hide for Multi-Click Army3 Demen ; ADDED By Simple Mod
+Global $g_hChkDoubleTrain = 0, $g_hChkMultiClick = 0 ; DoubleTrain & Multi-Click Army3 - Demen ; ADDED By Simple Mod
 Global $g_hChkAutoCamp = 0 ; Auto Camp by bld
-Global $g_hChkSmartTrain = 0, $g_hChkPreciseArmyCamp = 0, $g_hChkFillArcher = 0, $g_hTxtFillArcher = 0, $g_hChkFillEQ = 0  ;SmartTrain - ; ADDED By RK MOD (Demen)
+Global $g_hChkSmartTrain = 0, $g_hChkPreciseArmyCamp = 0, $g_hChkFillArcher = 0, $g_hTxtFillArcher = 0, $g_hChkFillEQ = 0  ;SmartTrain - ; ADDED By Simple Mod (Demen)
 
 
 Global $g_hGrpTrainTroops = 0
@@ -46,19 +46,19 @@ Global $g_hLblBoosthour = 0, $g_ahLblBoosthoursE = 0
 Global $g_hLblBoosthours[12] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 Global $g_hChkBoostBarracksHours[24] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0], $g_hChkBoostBarracksHoursE1 = 0, $g_hChkBoostBarracksHoursE2 = 0
 
-;------------------ADDED By RK MOD - START------------------
-;Max logout time RK MOD
+;------------------ADDED By Simple Mod - START------------------
+;Max logout time Simple Mod
 Global $g_hChkTrainLogoutMaxTime = 0, $g_hTxtTrainLogoutMaxTime = 4, $g_hLblTrainLogoutMaxTime
 
-; Boost for Magic Spell by RK MOD
+; Boost for Magic Spell by Simple Mod
 Global $g_hChkBoostBMagic  = 0, $g_hCmbBoostBrMagic = 0, $g_hChkBoostCMagic = 0, $g_hCmbBoostClMagic = 0
 
-; Check Grand Warden Mode - RK MOD
+; Check Grand Warden Mode - Simple Mod
 Global $g_hChkCheckWardenMode = 0, $g_hCmbCheckWardenMode = 0
 
-; One Gem Boost - by RK MOD
+; One Gem Boost - by Simple Mod
 Global $g_hChkOneGemBoostBarracks = 0, $g_hChkOneGemBoostSpells = 0, $g_hChkOneGemBoostHeroes = 0
-;------------------ADDED By RK MOD - END------------------
+;------------------ADDED By Simple Mod - END------------------
 
 ; Train Order sub-tab
 Func LoadTranslatedTrainTroopsOrderList()
@@ -140,7 +140,7 @@ EndFunc   ;==>CreateAttackTroops
 Func CreateTroopsSpellsSubTab()
 
 	$g_hGUI_TRAINARMY_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_03_STab_01_STab_01", "Army"))
-	;------------------EDITED By RK MOD - START------------------
+	;------------------EDITED By Simple Mod - START------------------
 	Local $sTxtSetPerc = GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "TxtSetTroop_Info_01", "Enter the No. of")
 	Local $sTxtSetPerc2 = GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "TxtSetTroop_Info_02", "to make.")
 	Local $iStartX = 8
@@ -166,7 +166,7 @@ Func CreateTroopsSpellsSubTab()
 	$x = 10
 	$y = 49
 	$g_hGrpTrainTroops = GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "Group_01", "Train Army"), $x - 5, $y, $g_iSizeWGrpTab3, 315)
-	;------------------EDITED By RK MOD - END------------------
+	;------------------EDITED By Simple Mod - END------------------
 	$x = $iStartX
 	$y += 20
 	; Barbarians
@@ -592,7 +592,7 @@ Func CreateTroopsSpellsSubTab()
 						 ;GetTranslatedFileIni("MBR Global GUI Design", "DoubleTrainTip3", "Note: Donations + Double Train can produce an unbalanced army!"))
 
 	; Auto Camp - Bld
-    $g_hChkAutoCamp = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkAutoCamp", "Auto update camps"), $x + 135, $y, -1, 15); ADDED By RK MOD
+    $g_hChkAutoCamp = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "ChkAutoCamp", "Auto update camps"), $x + 135, $y, -1, 15); ADDED By Simple Mod
 	GUICtrlSetOnEvent(-1, "chkAutoCamp")
 
 	$y += 13
@@ -768,7 +768,7 @@ Func CreateTroopsSpellsSubTab()
 	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnDark, $x + 146, $y + 14, 16, 16)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-	;SmartTrain - RK MOD (Demen)
+	;SmartTrain - Simple Mod (Demen)
 	$x = 10
 	$y = 363
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops", "Group_03", "Smart Train"), $x - 5, $y, $g_iSizeWGrpTab3, 38)
@@ -804,7 +804,7 @@ Func CreateBoostSubTab()
 	Local $sTxtTip = ""
 
 	$g_hGUI_TRAINARMY_TAB_ITEM2 = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_03_STab_01_STab_02", "Boost"))
-	;------------------CUSTOM LOGIC By RK MOD - START------------------
+	;------------------CUSTOM LOGIC By Simple Mod - START------------------
 	Local $x = 25, $y = 45
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_01", "Boost Barracks"), $x - 20, $y - 20, Int($g_iSizeWGrpTab3 / 2) - 2, 60)
 	$x = $x - 5
@@ -831,9 +831,9 @@ Func CreateBoostSubTab()
 	GUICtrlSetData(-1, "0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|24|No limit", "0")
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-	;------------------CUSTOM LOGIC By RK MOD - END------------------
+	;------------------CUSTOM LOGIC By Simple Mod - END------------------
 
-	;------------------ADDED By RK MOD - START------------------
+	;------------------ADDED By Simple Mod - START------------------
 	$x = 25
 	$y += 65
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_06", "1-Gem Army Boost Event"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 50)
@@ -854,7 +854,7 @@ Func CreateBoostSubTab()
 	GUICtrlSetState(-1, $GUI_UNCHECKED)
 
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-	;------------------ADDED By RK MOD - END------------------
+	;------------------ADDED By Simple Mod - END------------------
 
 	$x = 25
 	$y += 55
@@ -889,8 +889,8 @@ Func CreateBoostSubTab()
 	GUICtrlSetOnEvent(-1, "chkUpgradeWarden")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-	;------------------ADDED By RK MOD - START------------------
-    ; Boost for Magic Spell by RK MOD
+	;------------------ADDED By Simple Mod - START------------------
+    ; Boost for Magic Spell by Simple Mod
 	$y += 50
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Boost", "Group_05", "Boost for Magic Spell"), $x - 20, $y - 20, $g_iSizeWGrpTab3, 50)
 	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnBoostMagic, $x - 10, $y - 2, 24, 24)
@@ -908,7 +908,7 @@ Func CreateBoostSubTab()
     GUICtrlSetOnEvent(-1, "chkBoostCMagic")
 	$g_hCmbBoostClMagic = GUICtrlCreateCombo("", $x + 340, $y + 1, 60, 25, BitOR($CBS_DROPDOWNLIST, $CBS_AUTOHSCROLL))
 	GUICtrlSetData(-1, "0|1|2|3|4|5", "0")
-	;------------------ADDED By RK MOD - END------------------
+	;------------------ADDED By Simple Mod - END------------------
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 	$y += 65
@@ -1122,9 +1122,9 @@ Func CreateOptionsSubTab()
 
 	Local $sTxtTip = ""
 	Local $x = 25, $y = 45
-	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "Group_01", "Training Idle Time"), $x - 20, $y - 20, 163, 320); EDITED By RK MOD
+	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "Group_01", "Training Idle Time"), $x - 20, $y - 20, 163, 320); EDITED By Simple Mod
 	$g_hChkCloseWhileTraining = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "ChkCloseWhileTraining", "Close While Training"), $x - 12, $y, 140, -1)
-	GUICtrlSetState(-1, $GUI_UNCHECKED); EDITED By RK MOD
+	GUICtrlSetState(-1, $GUI_UNCHECKED); EDITED By Simple Mod
 	_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "ChkCloseWhileTraining_Info_01", "Option will exit CoC game for time required to complete TROOP training when SHIELD IS ACTIVE") & @CRLF & _
 			GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "ChkCloseWhileTraining_Info_02", "Close for Spell creation will be enabled when 'Wait for Spells' is selected on Search tabs") & @CRLF & _
 			GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "ChkCloseWhileTraining_Info_03", "Close for Hero healing will be enabled when 'Wait for Heroes' is enabled on Search tabs"))
@@ -1207,8 +1207,8 @@ Func CreateOptionsSubTab()
 	$g_hLblWaitingInMinutes = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "min.", "min."), $x + 84, $y + 3, -1, -1)
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-	;------------------ADDED By RK MOD - START------------------
-	;Max logout time( mandryd) - RK MOD
+	;------------------ADDED By Simple Mod - START------------------
+	;Max logout time( mandryd) - Simple Mod
 	$y += 28
 		$g_hChkTrainLogoutMaxTime = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "TrainLogoutMaxTime", "Max Logout Time") & ": ", $x - 14, $y, -1, -1)
 			$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "TrainLogoutMaxTime_Info_01", "Only allow logout for a maximum amount of time")
@@ -1221,7 +1221,7 @@ Func CreateOptionsSubTab()
 		$g_hLblTrainLogoutMaxTime = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "TrainLogoutMaxTime_Info_02", "min."), $x + 120, $y + 4, -1, -1)
 		;GUICtrlSetOnEvent(-1, "chkTrainLogoutMaxTime") TODO By Rulesss
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-	;------------------ADDED By RK MOD - END------------------
+	;------------------ADDED By Simple Mod - END------------------
 	$y += 50
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "Group_02", "Train Click Timing"), $x - 20, $y - 20, 163, 60)
 	$g_hLblTrainITDelay = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "LblTrainITDelay", "delay"), $x - 10, $y, 37, 30)
@@ -1239,14 +1239,14 @@ Func CreateOptionsSubTab()
 	GUICtrlSetOnEvent(-1, "sldTrainITDelay")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
-	$x = 25 + 151 + 20; EDITED By RK MOD
+	$x = 25 + 151 + 20; EDITED By Simple Mod
 	$y = 45
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "Group_03", "Training Add Random Delay"), $x - 20, $y - 20, 173, 81)
 	$y += 15
 	$g_hChkTrainAddRandomDelayEnable = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "ChkTrainAddRandomDelayEnable", "Add Random Delay"), $x + 18, $y - 11, 130, -1)
 	$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "ChkTrainAddRandomDelayEnable_Info_01", "Add random delay between two calls of train army.") & @CRLF & _
 			GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "ChkTrainAddRandomDelayEnable_Info_02", "This option reduces the calls to the training window  humanizing the bot spacing calls each time with a causal interval chosen between the minimum and maximum values indicated below.")
-	GUICtrlSetState(-1, $GUI_UNCHECKED); EDITED By RK MOD
+	GUICtrlSetState(-1, $GUI_UNCHECKED); EDITED By Simple Mod
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlSetOnEvent(-1, "chkAddDelayIdlePhaseEnable")
 	_GUICtrlCreateIcon($g_sLibIconPath, $eIcnDelay, $x - 13, $y - 13, 24, 24)
@@ -1262,8 +1262,8 @@ Func CreateOptionsSubTab()
 	GUICtrlSetLimit(-1, 999)
 	$g_hLblAddDelayIdlePhaseSec = GUICtrlCreateLabel(GetTranslatedFileIni("MBR Global GUI Design", "sec.", "sec."), $x + 110, $y, 20, 30)
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-	;------------------ADDED By RK MOD - START------------------
-	; Check Grand Warden Mode - RK MOD
+	;------------------ADDED By Simple Mod - START------------------
+	; Check Grand Warden Mode - Simple Mod
 	$x = 55 + 140
 	$y = 127
 		GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "Group_04", "Check Grand Warden Mode"), $x - 20, $y - 20, 173, 50)
@@ -1275,6 +1275,6 @@ Func CreateOptionsSubTab()
 			GUICtrlSetData(-1, "Ground|Air", "Ground")
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Troops_Options", "CheckWardenMode_Info_02", "Select the Mode your Warden needs to have for attacks"))
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
-	;------------------ADDED By RK MOD - END------------------
+	;------------------ADDED By Simple Mod - END------------------
 
 EndFunc   ;==>CreateOptionsSubTab

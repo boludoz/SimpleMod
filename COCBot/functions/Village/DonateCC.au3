@@ -554,7 +554,7 @@ Func DonateCC($bCheckForNewMsg = False)
 	UpdateStats()
 	If _Sleep($DELAYDONATECC2) Then Return
 	
-	;SmartTrain - RK MOD (Demen)
+	;SmartTrain - Simple Mod (Demen)
 	If $g_bChkSmartTrain Then
 		OpenArmyOverview(True, "DonateCC()")
 		MakingDonatedTroops()

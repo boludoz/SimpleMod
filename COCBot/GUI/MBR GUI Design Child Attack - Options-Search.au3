@@ -21,8 +21,8 @@ Global $g_hChkAttackNow = 0, $g_hCmbAttackNowDelay = 0, $g_hChkRestartSearchLimi
 
 Global $g_hLblVSDelay = 0, $g_hLblTextVSDelay = 0, $g_hLblMaxVSDelay = 0, $g_hLblTextMaxVSDelay = 0, $g_hLblAttackNow = 0, $g_hLblAttackNowSec = 0
 Global $g_hChkRestartSearchPickupHero = 0
-Global $g_hChkReturnTimerEnable = 0, $g_hTxtReturnTimer = 0 ; Return Home by Time ; ADDED By RK MOD
-Global $g_hChkAttackPriority = 0 ; Attack Priority ; ADDED By RK MOD
+Global $g_hChkReturnTimerEnable = 0, $g_hTxtReturnTimer = 0 ; Return Home by Time ; ADDED By Simple Mod
+Global $g_hChkAttackPriority = 0 ; Attack Priority ; ADDED By Simple Mod
 
 Func CreateAttackSearchOptionsSearch()
 
@@ -140,7 +140,7 @@ Func CreateAttackSearchOptionsSearch()
 
 	$x = 253
 	$y = 45
-	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "Group_03", "Search Options"), $x - 20, $y - 20, 189, 215); Was , 165) EDITED By RK MOD
+	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "Group_03", "Search Options"), $x - 20, $y - 20, 189, 215); Was , 165) EDITED By Simple Mod
 	$x -= 5
 		$g_hChkAttackNow = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAttackNow", "Attack Now! option."), $x - 5, $y - 4, -1, -1)
 			$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAttackNow_Info_01", "Check this if you want the option to have an 'Attack Now!' button next to") & @CRLF & _
@@ -180,8 +180,8 @@ Func CreateAttackSearchOptionsSearch()
 		$g_hChkAlertSearch = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAlertSearch", "Alert me when Village found"), $x - 5, $y, -1, -1)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAlertSearch_Info_01", "Check this if you want an Audio alarm & a Balloon Tip when a Base to attack is found."))
 			GUICtrlSetState(-1, $GUI_CHECKED)
-	    ;------------------ADDED By RK MOD - START------------------		
-	    ;Return Home by Time - RK MOD
+	    ;------------------ADDED By Simple Mod - START------------------		
+	    ;Return Home by Time - Simple Mod
 	$y += 25
 		$g_hChkReturnTimerEnable = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkReturnTimerEnable_01", "Return Home by Time"), $x - 5, $y - 1, -1, -1)
 		    _GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkReturnTimerEnable_02", "Return home by time due to the long wait in the cloud."))
@@ -195,7 +195,7 @@ Func CreateAttackSearchOptionsSearch()
 		$g_hChkAttackPriority = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAttackPriority_01", "Attack Priority"), $x - 5, $y - 1, -1, -1)
 		    ;_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-Search", "ChkAttackPriority_02", "-----."))
 		
-	    ;------------------ADDED By RK MOD - END------------------
+	    ;------------------ADDED By Simple Mod - END------------------
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
 EndFunc   ;==>CreateAttackSearchOptionsSearch

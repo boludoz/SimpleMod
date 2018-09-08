@@ -68,7 +68,7 @@ InitializeBot()
 MainLoop(CheckPrerequisites())
 
 Func UpdateBotTitle()
-	Local $sTitle = "My Bot " & $g_sBotVersion & " RK MOD " & $g_sModversion
+	Local $sTitle = "My Bot " & $g_sBotVersion & " Simple Mod " & $g_sModversion
 	Local $sConsoleTitle ; Console title has also Android Emulator Name
 	If $g_sBotTitle = "" Then
 		$g_sBotTitle = $sTitle
@@ -578,19 +578,6 @@ Func FinalInitialization(Const $sAI)
 		EndIf
 	EndIf
 
-	; Message - start
-	SetLog(" ", $COLOR_SUCCESS)
-	SetLog("_________" & " [  MyBot RK MOD  ]" & "_________", $COLOR_MONEYGREEN, "Impact", 14)
-	SetLog("                               » " & "Warning" & " «", $COLOR_TEAL, "Segoe UI Semibold", 12)
-	SetLog("                                    » " & "Make a Fresh Config" & " «", $COLOR_TEAL, "Segoe UI Semibold", 9)
-	SetLog("                                   » " & "Don't Use Old Profile" & " «", $COLOR_TEAL, "Segoe UI Semibold", 9)
-	SetLog("-----------------------------------------------------------------------", $COLOR_MONEYGREEN)
-	SetLog("            » " & "Thanks To ALL MyBot Developer's" & " «", $COLOR_TEAL, "Segoe Print", 9)
-	SetLog("                        » " & "Based On: MyBot" & " " & $g_sBotVersion & " «", $COLOR_TEAL, "Segoe UI Semibold", 10)
-	SetLog("-----------------------------------------------------------------------", $COLOR_MONEYGREEN)
-	SetLog(" ", $COLOR_MEDGRAY)
-	; Message - end
-
 	; destroy splash screen here (so we witness the 100% ;)
 	DestroySplashScreen()
 
@@ -715,10 +702,10 @@ Func runBot() ;Bot that runs everything in order
 		chkShieldStatus()
 		If Not $g_bRunState Then Return
 		If $g_bRestart = True Then ContinueLoop
-		;------------------ADDED By RK MOD - START------------------
+		;------------------ADDED By Simple Mod - START------------------
 		MainGTFO()
 		MainKickout()
-		;------------------ADDED By RK MOD - END------------------
+		;------------------ADDED By Simple Mod - END------------------
 		checkObstacles() ; trap common error messages also check for reconnecting animation
 		If $g_bRestart = True Then ContinueLoop
 
@@ -736,7 +723,7 @@ Func runBot() ;Bot that runs everything in order
 			checkMainScreen(False)
 			If $g_bRestart = True Then ContinueLoop
 			If _Sleep($DELAYRUNBOT3) Then Return
-			;------------------CUSTOM LOGIC By RK MOD - START------------------
+			;------------------CUSTOM LOGIC By Simple Mod - START------------------
 
 			If Not $g_bFirstStart Then
 				VillageReport()
@@ -745,7 +732,7 @@ Func runBot() ;Bot that runs everything in order
 			ProfileSwitch()
 			CheckFarmSchedule()
 			CheckStopForWar()
-			;------------------CUSTOM LOGIC By RK MOD - END------------------
+			;------------------CUSTOM LOGIC By Simple Mod - END------------------
 			If $g_bOutOfGold = True And (Number($g_aiCurrentLoot[$eLootGold]) >= Number($g_iTxtRestartGold)) Then ; check if enough gold to begin searching again
 				$g_bOutOfGold = False ; reset out of gold flag
 				SetLog("Switching back to normal after no gold to search ...", $COLOR_SUCCESS)
@@ -759,7 +746,7 @@ Func runBot() ;Bot that runs everything in order
 			If _Sleep($DELAYRUNBOT5) Then Return
 			checkMainScreen(False)
 			If $g_bRestart = True Then ContinueLoop
-			;------------------ADDED By RK MOD - START------------------
+			;------------------ADDED By Simple Mod - START------------------
 			;If $g_bFirstStart Then ProfileReport()
 			;If _Sleep($DELAYRUNBOT5) Then Return
 			;If $g_bFirstStart Then checkArmyCamp(True, True, False, True)
@@ -768,7 +755,7 @@ Func runBot() ;Bot that runs everything in order
 				RequestCC()
 				If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			EndIf
-			;------------------ADDED By RK MOD - END------------------
+			;------------------ADDED By Simple Mod - END------------------
 			Local $aRndFuncList = ['LabCheck', 'Collect', 'CheckTombs', 'ReArm', 'CleanYard']
 			While 1
 				If $g_bRunState = False Then Return
@@ -790,7 +777,7 @@ Func runBot() ;Bot that runs everything in order
 			AddIdleTime()
 			If $g_bRunState = False Then Return
 			If $g_bRestart = True Then ContinueLoop
-			;------------------ADDED By RK MOD - START------------------
+			;------------------ADDED By Simple Mod - START------------------
 			If $iChkForecastBoost = 1 Then
 				$currentForecast = readCurrentForecast()
 				If $currentForecast >= Number($iTxtForecastBoost, 3) Then
@@ -806,9 +793,9 @@ Func runBot() ;Bot that runs everything in order
 			If $iChkForecastPause = 1 Then
 				$currentForecast = readCurrentForecast()
 			EndIf
-			;------------------ADDED By RK MOD - END------------------
+			;------------------ADDED By Simple Mod - END------------------
 			If IsSearchAttackEnabled() Then ; if attack is disabled skip reporting, requesting, donating, training, and boosting
-				Local $aRndFuncList = ['ReplayShare', 'NotifyReport', 'DonateCC,Train', 'RequestCC', 'CollectFreeMagicItems', 'HeroT'] ; EDITED By RK MOD
+				Local $aRndFuncList = ['ReplayShare', 'NotifyReport', 'DonateCC,Train', 'RequestCC', 'CollectFreeMagicItems', 'HeroT'] ; EDITED By Simple Mod
 				While 1
 					If $g_bRunState = False Then Return
 					If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
@@ -823,8 +810,8 @@ Func runBot() ;Bot that runs everything in order
 					EndIf
 					If CheckAndroidReboot() = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
 				WEnd
-				;BoostEverything() ; 1st Check if is to use Training Potion ; REMOVED By RK MOD
-				Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'BoostAll', 'OneGemBost'] ; EDITED By RK MOD
+				;BoostEverything() ; 1st Check if is to use Training Potion ; REMOVED By Simple Mod
+				Local $aRndFuncList = ['BoostBarracks', 'BoostSpellFactory', 'BoostKing', 'BoostQueen', 'BoostWarden', 'BoostAll', 'OneGemBost'] ; EDITED By Simple Mod
 				While 1
 					If $g_bRunState = False Then Return
 					If $g_bRestart = True Then ContinueLoop 2 ; must be level 2 due to loop-in-loop
@@ -850,7 +837,7 @@ Func runBot() ;Bot that runs everything in order
 			If ($g_iCommandStop = 3 Or $g_iCommandStop = 0) Then ; Train Donate only - force a donate cc everytime, Ignore any SkipDonate Near Full Values
 				If BalanceDonRec(True) Then DonateCC()
 			EndIf
-			MainSuperXPHandler() ; ADDED By RK MOD
+			MainSuperXPHandler() ; ADDED By Simple Mod
 			Local $aRndFuncList = ['Laboratory', 'UpgradeHeroes', 'UpgradeBuilding', 'BuilderBase']
 			While 1
 				If $g_bRunState = False Then Return
@@ -937,7 +924,7 @@ Func _Idle() ;Sequence that runs until Full Army
 	Static $iCollectCounter = 0 ; Collect counter, when reaches $g_iCollectAtCount, it will collect
 
 	Local $TimeIdle = 0 ;In Seconds
-	ForecastSwitch() ; ADDED By RK MOD
+	ForecastSwitch() ; ADDED By Simple Mod
 	If $g_bDebugSetlog Then SetDebugLog("Func Idle ", $COLOR_DEBUG)
 
 	While $g_bIsFullArmywithHeroesAndSpells = False
@@ -948,11 +935,11 @@ Func _Idle() ;Sequence that runs until Full Army
 		NotifyPendingActions()
 		If _Sleep($DELAYIDLE1) Then Return
 		If $g_iCommandStop = -1 Then SetLog("====== Waiting for full army ======", $COLOR_SUCCESS)
-		;------------------ADDED By RK MOD - START------------------
+		;------------------ADDED By Simple Mod - START------------------
 		If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
 			ChatbotMessage()
 		EndIf
-		;------------------ADDED By RK MOD - END------------------
+		;------------------ADDED By Simple Mod - END------------------
 		Local $hTimer = __TimerInit()
 		Local $iReHere = 0, $bNoCheckRedChatIcon = True
 
@@ -1029,7 +1016,7 @@ Func _Idle() ;Sequence that runs until Full Army
 		If $g_iCommandStop = 0 And $g_bTrainEnabled = True Then
 			If Not ($g_bIsFullArmywithHeroesAndSpells) Then
 				If $g_iActualTrainSkip < $g_iMaxTrainSkip Then
-					MainSuperXPHandler() ; ADDED By RK MOD
+					MainSuperXPHandler() ; ADDED By Simple Mod
 					If CheckNeedOpenTrain($g_sTimeBeforeTrain) Then TrainSystem()
 					If $g_bRestart = True Then ExitLoop
 					If _Sleep($DELAYIDLE1) Then ExitLoop
@@ -1043,7 +1030,7 @@ Func _Idle() ;Sequence that runs until Full Army
 					CheckArmyCamp(True, True)
 					If Not $g_bRunState Then Return
 				EndIf
-				MainSuperXPHandler() ; ADDED By RK MOD
+				MainSuperXPHandler() ; ADDED By Simple Mod
 			EndIf
 			If $g_bIsFullArmywithHeroesAndSpells And $g_bTrainEnabled = True Then
 				SetLog("Army Camp is full, stop Training...", $COLOR_ACTION)
@@ -1063,7 +1050,7 @@ Func _Idle() ;Sequence that runs until Full Army
 		If $g_bRestart = True Then ExitLoop
 		$TimeIdle += Round(__TimerDiff($hTimer) / 1000, 2) ;In Seconds
 
-		If $g_bCanRequestCC = True And BalanceRecRec(True) Then RequestCC() ; EDITED By RK MOD
+		If $g_bCanRequestCC = True And BalanceRecRec(True) Then RequestCC() ; EDITED By Simple Mod
 
 		SetLog("Time Idle: " & StringFormat("%02i", Floor(Floor($TimeIdle / 60) / 60)) & ":" & StringFormat("%02i", Floor(Mod(Floor($TimeIdle / 60), 60))) & ":" & StringFormat("%02i", Floor(Mod($TimeIdle, 60))))
 
@@ -1084,14 +1071,14 @@ EndFunc   ;==>_Idle
 
 Func AttackMain() ;Main control for attack functions
 	If ProfileSwitchAccountEnabled() And $g_abDonateOnly[$g_iCurAccount] Then Return
-	;------------------ADDED By RK MOD - START------------------
+	;------------------ADDED By Simple Mod - START------------------
 	If $ichkEnableSuperXP = 1 And $irbSXTraining = 2 Then
 		MainSuperXPHandler()
 		Return
 	EndIf
 	;getArmyTroopCapacity(True, True)
 	If checkForecastPause($currentForecast) = True Then Return
-	;------------------ADDED By RK MOD - END------------------
+	;------------------ADDED By Simple Mod - END------------------
 	ClickP($aAway, 1, 0, "#0000") ;Click Away to prevent any pages on top
 	If IsSearchAttackEnabled() Then
 		If (IsSearchModeActive($DB) And checkCollectors(True, False)) Or IsSearchModeActive($LB) Or IsSearchModeActive($TS) Then
@@ -1116,11 +1103,11 @@ Func AttackMain() ;Main control for attack functions
 				;SetLog("BullyMode: " & $g_abAttackTypeEnable[$TB] & ", Bully Hero: " & BitAND($g_aiAttackUseHeroes[$g_iAtkTBMode], $g_aiSearchHeroWaitEnable[$g_iAtkTBMode], $g_iHeroAvailable) & "|" & $g_aiSearchHeroWaitEnable[$g_iAtkTBMode] & "|" & $g_iHeroAvailable, $COLOR_DEBUG)
 			EndIf
 			_ClanGames()
-			;------------------ADDED By RK MOD - END------------------
+			;------------------ADDED By Simple Mod - END------------------
 			If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
 				ChatbotMessage()
 			EndIf
-			;------------------ADDED By RK MOD - END------------------
+			;------------------ADDED By Simple Mod - END------------------
 			ClickP($aAway, 1, 0, "#0000") ;Click Away to prevent any pages on top
 			PrepareSearch()
 			If Not $g_bRunState Then Return
@@ -1238,24 +1225,24 @@ Func _RunFunction($action)
 			_Sleep($DELAYRUNBOT3)
 		Case "DonateCC"
 			If $g_iActiveDonate And $g_bChkDonate Then
-				If SkipDonateNearFullTroops(True) = False Then DonateCC() ;  was And BalanceDonRec(True) EDITED By RK MOD
+				If SkipDonateNearFullTroops(True) = False Then DonateCC() ;  was And BalanceDonRec(True) EDITED By Simple Mod
 				If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			EndIf
-			;------------------ADDED By RK MOD - START------------------
+			;------------------ADDED By Simple Mod - START------------------
 		Case "SendChat"
 			If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
 				ChatbotMessage()
 			EndIf
-			;------------------ADDED By RK MOD - END------------------
+			;------------------ADDED By Simple Mod - END------------------
 		Case "DonateCC,Train"			
 			If $g_iActiveDonate And $g_bChkDonate Then
-				;------------------REMOVED By RK MOD - START------------------
+				;------------------REMOVED By Simple Mod - START------------------
 				;If $g_bFirstStart Then
 				;	getArmyTroopCapacity(True, False)
 				;	getArmySpellCapacity(False, True)
 				;EndIf
-				;------------------REMOVED By RK MOD - END------------------
-				If SkipDonateNearFullTroops(True) = False Then DonateCC() ;  was And BalanceDonRec(True) EDITED By RK MOD
+				;------------------REMOVED By Simple Mod - END------------------
+				If SkipDonateNearFullTroops(True) = False Then DonateCC() ;  was And BalanceDonRec(True) EDITED By Simple Mod
 			EndIf
 			If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 			If $g_bTrainEnabled Then ; check for training enabled in halt mode
@@ -1269,11 +1256,11 @@ Func _RunFunction($action)
 					If $g_iActualTrainSkip >= $g_iMaxTrainSkip Then
 						$g_iActualTrainSkip = 0
 					EndIf
-					;------------------REMOVED By RK MOD - START------------------
+					;------------------REMOVED By Simple Mod - START------------------
 					;CheckOverviewFullArmy(True, False) ; use true parameter to open train overview window
 					;getArmySpells()
 					;getArmyHeroCount(False, True)
-					;------------------REMOVED By RK MOD - END------------------
+					;------------------REMOVED By Simple Mod - END------------------
 				EndIf
 			Else
 				If $g_bDebugSetlogTrain Then SetLog("Halt mode - training disabled", $COLOR_DEBUG)
@@ -1288,19 +1275,19 @@ Func _RunFunction($action)
 			BoostQueen()
 		Case "BoostWarden"
 			BoostWarden()
-			;------------------CUSTOM LOGIC By RK MOD - START------------------
-		Case "BoostAll" ; EDITED By RK MOD
-			BoostAllWithMagicSpell() ; EDITED By RK MOD
+			;------------------CUSTOM LOGIC By Simple Mod - START------------------
+		Case "BoostAll" ; EDITED By Simple Mod
+			BoostAllWithMagicSpell() ; EDITED By Simple Mod
 		Case "LabCheck"
-			If $g_iChkLabCheck = 0 Then ; ADDED By RK MOD
+			If $g_iChkLabCheck = 0 Then ; ADDED By Simple Mod
 				LabGuiDisplay()
 				_Sleep($DELAYRUNBOT3)
-			EndIf ; ADDED By RK MOD
+			EndIf ; ADDED By Simple Mod
 		Case "RequestCC"
 			If Not $g_bReqCCFirst And BalanceRecRec(True) Then ; MOD move the Request CC Troops function to the beginning of the run loop
 				RequestCC()
 			EndIf
-			;------------------CUSTOM LOGIC By RK MOD - END------------------
+			;------------------CUSTOM LOGIC By Simple Mod - END------------------
 			If _Sleep($DELAYRUNBOT1) = False Then checkMainScreen(False)
 		Case "Laboratory"
 			Laboratory()
@@ -1321,28 +1308,28 @@ Func _RunFunction($action)
 				MainSuggestedUpgradeCode()
 				If $g_bChkBB_DropTrophies Then
 				BuilderBaseReport(True)
-				BB_DropTrophies() ;------------------ADDED By RK MOD - by Chacal GYN - Drop Trophies (ID70) ------------------
+				BB_DropTrophies() ;------------------ADDED By Simple Mod - by Chacal GYN - Drop Trophies (ID70) ------------------
 				; switch back to normal village
 				EndIf
 				SwitchBetweenBases()
 			EndIf
 			_Sleep($DELAYRUNBOT3)
-			;------------------ADDED By RK MOD - START------------------
+			;------------------ADDED By Simple Mod - START------------------
 		Case "SuperXP"
 			MainSuperXPHandler()
 			_Sleep($DELAYRUNBOT3)
 		Case "Humanization"
 			BotHumanization()
 			_Sleep($DELAYRUNBOT3)
-			;------------------ADDED By RK MOD - END------------------
+			;------------------ADDED By Simple Mod - END------------------
 		Case "CollectFreeMagicItems"
 			CollectFreeMagicItems()
-			;------------------ADDED By RK MOD - START------------------
+			;------------------ADDED By Simple Mod - START------------------
 		Case "HeroT"
 			CheckHeroBoost()
 		Case "OneGemBost"
 			OneGemBoost()
-			;------------------ADDED By RK MOD - END------------------
+			;------------------ADDED By Simple Mod - END------------------
 		Case ""
 			SetDebugLog("Function call doesn't support empty string, please review array size", $COLOR_ERROR)
 		Case Else
@@ -1362,14 +1349,14 @@ Func FirstCheck()
 	$g_bFullArmy = False
 	$g_iCommandStop = -1
 
-	;------------------CUSTOM LOGIC By RK MOD - START------------------
+	;------------------CUSTOM LOGIC By Simple Mod - START------------------
 	MainGTFO()
 	MainKickout()
 	VillageReport()
 	
 	If $g_bChkAutoCamp Then 
 	Setlog("Checking camps.", $COLOR_INFO)
-	CheckAutoCamp() ; ADDED By RK MOD(#ID135-)
+	CheckAutoCamp() ; ADDED By Simple Mod(#ID135-)
 	Setlog("Checking camps finished.", $COLOR_INFO)
 
 	EndIf
@@ -1381,7 +1368,7 @@ Func FirstCheck()
 			;	MainSuggestedUpgradeCode()
 			;	If $g_bChkBB_DropTrophies Then
 			;	BuilderBaseReport(True)
-			;	BB_DropTrophies() ;------------------ADDED By RK MOD - by Chacal GYN - Drop Trophies (ID70) ------------------
+			;	BB_DropTrophies() ;------------------ADDED By Simple Mod - by Chacal GYN - Drop Trophies (ID70) ------------------
 			;	; switch back to normal village
 			;	EndIf
 			;	SwitchBetweenBases()
@@ -1390,7 +1377,7 @@ Func FirstCheck()
 	CheckFarmSchedule()
 
 	If $g_bReqCCFirst = 1 Then RequestCC()
-	;------------------CUSTOM LOGIC By RK MOD - END------------------
+	;------------------CUSTOM LOGIC By Simple Mod - END------------------
 	If Not $g_bRunState Then Return
 
 	If $g_bOutOfGold = True And (Number($g_aiCurrentLoot[$eLootGold]) >= Number($g_iTxtRestartGold)) Then ; check if enough gold to begin searching again
@@ -1414,14 +1401,14 @@ Func FirstCheck()
 	If $g_iCommandStop <> 0 And $g_iCommandStop <> 3 Then
 		; VERIFY THE TROOPS AND ATTACK IF IS FULL
 		SetDebugLog("-- FirstCheck on Train --")
-		;------------------ADDED By RK MOD - START------------------
+		;------------------ADDED By Simple Mod - START------------------
 		BoostAllWithMagicSpell()
 		TrainSystem()
-		;------------------ADDED By RK MOD - END------------------
+		;------------------ADDED By Simple Mod - END------------------
 		If Not $g_bRunState Then Return
 		SetDebugLog("Are you ready? " & String($g_bIsFullArmywithHeroesAndSpells))
 		If $g_bIsFullArmywithHeroesAndSpells Then
-			OneGemBoost() ;------------------ADDED By RK MOD-------------------
+			OneGemBoost() ;------------------ADDED By Simple Mod-------------------
 			; Just in case of new profile! or BotDetectFirstTime() failed on Initiate()
 			If (isInsideDiamond($g_aiTownHallPos) = False) Then
 				BotDetectFirstTime()

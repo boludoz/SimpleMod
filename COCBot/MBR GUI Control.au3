@@ -722,7 +722,7 @@ Func GUIControl_WM_NOTIFY($hWind, $iMsg, $wParam, $lParam)
 		Case $g_hTabMain
 			; Handle RichText controls
 			tabMain()
-			;------------------ADDED By RK MOD - START------------------
+			;------------------ADDED By Simple Mod - START------------------
 			If GUICtrlRead($g_hTabMain, 1) = $g_hGUI_MOD And GUICtrlRead($g_hGUI_MOD_TAB, 1) = $g_hGUI_MOD_TAB_ITEM7 Then
 				Local $tTag  = DllStructCreate("hwnd;int;int;int;int;int;int;ptr;int;int;int;int;int;int;int;int;int;int;int;int", $lParam)
 				Local $hFrom = DllStructGetData($tTag, 1)
@@ -739,14 +739,14 @@ Func GUIControl_WM_NOTIFY($hWind, $iMsg, $wParam, $lParam)
 					EndIf
 				EndIf
 			EndIf
-			;------------------ADDED By RK MOD - END------------------
+			;------------------ADDED By Simple Mod - END------------------
 		Case $g_hGUI_VILLAGE_TAB
 			tabVillage()
 		Case $g_hGUI_DONATE_TAB
 			tabDONATE()
 		Case $g_hGUI_ATTACK_TAB
 			tabAttack()
-		;------------------ADDED By RK MOD - START------------------
+		;------------------ADDED By Simple Mod - START------------------
 		Case $g_hGUI_MOD_TAB
 		    ;tabMOD()
 			If GUICtrlRead($g_hGUI_MOD_TAB, 1) = $g_hGUI_MOD_TAB_ITEM7 Then
@@ -783,7 +783,7 @@ Func GUIControl_WM_NOTIFY($hWind, $iMsg, $wParam, $lParam)
 					EndIf
 				EndIf
 			EndIf
-		;------------------ADDED By RK MOD - END------------------
+		;------------------ADDED By Simple Mod - END------------------
 		Case $g_hGUI_SEARCH_TAB
 			tabSEARCH()
 		Case $g_hGUI_DEADBASE_TAB
@@ -794,8 +794,8 @@ Func GUIControl_WM_NOTIFY($hWind, $iMsg, $wParam, $lParam)
 			tabTHSnipe()
 		Case $g_hGUI_BOT_TAB
 			tabBot()
-		Case $g_hGUI_SWITCH_OPTIONS_TAB; ADDED By RK MOD
-			tabSwitchOptions(); ADDED By RK MOD
+		Case $g_hGUI_SWITCH_OPTIONS_TAB; ADDED By Simple Mod
+			tabSwitchOptions(); ADDED By Simple Mod
 		Case Else
 			$bCheckEmbeddedShield = False
 	EndSwitch
@@ -1192,8 +1192,8 @@ Func BotGuiModeToggle()
 			GUICtrlDelete($g_hTabBot)
 			GUICtrlDelete($g_hTabAbout)
 
-			GUICtrlDelete($g_hTabMOD); ADDED By RK MOD
-			GUICtrlDelete($g_hGUI_MOD); ADDED By RK MOD
+			GUICtrlDelete($g_hTabMOD); ADDED By Simple Mod
+			GUICtrlDelete($g_hGUI_MOD); ADDED By Simple Mod
 
 			GUICtrlDelete($g_hGUI_VILLAGE_TAB)
 			GUICtrlDelete($g_hGUI_MISC_TAB)
@@ -1251,7 +1251,7 @@ Func BotGuiModeToggle()
 			tabSEARCH()
 			tabAttack()
 			tabVillage()
-			tabSwitchOptions(); ADDED By RK MOD
+			tabSwitchOptions(); ADDED By Simple Mod
 
 			InitializeMainGUI(True)
 
@@ -1589,7 +1589,7 @@ Func SetRedrawBotWindow($bEnableRedraw, $bCheckRedrawBotWindow = Default, $bForc
 		; set dirty redraw flag
 		$g_bRedrawBotWindow[1] = True
 	EndIf
-	redrawForecast(); ADDED By RK MOD
+	redrawForecast(); ADDED By Simple Mod
 	Return $bWasRedraw
 EndFunc   ;==>SetRedrawBotWindow
 
@@ -1731,8 +1731,8 @@ Func SetTime($bForceUpdate = False)
 		EndIf
 	EndIf
 	$DisplayLoop += 1
-    ;------------------ADDED By RK MOD - START------------------
-    ; Builder Status - RK MOD
+    ;------------------ADDED By Simple Mod - START------------------
+    ; Builder Status - Simple Mod
     Local $sBuilderTime = ""
 	If _DateIsValid($g_sNextBuilderReadyTime) Then
 		_TicksToDay(Int(_DateDiff("s", _NowCalc(), $g_sNextBuilderReadyTime) * 1000), $day, $hour, $min, $sec)
@@ -1771,7 +1771,7 @@ Func SetTime($bForceUpdate = False)
 		$DisplayLoop2 = 0
     EndIf
 	$DisplayLoop2 += 1
-	;------------------ADDED By RK MOD - END------------------
+	;------------------ADDED By Simple Mod - END------------------
 EndFunc   ;==>SetTime
 
 Func tabMain()
@@ -1783,7 +1783,7 @@ Func tabMain()
 			GUISetState(@SW_HIDE, $g_hGUI_ATTACK)
 			GUISetState(@SW_HIDE, $g_hGUI_BOT)
 			GUISetState(@SW_HIDE, $g_hGUI_ABOUT)
-			GUISetState(@SW_HIDE, $g_hGUI_MOD); ADDED By RK MOD
+			GUISetState(@SW_HIDE, $g_hGUI_MOD); ADDED By Simple Mod
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_LOG)
 
 		Case $tabidx = 1 ; Village
@@ -1791,7 +1791,7 @@ Func tabMain()
 			GUISetState(@SW_HIDE, $g_hGUI_ATTACK)
 			GUISetState(@SW_HIDE, $g_hGUI_BOT)
 			GUISetState(@SW_HIDE, $g_hGUI_ABOUT)
-			GUISetState(@SW_HIDE, $g_hGUI_MOD); ADDED By RK MOD
+			GUISetState(@SW_HIDE, $g_hGUI_MOD); ADDED By Simple Mod
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_VILLAGE)
 			tabVillage()
 
@@ -1800,10 +1800,10 @@ Func tabMain()
 			GUISetState(@SW_HIDE, $g_hGUI_VILLAGE)
 			GUISetState(@SW_HIDE, $g_hGUI_BOT)
 			GUISetState(@SW_HIDE, $g_hGUI_ABOUT)
-			GUISetState(@SW_HIDE, $g_hGUI_MOD); ADDED By RK MOD
+			GUISetState(@SW_HIDE, $g_hGUI_MOD); ADDED By Simple Mod
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_ATTACK)
 			tabAttack()
-		;------------------ADDED By RK MOD - START------------------
+		;------------------ADDED By Simple Mod - START------------------
 		Case $tabidx = 3 ; MOD 
 			GUISetState(@SW_HIDE, $g_hGUI_VILLAGE)
 			GUISetState(@SW_HIDE, $g_hGUI_LOG)
@@ -1811,22 +1811,22 @@ Func tabMain()
 			GUISetState(@SW_HIDE, $g_hGUI_BOT)
 			GUISetState(@SW_HIDE, $g_hGUI_ABOUT)
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_MOD)
-		;------------------ADDED By RK MOD - END------------------
-		Case $tabidx = 4 ; Options ; EDITED By RK MOD
+		;------------------ADDED By Simple Mod - END------------------
+		Case $tabidx = 4 ; Options ; EDITED By Simple Mod
 			GUISetState(@SW_HIDE, $g_hGUI_LOG)
 			GUISetState(@SW_HIDE, $g_hGUI_VILLAGE)
 			GUISetState(@SW_HIDE, $g_hGUI_ATTACK)
 			GUISetState(@SW_HIDE, $g_hGUI_ABOUT)
-			GUISetState(@SW_HIDE, $g_hGUI_MOD); ADDED By RK MOD
+			GUISetState(@SW_HIDE, $g_hGUI_MOD); ADDED By Simple Mod
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_BOT)
 			tabBot()
 
-		Case $tabidx = 5 ; About ; EDITED By RK MOD
+		Case $tabidx = 5 ; About ; EDITED By Simple Mod
 			GUISetState(@SW_HIDE, $g_hGUI_LOG)
 			GUISetState(@SW_HIDE, $g_hGUI_VILLAGE)
 			GUISetState(@SW_HIDE, $g_hGUI_ATTACK)
 			GUISetState(@SW_HIDE, $g_hGUI_BOT)
-			GUISetState(@SW_HIDE, $g_hGUI_MOD); ADDED By RK MOD
+			GUISetState(@SW_HIDE, $g_hGUI_MOD); ADDED By Simple Mod
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_ABOUT)
 
 		Case Else
@@ -1834,7 +1834,7 @@ Func tabMain()
 			GUISetState(@SW_HIDE, $g_hGUI_VILLAGE)
 			GUISetState(@SW_HIDE, $g_hGUI_ATTACK)
 			GUISetState(@SW_HIDE, $g_hGUI_BOT)
-			GUISetState(@SW_HIDE, $g_hGUI_MOD); ADDED By RK MOD
+			GUISetState(@SW_HIDE, $g_hGUI_MOD); ADDED By Simple Mod
 	EndSelect
 
 EndFunc   ;==>tabMain
@@ -2003,13 +2003,13 @@ Func tabDONATE()
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_RequestCC)
 			GUISetState(@SW_HIDE, $g_hGUI_DONATECC)
 			GUISetState(@SW_HIDE, $g_hGUI_ScheduleCC)
-			GUISetState(@SW_HIDE,$g_hGUI_GTFOMOD); ADDED By RK MOD
+			GUISetState(@SW_HIDE,$g_hGUI_GTFOMOD); ADDED By Simple Mod
 			GUICtrlSetPos($g_hChkDonate, $tabdonx[2] - 15, $tabdonx[3] - 15)
 
 		Case $tabidx = 1 ; Donate CC
 			GUISetState(@SW_HIDE, $g_hGUI_RequestCC)
 			GUISetState(@SW_HIDE, $g_hGUI_ScheduleCC)
-			GUISetState(@SW_HIDE,$g_hGUI_GTFOMOD); ADDED By RK MOD
+			GUISetState(@SW_HIDE,$g_hGUI_GTFOMOD); ADDED By Simple Mod
 			If GUICtrlRead($g_hChkDonate) = $GUI_CHECKED Then
 				GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_DONATECC)
 				GUICtrlSetState($g_hLblDonateDisabled, $GUI_HIDE)
@@ -2022,7 +2022,7 @@ Func tabDONATE()
 		Case $tabidx = 2 ; Schedule
 			GUISetState(@SW_HIDE, $g_hGUI_RequestCC)
 			GUISetState(@SW_HIDE, $g_hGUI_DONATECC)
-			GUISetState(@SW_HIDE,$g_hGUI_GTFOMOD); ADDED By RK MOD
+			GUISetState(@SW_HIDE,$g_hGUI_GTFOMOD); ADDED By Simple Mod
 			If GUICtrlRead($g_hChkDonate) = $GUI_CHECKED Then
 				GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_ScheduleCC)
 				GUICtrlSetState($g_hLblScheduleDisabled, $GUI_HIDE)
@@ -2031,14 +2031,14 @@ Func tabDONATE()
 				GUICtrlSetState($g_hLblScheduleDisabled, $GUI_SHOW)
 			EndIf
 			GUICtrlSetPos($g_hChkDonate, $tabdonx[2] - 15, $tabdonx[3] - 15)
-	;------------------ADDED By RK MOD - START------------------
+	;------------------ADDED By Simple Mod - START------------------
         Case $tabidx = 3 ; GTFOMOD
 		    GUISetState(@SW_SHOWNOACTIVATE,$g_hGUI_GTFOMOD)
 			GUISetState(@SW_HIDE, $g_hGUI_RequestCC)
 			GUISetState(@SW_HIDE, $g_hGUI_DONATECC)
 			GUISetState(@SW_HIDE, $g_hGUI_ScheduleCC)
 			GUICtrlSetPos($g_hChkDonate, $tabdonx[2] - 15, $tabdonx[3] - 15)
-	;------------------ADDED By RK MOD - END------------------
+	;------------------ADDED By Simple Mod - END------------------
 	EndSelect
 
 EndFunc   ;==>tabDONATE
@@ -2048,30 +2048,30 @@ Func tabBot()
 	Select
 		Case $tabidx = 0 ; Options tab
 			GUISetState(@SW_HIDE, $g_hGUI_STATS)
-			GUISetState(@SW_HIDE, $g_hGUI_SWITCH_OPTIONS); EDITED By RK MOD
+			GUISetState(@SW_HIDE, $g_hGUI_SWITCH_OPTIONS); EDITED By Simple Mod
 			ControlShow("", "", $g_hCmbGUILanguage)
 		Case $tabidx = 1 ; Android tab
 			GUISetState(@SW_HIDE, $g_hGUI_STATS)
-			GUISetState(@SW_HIDE, $g_hGUI_SWITCH_OPTIONS); EDITED By RK MOD
+			GUISetState(@SW_HIDE, $g_hGUI_SWITCH_OPTIONS); EDITED By Simple Mod
 			ControlHide("", "", $g_hCmbGUILanguage)
 		Case $tabidx = 2 ; Debug tab
 			GUISetState(@SW_HIDE, $g_hGUI_STATS)
-			GUISetState(@SW_HIDE, $g_hGUI_SWITCH_OPTIONS); EDITED By RK MOD
+			GUISetState(@SW_HIDE, $g_hGUI_SWITCH_OPTIONS); EDITED By Simple Mod
 			ControlHide("", "", $g_hCmbGUILanguage)
 		Case $tabidx = 3 ; Profiles tab
 			GUISetState(@SW_HIDE, $g_hGUI_STATS)
-			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_SWITCH_OPTIONS); EDITED By RK MOD
+			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_SWITCH_OPTIONS); EDITED By Simple Mod
 			ControlHide("", "", $g_hCmbGUILanguage)
-			tabSwitchOptions(); ADDED By RK MOD
+			tabSwitchOptions(); ADDED By Simple Mod
 		Case $tabidx = 4 ; Stats tab
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_STATS)
-			GUISetState(@SW_HIDE, $g_hGUI_SWITCH_OPTIONS); EDITED By RK MOD
+			GUISetState(@SW_HIDE, $g_hGUI_SWITCH_OPTIONS); EDITED By Simple Mod
 			If Not $g_bRunState Then UpdateMultiStats()
 			ControlHide("", "", $g_hCmbGUILanguage)
 	EndSelect
 EndFunc   ;==>tabBot
 
-;------------------ADDED By RK MOD - START------------------
+;------------------ADDED By Simple Mod - START------------------
 Func tabSwitchOptions()
 	Local $tabidx = GUICtrlRead($g_hGUI_SWITCH_OPTIONS_TAB)
 	Select
@@ -2081,7 +2081,7 @@ Func tabSwitchOptions()
 			GUISetState(@SW_HIDE, $g_hGUI_LOG_SA)
 	EndSelect
 EndFunc   ;==>tabSwitchOptions
-;------------------ADDED By RK MOD - END------------------
+;------------------ADDED By Simple Mod - END------------------
 
 Func tabDeadbase()
 	Local $tabidx = GUICtrlRead($g_hGUI_DEADBASE_TAB)
@@ -2136,12 +2136,12 @@ Func tabTHSnipe()
 
 EndFunc   ;==>tabTHSnipe
 
-;------------------ADDED By RK MOD - START------------------
+;------------------ADDED By Simple Mod - START------------------
 Func tabMOD()
 	Local $tabid = GUICtrlRead($g_hGUI_MOD_TAB)
 	CreateMODtab()
 EndFunc   ;==>tabMOD
-;------------------ADDED By RK MOD - END------------------
+;------------------ADDED By Simple Mod - END------------------
 ;---------------------------------------------------
 ; Extra Functions used on GUI Control
 ;---------------------------------------------------
@@ -2159,7 +2159,7 @@ Func Bind_ImageList($nCtrl, ByRef $hImageList)
 	Switch $nCtrl
 		Case $g_hTabMain
 			; the icons for main tab
-			Local $aIconIndex = [$eIcnHourGlass, $eIcnTH12, $eIcnAttack, $eIcnRK, $eIcnGUI, $eIcnInfo]; EDITED By RK MOD
+			Local $aIconIndex = [$eIcnHourGlass, $eIcnTH12, $eIcnAttack, $eIcnRK, $eIcnGUI, $eIcnInfo]; EDITED By Simple Mod
 
 		Case $g_hGUI_VILLAGE_TAB
 			; the icons for village tab
@@ -2170,7 +2170,7 @@ Func Bind_ImageList($nCtrl, ByRef $hImageList)
 			Local $aIconIndex = [$eIcnTrain, $eIcnGem, $eIcnReOrder, $eIcnOptions]
 
 		Case $g_hGUI_MISC_TAB
-			Local $aIconIndex = [$eIcnTH1, $eIcnBuilderHall, $eIcnClanGames]; EDITED By RK MOD
+			Local $aIconIndex = [$eIcnTH1, $eIcnBuilderHall, $eIcnClanGames]; EDITED By Simple Mod
 
 		Case $g_hGUI_DONATE_TAB
 			; the icons for donate tab

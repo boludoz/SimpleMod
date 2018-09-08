@@ -85,7 +85,7 @@ Func WaitForClouds()
 		$iSearchTime = __TimerDiff($hMinuteTimer) / 60000 ;get time since minute timer start in minutes
 		If $iSearchTime >= $iLastTime + 1 Then
 			SetLog("Cloud wait time " & StringFormat("%.1f", $iSearchTime) & " minute(s)", $COLOR_INFO)
-			;Return Home by Time - by RK MOD
+			;Return Home by Time - by Simple Mod
 			If $g_bReturnTimerEnable = True Then
 				If $iSearchTime > $g_iTxtReturnTimer Then
 				    SetLog("Return home by time due to the long wait in the cloud", $COLOR_INFO)

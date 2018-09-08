@@ -231,13 +231,13 @@ Func getBarracksNewTroopQuantity($x_start, $y_start, $bNeedCapture = True) ;  ->
 	Return getOcrAndCapture("coc-newarmy", $x_start, $y_start, 45, 18, True, False, $bNeedCapture)
 EndFunc   ;==>getBarracksNewTroopQuantity
 
-;------------------REMOVED By RK MOD (#ID135-) - START------------------
+;------------------REMOVED By Simple Mod (#ID135-) - START------------------
 ;Func getArmyCapacityOnTrainTroops($x_start, $y_start) ;  -> Gets quantity of troops in army Window
 ;	Return getOcrAndCapture("coc-NewCapacity", $x_start, $y_start, 67, 14, True)
 ;EndFunc   ;==>getArmyCapacityOnTrainTroops
-;------------------REMOVED By RK MOD - END------------------
+;------------------REMOVED By Simple Mod - END------------------
 
-;------------------CUSTOM LOGIC By RK MOD - START------------------
+;------------------CUSTOM LOGIC By Simple Mod - START------------------
 Func getArmyCapacityOnTrainTroops($x_start, $y_start)
 	If $g_bChkAutoCamp = True Then
 		Return _getArmyCapacityOnTrainTroops($x_start, $y_start)
@@ -245,7 +245,7 @@ Func getArmyCapacityOnTrainTroops($x_start, $y_start)
 		Return getOcrAndCapture("coc-NewCapacity", $x_start, $y_start, 67, 14, True)
 	Endif
 EndFunc   ;==>getArmyCapacityOnTrainTroops
-;------------------CUSTOM LOGIC By RK MOD - END------------------
+;------------------CUSTOM LOGIC By Simple Mod - END------------------
 
 Func getQueueTroopsQuantity($x_start, $y_start) ;  -> Gets quantity of troops in Queue in Train Tab
 	Return StringReplace(getOcrAndCapture("coc-qqtroop", $x_start, $y_start, 71, 22, True), "b", "")

@@ -13,7 +13,7 @@
 ; Example .......: No
 ; ===============================================================================================================================
 #include-once
-; RK MOD TODO NEED TO MARGE THIS FILE CAREFULLY
+; Simple Mod TODO NEED TO MARGE THIS FILE CAREFULLY
 Global $g_sLastModversion = "" ;latest version from GIT
 Global $g_sLastModmessage = "" ;message for last version
 Global $g_sOldModversmessage = "" ;warning message for old bot
@@ -22,19 +22,19 @@ Func CheckVersion()
 	If $g_bCheckVersion Then
 		CheckVersionHTML()
 		If $g_sLastModversion = "" Then
-			SetLog("WE CANNOT OBTAIN RK MOD VERSION AT THIS TIME", $COLOR_ACTION)
+			SetLog("WE CANNOT OBTAIN Simple Mod VERSION AT THIS TIME", $COLOR_ACTION)
 			CheckModVersion()
 		ElseIf VersionNumFromVersionTXT($g_sModversion) < VersionNumFromVersionTXT($g_sLastModversion) Then
-			SetLog("WARNING, YOUR RK MOD VERSION (" & $g_sModversion & ") IS OUT OF DATE.", $COLOR_ERROR)
+			SetLog("WARNING, YOUR Simple Mod VERSION (" & $g_sModversion & ") IS OUT OF DATE.", $COLOR_ERROR)
 			SetLog("CHIEF, PLEASE DOWNLOAD THE LATEST (" & $g_sLastModversion & ")", $COLOR_ERROR)
 			SetLog("FROM https://MyBot.run               ", $COLOR_ERROR)
 			SetLog(" ")
 			_PrintLogVersion($g_sOldModversmessage)
 			CheckModVersion()
 		ElseIf VersionNumFromVersionTXT($g_sModversion) > VersionNumFromVersionTXT($g_sLastModversion) Then
-			SetLog("YOU ARE USING A FUTURE VERSION OF RK MOD CHIEF!", $COLOR_SUCCESS)
-			SetLog("YOUR RK MOD VERSION: " & $g_sModversion, $COLOR_SUCCESS)
-			SetLog("OFFICIAL RK MOD VERSION: " & $g_sLastModversion, $COLOR_SUCCESS)
+			SetLog("YOU ARE USING A FUTURE VERSION OF Simple Mod CHIEF!", $COLOR_SUCCESS)
+			SetLog("YOUR Simple Mod VERSION: " & $g_sModversion, $COLOR_SUCCESS)
+			SetLog("OFFICIAL Simple Mod VERSION: " & $g_sLastModversion, $COLOR_SUCCESS)
 			SetLog(" ")
 		Else
 			SetLog("WELCOME CHIEF, YOU HAVE THE LATEST MOD VERSION", $COLOR_SUCCESS)
@@ -201,7 +201,7 @@ Func CheckModVersion()
 			Return False
 		EndIf
 	Else
-		MsgBox($MB_ICONINFORMATION, "Notify", "You Are Using The Latest Version Of by RK MOD" & @CRLF & _
+		MsgBox($MB_ICONINFORMATION, "Notify", "You Are Using The Latest Version Of by Simple Mod" & @CRLF & _
 				"Thanks..", 15) ;15s timeout
 	EndIf
 EndFunc   ;==>CheckModVersion

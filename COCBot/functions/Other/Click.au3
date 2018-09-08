@@ -16,7 +16,7 @@
 #include-once
 #include <WinAPISys.au3>
 
-Func FClick($x, $y, $times = 1, $speed = 0, $debugtxt = "") ; EDITED By RK MOD (Called from BotHumanization.au3)
+Func FClick($x, $y, $times = 1, $speed = 0, $debugtxt = "") ; EDITED By Simple Mod (Called from BotHumanization.au3)
 	If $g_bDebugClick Or TestCapture() Then
 		Local $txt = _DecodeDebug($debugtxt)
 		SetLog("Click " & $x & "," & $y & "," & $times & "," & $speed & " " & $debugtxt & $txt, $COLOR_ACTION, "Verdana", "7.5", 0)
@@ -109,7 +109,7 @@ Func BuildingClickP($point, $debugtxt = "")
 	Return BuildingClick($point[0], $point[1], $debugtxt)
 EndFunc   ;==>BuildingClickP
 
-Func FPureClick($x, $y, $times = 1, $speed = 0, $debugtxt = "") ; EDITED By RK MOD (Called from BotHumanization.au3)
+Func FPureClick($x, $y, $times = 1, $speed = 0, $debugtxt = "") ; EDITED By Simple Mod (Called from BotHumanization.au3)
 	If $g_bDebugClick Then
 		Local $txt = _DecodeDebug($debugtxt)
 		SetLog("PureClick " & $x & "," & $y & "," & $times & "," & $speed & " " & $debugtxt & $txt, $COLOR_ACTION, "Verdana", "7.5", 0)
@@ -143,7 +143,7 @@ Func PureClickP($point, $howMuch = 1, $speed = 0, $debugtxt = "")
 	PureClick($point[0], $point[1], $howMuch, $speed, $debugtxt)
 EndFunc   ;==>PureClickP
 
-Func FGemClick($x, $y, $times = 1, $speed = 0, $debugtxt = "") ; EDITED By RK MOD (Called from BotHumanization.au3)
+Func FGemClick($x, $y, $times = 1, $speed = 0, $debugtxt = "") ; EDITED By Simple Mod (Called from BotHumanization.au3)
 	If $g_bDebugClick Then
 		Local $txt = _DecodeDebug($debugtxt)
 		SetLog("GemClick " & $x & "," & $y & "," & $times & "," & $speed & " " & $debugtxt & $txt, $COLOR_ACTION, "Verdana", "7.5", 0)

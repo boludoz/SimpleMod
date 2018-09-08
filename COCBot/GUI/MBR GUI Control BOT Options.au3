@@ -215,12 +215,12 @@ Func chkSwitchAcc()
 		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_UNCHECKED)
 		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_DISABLE)
 		OnlySCIDAccounts()
-		;------------------ADDED By RK MOD - START------------------
+		;------------------ADDED By Simple Mod - START------------------
 		For $i = 0 To 7
 			GUICtrlSetState($g_ahChkSetFarm[$i], $GUI_ENABLE)
 			_chkSetFarmSchedule($i)
 		Next
-		;------------------ADDED By RK MOD - END------------------
+		;------------------ADDED By Simple Mod - END------------------
 	Else
 		releaseSwitchAccountMutex()
 		For $i = $g_hCmbTotalAccount To $g_ahChkDonate[7]
@@ -228,13 +228,13 @@ Func chkSwitchAcc()
 		Next
 		GUICtrlSetState($g_hChkOnlySCIDAccounts, $GUI_ENABLE)
 		OnlySCIDAccounts()
-		;------------------ADDED By RK MOD - START------------------
+		;------------------ADDED By Simple Mod - START------------------
 		For $i = 0 To 7
 			For $j = $g_ahChkSetFarm[$i] To $g_ahCmbTime2[$i]
 				GUICtrlSetState($j, $GUI_DISABLE)
 			Next
 		Next
-		;------------------ADDED By RK MOD - END------------------
+		;------------------ADDED By Simple Mod - END------------------
 	EndIf
 EndFunc   ;==>chkSwitchAcc
 
@@ -301,13 +301,13 @@ Func _cmbSwitchAcc($bReadSaveConfig = True)
 		GUICtrlSetState($i, (($bEnable) ? $GUI_ENABLE : $GUI_DISABLE))
 	Next
 	cmbTotalAcc()
-	;------------------ADDED By RK MOD - START------------------
+	;------------------ADDED By Simple Mod - START------------------
 	For $i = 0 To 7
 		For $j = $g_ahChkSetFarm[$i] To $g_ahCmbTime2[$i]
 			GUICtrlSetState($j, (($bEnable) ? $GUI_ENABLE : $GUI_DISABLE))
 		Next
 	Next
-	;------------------ADDED By RK MOD - END------------------
+	;------------------ADDED By Simple Mod - END------------------
 	$s_bActive = False
 EndFunc   ;==>_cmbSwitchAcc
 
@@ -316,20 +316,20 @@ Func cmbTotalAcc()
 	For $i = 0 To 7
 		If $iCmbTotalAcc >= 0 And $i <= $iCmbTotalAcc Then
 			_GUI_Value_STATE("SHOW", $g_ahChkAccount[$i] & "#" & $g_ahCmbProfile[$i] & "#" & $g_ahChkDonate[$i])
-			;------------------ADDED By RK MOD - START------------------
+			;------------------ADDED By Simple Mod - START------------------
 			For $j = $g_ahChkSetFarm[$i] To $g_ahCmbTime2[$i]
 				GUICtrlSetState($j, $GUI_SHOW)
 			Next
 			_chkSetFarmSchedule($i)
-			;------------------ADDED By RK MOD - END------------------
+			;------------------ADDED By Simple Mod - END------------------
 		ElseIf $i > $iCmbTotalAcc Then
 			GUICtrlSetState($g_ahChkAccount[$i], $GUI_UNCHECKED)
 			_GUI_Value_STATE("HIDE", $g_ahChkAccount[$i] & "#" & $g_ahCmbProfile[$i] & "#" & $g_ahChkDonate[$i])
-			;------------------ADDED By RK MOD - START------------------
+			;------------------ADDED By Simple Mod - START------------------
 			For $j = $g_ahChkSetFarm[$i] To $g_ahCmbTime2[$i]
 				GUICtrlSetState($j, $GUI_HIDE)
 			Next
-			;------------------ADDED By RK MOD - END------------------
+			;------------------ADDED By Simple Mod - END------------------
 		EndIf
 		chkAccount($i)
 	Next
@@ -419,7 +419,7 @@ Func chkAccSwitchMode()
 	EndIf
 EndFunc   ;==>chkAccSwitchMode
 
-;------------------ADDED By RK MOD - START------------------
+;------------------ADDED By Simple Mod - START------------------
 ; ========== FarmSchedule ============
 Func chkSetFarmSchedule()
 	For $i = 0 To UBound($g_ahChkSetFarm) - 1
@@ -491,7 +491,7 @@ Func _cmbCriteria2($i)
 			GUICtrlSetState($g_ahCmbTime2[$i], $GUI_SHOW + $GUI_ENABLE)
 	EndSwitch
 EndFunc   ;==>_cmbCriteria2
-;------------------ADDED By RK MOD - END------------------
+;------------------ADDED By Simple Mod - END------------------
 ; #DEBUG FUNCTION# ==============================================================================================================
 
 Func chkDebugSetLog()
@@ -1245,7 +1245,7 @@ Func btnConsoleWindow()
 	ConsoleWindow()
 EndFunc   ;==>btnConsoleWindow
 
-;------------------ADDED By RK MOD - START------------------
+;------------------ADDED By Simple Mod - START------------------
 Func chkLabCheck()
 	If GUICtrlRead($g_hChkLabCheck) = $GUI_CHECKED Then
 	$g_iChkLabCheck = 1		
@@ -1253,7 +1253,7 @@ Func chkLabCheck()
 	$g_iChkLabCheck = 0		
 	EndIf
 EndFunc ;==>chkLabCheck
-;------------------ADDED By RK MOD - END------------------
+;------------------ADDED By Simple Mod - END------------------
 
 Func chkSQLite()
 	$g_bUseStatistics = GUICtrlRead($g_hChkSqlite) = $GUI_CHECKED

@@ -42,7 +42,7 @@ Func CreateSplashScreen($iSteps = Default)
 
 	Local $sSplashImg = $g_sLogoPath
 	Local $hImage, $iX, $iY
-	Local $iT = 0 ; Top of logo (additional space) was 20 White On Top Of Colorfull image does not look good. EDITED By RK MOD
+	Local $iT = 0 ; Top of logo (additional space) was 20 White On Top Of Colorfull image does not look good. EDITED By Simple Mod
 	Local $iB = 10 ; Bottom of logo (additional space)
 
 	Switch $g_iGuiMode ; in Mini GIU or GUI less mode we have less steps

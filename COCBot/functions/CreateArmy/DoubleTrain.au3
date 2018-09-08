@@ -207,7 +207,7 @@ Func TrainFullQueue($bSpellOnly = False, $bSetlog = True)
 	$g_bIsFullArmywithHeroesAndSpells = True
 
 	TrainUsingWhatToTrain($ToReturn, $bSpellOnly)
-	If _Sleep(1000) Then Return ; was _Sleep($bSpellOnly ? 1000 : 500) EDITED By RK MOD
+	If _Sleep(1000) Then Return ; was _Sleep($bSpellOnly ? 1000 : 500) EDITED By Simple Mod
 
 	$g_bIsFullArmywithHeroesAndSpells = $bIsFullArmywithHeroesAndSpells
 
@@ -268,11 +268,11 @@ Func DoubleQuickTrain($bSetlog, $bDebug)
 	If Not $bDoubleTrainTroop Or Not $bDoubleTrainSpell Then
 		OpenQuickTrainTab(False, "DoubleQuickTrain()")
 		If _Sleep(500) Then Return
-		;------------------CUSTOM LOGIC By RK MOD - START------------------
+		;------------------CUSTOM LOGIC By Simple Mod - START------------------
 		Local $iMultiClick = 1
 		If $g_bChkMultiClick Then $iMultiClick = _Max(Ceiling(($SpellCamp[1] * 2 - $SpellCamp[0]) / 2), 1)
 		TrainArmyNumber($g_bQuickTrainArmy, $iMultiClick)
-		;------------------CUSTOM LOGIC By RK MOD - END------------------
+		;------------------CUSTOM LOGIC By Simple Mod - END------------------
 	Else
 		If $bSetlog Then SetLog("Full queue, skip Double Quick Train")
 	EndIf

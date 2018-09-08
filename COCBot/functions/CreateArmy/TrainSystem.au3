@@ -57,7 +57,7 @@ Func TrainSystem()
 	If Not $g_bRunState Then Return
 
 
-	;SmartTrain - RK MOD (Demen)
+	;SmartTrain - Simple Mod (Demen)
 	If $g_bChkSmartTrain Then
 		SmartTrain()
 		ResetVariables("donated")
@@ -261,7 +261,7 @@ Func CheckIfArmyIsReady()
 	If _Sleep(250) Then Return
 
 	CheckArmyCamp(False, False, False, True)
-	CheckWardenMode(); ADDED By RK MOD
+	CheckWardenMode(); ADDED By Simple Mod
 
 	If $g_bDebugSetlogTrain Then
 		SetLog(" - $g_CurrentCampUtilization : " & $g_CurrentCampUtilization)
@@ -841,7 +841,7 @@ Func RemoveExtraTroops($toRemove)
 			EndIf
 		EndIf
 
-		If Not OpenArmyTab(True, "RemoveExtraTroops()") Then Return ; was False EDITED By RK MOD
+		If Not OpenArmyTab(True, "RemoveExtraTroops()") Then Return ; was False EDITED By Simple Mod
 		$toRemove = WhatToTrain(True, False)
 
 		$rGetSlotNumber = GetSlotNumber() ; Get all available Slot numbers with troops assigned on them
@@ -1127,7 +1127,7 @@ Func GetSlotNumber($bSpells = False)
 EndFunc   ;==>GetSlotNumber
 
 Func WhatToTrain($ReturnExtraTroopsOnly = False, $bSetLog = True)
-	OpenArmyTab(True, "WhatToTrain()"); was False EDITED By RK MOD
+	OpenArmyTab(True, "WhatToTrain()"); was False EDITED By Simple Mod
 	Local $ToReturn[1][2] = [["Arch", 0]]
 
 	If $g_bIsFullArmywithHeroesAndSpells And Not $ReturnExtraTroopsOnly Then
@@ -1539,7 +1539,7 @@ Func ResetVariables($sArmyType = "")
 
 EndFunc   ;==>ResetVariables
 
-;------------------CUSTOM LOGIC By RK MOD - START------------------
+;------------------CUSTOM LOGIC By Simple Mod - START------------------
 Func TrainArmyNumber($Army, $iMultiClick = 5)
 
 	Local $a_TrainArmy[3][4] = [[784, 368, 0x6fb830, 10], [784, 485, 0x72bb2f, 10], [784, 602, 0x71ba2f, 10]]
@@ -1566,7 +1566,7 @@ Func TrainArmyNumber($Army, $iMultiClick = 5)
 	Next
 
 EndFunc   ;==>TrainArmyNumber
-;------------------CUSTOM LOGIC By RK MOD - END------------------
+;------------------CUSTOM LOGIC By Simple Mod - END------------------
 
 Func DeleteQueued($sArmyTypeQueued, $iOffsetQueued = 802)
 
@@ -1912,7 +1912,7 @@ Func IIf($Condition, $IfTrue, $IfFalse)
 	EndIf
 EndFunc   ;==>IIf
 
-;------------------REMOVED By RK MOD Using Own _ArryRemoveBlanks From RK ArrayFunctions.au3 - START------------------
+;------------------REMOVED By Simple Mod Using Own _ArryRemoveBlanks From RK ArrayFunctions.au3 - START------------------
 ;Func _ArryRemoveBlanks(ByRef $aArray)
 ;	Local $iCounter = 0
 ;	For $i = 0 To UBound($aArray) - 1
@@ -1923,7 +1923,7 @@ EndFunc   ;==>IIf
 ;	Next
 ;	ReDim $aArray[$iCounter]
 ;EndFunc   ;==>_ArryRemoveBlanks
-;------------------REMOVED By RK MOD - END------------------
+;------------------REMOVED By Simple Mod - END------------------
 
 Func ValidateSearchArmyResult($aSearchResult, $iIndex = 0)
 	If IsArray($aSearchResult) Then

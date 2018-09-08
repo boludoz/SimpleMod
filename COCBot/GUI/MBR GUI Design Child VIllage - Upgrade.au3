@@ -49,13 +49,13 @@ Global $g_hTxtSmartMinGold = 0, $g_hTxtSmartMinElixir = 0, $g_hTxtSmartMinDark =
 Global $g_hChkResourcesToIgnore[3] = [0, 0, 0]
 Global $g_hChkUpgradesToIgnore[13] = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 
-; Upgrade Management - RK MOD
+; Upgrade Management - Simple Mod
 Global $g_hChkUpgradeAllOrNone = 0, $g_hChkUpgradeRepeatAllOrNone = 0, $g_hChkUpdateNewUpgradesOnly = 0, $g_hBtnTop = 0, $g_hBtnBottom = 0, $g_hBtnUp = 0, $g_hBtnDown = 0
 
-;Wall/Building Upgrading Priority - by RK MOD
+;Wall/Building Upgrading Priority - by Simple Mod
 Global $g_hChkUpgrPriority = 0, $g_hCmbUpgrdPriority = 0
 
-; Priority System - by RK MOD
+; Priority System - by Simple Mod
 Global $g_hChkPrioritySystem = 0, $g_hCmbPrioritySystem = 0
 
 Func CreateVillageUpgrade()
@@ -146,7 +146,7 @@ Func CreateLaboratorySubTab()
 			GUICtrlSetOnEvent(-1, "ResetLabUpgradeTime")
 		$g_hPicLabUpgrade = _GUICtrlCreateIcon($g_sLibIconPath, $eIcnBlank, $x + 330, $y, 64, 64)
 			GUICtrlSetState(-1, $GUI_HIDE)
-		; Priority System - by RK MOD  
+		; Priority System - by Simple Mod  
 		$g_hChkPrioritySystem = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Laboratory", "ChkPrioritySystem_01", "Priority System") & ": ", $x + 85, $y + 95, -1, -1)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Laboratory", "ChkPrioritySystem_02", "Enable this function to select resource priorities"))
 			GUICtrlSetOnEvent(-1, "chkPrioritySystem")
@@ -236,7 +236,7 @@ Func CreateBuildingsSubTab()
 	; table header
 	$y -= 7
 
-	; Upgrade Management RK MOD
+	; Upgrade Management Simple Mod
 		$g_hChkUpgradeAllOrNone = GUICtrlCreateCheckbox("", $x + 4, $y, 13, 13, BitOR($BS_PUSHLIKE, $BS_ICON))
 			GUICtrlSetImage(-1, $g_sLibIconPath, $eIcnGoldStar, 0)
 			Local $sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Buildings",  "ChkUpgradeAllOrNone", "This button will clear or set the entire column of checkboxes")
@@ -318,7 +318,7 @@ Func CreateBuildingsSubTab()
 							   GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Buildings", "TxtUpgrMinDark_Info_02", "Set this value higher if you want make war troops."))
 			GUICtrlSetLimit(-1, 6)
 
-	; Upgrade Management - RK MOD
+	; Upgrade Management - Simple Mod
 		$g_hChkUpdateNewUpgradesOnly = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Buildings", "ChkUpdateNewUpgradesOnly_Info_01", "New Only"), $x + 141, $y + 15, -1, -1)
 			GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Upgrade_Buildings", "ChkUpdateNewUpgradesOnly_Info_02", "Update NEW upgrades only for speed"))
 			GUICtrlSetOnEvent(-1, "chkUpdateNewUpgradesOnly")
@@ -392,7 +392,7 @@ Func CreateWallsSubTab()
 			GUICtrlSetState(-1, $GUI_ENABLE)
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			GUICtrlSetOnEvent(-1, "chkSaveWallBldr")
-		;Wall/Building Upgrading Priority by RK MOD
+		;Wall/Building Upgrading Priority by Simple Mod
 		$g_hChkUpgrPriority = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Walls", "ChkUpgrPriority", "Upgrading Priority") & ": ", $x + 18, $y + 95, -1, -1)
 			GUICtrlSetOnEvent(-1, "chkUpgrPriority")
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Upgrade_Walls", "UpgrPriority_Info_01", "Enable this function to select update priorities"))

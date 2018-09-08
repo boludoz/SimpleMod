@@ -35,13 +35,13 @@ Func waitMainScreen() ;Waits for main screen to popup
 			EndIf
 			getBSPos() ; Update $g_hAndroidWindow and Android Window Positions
 		EndIf
-		;------------------CUSTOM LOGIC By RK MOD - START------------------
+		;------------------CUSTOM LOGIC By Simple Mod - START------------------
 		If Mod($i, 2) = 1 Then
 			If QuickMis("BC1", $g_sImgGoogleSelectAccount, 350, 0, 350 + 88, 0 + 386) Then
 				ClickP($aAway, 1, 0, "#0161")
 			EndIf
 		EndIf
-		;------------------CUSTOM LOGIC By RK MOD - END------------------
+		;------------------CUSTOM LOGIC By Simple Mod - END------------------
 		_CaptureRegion()
 		If _CheckPixel($aIsMain, $g_bNoCapturePixel) Then ;Checks for Main Screen
 			If $g_bDebugSetlog Then SetDebugLog("Screen cleared, WaitMainScreen exit", $COLOR_DEBUG)
