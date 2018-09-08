@@ -125,7 +125,7 @@ Global $g_iTotalAttackSlot = 10, $g_bDraggedAttackBar = False ; flag if AttackBa
 ;Global $g_sClanResponses0
 ;Global $g_iChkGlobalMessages1 = ""
 ;Global $g_iChkGlobalMessages2 = ""
-;Global $g_sGlobalChatLastMsgSentTime = ""
+Global $g_sGlobalChatLastMsgSentTime = ""
 ;Global $glb1
 ;Global $glb2
 ;Global $cResp
@@ -280,5 +280,21 @@ Global $g_iLabCost[32][10] = [ _
 
 GLobal $TroopsQueueFull = False
 
+; ================================================== ; Attack - by Simple Mod  ======================================== ;
+
+; GUI
+Global $g_iGroup1  = 0
+Global $g_iSliderLV = 0
+Global $g_iSliderDB = 0
+Global $g_iLabel1  = 0
+Global $g_iLabel2  = 0
+Global $g_iGroup2  = 0
+Global $g_bRadioCVSwait1  = False
+Global $g_bRadioCVSwait2  = False
+Global $g_bRadioCVSwait3  = False
+Global $g_iSliderWaitCVS = 0
+Global $g_iLabel3  = 0
+; FUNCS
+Global $g_iMultWaitCVS = 4
 ; ======================== RK CONFIG ============================================================================= ;
 Global $g_sModConfigPath = ""

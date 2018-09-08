@@ -95,3 +95,6 @@
 #include "Smart Train\CheckQueue.au3"
 #include "Smart Train\CheckTrainingTab.au3"
 #include "Smart Train\CheckPreciseArmyCamp.au3"
+
+;Argentino attack
+#include "Attack.au3"

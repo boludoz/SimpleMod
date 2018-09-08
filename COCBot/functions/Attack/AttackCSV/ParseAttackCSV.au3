@@ -407,9 +407,11 @@ Func ParseAttackCSV($debug = False)
 						Local $sleep1, $sleep2, $sleepvect
 						$sleepvect = StringSplit($value1, "-", 2)
 						If UBound($sleepvect) > 1 Then
+						$sleepvect[0]
 							If Int($sleepvect[0]) > 0 And Int($sleepvect[1]) > 0 Then
-								$sleep1 = Int($sleepvect[0])
-								$sleep2 = Int($sleepvect[1])
+								$sleep1 = Int($sleepvect[0] / $g_iMultWaitCVS)
+								$sleep2 = Int($sleepvect[1] / $g_iMultWaitCVS)
+								Setlog("Wait time: " & $sleep1 & " | " & $sleep2, $COLOR_INFO)
 							Else
 								$sleep1 = 1
 								$sleep2 = 1

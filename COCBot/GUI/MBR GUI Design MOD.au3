@@ -64,12 +64,26 @@ Global $g_hChkGoldSwitchMax = 0, $g_hCmbGoldMaxProfile = 0, $g_hTxtMaxGoldAmount
 		$g_hChkDESwitchMax = 0, $g_hCmbDEMaxProfile = 0, $g_hTxtMaxDEAmount = 0, $g_hChkDESwitchMin = 0, $g_hCmbDEMinProfile = 0, $g_hTxtMinDEAmount = 0, _
 		$g_hChkTrophySwitchMax = 0, $g_hCmbTrophyMaxProfile = 0, $g_hTxtMaxTrophyAmount = 0, $g_hChkTrophySwitchMin = 0, $g_hCmbTrophyMinProfile = 0, $g_hTxtMinTrophyAmount = 0
 
+; ================================================== Attack PART ============================================ ;
+
+Global $g_hGroup1  = 0
+Global $g_hSliderLV = 0
+Global $g_hSliderDB = 0
+Global $g_hLabel1  = 0
+Global $g_hLabel2  = 0
+Global $g_hGroup2  = 0
+Global $g_hRadioCVSwait1  = 0
+Global $g_hRadioCVSwait2  = 0
+Global $g_hRadioCVSwait3  = 0
+Global $g_hSliderWaitCVS = 0
+Global $g_hLabel3  = 0
+
 ; Profiles
 
 Global $g_hGUI_MOD = 0
 
 
-Global $g_hGUI_MOD_TAB = 0, $g_hGUI_MOD_TAB_ITEM1 = 0, $g_hGUI_MOD_TAB_ITEM2 = 0, $g_hGUI_MOD_TAB_ITEM3 = 0, $g_hGUI_MOD_TAB_ITEM6 = 0, $g_hGUI_MOD_TAB_ITEM7 = 0, $g_hGUI_MOD_TAB_ITEM8 = 0, $g_hGUI_MOD_TAB_ITEM9 = 0
+Global $g_hGUI_MOD_TAB = 0, $g_hGUI_MOD_TAB_ITEM0 = 0, $g_hGUI_MOD_TAB_ITEM1 = 0, $g_hGUI_MOD_TAB_ITEM2 = 0, $g_hGUI_MOD_TAB_ITEM3 = 0, $g_hGUI_MOD_TAB_ITEM6 = 0, $g_hGUI_MOD_TAB_ITEM7 = 0, $g_hGUI_MOD_TAB_ITEM8 = 0, $g_hGUI_MOD_TAB_ITEM9 = 0
 
 Func CreateMODTab()
 
@@ -77,6 +91,8 @@ Func CreateMODTab()
 
 	GUISwitch($g_hGUI_MOD)
 	$g_hGUI_MOD_TAB = GUICtrlCreateTab(0, 0, $g_iSizeWGrpTab1, $g_iSizeHGrpTab1, BitOR($TCS_SINGLELINE, $TCS_RIGHTJUSTIFY))
+	$g_hGUI_MOD_TAB_ITEM0 = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_08_STab_00", "Attack"))
+	TabItem0()
 	$g_hGUI_MOD_TAB_ITEM1 = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_08_STab_01", "Humanization"))
 	TabItem1()
 	$g_hGUI_MOD_TAB_ITEM2 = GUICtrlCreateTabItem(GetTranslatedFileIni("MBR Main GUI", "Tab_05_STab_01", "War Preparation"))
@@ -94,6 +110,52 @@ Func CreateMODTab()
 	GUICtrlCreateTabItem("")
 
 EndFunc   ;==>CreateMODTab
+
+Func TabItem0()
+AttackRead()
+Local $x = 25, $y = 45
+	
+#Region ### START Koda GUI section ### Form=
+GUISetFont(8, 400, 0, "Tahoma")
+$g_hGroup1 = GUICtrlCreateGroup("CVS: Deploy LV/DB", 40, 80, 201, 113)
+$g_hSliderLV = GUICtrlCreateSlider(48, 112, 150, 29)
+GUICtrlSetLimit(-1, 100, -100)
+$g_hSliderDB = GUICtrlCreateSlider(48, 160, 150, 29)
+GUICtrlSetLimit(-1, 100, -100)
+$g_hLabel1 = GUICtrlCreateLabel("Live base", 48, 96, 51, 18)
+$g_hLabel2 = GUICtrlCreateLabel("Dead base", 48, 144, 56, 18)
+GUICtrlCreateGroup("", -99, -99, 1, 1)
+$g_hGroup2 = GUICtrlCreateGroup("CVS: Fast attack", 256, 80, 185, 113)
+$g_hRadioCVSwait1 = GUICtrlCreateRadio("No wait", 272, 104, 65, 17)
+            GUICtrlSetState(-1, $g_bRadioCVSwait1)
+            GUICtrlSetOnEvent(-1, "AttackGUICheckbox")
+
+$g_hRadioCVSwait2 = GUICtrlCreateRadio("Divide", 344, 104, 73, 17)
+            GUICtrlSetState(-1, $g_bRadioCVSwait2)
+            GUICtrlSetOnEvent(-1, "AttackGUICheckbox")
+
+$g_hSliderWaitCVS = GUICtrlCreateSlider(272, 152, 153, 25)
+            GUICtrlSetState(-1, $g_iSliderWaitCVS)
+			_GUICtrlSlider_SetTipSide(-1, $TBTS_BOTTOM)
+			_GUICtrlSlider_SetTicFreq(-1, 1)
+			GUICtrlSetLimit(-1, 18, 0)
+			GUICtrlSetData(-1, 5)
+            GUICtrlSetOnEvent(-1, "AttackGUICheckbox")
+
+GUICtrlSetLimit(-1, 100, -100)
+$g_hRadioCVSwait3 = GUICtrlCreateRadio("Off", 272, 128, 113, 17)
+            GUICtrlSetState(-1, $g_bRadioCVSwait3)
+            GUICtrlSetOnEvent(-1, "AttackGUICheckbox")
+
+GUICtrlCreateGroup("", -99, -99, 1, 1)
+$g_hLabel3 = GUICtrlCreateLabel("CVS Attack", 30, 40, 422, 30, BitOR($SS_CENTER,$SS_CENTERIMAGE))
+GUICtrlSetFont(-1, 12, 400, 0, "Tahoma")
+GUICtrlSetBkColor(-1, 0xB7FFA3)
+GUICtrlSetTip(-1, "0")
+GUISetState(@SW_SHOW)
+#EndRegion ### END Koda GUI section ###
+AttackGUICheckboxControl()
+EndFunc   ;==>TabItem0
 
 Func TabItem1()
 	Local $x = 25, $y = 45

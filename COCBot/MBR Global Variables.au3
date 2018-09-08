@@ -56,6 +56,7 @@
 #include <Crypt.au3>
 #include <Timers.au3>
 
+Global Const $g_sTransparentLogoPath = @ScriptDir & "\Images\TransparentLogo.png"
 Global Const $g_sLogoPath = @ScriptDir & "\Images\Logo.png"
 Global Const $g_sLogoUrlPath = @ScriptDir & "\Images\LogoURL.png"
 Global Const $g_sLogoUrlSmallPath = @ScriptDir & "\Images\LogoURLsmall.png"

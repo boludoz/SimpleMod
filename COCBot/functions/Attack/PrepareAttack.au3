@@ -32,10 +32,9 @@ Func PrepareAttack($pMatchMode, $Remaining = False, $DebugSiege = False) ;Assign
 		If $g_iActivateKing = 1 Or $g_iActivateKing = 2 Then $g_aHeroesTimerActivation[$eHeroBarbarianKing] = 0
 		If $g_iActivateQueen = 1 Or $g_iActivateQueen = 2 Then $g_aHeroesTimerActivation[$eHeroArcherQueen] = 0
 		If $g_iActivateWarden = 1 Or $g_iActivateWarden = 2 Then $g_aHeroesTimerActivation[$eHeroGrandWarden] = 0
-    ; ========= Slot11 - Simple Mod (ID193-) ========
-        $g_iTotalAttackSlot = 10 ; reset all flag
-        $g_bDraggedAttackBar = False
-    ; ========= Slot11 - Simple Mod (ID193-) ========
+
+		$g_iTotalAttackSlot = 10 ; reset flag - Slot11+
+		$g_bDraggedAttackBar = False
 	EndIf
 
 	Local $troopsnumber = 0
@@ -45,9 +44,10 @@ Func PrepareAttack($pMatchMode, $Remaining = False, $DebugSiege = False) ;Assign
 	Else
 		SetLog("Initiating attack for: " & $g_asModeText[$pMatchMode], $COLOR_ERROR)
 	EndIf
-    
+
 	Local $hStarttime = _Timer_Init()
-	
+
+
 	; JULY 2018 @PROMAC
 	; Lets Select The CC Or Siege Machine ; $eCastle , $eWallW , $eBattleB
 	Local $aPaths = [$g_sImgSwitchSiegeCastle, $g_sImgSwitchSiegeWallWrecker, $g_sImgSwitchSiegeBattleBlimp]
@@ -177,7 +177,7 @@ Func PrepareAttack($pMatchMode, $Remaining = False, $DebugSiege = False) ;Assign
 	Next
 
 	Local $Plural = 0
-    Local $result = AttackBarCheck($Remaining, $pMatchMode) ; Slot11+ Slot11 - Simple Mod (ID193-) 
+	Local $result = AttackBarCheck($Remaining, $pMatchMode) ; adding $pMatchMode for not checking Slot11+ when DropTrophy attack
 	If $g_bDebugSetlog Then SetDebugLog("DLL Troopsbar list: " & $result, $COLOR_DEBUG)
 	Local $aTroopDataList = StringSplit($result, "|")
 	Local $aTemp[22][3] ; Slot11+
