@@ -1361,18 +1361,18 @@ Func FirstCheck()
 
 	EndIf
 
-			;If isOnBuilderBase() Or (($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades Or $g_bChkBB_DropTrophies) And SwitchBetweenBases()) Then
-			;	CollectBuilderBase()
-			;	BuilderBaseReport()
-			;	StartClockTowerBoost()
-			;	MainSuggestedUpgradeCode()
-			;	If $g_bChkBB_DropTrophies Then
-			;	BuilderBaseReport(True)
-			;	BB_DropTrophies() ;------------------ADDED By Simple Mod - by Chacal GYN - Drop Trophies (ID70) ------------------
-			;	; switch back to normal village
-			;	EndIf
-			;	SwitchBetweenBases()
-			;EndIf
+			If isOnBuilderBase() Or (($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades Or $g_bChkBB_DropTrophies) And SwitchBetweenBases()) Then
+				CollectBuilderBase()
+				BuilderBaseReport()
+				StartClockTowerBoost()
+				MainSuggestedUpgradeCode()
+				If $g_bChkBB_DropTrophies Then
+				BuilderBaseReport(True)
+				BB_DropTrophies() ;------------------ADDED By Simple Mod - by Chacal GYN - Drop Trophies (ID70) ------------------
+				; switch back to normal village
+				EndIf
+				SwitchBetweenBases()
+			EndIf
 
 	CheckFarmSchedule()
 

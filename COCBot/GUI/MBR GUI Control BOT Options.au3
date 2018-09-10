@@ -619,7 +619,7 @@ Func btnTestDonateCC()
 
 	SetLog(_PadStringCenter(" Test DonateCC begin (" & $g_sBotVersion & ")", 54, "="), $COLOR_INFO)
 	$g_iDonationWindowY = 0
-	Local $aDonWinOffColors[3][3] = [[0xFFFFFF, 0, 1], [0xFFFFFF, 0, 31], [0xABABA8, 0, 32]]
+	Local $aDonWinOffColors[3][3] = [[0xFFFFFF, 1, 0], [0xFFFFFF, 2, 0], [0xABABA8, 2, 0]]
 	Local $aDonationWindow = _MultiPixelSearch(409, 0, 410, $g_iDEFAULT_HEIGHT, 1, 1, Hex(0xFFFFFF, 6), $aDonWinOffColors, 10)
 
 	If IsArray($aDonationWindow) Then

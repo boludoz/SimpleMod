@@ -99,6 +99,7 @@ EndFunc   ;==>BB_PrepareSearch
 ; ===============================================================================================================================
 
 Func BB_Attack($Nside = 1, $SIDESNAMES = "TR|TL", $iTroopToDeploy = 4 )
+	$g_iLoopCount += 1
 
 	Local $aBB_DiamondTop[4]    = [440,  30 + $g_iBottomOffsetY, 0x294949, 10]
 	Local $aBB_DiamondBottom[4] = [440, 730 + $g_iBottomOffsetY, 0x2B4847, 10]
@@ -121,7 +122,7 @@ Func BB_Attack($Nside = 1, $SIDESNAMES = "TR|TL", $iTroopToDeploy = 4 )
 	$iHalf += $iRest
 
 	SetLog("BB: Attacking on a single side", $COLOR_INFO)
-
+	
 	$aBB_LineCenter[0] = INT( ( $aBB_DiamondTop[0] + $aBB_DiamondRight[0] ) / 2 )
 	$aBB_LineCenter[1] = INT( ( $aBB_DiamondTop[1] + $aBB_DiamondRight[1] ) / 2 )
 	$aDropCoord[0]     = INT( ( ( $aBB_LineCenter[0] - $aBB_DiamondTop[0] ) * 0.9 ) / $iHalf )
