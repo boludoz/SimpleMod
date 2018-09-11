@@ -67,7 +67,7 @@ Global $g_hChkGoldSwitchMax = 0, $g_hCmbGoldMaxProfile = 0, $g_hTxtMaxGoldAmount
 ; ================================================== Attack PART ============================================ ;
 
 Global $g_hGroup1  = 0
-Global $g_hSliderLV = 0
+Global $g_hSliderLB = 0
 Global $g_hSliderDB = 0
 Global $g_hLabel1  = 0
 Global $g_hLabel2  = 0
@@ -118,10 +118,12 @@ Local $x = 25, $y = 45
 #Region ### START Koda GUI section ### Form=
 GUISetFont(8, 400, 0, "Tahoma")
 $g_hGroup1 = GUICtrlCreateGroup("CVS: Deploy LV/DB", 40, 80, 201, 113)
-$g_hSliderLV = GUICtrlCreateSlider(48, 112, 150, 29)
-GUICtrlSetLimit(-1, 100, -100)
+$g_hSliderLB = GUICtrlCreateSlider(48, 112, 150, 29)
+            GUICtrlSetState(-1, $g_iSliderLB)
+			GUICtrlSetLimit(-1, -100, 100)
 $g_hSliderDB = GUICtrlCreateSlider(48, 160, 150, 29)
-GUICtrlSetLimit(-1, 100, -100)
+            GUICtrlSetState(-1, $g_iSliderDB)
+			GUICtrlSetLimit(-1, -100, 100)
 $g_hLabel1 = GUICtrlCreateLabel("Live base", 48, 96, 51, 18)
 $g_hLabel2 = GUICtrlCreateLabel("Dead base", 48, 144, 56, 18)
 GUICtrlCreateGroup("", -99, -99, 1, 1)
@@ -130,20 +132,17 @@ $g_hRadioCVSwait1 = GUICtrlCreateRadio("No wait", 272, 104, 65, 17)
             GUICtrlSetState(-1, $g_bRadioCVSwait1)
             GUICtrlSetOnEvent(-1, "AttackGUICheckbox")
 
-$g_hRadioCVSwait2 = GUICtrlCreateRadio("Divide", 344, 104, 73, 17)
+$g_hRadioCVSwait2 = GUICtrlCreateRadio("Multiply : ", 272, 128, 113, 17)
             GUICtrlSetState(-1, $g_bRadioCVSwait2)
             GUICtrlSetOnEvent(-1, "AttackGUICheckbox")
 
 $g_hSliderWaitCVS = GUICtrlCreateSlider(272, 152, 153, 25)
             GUICtrlSetState(-1, $g_iSliderWaitCVS)
-			_GUICtrlSlider_SetTipSide(-1, $TBTS_BOTTOM)
-			_GUICtrlSlider_SetTicFreq(-1, 1)
-			GUICtrlSetLimit(-1, 18, 0)
-			GUICtrlSetData(-1, 5)
+			GUICtrlSetLimit(-1, -100, 100)
             GUICtrlSetOnEvent(-1, "AttackGUICheckbox")
 
 GUICtrlSetLimit(-1, 100, -100)
-$g_hRadioCVSwait3 = GUICtrlCreateRadio("Off", 272, 128, 113, 17)
+$g_hRadioCVSwait3 = GUICtrlCreateRadio("Off", 344, 104, 73, 17)
             GUICtrlSetState(-1, $g_bRadioCVSwait3)
             GUICtrlSetOnEvent(-1, "AttackGUICheckbox")
 

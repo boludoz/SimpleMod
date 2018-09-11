@@ -409,9 +409,8 @@ Func ParseAttackCSV($debug = False)
 						If UBound($sleepvect) > 1 Then
 						$sleepvect[0]
 							If Int($sleepvect[0]) > 0 And Int($sleepvect[1]) > 0 Then
-								$sleep1 = Int($sleepvect[0] / $g_iMultWaitCVS)
-								$sleep2 = Int($sleepvect[1] / $g_iMultWaitCVS)
-								Setlog("Wait time: " & $sleep1 & " | " & $sleep2, $COLOR_INFO)
+								$sleep1 = Int($sleepvect[0]) ;/ $g_iMultWaitCVS)
+								$sleep2 = Int($sleepvect[1]) ;/ $g_iMultWaitCVS)
 							Else
 								$sleep1 = 1
 								$sleep2 = 1
@@ -430,6 +429,10 @@ Func ParseAttackCSV($debug = False)
 						Else
 							Local $sleep = Int($sleep1)
 						EndIf
+						Local $iSleepS = Int($sleep1 * $g_iMultWaitCVS)
+						Setlog("Wait time: " & $sleep & " x0" & $g_iMultWaitCVS & " = " & $iSleepS, $COLOR_GREEN)
+						$sleep = Int($sleep1 * $g_iMultWaitCVS)
+
 						debugAttackCSV("wait " & $sleep)
 						;If _Sleep($sleep) Then Return
 						Local $Gold = 0

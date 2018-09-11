@@ -585,8 +585,6 @@ Func ReferenceGlobals()
 
 	; fix stripper bugs
 	$a1 = $aLoginWithSupercellID
-	$a1 = $aButtonLogOutSCID
-	$a1 = $aButtonConfirmSCID
 
 	$a1 = $aiCloseDefaultPOS
 	$a1 = $TELEGRAM_URL

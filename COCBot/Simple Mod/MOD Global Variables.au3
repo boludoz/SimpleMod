@@ -284,7 +284,7 @@ GLobal $TroopsQueueFull = False
 
 ; GUI
 Global $g_iGroup1  = 0
-Global $g_iSliderLV = 0
+Global $g_iSliderLB = 0
 Global $g_iSliderDB = 0
 Global $g_iLabel1  = 0
 Global $g_iLabel2  = 0
@@ -296,5 +296,6 @@ Global $g_iSliderWaitCVS = 0
 Global $g_iLabel3  = 0
 ; FUNCS
 Global $g_iMultWaitCVS = 4
+Global $g_iSlider[2] = [$LB, $DB]
 ; ======================== RK CONFIG ============================================================================= ;
 Global $g_sModConfigPath = ""
