@@ -152,10 +152,10 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
         Local $sleepBefore = 0
         If $sleepBeforeMin <> $sleepBeforeMax Then
             $sleepBefore = Random($sleepBeforeMin, $sleepBeforeMax, 1)
-            $sleepBefore = Int($sleepBefore / $g_CSVSpeedDivider)
+            $sleepBefore = Int($sleepBefore * $g_CSVSpeedDivider)
         Else
             $sleepBefore = Int($sleepBeforeMin)
-            $sleepBefore = Int($sleepBefore / $g_CSVSpeedDivider)
+            $sleepBefore = Int($sleepBefore * $g_CSVSpeedDivider)
         EndIf
 
         If $sleepBefore > 50 And IsKeepClicksActive() = False Then
@@ -189,12 +189,12 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 				If $delayDropMin <> $delayDropMax Then
 					$delayDrop = Random($delayDropMin, $delayDropMax, 1)
 ; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
-                    $delayDrop = Int($delayDrop / $g_CSVSpeedDivider)
+                    $delayDrop = Int($delayDrop * $g_CSVSpeedDivider)
 ; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                 Else
                     $delayDrop = $delayDropMin
 ; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
-                    $delayDrop = Int($delayDrop / $g_CSVSpeedDivider)
+                    $delayDrop = Int($delayDrop * $g_CSVSpeedDivider)
 ; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
 				debugAttackCSV(">> delay change drop point: " & $delayDrop)
 			EndIf
@@ -213,12 +213,12 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 					If $delayPointmin <> $delayPointmax Then
 						Local $delayPoint = Random($delayPointmin, $delayPointmax, 1)
 ; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
-                        $delayPoint = Int($delayPoint / $g_CSVSpeedDivider)
+                        $delayPoint = Int($delayPoint * $g_CSVSpeedDivider)
 ; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                     Else
                         Local $delayPoint = $delayPointmin
 ; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
-                        $delayPoint = Int($delayPoint / $g_CSVSpeedDivider)
+                        $delayPoint = Int($delayPoint * $g_CSVSpeedDivider)
 ; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                     EndIf
 					Switch $iTroopIndex
@@ -280,12 +280,12 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 		If $sleepafterMin <> $sleepAfterMax Then
 			$sleepafter = Random($sleepafterMin, $sleepAfterMax, 1)
 ; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
-            $sleepafter = Int($sleepafter / $g_CSVSpeedDivider)
+            $sleepafter = Int($sleepafter * $g_CSVSpeedDivider)
 ; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
         Else
             $sleepafter = Int($sleepafterMin)
 ; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
-            $sleepafter = Int($sleepafter / $g_CSVSpeedDivider)
+            $sleepafter = Int($sleepafter * $g_CSVSpeedDivider)
 ; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
         EndIf
 		If $sleepafter > 0 And IsKeepClicksActive() = False Then
