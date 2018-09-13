@@ -120,6 +120,7 @@ Global Const $g_sImgListAccounts = @ScriptDir & "\imgxml\other\SwitchAccounts\Li
 Global Const $g_sImgLoginWithSupercellID = @ScriptDir & "\imgxml\other\SwitchAccounts\LoginWithSupercellID*"; Just Path Changed EDITED By Simple Mod
 Global Const $g_sImgGoogleSelectAccount = @ScriptDir & "\imgxml\other\SwitchAccounts\GoogleSelectAccount*"; Just Path Changed EDITED By Simple Mod
 Global Const $g_sImgGoogleSelectEmail = @ScriptDir & "\imgxml\other\SwitchAccounts\GoogleSelectEmail*"; Just Path Changed EDITED By Simple Mod
+Global Const $g_sImgSCID = @ScriptDir &"\imgxml\SuperCellID\Accounts\SCID*"
 
 #EndRegion
 

@@ -135,7 +135,7 @@ Global $g_sGlobalChatLastMsgSentTime = ""
 Global $sChatIni = ""
 Global $GlobalMessages[4] = ["", "", "", ""], $GlobalMessagesFix
 Global $GlobalMessagesGUI_0, $GlobalMessagesGUI_1, $GlobalMessagesGUI_2, $GlobalMessagesGUI_3
-Global $ClanMessages = "", $g_sClanResponses = ""
+Global $sClanMessages = "", $g_sClanResponses = ""
 Global $g_bChkChatGlobal = False, $g_bChkScrambleGlobal = False, $g_bChkSwitchLang = False, $g_iCmbLang = 1
 Global $g_bChkChatClan = False, $g_iRusLang = 0, $g_bChkClanUseResponses = False, $g_bChkClanAlwaysMsg = False, $g_iChatPushbullet = False, $g_iPbSendNewChats = False
 Global $ChatbotStartTime

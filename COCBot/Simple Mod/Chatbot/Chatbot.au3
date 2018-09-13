@@ -32,7 +32,7 @@ Func ChatbotReadMessages()
 	If IniRead($sChatIni, "ChatGlobal", "ChkDelayTime", "False") = "True" Then $g_bChkDelayTime = True
     $g_iTxtDelayTime = IniRead($sChatIni, "ChatGlobal", "TxtDelayTime", "10") 
 	
-	$ClanMessages = StringSplit(IniRead($sChatIni, "ChatClan", "GenericMessages", "Testing on Chat|Hey all"), "|", 2)
+	$sClanMessages = StringSplit(IniRead($sChatIni, "ChatClan", "GenericMessages", "Testing on Chat|Hey all"), "|", 2)
 	Global $g_sClanResponses0 = StringSplit(IniRead($sChatIni, "ChatClan", "ResponseMessages", "keyword:Response|hello:Hi, Welcome to the clan|hey:Hey, how's it going?"), "|", 2)
 	Global $g_sClanResponses1[UBound($g_sClanResponses0)][2]
 	For $a = 0 To UBound($g_sClanResponses0) - 1
@@ -444,7 +444,7 @@ Func ChatbotMessage() ; run the chatbot
 			If $ChatMsg = "" Or $ChatMsg = " " Then
 				If $g_bChkClanAlwaysMsg Then
 					If Not ChatbotChatClanInput() Then Return
-					If Not ChatbotChatInput($g_iChkClanMessages[Random(0, UBound($g_iChkClanMessages) - 1, 1)]) Then Return
+					If Not ChatbotChatInput($sClanMessages[Random(0, UBound($sClanMessages) - 1, 1)]) Then Return
 					If Not ChatbotChatSendClan() Then Return
 					$SentMessage = True
 				EndIf
@@ -453,7 +453,7 @@ Func ChatbotMessage() ; run the chatbot
 			If ($g_bChkCleverbot = True) And Not $SentMessage Then
 				Local $Response = runHelper($ChatMsg)
 				If (Not $Response = False) And Not $ChatMsg = "" And Not $ChatMsg = " " Then
-					;If Not _Encoding_JavaUnicodeDecode($sString) Then Return
+					If Not _Encoding_JavaUnicodeDecode($sString) Then Return
 					SetLog("Got cleverbot response: " & $Response, $COLOR_GREEN)
 					If Not ChatbotChatClanInput() Then Return
 					If Not ChatbotChatInput($Response) Then Return
@@ -479,7 +479,7 @@ Func ChatbotMessage() ; run the chatbot
 			If Not $SentMessage Then
 				If $g_bChkClanAlwaysMsg Then
 					If Not ChatbotChatClanInput() Then Return
-					If Not ChatbotChatInput($g_iChkClanMessages[Random(0, UBound($g_iChkClanMessages) - 1, 1)]) Then Return
+					If Not ChatbotChatInput($sClanMessages[Random(0, UBound($sClanMessages) - 1, 1)]) Then Return
 					If Not ChatbotChatSendClan() Then Return
 				EndIf
 			EndIf
@@ -491,7 +491,7 @@ Func ChatbotMessage() ; run the chatbot
 			EndIf
 		ElseIf $g_bChkClanAlwaysMsg Then
 			If Not ChatbotChatClanInput() Then Return
-			If Not ChatbotChatInput($ClanMessages[Random(0, UBound($ClanMessages) - 1, 1)]) Then Return
+			If Not ChatbotChatInput($sClanMessages[Random(0, UBound($sClanMessages) - 1, 1)]) Then Return
 			If Not ChatbotChatSendClan() Then Return
 		EndIf
 

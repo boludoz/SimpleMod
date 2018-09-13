@@ -463,7 +463,7 @@ Func TabItem3()
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MOD GUI Design - Chatbot", "ClanMessages_Info_01", "Look for the specified keywords in clan messages and respond with the responses. One item per line, in the format keyword:response"))
 			GUICtrlSetOnEvent(-1, "ChatbotGUIEditMessages")
 	$y += 92
-		$g_hEditGeneric = GUICtrlCreateEdit(_ArrayToString($ClanMessages, @CRLF), $x - 15, $y, 206, 80)
+		$g_hEditGeneric = GUICtrlCreateEdit(_ArrayToString($sClanMessages, @CRLF), $x - 15, $y, 206, 80)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MOD GUI Design - Chatbot", "ClanMessages_Info_02", "Generic messages to send, one per line"))
 			GUICtrlSetOnEvent(-1, "ChatbotGUIEditMessages")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
