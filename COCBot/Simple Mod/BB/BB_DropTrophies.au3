@@ -2,7 +2,7 @@
 ; Name ..........: BB_DropTrophies
 ; Description ...: 
 ; Author ........: Chackall++
-; Modified ......:
+; Modified ......: bld
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2016
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:
@@ -94,12 +94,26 @@ Func BB_DropTrophies()
 					If _Sleep(500) Then Return
 					Local $iOkayColor[3][3] = [[0xBEE758, 0, 1], [0xA8DD49, 0, 1], [0x7BC726, 0, 1]]
 					Local $iOkayPixel = _MultiPixelSearch(279, 378, 646, 685, 1, 1, Hex(0xBFE85A, 6), $iOkayColor, 35)
-					
+										
 					If IsArray($iOkayPixel) Then
-						Local $ClickOkX = $iOkayPixel[0], $ClickOkY = $iOkayPixel[1]
 						Setlog("Exit battle", $COLOR_INFO)
-						Click($ClickOkX, $ClickOkY)
-						$bContinue = False
+						Click($iOkayPixel[0], $iOkayPixel[1])
+						
+						Local $iOkayPixel2 = _MultiPixelSearch(86, 436, 822, 544, 1, 1, Hex(0xBFE85A, 6), $iOkayColor, 35)
+						
+						If _Sleep(500) Then Return
+						If IsArray($iOkayPixel2) Then
+
+							Setlog("Click: Okay button", $COLOR_INFO)
+							Click($iOkayPixel2[0], $iOkayPixel2[1])
+							$bContinue = False 
+							
+							If _Sleep(500) Then Return
+							ClickP($aAway, 1, 0, "#0000")
+							
+							$bContinue = False
+							
+						EndIf
 				; ---
 						Else
 						If _Sleep(500) Then Return
@@ -124,52 +138,10 @@ Func BB_DropTrophies()
 					EndIf
 					
 				WEnd
+				SetLog("Finished attack",$COLOR_GREEN)
+				WaitMainScreen()
 
 				If _Sleep($DELAYCHECKOBSTACLES4) Then Return 
-
-				; wait $OkButtom to appear
-				$j = 0
-				$cPixColor = _GetPixelColor($OkButtom[0], $OkButtom[1], True)
-				While Not _ColorCheck( $cPixColor, Hex($OkButtom[2], 20), $OkButtom[3])
-					If $bDegug Then SetLog("BB: Click Okay Buttom. [Ok]. code: 0x" & $cPixColor & " [ " & String( $j ) & " ]", $COLOR_DEBUG)
-					If _Sleep($DELAYCHECKOBSTACLES4) Then Return 
-					$j += 1
-					If $j > 10 Then ExitLoop
-					$cPixColor = _GetPixelColor($OkButtom[0], $OkButtom[1], True)
-				WEnd
-				If $j < 10 Then
-					SetLog("BB: Click Okay Buttom. [Ok]. code: 0x" & $cPixColor & " [ " & String( $j ) & " ]", $COLOR_DEBUG)
-					ClickP($OkButtom, 1, 0, "#0000")
-				Else
-					SetLog("BB: Can't Find Okay Buttom [Ok]. code: 0x" & $cPixColor, $COLOR_ERROR)
-				EndIf
-
-				If _Sleep($DELAYCHECKOBSTACLES4) Then Return 
-
-				; wait $OkBatleEnd to appear
-				If $j < 10 Then
-					$j = 0
-					$cPixColor = _GetPixelColor($OkBatleEnd[0], $OkBatleEnd[1], True)
-					While Not _ColorCheck( $cPixColor, Hex($OkBatleEnd[2], 20), $OkBatleEnd[3])
-						If $bDegug Then SetLog("BB: Try Click Okay Buttom [end], code: 0x" & $cPixColor & " [ " & String( $j ) & " ]", $COLOR_DEBUG)
-						If _Sleep($DELAYCHECKOBSTACLES3) Then Return
-						$j += 1
-						If $j > 30 Then ExitLoop
-						$cPixColor = _GetPixelColor($OkBatleEnd[0], $OkBatleEnd[1], True)
-					WEnd
-					If $j < 30 Then
-						SetLog("BB: Click Okay Buttom [end], code: 0x" & $cPixColor & " [ " & String( $j ) & " ]", $COLOR_DEBUG)
-						ClickP($OkBatleEnd, 1, 0, "#0000")
-					Else
-						SetLog("BB: Can't Find Okay Buttom [End]. code: 0x" & $cPixColor, $COLOR_ERROR)
-					EndIf
-				Else
-
-					If _Sleep($DELAYCHECKOBSTACLES4) Then Return
-					ClickP($aAway, 1, 0, "#0000")
-
-				EndIf
-
 			EndIf
 
 			If _Sleep($DELAYCHECKOBSTACLES4) Then Return

@@ -5,7 +5,7 @@
 ; Parameters ....: None
 ; Return values .: None
 ; Author ........: chalicucu (6-2016), demen (4-2017)
-; Modified ......: NguyenAnhHD (12-2017)
+; Modified ......: NguyenAnhHD (12-2017), boludoz (13/9/2018)
 ; Remarks .......: This file is part of MyBot, previously known as ClashGameBot. Copyright 2015-2016
 ;                  MyBot is distributed under the terms of the GNU GPL
 ; Related .......:

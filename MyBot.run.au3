@@ -1309,8 +1309,8 @@ Func _RunFunction($action)
 				StartClockTowerBoost()
 				MainSuggestedUpgradeCode()
 				If $g_bChkBB_DropTrophies Then
-				BuilderBaseReport(True)
 				BB_DropTrophies() ;------------------ADDED By Simple Mod - by Chacal GYN - Drop Trophies (ID70) ------------------
+				BuilderBaseReport(True)
 				; switch back to normal village
 				EndIf
 				SwitchBetweenBases()
@@ -1356,12 +1356,12 @@ Func FirstCheck()
 	MainKickout()
 	VillageReport()
 	
-	If $g_bChkAutoCamp Then 
-	Setlog("Checking camps.", $COLOR_INFO)
-	CheckAutoCamp() ; ADDED By Simple Mod(#ID135-)
-	Setlog("Checking camps finished.", $COLOR_INFO)
-
-	EndIf
+	;If $g_bChkAutoCamp Then 
+	;Setlog("Checking camps.", $COLOR_INFO)
+	;CheckAutoCamp() ; ADDED By Simple Mod(#ID135-)
+	;Setlog("Checking camps finished.", $COLOR_INFO)
+    ;
+	;EndIf
 
 			If isOnBuilderBase() Or (($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades Or $g_bChkBB_DropTrophies) And SwitchBetweenBases()) Then
 				CollectBuilderBase()
@@ -1369,8 +1369,8 @@ Func FirstCheck()
 				StartClockTowerBoost()
 				MainSuggestedUpgradeCode()
 				If $g_bChkBB_DropTrophies Then
-				BuilderBaseReport(True)
 				BB_DropTrophies() ;------------------ADDED By Simple Mod - by Chacal GYN - Drop Trophies (ID70) ------------------
+				BuilderBaseReport(True)
 				; switch back to normal village
 				EndIf
 				SwitchBetweenBases()
