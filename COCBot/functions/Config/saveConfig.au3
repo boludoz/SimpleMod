@@ -116,9 +116,6 @@ Func SaveBuildingConfig()
 	_Ini_Add("upgrade", "upgradetroops", $g_bAutoLabUpgradeEnable ? 1 : 0)
 	_Ini_Add("upgrade", "upgradetroopname", $g_iCmbLaboratory)
 	_Ini_Add("upgrade", "upgradelabtime", $g_sLabUpgradeTime)
-	; ================================================== ; Priority System - by Simple Mod  ======================================== ; 
-	_Ini_Add("upgrade", "ChkPrioritySystem", $g_bChkPrioritySystem ? 1 : 0)
-	_Ini_Add("upgrade", "CmbPrioritySystem", $g_iCmbPrioritySystem)
 
 	; <><><><> Village / Upgrade - Buildings <><><><>
 	ApplyConfig_600_16(GetApplyConfigSaveAction())
@@ -247,7 +244,7 @@ Func SaveRegularConfig()
 
 	; <><><><> Bot / Stats <><><><>
 	; <<< nothing here >>>
-	
+
 	SaveConfig_RKMod()
 
 	;SetDebugLog("saveConfig: Wrote " & $g_iIniLineCount & " ini lines.")
@@ -415,17 +412,17 @@ Func SaveConfig_600_11()
 		$string &= ($g_abRequestCCHours[$i] ? "1" : "0") & "|"
 	Next
 	_Ini_Add("planned", "RequestHours", $string)
-	
+
 	; Request defense CC (Demen)
     _Ini_Add("donate", "RequestDefenseEnable", $g_bRequestCCDefense ? 1 : 0)
     _Ini_Add("donate", "RequestDefenseText", $g_sRequestCCDefenseText)
 	_Ini_Add("donate", "RequestDefenseWhenPB", $g_bRequestCCDefenseWhenPB ? 1 : 0)
     _Ini_Add("donate", "RequestDefenseTime", $g_iRequestDefenseTime)
-    
+
 	; ================================================== Russian Request - by Simple Mod ================================= ;
 
 	_Ini_Add("Lang", "chkRusLang2", $g_bChkRusLang2 ? True : False)
-	
+
 EndFunc   ;==>SaveConfig_600_11
 
 Func SaveConfig_600_12()
@@ -631,18 +628,18 @@ Func SaveConfig_600_22()
 	_Ini_Add("boost", "cmbBoostBrMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic))
 	_Ini_Add("boost", "chkBoostCMagic", $g_iChkBoostCMagic ? 1 : 0)
 	_Ini_Add("boost", "cmbBoostClMagic", _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic))
-	
+
 	; ================================================== One Gem Boost by Simple Mod ================================= ;
-	
+
 	_Ini_Add("boost", "ChkOneGemBoostBarracks", $g_bChkOneGemBoostBarracks ? 1 : 0)
 	_Ini_Add("boost", "ChkOneGemBoostSpells", $g_bChkOneGemBoostSpells ? 1 : 0)
 	_Ini_Add("boost", "ChkOneGemBoostHeroes", $g_bChkOneGemBoostHeroes ? 1 : 0)
-	
+
 	For $i = 0 To 2
 			_Ini_Add("boost", "LastTimeCollectors" & $i, $g_iLastTime[0])
 	Next
 
-	
+
 EndFunc   ;==>SaveConfig_600_22
 
 Func SaveConfig_600_26()
@@ -674,14 +671,14 @@ Func SaveConfig_600_28()
 	_Ini_Add("general", "AlertSearch", $g_bSearchAlertMe ? 1 : 0)
 
 	; ================================================== ; Return Home by Time - by Simple Mod  ======================================== ;
-	
+
 	_Ini_Add("search", "ChkReturnTimerEnable", $g_bReturnTimerEnable ? 1 : 0)
 	_Ini_Add("search", "ReturnTimer", $g_iTxtReturnTimer)
-	
+
 	; ================================================== ; Attack Prioriti - by Simple Mod  ======================================== ;
-	
+
 	_Ini_Add("search", "ChkAttackPriority", $g_bChkAttackPriority ? 1 : 0)
-	
+
 EndFunc   ;==>SaveConfig_600_28
 
 Func SaveConfig_600_28_DB()
@@ -1108,7 +1105,7 @@ Func SaveConfig_600_31()
 	_Ini_Add("search", "chkDisableCollectorsFilter", $g_bCollectorFilterDisable ? 1 : 0)
 	_Ini_Add("collectors", "minmatches", $g_iCollectorMatchesMin)
 	_Ini_Add("collectors", "tolerance", $g_iCollectorToleranceOffset)
-	
+
 	; Check Collector Outside - Simple Mod
 	_Ini_Add("search", "DBMeetCollOutside", $g_bDBMeetCollOutside)
 	_Ini_Add("search", "TxtDBMinCollOutsidePercent", GUICtrlRead($g_hTxtDBMinCollOutsidePercent))
@@ -1120,7 +1117,7 @@ Func SaveConfig_600_31()
 	_Ini_Add("search", "TxtSkipCollectorDark", GUICtrlRead($g_hTxtSkipCollectorDark))
 	_Ini_Add("search", "SkipCollectorCheckTH", $g_bSkipCollectorCheckTH ? 1 : 0)
 	_Ini_Add("search", "CmbSkipCollectorCheckTH", _GUICtrlComboBox_GetCurSel($g_hCmbSkipCollectorCheckTH))
-	
+
 EndFunc   ;==>SaveConfig_600_31
 
 Func SaveConfig_600_32()
@@ -1180,7 +1177,7 @@ Func SaveConfig_600_35_1()
 
 	_Ini_Add("ProfileSCID", "OnlySCIDAccounts", $g_bOnlySCIDAccounts ? 1 : 0)
 	_Ini_Add("ProfileSCID", "WhatSCIDAccount2Use", $g_iWhatSCIDAccount2Use)
-	
+
 	_Ini_Add("other", "ChkLabCheck", $g_iChkLabCheck ? 1 : 0)
 EndFunc   ;==>SaveConfig_600_35_1
 
@@ -1282,17 +1279,17 @@ Func SaveConfig_600_52_2()
 	_Ini_Add("other", "ChkForceBrewBeforeAttack", $g_bForceBrewSpells ? 1 : 0)
 	; DoubleTrain - Demen
 	_Ini_Add("troop", "DoubleTrain", $g_bDoubleTrain ? 1 : 0)
-	
+
 	;SmartTrain - Simple Mod (Demen)
 	_Ini_Add("SmartTrain", "Enable", $g_bChkSmartTrain ? 1 : 0)
 	_Ini_Add("SmartTrain", "ChkPreciseTroops", $g_bChkPreciseArmyCamp ? 1 : 0)
 	_Ini_Add("SmartTrain", "ChkFillArcher", $g_bChkFillArcher ? 1 : 0)
 	_Ini_Add("SmartTrain", "TxtFillArcher", $g_iTxtFillArcher)
 	_Ini_Add("SmartTrain", "ChkFillEQ", $g_bChkFillEQ ? 1 : 0)
-	
+
 	; ================================================ AutoCamp - by Simple Mod (#ID135-) ========================================
 	_Ini_Add("troop", "ChkAutoCamp", $g_bChkAutoCamp ? True : False)
-	
+
 EndFunc   ;==>SaveConfig_600_52_2
 
 Func SaveConfig_600_54()
@@ -1342,7 +1339,7 @@ Func SaveConfig_641_1()
 
 	_Ini_Add("TrainLogout", "TrainLogoutMaxTime", $g_bTrainLogoutMaxTime)
 	_Ini_Add("TrainLogout", "TrainLogoutMaxTimeTXT", $g_iTrainLogoutMaxTime)
-	
+
 	; Train click timing
 	_Ini_Add("other", "TrainITDelay", $g_iTrainClickDelay)
 	; Training add random delay

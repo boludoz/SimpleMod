@@ -153,7 +153,7 @@ Func applyConfig($bRedrawAtExit = True, $TypeReadSave = "Read") ;Applies the dat
 	; <<< nothing here >>>
 
 	ApplyConfig_RKMod($TypeReadSave)
-	
+
 	; <><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><><>
 
 
@@ -444,7 +444,7 @@ Func ApplyConfig_600_11($TypeReadSave)
 			GUICtrlSetData($g_hTxtRequestCCDefense, $g_sRequestCCDefenseText)
 			_GUICtrlComboBox_SetCurSel($g_hCmbRequestCCDefenseWhen, $g_bRequestCCDefenseWhenPB ? 0 : 1)
             GUICtrlSetData($g_hTxtRequestCCDefenseTime, $g_iRequestDefenseTime)
-			
+
 			; ================================================== Russian Request - by Simple Mod ======================================== ;
 
 			GUICtrlSetState($g_hChkRusLang2, $g_bChkRusLang2 ? $GUI_CHECKED : $GUI_UNCHECKED)
@@ -474,7 +474,7 @@ Func ApplyConfig_600_11($TypeReadSave)
             		$g_sRequestCCDefenseText = GUICtrlRead($g_hTxtRequestCCDefense)
 			$g_bRequestCCDefenseWhenPB = (_GUICtrlComboBox_GetCurSel($g_hCmbRequestCCDefenseWhen) = 0)
             		$g_iRequestDefenseTime = GUICtrlRead($g_hTxtRequestCCDefenseTime)
-			
+
 			; ================================================== Russian Request - by Simple Mod ================================= ;
 
 			$g_bChkRusLang2 = (GUICtrlRead($g_hChkRusLang2) = $GUI_CHECKED)
@@ -638,7 +638,7 @@ Func ApplyConfig_600_13($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbCCReceived, $g_iCCReceived - 1)
 			chkBalanceDR()
 			; ================================================== GTFO - Added by Simple Mod ======================================== ;
-			
+
 			GUICtrlSetState($g_hChkGTFOClanHop, $g_bChkGTFOClanHop = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkGTFOReturnClan, $g_bChkGTFOReturnClan = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtCyclesGTFO, $g_iTxtCyclesGTFO)
@@ -647,7 +647,7 @@ Func ApplyConfig_600_13($TypeReadSave)
 			GUICtrlSetData($g_hTxtMinSaveGTFO_DE, $g_iTxtMinSaveGTFO_DE)
 			GUICtrlSetData($g_hTxtClanID, $g_sTxtClanID)
 			ApplyGTFO()
-			
+
 			GUICtrlSetState($g_hChkUseKickOut, $g_bChkUseKickOut = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtDonatedCap, $g_iTxtDonatedCap)
 			GUICtrlSetData($g_hTxtReceivedCap, $g_iTxtReceivedCap)
@@ -669,7 +669,7 @@ Func ApplyConfig_600_13($TypeReadSave)
 			; ================================================== GTFO - Added by Simple Mod =========================================== ;
 			$g_bChkGTFOClanHop = (GUICtrlRead($g_hChkGTFOClanHop) = $GUI_CHECKED)
 			$g_bChkGTFOReturnClan = (GUICtrlRead($g_hChkGTFOReturnClan) = $GUI_CHECKED)
-			
+
 			$g_iTxtCyclesGTFO = Number(GUICtrlRead($g_hTxtCyclesGTFO))
 			$g_sTxtClanID = GUICtrlRead($g_hTxtClanID)
 
@@ -694,17 +694,7 @@ Func ApplyConfig_600_14($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbLaboratory, $g_iCmbLaboratory)
 			_GUICtrlSetImage($g_hPicLabUpgrade, $g_sLibIconPath, $g_avLabTroops[$g_iCmbLaboratory][4])
 			chkLab()
-			; ================================================== ; Priority System - by Simple Mod  ======================================== ; 
-			GUICtrlSetState($g_hChkPrioritySystem, $g_bChkPrioritySystem ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbPrioritySystem, $g_iCmbPrioritySystem)
-			chkPrioritySystem()
-		Case "Save"
-			$g_bAutoLabUpgradeEnable = (GUICtrlRead($g_hChkAutoLabUpgrades) = $GUI_CHECKED)
-			$g_iCmbLaboratory = _GUICtrlComboBox_GetCurSel($g_hCmbLaboratory)
-			; ================================================== ; Priority System - by Simple Mod  ======================================== ;
-			$g_bChkPrioritySystem = (GUICtrlRead($g_hChkPrioritySystem) = $GUI_CHECKED)
-			$g_iCmbPrioritySystem = _GUICtrlComboBox_GetCurSel($g_hCmbPrioritySystem)
-			
+
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_14
 
@@ -824,16 +814,6 @@ Func ApplyConfig_600_17($TypeReadSave)
 			EndSwitch
 			GUICtrlSetState($g_hChkSaveWallBldr, $g_bUpgradeWallSaveBuilder ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbWalls, $g_iCmbUpgradeWallsLevel)
-			; ================================================== Wall/Building Upgrading Priority by Simple Mod	========================;
-			GUICtrlSetState($g_hChkUpgrPriority, $g_iChkUpgrPriority = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-			_GUICtrlComboBox_SetCurSel($g_hCmbUpgrdPriority, $g_iCmbUpgrdPriority)
-			chkUpgrPriority()
-			UpgrdPriority()
-			For $i = 4 To 13
-				GUICtrlSetData($g_ahWallsCurrentCount[$i], $g_aiWallsCurrentCount[$i])
-			Next
-			cmbWalls()
-			chkWalls()
 		Case "Save"
 			$g_bAutoUpgradeWallsEnable = (GUICtrlRead($g_hChkWalls) = $GUI_CHECKED)
 			$g_iUpgradeWallMinGold = Number(GUICtrlRead($g_hTxtWallMinGold))
@@ -959,15 +939,15 @@ Func ApplyConfig_600_22($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbBoostClMagic, $g_iCmbBoostClMagic)
 			chkBoostCMagic()
 			BoostClMagic()
-			
+
 			; ================================================== One Gem Boost by Simple Mod ================================= ;
-			
+
 			GUICtrlSetState($g_hChkOneGemBoostBarracks, $g_bChkOneGemBoostBarracks ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkOneGemBoostSpells, $g_bChkOneGemBoostSpells ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkOneGemBoostHeroes, $g_bChkOneGemBoostHeroes ? $GUI_CHECKED : $GUI_UNCHECKED)
-			
+
 		Case "Save"
-		
+
 			$g_iCmbBoostBarracks = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBarracks)
 			$g_iCmbBoostSpellFactory = _GUICtrlComboBox_GetCurSel($g_hCmbBoostSpellFactory)
 			$g_iCmbBoostBarbarianKing = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBarbarianKing)
@@ -982,13 +962,13 @@ Func ApplyConfig_600_22($TypeReadSave)
 			$g_iCmbBoostBrMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostBrMagic)
 			$g_iChkBoostCMagic = GUICtrlRead($g_hChkBoostCMagic) = $GUI_CHECKED ? 1 : 0
 			$g_iCmbBoostClMagic = _GUICtrlComboBox_GetCurSel($g_hCmbBoostClMagic)
-			
+
 			; ================================================== One Gem Boost by Simple Mod ================================= ;
-			
+
 			$g_bChkOneGemBoostBarracks = (GUICtrlRead($g_hChkOneGemBoostBarracks) = $GUI_CHECKED)
 			$g_bChkOneGemBoostSpells = (GUICtrlRead($g_hChkOneGemBoostSpells) = $GUI_CHECKED)
 			$g_bChkOneGemBoostHeroes = (GUICtrlRead($g_hChkOneGemBoostHeroes) = $GUI_CHECKED)
-			
+
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_22
 
@@ -1035,18 +1015,18 @@ Func ApplyConfig_600_28($TypeReadSave)
 			ChkRestartSearchLimit()
 			GUICtrlSetState($g_hChkRestartSearchPickupHero, $g_bSearchRestartPickupHero ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($g_hChkAlertSearch, $g_bSearchAlertMe ? $GUI_CHECKED : $GUI_UNCHECKED)
-			
 
-			
+
+
 			; ================================================== ; Return Home by Time - by Simple Mod  ======================================== ;
 			GUICtrlSetState($g_hChkReturnTimerEnable, $g_bReturnTimerEnable ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtReturnTimer, $g_iTxtReturnTimer)
 			chkReturnTimer()
-			
+
 			; ================================================== ; Attack Priority - by Simple Mod  ======================================== ;
-			
+
 			GUICtrlSetState($g_hChkAttackPriority, $g_bChkAttackPriority ? $GUI_CHECKED : $GUI_UNCHECKED)
-			
+
 		Case "Save"
 			$g_bSearchReductionEnable = (GUICtrlRead($g_hChkSearchReduction) = $GUI_CHECKED)
 			$g_iSearchReductionCount = GUICtrlRead($g_hTxtSearchReduceCount)
@@ -1063,16 +1043,16 @@ Func ApplyConfig_600_28($TypeReadSave)
 			$g_iSearchRestartLimit = GUICtrlRead($g_hTxtRestartSearchlimit)
 			$g_bSearchRestartPickupHero = (GUICtrlRead($g_hChkRestartSearchPickupHero) = $GUI_CHECKED)
 			$g_bSearchAlertMe = (GUICtrlRead($g_hChkAlertSearch) = $GUI_CHECKED)
-		
+
 			; ================================================== ; Return Home by Time - by Simple Mod  ======================================== ;
-			
+
 			$g_bReturnTimerEnable = (GUICtrlRead($g_hChkReturnTimerEnable) = $GUI_CHECKED)
 			$g_iTxtReturnTimer = GUICtrlRead($g_hTxtReturnTimer)
-			
+
 			; ================================================== ; Attack Priority - by Simple Mod  ======================================== ;
-			
+
 			$g_bChkAttackPriority = (GUICtrlRead($g_hChkAttackPriority) = $GUI_CHECKED)
-			
+
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_28
 
@@ -1532,7 +1512,7 @@ Func ApplyConfig_600_29_DB_Standard($TypeReadSave)
 			GUICtrlSetState($g_hChkWaveFactor, $g_iChkWaveFactor ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtWaveFactor, $g_iTxtWaveFactor)
 			chkWaveFactor()
-			
+
 		Case "Save"
 			$g_aiAttackStdDropOrder[$DB] = _GUICtrlComboBox_GetCurSel($g_hCmbStandardDropOrderDB)
 			$g_aiAttackStdDropSides[$DB] = _GUICtrlComboBox_GetCurSel($g_hCmbStandardDropSidesDB)
@@ -1544,7 +1524,7 @@ Func ApplyConfig_600_29_DB_Standard($TypeReadSave)
 			$g_abAttackStdSmartNearCollectors[$DB][0] = (GUICtrlRead($g_hChkAttackNearGoldMineDB) = $GUI_CHECKED)
 			$g_abAttackStdSmartNearCollectors[$DB][1] = (GUICtrlRead($g_hChkAttackNearElixirCollectorDB) = $GUI_CHECKED)
 			$g_abAttackStdSmartNearCollectors[$DB][2] = (GUICtrlRead($g_hChkAttackNearDarkElixirDrillDB) = $GUI_CHECKED)
-            
+
 			; ================================================== Multi Finger - Added by Simple Mod =================================== ;
 			$g_iMultiFingerStyle = _GUICtrlComboBox_GetCurSel($g_hCmbDBMultiFinger)
 
@@ -1553,7 +1533,7 @@ Func ApplyConfig_600_29_DB_Standard($TypeReadSave)
 			$g_iChkWaveFactor = (GUICtrlRead($g_hChkWaveFactor) = $GUI_CHECKED)
 			$g_iTxtUnitFactor = GUICtrlRead($g_hTxtUnitFactor)
 			$g_iTxtWaveFactor = GUICtrlRead($g_hTxtWaveFactor)
-			
+
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_29_DB_Standard
 
@@ -2035,7 +2015,7 @@ Func ApplyConfig_600_31($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbMinCollectorMatches, $g_iCollectorMatchesMin - 1)
 			GUICtrlSetData($g_hSldCollectorTolerance, $g_iCollectorToleranceOffset)
 			checkCollectors()
-			
+
 			; Check Collector Outside - Simple Mod
 			GUICtrlSetState($g_hChkDBMeetCollOutside, $g_bDBMeetCollOutside = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtDBMinCollOutsidePercent, $g_iTxtDBMinCollOutsidePercent)
@@ -2048,7 +2028,7 @@ Func ApplyConfig_600_31($TypeReadSave)
 			GUICtrlSetState($g_hChkSkipCollectorCheckTH, $g_bSkipCollectorCheckTH = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbSkipCollectorCheckTH, $g_iCmbSkipCollectorCheckTH)
 			chkDBMeetCollOutside()
-			
+
 		Case "Save"
 			For $i = 6 To 12
 				$g_abCollectorLevelEnabled[$i] = (GUICtrlRead($g_ahChkDBCollectorLevel[$i]) = $GUI_CHECKED)
@@ -2057,7 +2037,7 @@ Func ApplyConfig_600_31($TypeReadSave)
 			$g_bCollectorFilterDisable = (GUICtrlRead($g_hChkDBDisableCollectorsFilter) = $GUI_CHECKED)
 			$g_iCollectorMatchesMin = _GUICtrlComboBox_GetCurSel($g_hCmbMinCollectorMatches) + 1
 			$g_iCollectorToleranceOffset = GUICtrlRead($g_hSldCollectorTolerance)
-			
+
 			; Check Collector Outside - Simple Mod
 			$g_bDBMeetCollOutside = (GUICtrlRead($g_hChkDBMeetCollOutside) = $GUI_CHECKED)
 			$g_iTxtDBMinCollOutsidePercent = GUICtrlRead($g_hTxtDBMinCollOutsidePercent)
@@ -2069,7 +2049,7 @@ Func ApplyConfig_600_31($TypeReadSave)
 			$g_iTxtSkipCollectorDark = GUICtrlRead($g_hTxtSkipCollectorDark)
 			$g_bSkipCollectorCheckTH = GUICtrlRead($g_hChkSkipCollectorCheckTH) = $GUI_CHECKED ? 1 : 0
 			$g_iCmbSkipCollectorCheckTH = _GUICtrlComboBox_GetCurSel($g_hCmbSkipCollectorCheckTH)
-			
+
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_31
 
@@ -2176,7 +2156,7 @@ Func ApplyConfig_600_35_1($TypeReadSave)
 
 			GUICtrlSetState($g_hChkOnlySCIDAccounts, $g_bOnlySCIDAccounts ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbWhatSCIDAccount2Use, $g_iWhatSCIDAccount2Use)
-			
+
 			GUICtrlSetState($g_hChkLabCheck, $g_iChkLabCheck = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
    		    chkLabCheck()
 		Case "Save"
@@ -2215,7 +2195,7 @@ Func ApplyConfig_600_35_1($TypeReadSave)
 
 			$g_bOnlySCIDAccounts = (GUICtrlRead($g_hChkOnlySCIDAccounts) = $GUI_CHECKED)
 			$g_iWhatSCIDAccount2Use = _GUICtrlComboBox_GetCurSel($g_hCmbWhatSCIDAccount2Use)
-			
+
 			$g_iChkLabCheck = GUICtrlRead($g_hChkLabCheck) = $GUI_CHECKED ? 1 : 0
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_35_1
@@ -2266,7 +2246,7 @@ Func ApplyConfig_600_35_2($TypeReadSave)
 			Next
 			_GUICtrlComboBox_SetCurSel($g_hCmbTrainTimeToSkip, $g_iTrainTimeToSkip)
 			_cmbSwitchAcc(False)
-			
+
 		Case "Save"
 			;FarmSchedule
 			For $i = 0 To 7
@@ -2372,7 +2352,7 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			; ================================================ AutoCamp - by Simple Mod (#ID135-) ========================================
 			GUICtrlSetState($g_hChkAutoCamp, $g_bChkAutoCamp ? $GUI_CHECKED : $GUI_UNCHECKED)
 			chkAutoCamp()
-			
+
 		Case "Save"
 			; troop/spell levels and counts
 			For $T = 0 To $eTroopCount - 1
@@ -2404,7 +2384,7 @@ Func ApplyConfig_600_52_2($TypeReadSave)
 			$g_bChkFillEQ = (GUICtrlRead($g_hChkFillEQ) = $GUI_CHECKED)
 			; ================================================ AutoCamp - by Simple Mod (#ID135-) ========================================
 			$g_bChkAutoCamp = (GUICtrlRead($g_hChkAutoCamp) = $GUI_CHECKED)
-			
+
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_52_2
 
@@ -2544,7 +2524,7 @@ Func ApplyConfig_641_1($TypeReadSave)
 
 			GUICtrlSetState($g_hChkTrainLogoutMaxTime, $g_bTrainLogoutMaxTime = True ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtTrainLogoutMaxTime, $g_iTrainLogoutMaxTime)
-			
+
 			; Train click timing
 			GUICtrlSetData($g_hSldTrainITDelay, $g_iTrainClickDelay)
 			sldTrainITDelay()
@@ -2559,7 +2539,7 @@ Func ApplyConfig_641_1($TypeReadSave)
 			GUICtrlSetState($g_hChkCheckWardenMode, $g_bCheckWardenMode ? $GUI_CHECKED : $GUI_UNCHECKED)
 			chkCheckWardenMode()
 			_GUICtrlComboBox_SetCurSel($g_hCmbCheckWardenMode, $g_iCheckWardenMode)
-			
+
 		Case "Save"
 			; Training idle time
 			$g_bCloseWhileTrainingEnable = (GUICtrlRead($g_hChkCloseWhileTraining) = $GUI_CHECKED)
@@ -2574,7 +2554,7 @@ Func ApplyConfig_641_1($TypeReadSave)
 			; ================================================== Max logout time - by Simple Mod ======================================== ;
 			$g_bTrainLogoutMaxTime = (GUICtrlRead($g_hChkTrainLogoutMaxTime) = $GUI_CHECKED)
 			$g_iTrainLogoutMaxTime = GUICtrlRead($g_hTxtTrainLogoutMaxTime)
-			
+
 			; Train click timing
 			$g_iTrainClickDelay = GUICtrlRead($g_hSldTrainITDelay)
 			; Training add random delay
@@ -2585,7 +2565,7 @@ Func ApplyConfig_641_1($TypeReadSave)
 
 			$g_bCheckWardenMode = (GUICtrlRead($g_hChkCheckWardenMode) = $GUI_CHECKED)
 			$g_iCheckWardenMode = _GUICtrlComboBox_GetCurSel($g_hCmbCheckWardenMode)
-			
+
 	EndSwitch
 EndFunc   ;==>ApplyConfig_641_1
 

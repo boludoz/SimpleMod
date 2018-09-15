@@ -693,9 +693,6 @@ Func ReadConfig_600_14()
 	IniReadS($g_bAutoLabUpgradeEnable, $g_sProfileBuildingPath, "upgrade", "upgradetroops", False, "Bool")
 	IniReadS($g_iCmbLaboratory, $g_sProfileBuildingPath, "upgrade", "upgradetroopname", 0, "int")
 	$g_sLabUpgradeTime = IniRead($g_sProfileBuildingPath, "upgrade", "upgradelabtime", "")
-	; ================================================== ; Priority System - by Simple Mod  ======================================== ;
-	IniReadS($g_bChkPrioritySystem, $g_sProfileBuildingPath, "upgrade", "ChkPrioritySystem", False, "Bool")
-	IniReadS($g_iCmbPrioritySystem, $g_sProfileBuildingPath, "upgrade", "CmbPrioritySystem", $g_iCmbPrioritySystem, "int")
 EndFunc   ;==>ReadConfig_600_14
 
 Func ReadConfig_600_15()
@@ -797,7 +794,7 @@ Func ReadConfig_600_22()
 	Next
 	; Note: These global variables are not stored to the ini file, to prevent automatic boosting (and spending of gems) when the bot is started:
 	; $g_iCmbBoostBarracks, $g_iCmbBoostSpellFactory, $g_iCmbBoostBarbarianKing, $g_iCmbBoostArcherQueen, $g_iCmbBoostWarden
-	
+
 	; ================================================== Boost for Magic Spell by Simple Mod ================================= ;
 
 	IniReadS($g_iChkBoostBMagic, $g_sProfileConfigPath, "boost", "chkBoostBMagic", $g_iChkBoostBMagic, "Int")
@@ -808,7 +805,7 @@ Func ReadConfig_600_22()
 	IniReadS($g_bChkOneGemBoostBarracks, $g_sProfileConfigPath, "boost", "ChkOneGemBoostBarracks", False, "Bool")
 	IniReadS($g_bChkOneGemBoostSpells, $g_sProfileConfigPath, "boost", "ChkOneGemBoostSpells", False, "Bool")
     IniReadS($g_bChkOneGemBoostHeroes, $g_sProfileConfigPath, "boost", "ChkOneGemBoostHeroes", False, "Bool")
-	
+
 	For $i = 0 To 2
 		IniReadS($g_iLastTime[$i], $g_sProfileBuildingPath, "other", "LastTimeCollectors" & $i, 0, "int")
 	Next
@@ -841,14 +838,14 @@ Func ReadConfig_600_28()
 	IniReadS($g_bSearchAlertMe, $g_sProfileConfigPath, "general", "AlertSearch", False, "Bool")
 
 	; ================================================== ; Return Home by Time - by Simple Mod  ======================================== ;
-	
+
 	IniReadS($g_bReturnTimerEnable, $g_sProfileConfigPath, "search", "ChkReturnTimerEnable", False, "Bool")
 	IniReadS($g_iTxtReturnTimer, $g_sProfileConfigPath, "search", "ReturnTimer", 5, "int")
-	
+
 	; ================================================== ; Attack Priority - by Simple Mod  ======================================== ;
-	
+
 	IniReadS($g_bChkAttackPriority, $g_sProfileConfigPath, "search", "ChkAttackPriority", False, "Bool")
-	
+
 EndFunc   ;==>ReadConfig_600_28
 
 Func ReadConfig_600_28_DB()
@@ -1430,7 +1427,7 @@ Func ReadConfig_600_52_2()
 	$g_iTotalSpellValue = Int($g_iTotalSpellValue)
 	; DoubleTrain - Demen
 	$g_bDoubleTrain = (IniRead($g_sProfileConfigPath, "troop", "DoubleTrain", "0") = "1")
-	
+
 	;SmartTrain - Simple Mod (Demen)
 	IniReadS($g_bChkSmartTrain, $g_sProfileConfigPath, "SmartTrain", "Enable", False, "Bool")
 	IniReadS($g_bChkPreciseArmyCamp, $g_sProfileConfigPath, "SmartTrain", "ChkPreciseTroops", False, "Bool")
@@ -1439,7 +1436,7 @@ Func ReadConfig_600_52_2()
 	IniReadS($g_bChkFillEQ, $g_sProfileConfigPath, "SmartTrain", "ChkFillEQ", False, "Bool")
 	; ================================================ AutoCamp - by Simple Mod (#ID135-) ========================================
 	IniReadS($g_bChkAutoCamp, $g_sProfileConfigPath, "troop", "ChkAutoCamp", False, "Bool")
-	
+
 EndFunc   ;==>ReadConfig_600_52_2
 
 Func ReadConfig_600_54()
