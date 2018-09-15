@@ -827,12 +827,6 @@ Func ApplyConfig_600_17($TypeReadSave)
 			EndIf
 			$g_bUpgradeWallSaveBuilder = (GUICtrlRead($g_hChkSaveWallBldr) = $GUI_CHECKED)
 			$g_iCmbUpgradeWallsLevel = _GUICtrlComboBox_GetCurSel($g_hCmbWalls)
-			; ================================================== Wall/Building Upgrading Priority by Simple Mod	========================;
-			$g_iChkUpgrPriority = GUICtrlRead($g_hChkUpgrPriority) = $GUI_CHECKED ? 1 : 0
-			$g_iCmbUpgrdPriority = _GUICtrlComboBox_GetCurSel($g_hCmbUpgrdPriority)
-			For $i = 4 To 13
-				$g_aiWallsCurrentCount[$i] = Number(GUICtrlRead($g_ahWallsCurrentCount[$i]))
-			Next
 	EndSwitch
 EndFunc   ;==>ApplyConfig_600_17
 

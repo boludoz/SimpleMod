@@ -559,13 +559,6 @@ Func SaveConfig_600_17()
 	_Ini_Add("upgrade", "use-storage", $g_iUpgradeWallLootType)
 	_Ini_Add("upgrade", "savebldr", $g_bUpgradeWallSaveBuilder ? 1 : 0)
 	_Ini_Add("upgrade", "walllvl", $g_iCmbUpgradeWallsLevel)
-	; ================================================== Wall/Building Upgrading Priority by Simple Mod	========================;
-	_Ini_Add("Priority upgrade", "chkUpgrPriority", $g_iChkUpgrPriority ? 1 : 0)
-	_Ini_Add("Priority upgrade", "cmbUpgrdPriority", _GUICtrlComboBox_GetCurSel($g_hCmbUpgrdPriority))
-	For $i = 4 To 13
-		_Ini_Add("Walls", "Wall" & StringFormat("%02d", $i), $g_aiWallsCurrentCount[$i])
-	Next
-	_Ini_Add("upgrade", "WallCost", $g_iWallCost)
 EndFunc   ;==>SaveConfig_600_17
 
 Func SaveConfig_600_18()
@@ -675,7 +668,7 @@ Func SaveConfig_600_28()
 	_Ini_Add("search", "ChkReturnTimerEnable", $g_bReturnTimerEnable ? 1 : 0)
 	_Ini_Add("search", "ReturnTimer", $g_iTxtReturnTimer)
 
-	; ================================================== ; Attack Prioriti - by Simple Mod  ======================================== ;
+	; ================================================== ; Attack Priority - by Simple Mod  ======================================== ;
 
 	_Ini_Add("search", "ChkAttackPriority", $g_bChkAttackPriority ? 1 : 0)
 
