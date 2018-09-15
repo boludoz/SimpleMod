@@ -59,24 +59,13 @@ Func Laboratory()
 	;Create local static array to hold upgrade values
 	Static $aUpgradeValue[33] = [-1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]
 	Local $iAvailElixir, $iAvailDark, $sElixirCount, $sDarkCount, $TimeDiff, $aArray, $Result
-	Local $iLevel = 0
-	
-	If $g_iCmbLaboratory > 0 Then 
-	  $iLevel = Int(IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][0], $g_iUpgradeLevel[Int($g_iCmbLaboratory - 1)][1], 1))
-	EndIf
-	
+
 	$g_iUpgradeMinElixir = Number($g_iUpgradeMinElixir)
 	$g_iUpgradeMinDark = Number($g_iUpgradeMinDark)
 
 	$g_iLaboratoryElixirCost = 0
 	If Not $g_bAutoLabUpgradeEnable Then Return ; Lab upgrade not enabled.
-	If $g_iLabUpgradeProgress = 1 Then
-		SetLog("Lab Upgrade in progress", $COLOR_INFO)
-		Return False
-	EndIf
-	If $g_bChkPrioritySystem = True Then
-		LabPriority()
-	EndIf
+
 	If $g_iCmbLaboratory = 0 Then
 		SetLog("Laboratory enabled, but no troop upgrade selected", $COLOR_WARNING)
 		Return False ; Nothing selected to upgrade
@@ -304,7 +293,6 @@ Func Laboratory()
 	If $aUpgradeValue[$g_iCmbLaboratory] = -1 Then
 		SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " already max level, select another troop", $COLOR_WARNING)
 		ClickP($aAway, 2, $DELAYLABORATORY4, "#0353")
-		IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2])
 		Return False
 	EndIf
 
@@ -326,74 +314,35 @@ Func Laboratory()
 		ClickP($aAway, 2, $DELAYLABORATORY4, "#0354")
 		Return False
 	EndIf
-	
-	; Auto correct the troop/spell/seige level in army tab
-	If $g_bChkPrioritySystem = True And $g_iLabUpgradeProgress = 0 And $g_iCmbLaboratory > 0 Then
-		SetLog("Laboratory Priority Level Check in progress.", $COLOR_INFO)
-		If $aUpgradeValue[$g_iCmbLaboratory] <> $g_iLabCost[$g_iCmbLaboratory - 1][$iLevel] Then
-			$iLevel = 1
-			While Int($aUpgradeValue[$g_iCmbLaboratory]) <> Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel])
-				$iLevel += 1
-				IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], ($iLevel))
-				SetLog("Standby..." & $iLevel, $COLOR_INFO)
-				If Int($aUpgradeValue[$g_iCmbLaboratory]) = Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then ExitLoop
-			WEnd
-			SetLog("Upgrade level adjusted. Exiting Upgrade.", $COLOR_ERROR)
-			Return False
-		ElseIf Int($aUpgradeValue[$g_iCmbLaboratory]) = Int($g_iLabCost[$g_iCmbLaboratory - 1][$iLevel]) Then
-			SetLog("Laboratory Priority Level Check Verified.", $COLOR_SUCCESS)
-		EndIf
-	EndIf	
-		
+
 	; Try to upgrade - LabUpgrade(), check insufficient resource first
 	Switch $g_iCmbLaboratory
 		Case 1 To 19 ; regular elixir
 			ContinueCase
 		Case 31 To 32
-			If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel < 13 Then
-				If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] - $g_iUpgradeMinElixir Then
-					If $iAvailElixir < ($aUpgradeValue[$g_iCmbLaboratory]) Then
-					SetLog("Insufficent Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " available: " & $iAvailElixir, $COLOR_INFO)
-						ClickP($aAway, 2, $DELAYLABORATORY4, "#0355")
-						Return False
-					EndIf
-				ElseIf $aUpgradeValue[$g_iCmbLaboratory] < $g_iLimitBreakGE[$g_iTownHallLevel - 1] - $g_iUpgradeMinElixir Then
-					If $iAvailElixir < ($aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinElixir) Then
-						SetLog("Insufficent Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinElixir & " user reserve, available: " & $iAvailElixir, $COLOR_INFO)
-						ClickP($aAway, 2, $DELAYLABORATORY4, "#0355")
-						Return False
-					EndIf
-				EndIf
-				If LabUpgrade() = True Then
-					SetLog("Elixir used = " & $aUpgradeValue[$g_iCmbLaboratory], $COLOR_INFO)
-					ClickP($aAway, 2, $DELAYLABORATORY4, "#0356")
-					Return True
-				EndIf
-			Else
+			If $iAvailElixir < ($aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinElixir) Then
+				SetLog("Insufficent Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinElixir & " user reserve, available: " & $iAvailElixir, $COLOR_INFO)
+				ClickP($aAway, 2, $DELAYLABORATORY4, "#0355")
 				Return False
-				SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
+			EndIf
+			If LabUpgrade() = True Then
+				SetLog("Elixir used = " & $aUpgradeValue[$g_iCmbLaboratory], $COLOR_INFO)
+				ClickP($aAway, 2, $DELAYLABORATORY4, "#0356")
+				Return True
 			EndIf
 
 		Case 20 To 30; Dark Elixir
-			If $g_iTownHallLevel <> "" And $g_iTownHallLevel > 0 And $g_iTownHallLevel < 13 Then
-				If $aUpgradeValue[$g_iCmbLaboratory] >= $g_iLimitBreakGE[$g_iTownHallLevel - 1] - $g_iUpgradeMinDark Then
-					If $iAvailDark < ($aUpgradeValue[$g_iCmbLaboratory]) Then
-					SetLog("Insufficent Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " available: " & $iAvailDark, $COLOR_INFO)
-						ClickP($aAway, 2, $DELAYLABORATORY4, "#0355")
-						Return False
-					EndIf
-				ElseIf $aUpgradeValue[$g_iCmbLaboratory] < $g_iLimitBreakGE[$g_iTownHallLevel - 1] - $g_iUpgradeMinDark Then
-					If $iAvailDark < ($aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinDark) Then
-						SetLog("Insufficent Dark Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinDark & " user reserve, available: " & $iAvailDark, $COLOR_INFO)
-					ClickP($aAway, 2, $DELAYLABORATORY4, "#0357")
-						Return False
-					EndIf
-				EndIf
-			Else
+			If $iAvailDark < $aUpgradeValue[$g_iCmbLaboratory] + $g_iUpgradeMinDark Then
+				SetLog("Insufficent Dark Elixir for " & $g_avLabTroops[$g_iCmbLaboratory][3] & ", Lab requires: " & $aUpgradeValue[$g_iCmbLaboratory] & " + " & $g_iUpgradeMinDark & " user reserve, available: " & $iAvailDark, $COLOR_INFO)
+				ClickP($aAway, 2, $DELAYLABORATORY4, "#0357")
 				Return False
-				SetLog("TownHall Level Undefined, try resetting it's location.", $COLOR_ERROR)
 			EndIf
-			
+			If LabUpgrade() = True Then
+				SetLog("Dark Elixir used = " & $aUpgradeValue[$g_iCmbLaboratory], $COLOR_INFO)
+				ClickP($aAway, 2, $DELAYLABORATORY4, "#0358")
+				Return True
+			EndIf
+
 		Case Else
 			SetLog("Something went wrong with loot value on Lab upgrade on #" & $g_avLabTroops[$g_iCmbLaboratory][3], $COLOR_ERROR)
 			Return False
@@ -406,7 +355,6 @@ EndFunc   ;==>Laboratory
 ;
 Func LabUpgrade()
 	Local $StartTime, $EndTime, $EndPeriod, $Result, $TimeAdd = 0
-	Local $iLevel = IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], 1)
 	Select
 		Case _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 47, $g_avLabTroops[$g_iCmbLaboratory][1] + 1, True), $sColorNA, 20) = True
 			; check for beige pixel in center just below edge for troop not unlocked
@@ -420,7 +368,6 @@ Func LabUpgrade()
 			If _Sleep($DELAYLABUPGRADE2) Then Return
 
 		Case _ColorCheck(_GetPixelColor($g_avLabTroops[$g_iCmbLaboratory][0] + 22, $g_avLabTroops[$g_iCmbLaboratory][1] + 60, True), Hex(0xFFC360, 6), 20) = True
-			IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2])
 			; Look for Golden pixel inside level indicator for max troops
 			SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " already max level, select another troop", $COLOR_ERROR)
 			If _Sleep($DELAYLABUPGRADE2) Then Return
@@ -438,7 +385,6 @@ Func LabUpgrade()
 
 			; double check if maxed?
 			If _ColorCheck(_GetPixelColor(258, 192, True), Hex(0xFF1919, 6), 20) And _ColorCheck(_GetPixelColor(272, 194, True), Hex(0xFF1919, 6), 20) Then
-				IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][2])
 				SetLog($g_avLabTroops[$g_iCmbLaboratory][3] & " Previously maxxed, select another troop", $COLOR_ERROR) ; oops, we found the red warning message
 				If _Sleep($DELAYLABUPGRADE2) Then Return
 				ClickP($aAway, 2, $DELAYLABUPGRADE3, "#0201")
@@ -522,7 +468,6 @@ Func LabUpgrade()
 					ClickP($aAway, 2, $DELAYLABUPGRADE3, "#0360")
 					Return False
 				EndIf
-				IniWrite($g_sProfileConfigPath, $g_iUpgradeLevel[$g_iCmbLaboratory - 1][0], $g_iUpgradeLevel[$g_iCmbLaboratory - 1][1], $iLevel + 1)
 				SetLog("Upgrade " & $g_avLabTroops[$g_iCmbLaboratory][3] & " in your laboratory started with success...", $COLOR_SUCCESS)
 				PushMsg("LabSuccess")
 				If _Sleep($DELAYLABUPGRADE2) Then Return
@@ -624,120 +569,3 @@ Func LabTroopImages($iStart, $iEnd) ; Debug function to record pixel values for 
 		SetLog("_GetPixelColor(+8, +59): " & _GetPixelColor($g_avLabTroops[$i][0] + 23, $g_avLabTroops[$i][1] + 60, True) & ":FFC360 =Max troop", $COLOR_DEBUG)
 	Next
 EndFunc   ;==>LabTroopImages
-
-Func LabPriority()
-	
-	Local $iLabResults[32][3]=[ _
-		[0, "Elixir", 1], _
-		[0, "Elixir", 2], _
-		[0, "Elixir", 3], _
-		[0, "Elixir", 4], _
-		[0, "Elixir", 5], _
-		[0, "Elixir", 6], _
-		[0, "Elixir" ,7], _
-		[0, "Elixir", 8], _
-		[0, "Elixir", 9], _
-		[0, "Elixir", 10], _
-		[0, "Elixir", 11], _
-		[0, "Elixir", 12], _
-		[0, "Elixir", 13], _
-		[0, "Elixir", 14], _
-		[0, "Elixir", 15], _
-		[0, "Elixir", 16], _
-		[0, "Elixir", 17], _
-		[0, "Elixir", 18], _
-		[0, "Elixir", 19], _
-		[0, "Dark Elixir", 20], _
-		[0, "Dark Elixir", 21], _
-		[0, "Dark Elixir", 22], _
-		[0, "Dark Elixir", 23], _
-		[0, "Dark Elixir", 24], _
-		[0, "Dark Elixir", 25], _
-		[0, "Dark Elixir", 26], _
-		[0, "Dark Elixir", 27], _
-		[0, "Dark Elixir", 28], _
-		[0, "Dark Elixir", 29], _
-		[0, "Dark Elixir", 30], _
-		[0, "Elixir", 31], _
-		[0, "Elixir", 32]]
-	Local $iElixirCount = 0 ;21
-	Local $iDElixirCount = 0 ;11
-	Local $iMaxCount = 0 ;32
-	Local $minElixerValue = ""
-	Local $minDarkElixerValue = ""
-
-	If $g_bChkPrioritySystem = True Then
-		SetLog("Lab Priority Check.", $COLOR_INFO)
-		For $iz = 0 to 31
-			If $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][0], $g_iUpgradeLevel[$iz][1], 0)] = "Max" Or $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][0], $g_iUpgradeLevel[$iz][1], 0)] = 0 Then
-				$iMaxCount =+ 1
-			EndIf
-		Next
-		Setlog("Max TPS Count: " & $iMaxCount, $COLOR_INFO)
-		If $iMaxCount = 32 Then
-			$g_iCmbLaboratory = 0
-			SetLog("No upgrades available at this time", $COLOR_INFO)
-			Return
-		EndIf
-		For $iz = 0 to 31
-			If $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][0], $g_iUpgradeLevel[$iz][1], 0)] > 0 And Not $g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][0], $g_iUpgradeLevel[$iz][1], 0)] = "Max" Then
-				$iLabResults[$iz][0] =+ Number($g_iLabCost[$iz][IniRead($g_sProfileConfigPath, $g_iUpgradeLevel[$iz][0], $g_iUpgradeLevel[$iz][1], 0)])
-			EndIf
-		Next
-		For $iz = 0 to 31 ;
-			If $iLabResults[$iz][0] = "Max" Or $iLabResults[$iz][0] = 0 Then
-				ContinueLoop
-			Else
-				Switch $iLabResults[$iz][1]
-					Case "Elixir"
-						$iElixirCount =+ 1
-					Case "Dark Elixir"
-						$iDElixirCount =+ 1
-				EndSwitch
-			EndIf
-		Next
-		SetLog("Max Elixir Count: " & $iElixirCount & " Max Dark Count: " & $iDElixirCount, $COLOR_INFO)
-		For $iz = 0 To 31
-			If $iLabResults[$iz][0] <> "Max" And $iLabResults[$iz][0] <> "0" Then
-				If $minElixerValue = "" And $iLabResults[$iz][1] = "Elixir" Then
-					$minElixerValue = _ArrayExtract($iLabResults, $iz, $iz)
-				EndIf
-
-				If $minDarkElixerValue = "" And $iLabResults[$iz][1] = "Dark Elixir" Then
-					$minDarkElixerValue = _ArrayExtract($iLabResults, $iz, $iz)
-				EndIf
-
-				If ($minElixerValue <> "" And $iLabResults[$iz][0] < $minElixerValue[0][0] And $iLabResults[$iz][1] = "Elixir") Then
-					$minElixerValue = _ArrayExtract($iLabResults, $iz, $iz)
-				EndIf
-
-				If ($minDarkElixerValue <> "" And $iLabResults[$iz][0] < $minDarkElixerValue[0][0] And $iLabResults[$iz][1] = "Dark Elixir") Then
-					$minDarkElixerValue = _ArrayExtract($iLabResults, $iz, $iz)
-				EndIf
-			EndIf
-		Next
-		If $g_iCmbPrioritySystem = 0 Then
-				If ($minElixerValue <> "") And $iElixirCount < 21 Then
-					$g_iCmbLaboratory = $minElixerValue[0][2]
-					SetLog("Elixir Upgrade set.", $COLOR_INFO)
-					Return
-				ElseIf ($minDarkElixerValue <> "") And $iDElixirCount < 11 Then
-					$g_iCmbLaboratory = Int($minDarkElixerValue[0][2])
-					SetLog("Elixir complete, Dark Elixir Upgrade set.", $COLOR_INFO)
-					Return
-				EndIf
-		ElseIf $g_iCmbPrioritySystem = 1 Then
-				If ($minDarkElixerValue <> "") And $iDElixirCount < 11 Then
-					$g_iCmbLaboratory = $minDarkElixerValue[0][2]
-					SetLog("Dark Elixir Upgrade set.", $COLOR_INFO)
-					Return
-				ElseIf ($minElixerValue <> "") And $iElixirCount < 21 Then
-					$g_iCmbLaboratory = $minElixerValue[0][2]
-					SetLog("Dark Elixir complete, Elixir Upgrade set.", $COLOR_INFO)
-					Return
-				EndIf
-		EndIf
-	ElseIf $g_bChkPrioritySystem = False Then
-		Return
-	EndIf
-EndFunc
