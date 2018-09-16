@@ -366,10 +366,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$g_iCmbTrophyMinProfile = _GUICtrlComboBox_GetCurSel($g_hCmbTrophyMinProfile)
 			$g_iTxtMinTrophyAmount = GUICtrlRead($g_hTxtMinTrophyAmount)
 
-			; ================================================== Upgrade Management - Added by Simple Mod ============================= ;
-
-			$g_ibUpdateNewUpgradesOnly = GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED ? 1 : 0
-
 			; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
 
 			$g_bChkBB_DropTrophies = (GUICtrlRead($g_hChkBB_DropTrophies) = $GUI_CHECKED) ? 1 : 0
