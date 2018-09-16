@@ -135,6 +135,7 @@ Func MainGTFO()
 	
 EndFunc   ;==>MainGTFO
 
+#cs
 ; Train Troops / Train Spells / Necessary Remain Train Time
 Func TrainGTFO()
 	Local $RemainTrainSpace = 0
@@ -207,6 +208,82 @@ Func TrainGTFO()
 	EndGainCost("Train")
 
 EndFunc   ;==>TrainGTFO
+#ce
+Func TrainGTFO()
+
+	; Check Resources values
+	StartGainCost()
+
+	; Smart Train - Team AiO MOD++
+	If $g_bChkSmartTrain Then
+		SmartTrain()
+;~ 		ResetVariables("donated")
+		EndGainCost("Train")
+		Return
+	EndIf
+
+	; Is necessary to be Custom Train Troops to be accurate
+	If Not OpenArmyOverview(True, "TrainGTFO()") Then Return
+
+	If _Sleep(250) Then Return
+
+	CheckArmyCamp(False, False, False, True)
+
+	If Not $g_bRunState Then Return
+	Local $rWhatToTrain = WhatToTrain(True, False) ; r in First means Result! Result of What To Train Function
+	Local $rRemoveExtraTroops = RemoveExtraTroops($rWhatToTrain)
+
+	If $rRemoveExtraTroops = 1 Or $rRemoveExtraTroops = 2 Then
+		CheckArmyCamp(False, False, False, True)
+		If $g_bFullArmy Then
+			SetLog("- Your Army is Full , let's Donate", $COLOR_INFO)
+			If $g_bFirstStart Then $g_bFirstStart = False
+			Return
+		EndIf
+	EndIf
+
+	If Not $g_bRunState Then Return
+
+	If $rRemoveExtraTroops = 2 Then
+		$rWhatToTrain = WhatToTrain(False, False)
+		TrainUsingWhatToTrain($rWhatToTrain)
+	EndIf
+	If _Sleep($DELAYRESPOND) Then Return
+
+	If IsQueueEmpty("Troops") Then
+		If Not $g_bRunState Then Return
+		If Not OpenArmyTab(True, "TrainGTFO()") Then Return
+
+		$rWhatToTrain = WhatToTrain(False, False)
+		TrainUsingWhatToTrain($rWhatToTrain)
+	Else
+		If Not $g_bRunState Then Return
+		If Not OpenArmyTab(True, "TrainGTFO()") Then Return
+	EndIf
+	If _Sleep($DELAYRESPOND) Then Return
+
+	$rWhatToTrain = WhatToTrain(False, False)
+	If DoWhatToTrainContainSpell($rWhatToTrain) Then
+		If IsQueueEmpty("Spells") Then
+			TrainUsingWhatToTrain($rWhatToTrain, True)
+		Else
+			If Not OpenArmyTab(True, "TrainGTFO()") Then Return
+		EndIf
+	EndIf
+
+	If Not OpenArmyTab(True, "TrainGTFO()") Then Return
+
+	; After the train ...get the remain times
+	CheckArmyCamp(False, False, False, True)
+
+	If _Sleep(250) Then Return
+	If Not $g_bRunState Then Return
+	ClickP($aAway, 2, 0, "#0346") ;Click Away
+	If _Sleep(250) Then Return
+
+	EndGainCost("Train")
+
+EndFunc   ;==>TrainGTFO
 
 ; Open Chat / Click on Donate Button / Donate Slot 1 or 2 / Close donate window / stay on chat for [XX] remain train Troops
 Func DonateGTFO()
@@ -249,11 +326,11 @@ Func DonateGTFO()
 		EndIf
 
 		; Verify if the remain train time is zero
-		;$_diffTimer = (TimerDiff($_timer) / 1000) / 60
-		;If $g_aiTimeTrain[0] <> 0 Then $iTime2Exit = $g_aiTimeTrain[0]
-		;If $g_aiTimeTrain[1] <> 0 And $g_aiTimeTrain[1] < $g_aiTimeTrain[0] Then $iTime2Exit = $g_aiTimeTrain[1]
-		;
-		;If $_diffTimer > $iTime2Exit Then ExitLoop
+		$_diffTimer = (TimerDiff($_timer) / 1000) / 60
+		If $g_aiTimeTrain[0] <> 0 Then $iTime2Exit = $g_aiTimeTrain[0]
+		If $g_aiTimeTrain[1] <> 0 And $g_aiTimeTrain[1] < $g_aiTimeTrain[0] Then $iTime2Exit = $g_aiTimeTrain[1]
+		
+		If $_diffTimer > $iTime2Exit Then ExitLoop
 		
 		If $g_iLoop2 > $g_iTxtCyclesGTFO Then ExitLoop
 

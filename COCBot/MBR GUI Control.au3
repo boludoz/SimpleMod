@@ -1804,7 +1804,7 @@ Func tabMain()
 			GUISetState(@SW_SHOWNOACTIVATE, $g_hGUI_ATTACK)
 			tabAttack()
 		;------------------ADDED By Simple Mod - START------------------
-		Case $tabidx = 3 ; MOD 
+		Case $tabidx = 3 ; MOD
 			GUISetState(@SW_HIDE, $g_hGUI_VILLAGE)
 			GUISetState(@SW_HIDE, $g_hGUI_LOG)
 			GUISetState(@SW_HIDE, $g_hGUI_ATTACK)
@@ -2159,7 +2159,7 @@ Func Bind_ImageList($nCtrl, ByRef $hImageList)
 	Switch $nCtrl
 		Case $g_hTabMain
 			; the icons for main tab
-			Local $aIconIndex = [$eIcnHourGlass, $eIcnTH12, $eIcnAttack, $eIcnRK, $eIcnGUI, $eIcnInfo]; EDITED By Simple Mod
+			Local $aIconIndex = [$eIcnHourGlass, $eIcnTH12, $eIcnAttack, $eTitan, $eIcnGUI, $eIcnInfo]; EDITED By Simple Mod
 
 		Case $g_hGUI_VILLAGE_TAB
 			; the icons for village tab

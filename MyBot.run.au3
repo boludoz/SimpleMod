@@ -33,7 +33,7 @@ Opt("MustDeclareVars", 1)
 Global $g_sBotTitle = "" ;~ Don't assign any title here, use Func UpdateBotTitle()
 Global $g_hFrmBot = 0 ; The main GUI window
 
-Global $g_sModversion = "0.0.1"
+Global $g_sModversion = "0.0.2"
 
 ; MBR includes
 #include "COCBot\MBR Global Variables.au3"
@@ -1236,7 +1236,7 @@ Func _RunFunction($action)
 				ChatbotMessage()
 			EndIf
 			;------------------ADDED By Simple Mod - END------------------
-		Case "DonateCC,Train"			
+		Case "DonateCC,Train"
 			If $g_iActiveDonate And $g_bChkDonate Then
 				;------------------REMOVED By Simple Mod - START------------------
 				;If $g_bFirstStart Then
@@ -1355,26 +1355,26 @@ Func FirstCheck()
 	MainGTFO()
 	MainKickout()
 	VillageReport()
-	
-	;If $g_bChkAutoCamp Then 
+
+	;If $g_bChkAutoCamp Then
 	;Setlog("Checking camps.", $COLOR_INFO)
 	;CheckAutoCamp() ; ADDED By Simple Mod(#ID135-)
 	;Setlog("Checking camps finished.", $COLOR_INFO)
     ;
 	;EndIf
 
-			If isOnBuilderBase() Or (($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades Or $g_bChkBB_DropTrophies) And SwitchBetweenBases()) Then
-				CollectBuilderBase()
-				BuilderBaseReport()
-				StartClockTowerBoost()
-				MainSuggestedUpgradeCode()
-				If $g_bChkBB_DropTrophies Then
-				BB_DropTrophies() ;------------------ADDED By Simple Mod - by Chacal GYN - Drop Trophies (ID70) ------------------
-				BuilderBaseReport(True)
-				; switch back to normal village
-				EndIf
-				SwitchBetweenBases()
-			EndIf
+   ;If isOnBuilderBase() Or (($g_bChkCollectBuilderBase Or $g_bChkStartClockTowerBoost Or $g_iChkBBSuggestedUpgrades Or $g_bChkBB_DropTrophies) And SwitchBetweenBases()) Then
+	;	 CollectBuilderBase()
+	;	 BuilderBaseReport()
+	;	 StartClockTowerBoost()
+	;	 MainSuggestedUpgradeCode()
+	;	 If $g_bChkBB_DropTrophies Then
+	;	 BB_DropTrophies() ;------------------ADDED By Simple Mod - by Chacal GYN - Drop Trophies (ID70) ------------------
+	;	 BuilderBaseReport(True)
+	;	 ; switch back to normal village
+	;	 EndIf
+	;	 SwitchBetweenBases()
+   ;EndIf
 
 	CheckFarmSchedule()
 
