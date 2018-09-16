@@ -123,12 +123,12 @@ Func ReadConfig_RKMod()
 	; ==================================================  Upgrade Management - Added by Simple Mod ==================== ;
 
 	IniReadS($g_ibUpdateNewUpgradesOnly, $g_sProfileConfigPath, "upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly, "int")
-	
+
 	; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
-	
+
 	IniReadS($g_bChkBB_DropTrophies, $g_sProfileConfigPath, "other", "ChkBB_DropTrophies", $g_bChkBB_DropTrophies, "Int")
 	IniReadS($g_iTxtBB_DropTrophies, $g_sProfileConfigPath, "other", "TxtBB_DropTrophies", $g_iTxtBB_DropTrophies, "Int")
-	
+
 EndFunc   ;==>ReadConfig_RKMod
 
 Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
@@ -247,10 +247,10 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	_Ini_Add("upgrade", "UpdateNewUpgradesOnly", $g_ibUpdateNewUpgradesOnly ? 1 : 0)
 
 	; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
-	
+
 	_Ini_Add("other", "ChkBB_DropTrophies", $g_bChkBB_DropTrophies)
 	_Ini_Add("other", "TxtBB_DropTrophies", $g_iTxtBB_DropTrophies)
-	
+
 EndFunc   ;==>SaveConfig_RKMod
 
 Func ApplyConfig_RKMod($TypeReadSave)
@@ -369,9 +369,9 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			; ================================================== Upgrade Management - Added by Simple Mod ============================= ;
 
 			$g_ibUpdateNewUpgradesOnly = GUICtrlRead($g_hChkUpdateNewUpgradesOnly) = $GUI_CHECKED ? 1 : 0
-			
+
 			; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
-			
+
 			$g_bChkBB_DropTrophies = (GUICtrlRead($g_hChkBB_DropTrophies) = $GUI_CHECKED) ? 1 : 0
 			$g_iTxtBB_DropTrophies = GUICtrlRead($g_hTxtBB_DropTrophies)
 
@@ -480,49 +480,44 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			_GUICtrlComboBox_SetCurSel($g_hCmbGoldMinProfile, $g_iCmbGoldMinProfile)
 			GUICtrlSetData($g_hTxtMinGoldAmount, $g_iTxtMinGoldAmount)
             chkGoldSwitchMin()
-			 
+
 			GUICtrlSetState($g_hChkElixirSwitchMax, $g_bChkElixirSwitchMax ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbElixirMaxProfile, $g_iCmbElixirMaxProfile)
 			GUICtrlSetData($g_hTxtMaxElixirAmount, $g_iTxtMaxElixirAmount)
 			chkElixirSwitchMax()
-			
+
 			GUICtrlSetState($g_hChkElixirSwitchMin, $g_bChkElixirSwitchMin ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbElixirMinProfile, $g_iCmbElixirMinProfile)
 			GUICtrlSetData($g_hTxtMinElixirAmount, $g_iTxtMinElixirAmount)
             chkElixirSwitchMin()
-			
+
 			GUICtrlSetState($g_hChkDESwitchMax, $g_bChkDESwitchMax ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbDEMaxProfile, $g_iCmbDEMaxProfile)
 			GUICtrlSetData($g_hTxtMaxDEAmount, $g_iTxtMaxDEAmount)
 			chkDESwitchMax()
-			
+
 			GUICtrlSetState($g_hChkDESwitchMin, $g_bChkDESwitchMin ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbDEMinProfile, $g_iCmbDEMinProfile)
 			GUICtrlSetData($g_hTxtMinDEAmount, $g_iTxtMinDEAmount)
             chkDESwitchMin()
-			
+
 			GUICtrlSetState($g_hChkTrophySwitchMax, $g_bChkTrophySwitchMax ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbTrophyMaxProfile, $g_iCmbTrophyMaxProfile)
 			GUICtrlSetData($g_hTxtMaxTrophyAmount, $g_iTxtMaxTrophyAmount)
 			chkTrophySwitchMax()
-			
+
 			GUICtrlSetState($g_hChkTrophySwitchMin, $g_bChkTrophySwitchMin ? $GUI_CHECKED : $GUI_UNCHECKED)
 			_GUICtrlComboBox_SetCurSel($g_hCmbTrophyMinProfile, $g_iCmbTrophyMinProfile)
 			GUICtrlSetData($g_hTxtMinTrophyAmount, $g_iTxtMinTrophyAmount)
 			chkTrophySwitchMin()
 
-			; ==================================================  Upgrade Management - Added by Simple Mod ======================================== ;
-
-			GUICtrlSetState($g_hChkUpdateNewUpgradesOnly, $g_ibUpdateNewUpgradesOnly = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
-            chkUpdateNewUpgradesOnly()
-
 			; ================================================== BB_DropTrophies - by Chacal GYN (ID70) ================================= ;
-					
+
 			GUICtrlSetState($g_hChkBB_DropTrophies, $g_bChkBB_DropTrophies = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetData($g_hTxtBB_DropTrophies, $g_iTxtBB_DropTrophies)
 			ChkBB_DropTrophies()
 			TxtBB_DropTrophies()
-			
+
 	EndSwitch
 
 EndFunc   ;==>ApplyConfig_RKMod
