@@ -15,11 +15,6 @@
 
 Func ReadConfig_RKMod()
 
-	; ================================================== CSV SPEED  - Added by Simple Mod ================================ ;
-
-	IniReadS($icmbCSVSpeed[$LB], $g_sProfileConfigPath, "RK CSV Speed", "cmbCSVSpeed[LB]", 2, "Int")
-	IniReadS($icmbCSVSpeed[$DB], $g_sProfileConfigPath, "RK CSV Speed", "cmbCSVSpeed[DB]", 2, "Int")
-
 ; ================================================== Super XP - Added by Simple Mod ==================================== ;
 
 	IniReadS($ichkEnableSuperXP, $g_sProfileConfigPath, "RK GoblinXP", "EnableSuperXP", 0, "int")
@@ -133,13 +128,6 @@ EndFunc   ;==>ReadConfig_RKMod
 
 Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 	ApplyConfig_RKMod(GetApplyConfigSaveAction())
-
-
-	; ================================================== CSV SPEED - Added by Simple Mod =============================== ;
-
-
-	_Ini_Add("RK CSV Speed", "cmbCSVSpeed[LB]", $icmbCSVSpeed[$LB])
-	_Ini_Add("RK CSV Speed", "cmbCSVSpeed[DB]", $icmbCSVSpeed[$DB])
 
 	; ================================================== Super XP - Added by Simple Mod ================================ ;
 
@@ -259,11 +247,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 		Case "Save"
 
-			; ================================================== CSV SPEED - Added by Simple Mod ========================= ;
-
-		     $icmbCSVSpeed[$LB] = _GUICtrlComboBox_GetCurSel($cmbCSVSpeed[$LB])
-			 $icmbCSVSpeed[$DB] = _GUICtrlComboBox_GetCurSel($cmbCSVSpeed[$DB])
-
 			; ================================================== Super XP - Added by Simple Mod ========================== ;
 
 			$ichkEnableSuperXP = GUICtrlRead($chkEnableSuperXP) = $GUI_CHECKED ? 1 : 0
@@ -372,12 +355,6 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			$g_iTxtBB_DropTrophies = GUICtrlRead($g_hTxtBB_DropTrophies)
 
 		Case "Read"
-
-
-			; ================================================== CSV SPEED - Added by Simple Mod ============================  ;
-
-			 _GUICtrlComboBox_SetCurSel($cmbCSVSpeed[$LB], $icmbCSVSpeed[$LB])
-			 _GUICtrlComboBox_SetCurSel($cmbCSVSpeed[$DB], $icmbCSVSpeed[$DB])
 
 			; ================================================== Super XP - Added by Simple Mod ============================== ;
 

@@ -429,9 +429,9 @@ Func ParseAttackCSV($debug = False)
 						Else
 							Local $sleep = Int($sleep1)
 						EndIf
-						Local $iSleepS = Int($sleep1 * $g_iMultWaitCVS)
-						Setlog("Wait time: " & $sleep & " x0" & $g_iMultWaitCVS & " = " & $iSleepS, $COLOR_GREEN)
-						$sleep = Int($sleep1 * $g_iMultWaitCVS)
+						Local $iSleepS = Int($sleep1 / $g_iMultWaitCVS)
+						Setlog("Wait time: " & $sleep & " /" & $g_iMultWaitCVS & " = " & $iSleepS, $COLOR_GREEN)
+						$sleep = Int($sleep1 / $g_iMultWaitCVS)
 
 						debugAttackCSV("wait " & $sleep)
 						;If _Sleep($sleep) Then Return

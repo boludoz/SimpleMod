@@ -152,10 +152,10 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
         Local $sleepBefore = 0
         If $sleepBeforeMin <> $sleepBeforeMax Then
             $sleepBefore = Random($sleepBeforeMin, $sleepBeforeMax, 1)
-            $sleepBefore = Int($sleepBefore * $g_CSVSpeedDivider)
+            $sleepBefore = Int($sleepBefore / $g_iMultWaitCVS)
         Else
             $sleepBefore = Int($sleepBeforeMin)
-            $sleepBefore = Int($sleepBefore * $g_CSVSpeedDivider)
+            $sleepBefore = Int($sleepBefore / $g_iMultWaitCVS)
         EndIf
 
         If $sleepBefore > 50 And IsKeepClicksActive() = False Then
@@ -188,17 +188,19 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 				;delay time between 2 drops in different point
 				If $delayDropMin <> $delayDropMax Then
 					$delayDrop = Random($delayDropMin, $delayDropMax, 1)
-; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
-                    $delayDrop = Int($delayDrop * $g_CSVSpeedDivider)
-; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                 Else
                     $delayDrop = $delayDropMin
-; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
-                    $delayDrop = Int($delayDrop * $g_CSVSpeedDivider)
-; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
 				debugAttackCSV(">> delay change drop point: " & $delayDrop)
 			EndIf
+;================== Simple Mod =================
+
+			If ($g_iMatchMode = $DB) Then
+					$delayDrop = Int($delayDrop / $g_iSlider[0])
+			Else
+					$delayDrop = Int($delayDrop / $g_iSlider[1])
+			EndIf
 		 EndIf
+;================== Simple Mod =================
 
 			For $j = 1 To $numbersOfVectors
 				;delay time between 2 drops in different point
@@ -212,15 +214,17 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 					;delay time between 2 drops in same point
 					If $delayPointmin <> $delayPointmax Then
 						Local $delayPoint = Random($delayPointmin, $delayPointmax, 1)
-; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
-                        $delayPoint = Int($delayPoint * $g_CSVSpeedDivider)
-; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                     Else
                         Local $delayPoint = $delayPointmin
-; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
-                        $delayPoint = Int($delayPoint * $g_CSVSpeedDivider)
-; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
                     EndIf
+;================== Simple Mod =================
+					If ($g_iMatchMode = $DB) Then
+							$delayPoint = Int($delayPoint / $g_iSlider[0])
+					Else                                    
+							$delayPoint = Int($delayPoint / $g_iSlider[1])
+					EndIf
+;================== Simple Mod =================
+
 					Switch $iTroopIndex
 						Case $eBarb To $eBowl ; drop normal troops
 							If $debug = True Then
@@ -279,15 +283,17 @@ Func DropTroopFromINI($vectors, $indexStart, $indexEnd, $indexArray, $qtaMin, $q
 		Local $sleepafter = 0
 		If $sleepafterMin <> $sleepAfterMax Then
 			$sleepafter = Random($sleepafterMin, $sleepAfterMax, 1)
-; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
-            $sleepafter = Int($sleepafter * $g_CSVSpeedDivider)
-; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
         Else
             $sleepafter = Int($sleepafterMin)
-; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
-            $sleepafter = Int($sleepafter * $g_CSVSpeedDivider)
-; ================================================== ADDITION BY ROROTITI - Simple Mod ================================================== ;
         EndIf
+;================== Simple Mod =================
+		If ($g_iMatchMode = $DB) Then
+				$sleepafter = Int($sleepafter / $g_iSlider[0])
+		Else                                    
+				$sleepafter = Int($sleepafter / $g_iSlider[1])
+		EndIf
+;================== Simple Mod =================
+
 		If $sleepafter > 0 And IsKeepClicksActive() = False Then
 			debugAttackCSV(">> delay after drop all troops: " & $sleepafter)
 			If $sleepafter <= 1000 Then ; check SLEEPAFTER value is less than 1 second?

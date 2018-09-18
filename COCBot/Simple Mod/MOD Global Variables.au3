@@ -17,12 +17,6 @@ Global $g_sLastModversion = "" ;latest version from GIT
 Global $g_sLastModmessage = "" ;message for last version
 Global $g_sOldModversmessage = "" ;warning message for old bot
 
-; ================================================== CSV SPEED - Added by Simple Mod =========================================== ;
-
-Global $cmbCSVSpeed[2] = [$LB, $DB]
-Global $icmbCSVSpeed[2] = [2, 2]
-Global $g_CSVSpeedDivider = 1
-
 ; ================================================== Goblin XP - Added by Simple Mod =========================================== ;
 
 ;SuperXP / GoblinXP
@@ -295,7 +289,8 @@ Global $g_bRadioCVSwait3  = False
 Global $g_iSliderWaitCVS = 0
 Global $g_iLabel3  = 0
 ; FUNCS
-Global $g_iMultWaitCVS = 4
-Global $g_iSlider[2] = [$LB, $DB]
+Global $g_iMultWaitCVS = 1
+Global $g_iSlider[2] = [1, 1]
+
 ; ======================== RK CONFIG ============================================================================= ;
 Global $g_sModConfigPath = ""

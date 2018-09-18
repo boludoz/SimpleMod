@@ -65,7 +65,7 @@ Func AttackGUICheckbox()
 EndFunc   ;==>AttackGUICheckbox
 
 Func AttackGUICheckboxControl()
-Local $iTmpVar = 0	
+
 If GUICtrlRead($g_hRadioCVSwait1) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hRadioCVSwait2, $GUI_UNCHECKED)
 		GUICtrlSetState($g_hRadioCVSwait3, $GUI_UNCHECKED)
@@ -76,11 +76,13 @@ If GUICtrlRead($g_hRadioCVSwait1) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hRadioCVSwait3, $GUI_UNCHECKED)
 		GUICtrlSetState($g_hSliderWaitCVS, $GUI_SHOW)
 		
-		GUICtrlSetData($g_hSliderWaitCVS, $g_iSliderWaitCVS)
+		GUICtrlSetData($g_hSliderWaitCVS, $g_iSliderWaitCVS)	
 		$g_iSliderWaitCVS = GUICtrlRead($g_hSliderWaitCVS)
-		$iTmpVar = 0
-		$iTmpVar = StringReplace($g_iSliderWaitCVS, "-", ".")
-		$g_iMultWaitCVS = $iTmpVar
+			$g_iMultWaitCVS = $g_iSliderWaitCVS
+			If $g_iMultWaitCVS > 0 Then $g_iMultWaitCVS += 1
+			If $g_iMultWaitCVS < 0 Then $g_iMultWaitCVS -= 0.1
+			If $g_iMultWaitCVS = 0 Then $g_iMultWaitCVS = .1
+			$g_iMultWaitCVS = Number(StringReplace($g_iMultWaitCVS, "-", "."))	
 
 	ElseIf GUICtrlRead($g_hRadioCVSwait3) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hRadioCVSwait1, $GUI_UNCHECKED)
@@ -96,22 +98,21 @@ If GUICtrlRead($g_hRadioCVSwait1) = $GUI_CHECKED Then
 	EndIf
 	
 	GUICtrlSetData($g_hSliderLB, $g_iSliderLB)
-	$iTmpVar = 0
 	$g_iSliderLB = GUICtrlRead($g_hSliderLB)
-	$iTmpVar = StringReplace($g_iSliderLB, "-", ".")
-	$g_CSVSpeedDivider = $iTmpVar
+		$g_iSlider[1] = $g_iSliderLB
+		If $g_iSlider[1] > 0 Then $g_iSliderLB += 1
+		If $g_iSlider[1] < 0 Then $g_iSliderLB -= 0.1
+		If $g_iSlider[1] = 0 Then $g_iSliderLB = .1
+		$g_iSlider[1] = Number(StringReplace($g_iSliderLB, "-", "."))	
 
-	
+
 	GUICtrlSetData($g_hSliderDB, $g_iSliderDB)
-	$iTmpVar = 0
 	$g_iSliderDB = GUICtrlRead($g_hSliderDB)
-	$iTmpVar = StringReplace($g_iSliderDB, "-", ".")
-	$g_CSVSpeedDivider = $iTmpVar
-		
-		; Only LOG IF is a CSV attack
-		If ($g_iMatchMode = $DB And $g_aiAttackAlgorithm[$DB] = 1) Or ($g_iMatchMode = $LB And $g_aiAttackAlgorithm[$LB] = 1) Then
-			Setlog("Executing Scripted attack at " & $g_CSVSpeedDivider & " Speed", $COLOR_INFO)
-		EndIF
+		$g_iSlider[0] = $g_iSliderDB
+		If $g_iSlider[0] > 0 Then $g_iSliderDB += 1
+		If $g_iSlider[0] < 0 Then $g_iSliderDB -= 0.1
+		If $g_iSlider[0] = 0 Then $g_iSliderDB = .1
+		$g_iSlider[0] = Number(StringReplace($g_iSliderDB, "-", "."))	
 
 EndFunc   ;==>AttackGUICheckboxControl
 
