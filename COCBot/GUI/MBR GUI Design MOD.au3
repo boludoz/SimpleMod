@@ -128,14 +128,14 @@ Local $x = 25, $y = 45
 GUISetFont(8, 400, 0, "Tahoma")
 $g_hGroup1 = GUICtrlCreateGroup("CVS: Deploy LV/DB", 40, 80, 201, 113)
 $g_hSliderLB = GUICtrlCreateSlider(48, 112, 150, 29)
-			GUICtrlSetData($g_hSliderLB, 0)
-            GUICtrlSetState(-1, $g_iSliderLB)
+			;GUICtrlSetData($g_hSliderLB, 0)
+            ;GUICtrlSetState(-1, $g_iSliderLB)
 			GUICtrlSetLimit(-1, 49, -4)
             GUICtrlSetOnEvent(-1, "AttackGUICheckbox")
 
 $g_hSliderDB = GUICtrlCreateSlider(48, 160, 150, 29)
-			GUICtrlSetData($g_hSliderDB, 0)
-            GUICtrlSetState(-1, $g_iSliderDB)
+			;GUICtrlSetData($g_hSliderDB, 0)
+            ;GUICtrlSetState(-1, $g_iSliderDB)
 			GUICtrlSetLimit(-1, 49, -4)
             GUICtrlSetOnEvent(-1, "AttackGUICheckbox")
 

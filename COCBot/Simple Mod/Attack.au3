@@ -65,6 +65,23 @@ Func AttackGUICheckbox()
 EndFunc   ;==>AttackGUICheckbox
 
 Func AttackGUICheckboxControl()
+		GUICtrlSetData($g_hSliderLB, $g_iSliderLB)
+		$g_iSliderLB = GUICtrlRead($g_hSliderLB)
+		$g_iSlider[1] = $g_iSliderLB
+
+		GUICtrlSetData($g_hSliderDB, $g_iSliderDB)
+		$g_iSliderDB = GUICtrlRead($g_hSliderDB)
+		$g_iSlider[0] = $g_iSliderDB
+	
+	
+	For $i = 0 To UBound($g_iSlider) - 1
+			If $g_iSlider[$i] > 0 Then $g_iSlider[$i] += 1
+			If $g_iSlider[$i] < 0 Then $g_iSlider[$i] -= 0.1
+			If $g_iSlider[$i] = 0 Then $g_iSlider[$i] = .1
+			$g_iSlider[$i] = Number(StringReplace($g_iSlider[$i], "-", "."))	
+			If $g_iSlider[$i] <= 1 Then $g_iSlider[$i] -= 1
+		Next
+		SetDebugLog($g_iSlider[0] & ", " & $g_iSlider[1] & ", " & $g_iMultWaitCVS)
 
 If GUICtrlRead($g_hRadioCVSwait1) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hRadioCVSwait2, $GUI_UNCHECKED)
@@ -98,26 +115,10 @@ If GUICtrlRead($g_hRadioCVSwait1) = $GUI_CHECKED Then
 		$g_iMultWaitCVS = 1
 	EndIf
 	
-	GUICtrlSetData($g_hSliderLB, $g_iSliderLB)
-	$g_iSliderLB = GUICtrlRead($g_hSliderLB)
-		$g_iSlider[1] = $g_iSliderLB
-		If $g_iSlider[1] > 0 Then $g_iSliderLB += 1
-		If $g_iSlider[1] < 0 Then $g_iSliderLB -= 0.1
-		If $g_iSlider[1] = 0 Then $g_iSliderLB = .1
-		$g_iSlider[1] = Number(StringReplace($g_iSliderLB, "-", "."))	
-		If $g_iSlider[1] <= 1 Then $g_iSlider[1] -= 1
+	For $i = 0 To UBound($g_iSlider) - 1
+	GUICtrlSetState($g_iSlider[$i], $GUI_SHOW)
+	Next
 
-
-	GUICtrlSetData($g_hSliderDB, $g_iSliderDB)
-	$g_iSliderDB = GUICtrlRead($g_hSliderDB)
-		$g_iSlider[0] = $g_iSliderDB
-		If $g_iSlider[0] > 0 Then $g_iSliderDB += 1
-		If $g_iSlider[0] < 0 Then $g_iSliderDB -= 0.1
-		If $g_iSlider[0] = 0 Then $g_iSliderDB = .1
-		$g_iSlider[0] = Number(StringReplace($g_iSliderDB, "-", "."))	
-		If $g_iSlider[0] <= 1 Then $g_iSlider[0] -= 1
-
-		SetDebugLog($g_iSlider[0] & ", " & $g_iSlider[1] & ", " & $g_iMultWaitCVS)
 EndFunc   ;==>AttackGUICheckboxControl
 
 ;Func ChatbotGUICheckboxDisable()
