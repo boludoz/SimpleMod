@@ -137,6 +137,10 @@ Global $ChatbotQueuedChats[0], $ChatbotReadQueued = False, $ChatbotReadInterval 
 Global $g_bChkCleverbot = False
 Global $g_bChkDelayTime = False
 Global $g_iTxtDelayTime = 10
+
+Global $g_bGlobalChatGUI = False   
+Global $g_bClanChatGUI = False     
+Global $g_bChallengeChatGUI = False
 ;=============================================== Russian Request - by Simple Mod ======================================== ;
 
 Global $g_bChkRusLang2 = False

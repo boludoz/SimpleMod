@@ -18,6 +18,10 @@
 #include <WinAPIEx.au3>
 
 Func ChatbotReadMessages()
+	If IniRead($sChatIni, "ChatSelector", "GlobalChatGUI", "False") = "True" Then $g_bGlobalChatGUI = True
+	If IniRead($sChatIni, "ChatSelector", "ClanChatGUI", "False") = "True" Then $g_bClanChatGUI = True
+	If IniRead($sChatIni, "ChatSelector", "ChallengeChatGUI", "False") = "True" Then $g_bChallengeChatGUI = True
+
 	If IniRead($sChatIni, "ChatGlobal", "Enable", "False") = "True" Then $g_bChkChatGlobal = True
 	If IniRead($sChatIni, "ChatGlobal", "Scramble", "False") = "True" Then $g_bChkScrambleGlobal = True
 	If IniRead($sChatIni, "ChatGlobal", "SwitchLang", "False") = "True" Then $g_bChkSwitchLang = True
@@ -64,6 +68,10 @@ Func ChatbotReadMessages()
 EndFunc   ;==>ChatbotReadMessages
 
 Func ChatbotGUICheckbox()
+	$g_bGlobalChatGUI = GUICtrlRead($g_hGlobalChatGUI) = $GUI_CHECKED
+	$g_bClanChatGUI = GUICtrlRead($g_hClanChatGUI) = $GUI_CHECKED
+	$g_bChallengeChatGUI = GUICtrlRead($g_hChallengeChatGUI) = $GUI_CHECKED
+
 	$g_bChkChatGlobal = GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED
 	$g_bChkScrambleGlobal = GUICtrlRead($g_hChkGlobalScramble) = $GUI_CHECKED
 	$g_bChkSwitchLang = GUICtrlRead($g_hChkSwitchLang) = $GUI_CHECKED
@@ -84,11 +92,17 @@ Func ChatbotGUICheckbox()
 	$g_bChkDelayTime = GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED
 	$g_bChkDelayTime = GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED
 	$g_bChkCleverbot = GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED
-
+	
+	IniWrite($sChatIni, "ChatSelector", "GlobalChatGUI", $g_bGlobalChatGUI)
+	IniWrite($sChatIni, "ChatSelector", "ClanChatGUI", $g_bClanChatGUI)
+	IniWrite($sChatIni, "ChatSelector", "ChallengeChatGUI", $g_bChallengeChatGUI)
+	
 	IniWrite($sChatIni, "Lang", "cmbLang", $g_iCmbLang)
 	IniWrite($sChatIni, "ChatGlobal", "Enable", $g_bChkChatGlobal)
 	IniWrite($sChatIni, "ChatGlobal", "Scramble", $g_bChkScrambleGlobal)
 	IniWrite($sChatIni, "ChatGlobal", "SwitchLang", $g_bChkSwitchLang)
+	IniWrite($sChatIni, "ChatGlobal", "ChkDelayTime", $g_bChkDelayTime)
+	IniWrite($sChatIni, "ChatGlobal", "TxtDelayTime", $g_iTxtDelayTime)
 
 	IniWrite($sChatIni, "ChatClan", "Enable", $g_bChkChatClan)
 	IniWrite($sChatIni, "ChatClan", "Responses", $g_bChkClanUseResponses)
@@ -97,14 +111,13 @@ Func ChatbotGUICheckbox()
 	IniWrite($sChatIni, "ChatClan", "PbSendNewChats", $g_iPbSendNewChats)
     IniWrite($sChatIni, "Lang", "RusLang", $g_iRusLang)
 	IniWrite($sChatIni, "ChatClan", "ChkCleverbot", $g_bChkCleverbot)
-	IniWrite($sChatIni, "ChatGlobal", "ChkDelayTime", $g_bChkDelayTime)
-	IniWrite($sChatIni, "ChatGlobal", "TxtDelayTime", $g_iTxtDelayTime)
 	
     ChatbotGUICheckboxControl()
 
 EndFunc   ;==>ChatbotGUICheckbox
 
-Func ChatbotGUICheckboxControl()	
+Func ChatbotGUICheckboxControl()
+
 	If GUICtrlRead($g_hChkGlobalChat) = $GUI_CHECKED Then
 		GUICtrlSetState($g_hChkGlobalScramble, $GUI_ENABLE)
 		GUICtrlSetState($g_hChkSwitchLang, $GUI_ENABLE)
@@ -172,6 +185,60 @@ Func ChatbotGUICheckboxControl()
 	
 	GUICtrlSetData($g_hTxtDelayTime, $g_iTxtDelayTime)
 	$g_iTxtDelayTime = GUICtrlRead($g_hTxtDelayTime)
+	
+		; GLOBAL
+	If GUICtrlRead($g_hGlobalChatGUI) = $GUI_CHECKED Then
+		GUICtrlSetState($g_hChkGlobalChat        , $GUI_SHOW)
+		GUICtrlSetState($g_hChkGlobalScramble    , $GUI_SHOW)
+		GUICtrlSetState($g_hChkDelayTime         , $GUI_SHOW)
+		GUICtrlSetState($g_hChkSwitchLang        , $GUI_SHOW)
+		GUICtrlSetState($g_hEditGlobalMessages[0], $GUI_SHOW)
+		GUICtrlSetState($g_hEditGlobalMessages[1], $GUI_SHOW)
+		GUICtrlSetState($g_hEditGlobalMessages[2], $GUI_SHOW)
+		GUICtrlSetState($g_hEditGlobalMessages[3], $GUI_SHOW)
+		GUICtrlSetState($g_hTxtDelayTime         , $GUI_SHOW)
+		GUICtrlSetState($g_hCmbLang         	 , $GUI_SHOW)
+	ElseIf GUICtrlRead($g_hGlobalChatGUI) = $GUI_UNCHECKED Then
+		GUICtrlSetState($g_hChkGlobalChat        , $GUI_HIDE)
+		GUICtrlSetState($g_hChkGlobalScramble    , $GUI_HIDE)
+		GUICtrlSetState($g_hChkDelayTime         , $GUI_HIDE)
+		GUICtrlSetState($g_hChkSwitchLang        , $GUI_HIDE)
+		GUICtrlSetState($g_hEditGlobalMessages[0], $GUI_HIDE)
+		GUICtrlSetState($g_hEditGlobalMessages[1], $GUI_HIDE)
+		GUICtrlSetState($g_hEditGlobalMessages[2], $GUI_HIDE)
+		GUICtrlSetState($g_hEditGlobalMessages[3], $GUI_HIDE)
+		GUICtrlSetState($g_hTxtDelayTime         , $GUI_HIDE)
+		GUICtrlSetState($g_hCmbLang         	 , $GUI_HIDE)
+	EndIf
+		; CHAT
+	If GUICtrlRead($g_hClanChatGUI) = $GUI_CHECKED Then
+		GUICtrlSetState($g_hChkClanChat      , $GUI_SHOW)
+		GUICtrlSetState($g_hChkRusLang       , $GUI_SHOW)
+		GUICtrlSetState($g_hGroupChatRandom  , $GUI_SHOW)
+		GUICtrlSetState($g_hChkUseResponses  , $GUI_SHOW)
+		GUICtrlSetState($g_hEditResponses    , $GUI_SHOW)
+		GUICtrlSetState($g_hChkCleverbot     , $GUI_SHOW)
+		GUICtrlSetState($g_hGroupChatSmart   , $GUI_SHOW)
+		GUICtrlSetState($g_hChkUseGeneric    , $GUI_SHOW)
+		GUICtrlSetState($g_hEditGeneric      , $GUI_SHOW)
+		GUICtrlSetState($g_hGroupTelegram    , $GUI_SHOW)
+		GUICtrlSetState($g_hChkChatPushbullet, $GUI_SHOW)
+		GUICtrlSetState($g_hChkPbSendNewChats, $GUI_SHOW)
+	ElseIf GUICtrlRead($g_hClanChatGUI) = $GUI_UNCHECKED Then
+		GUICtrlSetState($g_hChkClanChat      , $GUI_HIDE)
+		GUICtrlSetState($g_hChkRusLang       , $GUI_HIDE)
+		GUICtrlSetState($g_hGroupChatRandom  , $GUI_HIDE)
+		GUICtrlSetState($g_hChkUseResponses  , $GUI_HIDE)
+		GUICtrlSetState($g_hEditResponses    , $GUI_HIDE)
+		GUICtrlSetState($g_hChkCleverbot     , $GUI_HIDE)
+		GUICtrlSetState($g_hGroupChatSmart   , $GUI_HIDE)
+		GUICtrlSetState($g_hChkUseGeneric    , $GUI_HIDE)
+		GUICtrlSetState($g_hEditGeneric      , $GUI_HIDE)
+		GUICtrlSetState($g_hGroupTelegram    , $GUI_HIDE)
+		GUICtrlSetState($g_hChkChatPushbullet, $GUI_HIDE)
+		GUICtrlSetState($g_hChkPbSendNewChats, $GUI_HIDE)
+	EndIf
+
 EndFunc   ;==>ChatbotGUICheckboxControl
 
 Func ChatbotGUICheckboxDisable()

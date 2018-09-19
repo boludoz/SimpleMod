@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="windows-1251"?>
+<object type="TAForm" name="Form2">
+	<properties>
+		<property name="Left" vt="Int16">1085</property>
+		<property name="Top" vt="Int16">358</property>
+		<property name="Width" vt="Int16">495</property>
+		<property name="Height" vt="Int16">485</property>
+		<property name="Caption" vt="String">Form2</property>
+		<property name="Color" vt="Ident">clBtnFace</property>
+		<property name="Font.Charset" vt="Ident">DEFAULT_CHARSET</property>
+		<property name="Font.Color" vt="Ident">clWindowText</property>
+		<property name="Font.Height" vt="Int8">-11</property>
+		<property name="Font.Name" vt="String">MS Sans Serif</property>
+		<property name="Font.Style" vt="Set"/>
+		<property name="OldCreateOrder" vt="False">False</property>
+		<property name="Visible" vt="True">True</property>
+		<property name="Style" vt="Int32">-1798701056</property>
+		<property name="ExStyle" vt="Int16">256</property>
+		<property name="Version" vt="String">1.04</property>
+		<property name="Description" vt="String">A standard Windows Form.</property>
+		<property name="FormOptOnEvent" vt="False">False</property>
+		<property name="FormOptExpVars" vt="False">False</property>
+		<property name="FormOptPopulate" vt="False">False</property>
+		<property name="FormOptVarsForSet" vt="False">False</property>
+		<property name="FormOptIndentChar" vt="Int8">0</property>
+		<property name="FormOptIndentCount" vt="Int8">1</property>
+		<property name="FormOptIndentInit" vt="Int8">0</property>
+		<property name="FormOptVarScope" vt="Int8">0</property>
+		<property name="Resizing" vt="Set"/>
+		<property name="PixelsPerInch" vt="Int8">96</property>
+		<property name="TextHeight" vt="Int8">13</property>
+	</properties>
+	<components>
+		<object type="TALabel" name="Label3">
+			<properties>
+				<property name="Left" vt="Int8">30</property>
+				<property name="Top" vt="Int8">40</property>
+				<property name="Width" vt="Int8">92</property>
+				<property name="Height" vt="Int8">22</property>
+				<property name="Hint" vt="String">0</property>
+				<property name="Caption" vt="String">Chat options</property>
+				<property name="Color" vt="Int32">10747831</property>
+				<property name="Font.Charset" vt="Ident">ANSI_CHARSET</property>
+				<property name="Font.Color" vt="Ident">clWindowText</property>
+				<property name="Font.Height" vt="Int8">-16</property>
+				<property name="Font.Name" vt="String">Arial</property>
+				<property name="Font.Style" vt="Set"/>
+				<property name="ParentColor" vt="False">False</property>
+				<property name="ParentFont" vt="False">False</property>
+				<property name="TabOrder" vt="Int8">0</property>
+				<property name="HaveVariable" vt="False">False</property>
+				<property name="CtrlStyle" vt="Int32">1342309121</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Resizing" vt="Set"/>
+				<property name="Description" vt="String">Label</property>
+			</properties>
+			<components/>
+		</object>
+		<object type="TAGroup" name="Group1">
+			<properties>
+				<property name="Left" vt="Int8">40</property>
+				<property name="Top" vt="Int8">72</property>
+				<property name="Width" vt="Int16">425</property>
+				<property name="Height" vt="Int8">41</property>
+				<property name="CtrlStyle" vt="Int32">1342308359</property>
+				<property name="CtrlExStyle" vt="Int8">0</property>
+				<property name="Caption" vt="String">Chat config.</property>
+				<property name="TabOrder" vt="Int8">1</property>
+				<property name="Resizing" vt="Set"/>
+			</properties>
+			<components>
+				<object type="TARadio" name="g_hGlobalChat">
+					<properties>
+						<property name="Left" vt="Int8">40</property>
+						<property name="Top" vt="Int8">16</property>
+						<property name="Width" vt="Int8">81</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Global</property>
+						<property name="TabOrder" vt="Int8">0</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="g_hClanChat">
+					<properties>
+						<property name="Left" vt="Int16">144</property>
+						<property name="Top" vt="Int8">16</property>
+						<property name="Width" vt="Int8">73</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Clan</property>
+						<property name="TabOrder" vt="Int8">1</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+				<object type="TARadio" name="g_hChallengeChatGUI">
+					<properties>
+						<property name="Left" vt="Int16">240</property>
+						<property name="Top" vt="Int8">16</property>
+						<property name="Width" vt="Int8">65</property>
+						<property name="Height" vt="Int8">17</property>
+						<property name="Caption" vt="String">Challenge</property>
+						<property name="TabOrder" vt="Int8">2</property>
+						<property name="CtrlStyle" vt="Int32">1342242825</property>
+						<property name="CtrlExStyle" vt="Int8">0</property>
+						<property name="Resizing" vt="Set">DockHeight</property>
+					</properties>
+					<components/>
+				</object>
+			</components>
+		</object>
+	</components>
+</object>
