@@ -704,10 +704,6 @@ Func runBot() ;Bot that runs everything in order
 		chkShieldStatus()
 		If Not $g_bRunState Then Return
 		If $g_bRestart = True Then ContinueLoop
-		;------------------ADDED By Simple Mod - START------------------
-		MainGTFO()
-		MainKickout()
-		;------------------ADDED By Simple Mod - END------------------
 		checkObstacles() ; trap common error messages also check for reconnecting animation
 		If $g_bRestart = True Then ContinueLoop
 
@@ -938,6 +934,8 @@ Func _Idle() ;Sequence that runs until Full Army
 		If _Sleep($DELAYIDLE1) Then Return
 		If $g_iCommandStop = -1 Then SetLog("====== Waiting for full army ======", $COLOR_SUCCESS)
 		;------------------ADDED By Simple Mod - START------------------
+		MainGTFO()
+		MainKickout()
 		If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
 			ChatbotMessage()
 		EndIf

@@ -451,15 +451,22 @@ Func ChatbotPushbulletIntervalChatRead($Interval)
 EndFunc
 
 Func ChatbotMessage() ; run the chatbot
+Local $bCanGlobalChat = False
+	While 1
+	$bCanGlobalChat = False
+	
 	If $g_bChkDelayTime = False And $g_bChkChatGlobal Then
-		ChatGlobal()
+		$bCanGlobalChat = True
+		Else
+		$bCanGlobalChat = False
 	EndIf
-
 	If $g_bChkDelayTime = True And $g_bChkChatGlobal Then
 		Local $iSendChatGlobalDelay = DelayTime("GLOBAL")
 		If $iSendChatGlobalDelay = True Then
-			ChatGlobal()
 			$g_sGlobalChatLastMsgSentTime = _NowCalc() ;Store msg sent time
+			$bCanGlobalChat = True
+			Else
+			$bCanGlobalChat = False
 		EndIf
 	EndIf
 
@@ -564,79 +571,83 @@ Func ChatbotMessage() ; run the chatbot
 
 		If Not ChatbotChatClose() Then Return
 	EndIf
-
+	
+	If $bCanGlobalChat = True Then
+		;========================Kychera modified==========================================
+		If $g_bChkSwitchLang = 1 Then
+			Switch GUICtrlRead($g_hCmbLang)
+				Case "FR"
+					ChangeLanguageToFRA()
+				Case "DE"
+					ChangeLanguageToDE()
+				Case "ES"
+					ChangeLanguageToES()
+				Case "IT"
+					ChangeLanguageToITA()
+				Case "NL"
+					ChangeLanguageToNL()
+				Case "NO"
+					ChangeLanguageToNO()
+				Case "PR"
+					ChangeLanguageToPR()
+				Case "TR"
+					ChangeLanguageToTR()
+				Case "RU"
+					ChangeLanguageToRU()
+					Sleep(3000)
+			EndSwitch
+			Sleep(3000)
+			waitMainScreen()
+		EndIf
+		;======================================================================================
+		If Not ChatbotChatOpen() Then Return
+		SetLog("Chatbot: Sending chats to global", $COLOR_GREEN)
+		If Not ChatbotSelectGlobalChat() Then Return
+		If Not ChatbotChatGlobalInput() Then Return
+		Global $g_sMessage[4] = ["", "", "", ""]
+	
+		; assemble a message
+		For $i = 0 To UBound($GlobalMessages) - 1
+			Local $TmpGlobMsg = StringSplit($GlobalMessages[$i], "|", 2)
+	
+		If $g_bChkScrambleGlobal Then
+	
+			Local $i2 = 0
+			$i2 = Random(0, 3, 1)
+			If $i2 = 0 Then $g_sMessage[0] = $TmpGlobMsg[Random(0, UBound($TmpGlobMsg) - 1, 1)]
+			If $i2 = 1 Then $g_sMessage[1] = $TmpGlobMsg[Random(0, UBound($TmpGlobMsg) - 1, 1)]
+			If $i2 = 2 Then $g_sMessage[2] = $TmpGlobMsg[Random(0, UBound($TmpGlobMsg) - 1, 1)]
+			If $i2 = 3 Then $g_sMessage[3] = $TmpGlobMsg[Random(0, UBound($TmpGlobMsg) - 1, 1)]
+	
+			Else
+				$g_sMessage[$i] = $TmpGlobMsg[Random(0, UBound($TmpGlobMsg) - 1, 1)]
+			EndIf
+		Next
+	
+		; Send the message
+		If Not ChatbotSelectGlobalChat() Then Return
+		If Not ChatbotChatGlobalInput() Then Return
+		If Not ChatbotChatInput(_ArrayToString($g_sMessage, " ")) Then Return
+		If Not ChatbotChatSendGlobal() Then Return
+		If Not ChatbotChatClose() Then Return
+		;==================kychera modified===============================================
+		If $g_bChkSwitchLang = True Then
+			ChangeLanguageToEN()
+			_Sleep(3000)
+			waitMainScreen()
+			_Sleep(3000)
+		EndIf
+		;=================================================================================
+	EndIf
+	
 	If $g_bChkChatGlobal Then
 		SetLog("Chatbot: Done chatting", $COLOR_GREEN)
 	ElseIf $g_bChkChatClan Then
 		SetLog("Chatbot: Done chatting", $COLOR_GREEN)
 	EndIf
+	ExitLoop
+	WEnd
 EndFunc   ;==>ChatbotMessage
-
-Func ChatGlobal()
-	;========================Kychera modified==========================================
-	If $g_bChkSwitchLang = 1 Then
-		Switch GUICtrlRead($g_hCmbLang)
-			Case "FR"
-				ChangeLanguageToFRA()
-			Case "DE"
-				ChangeLanguageToDE()
-			Case "ES"
-				ChangeLanguageToES()
-			Case "IT"
-				ChangeLanguageToITA()
-			Case "NL"
-				ChangeLanguageToNL()
-			Case "NO"
-				ChangeLanguageToNO()
-			Case "PR"
-				ChangeLanguageToPR()
-			Case "TR"
-				ChangeLanguageToTR()
-			Case "RU"
-				ChangeLanguageToRU()
-				Sleep(3000)
-		EndSwitch
-		Sleep(3000)
-		waitMainScreen()
-	EndIf
-	;======================================================================================
-	If Not ChatbotChatOpen() Then Return
-	SetLog("Chatbot: Sending chats to global", $COLOR_GREEN)
-	Global $g_sMessage[4] = ["", "", "", ""]
-
-	; assemble a message
-	For $i = 0 To UBound($GlobalMessages) - 1
-		Local $TmpGlobMsg = StringSplit($GlobalMessages[$i], "|", 2)
-
-	If $g_bChkScrambleGlobal Then
-
-		Local $i2 = 0
-		$i2 = Random(0, 3, 1)
-		If $i2 = 0 Then $g_sMessage[0] = $TmpGlobMsg[Random(0, UBound($TmpGlobMsg) - 1, 1)]
-		If $i2 = 1 Then $g_sMessage[1] = $TmpGlobMsg[Random(0, UBound($TmpGlobMsg) - 1, 1)]
-		If $i2 = 2 Then $g_sMessage[2] = $TmpGlobMsg[Random(0, UBound($TmpGlobMsg) - 1, 1)]
-		If $i2 = 3 Then $g_sMessage[3] = $TmpGlobMsg[Random(0, UBound($TmpGlobMsg) - 1, 1)]
-
-		Else
-			$g_sMessage[$i] = $TmpGlobMsg[Random(0, UBound($TmpGlobMsg) - 1, 1)]
-		EndIf
-	Next
-
-	; Send the message
-	If Not ChatbotSelectGlobalChat() Then Return
-	If Not ChatbotChatGlobalInput() Then Return
-	If Not ChatbotChatInput(_ArrayToString($g_sMessage, " ")) Then Return
-	If Not ChatbotChatSendGlobal() Then Return
-	If Not ChatbotChatClose() Then Return
-	;==================kychera modified===============================================
-	If $g_bChkSwitchLang = True Then
-		ChangeLanguageToEN()
-		_Sleep(3000)
-		waitMainScreen()
-		_Sleep(3000)
-	EndIf
-	;=================================================================================
-EndFunc   ;==>ChatGlobal
 
 ; Returns the response from cleverbot or simsimi, if any
 Func runHelper($msg) ; run a script to get a response from cleverbot.com or simsimi.com
