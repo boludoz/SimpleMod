@@ -289,15 +289,15 @@ EndFunc   ;==>ChatbotChatOpen
 
 Func ChatbotSelectClanChat() ; select clan tab
 	Local $aSelectClanChat[4] = [200, 22, 0x383828, 20]
-	Local $aSelectClanChat2[4] = [280, 680 + $g_iMidOffsetY, 0xFDFFFF, 20]
+	;Local $aSelectClanChat2[4] = [280, 680 + $g_iMidOffsetY, 0xFDFFFF, 20]
 	If _ColorCheck(_GetPixelColor($aSelectClanChat[0], $aSelectClanChat[1], True), Hex($aSelectClanChat[2], 6), $aSelectClanChat[3]) Then
 		Click($aSelectClanChat[0], $aSelectClanChat[1], 1)
 		If _Sleep(1000) Then Return
 	EndIf
-	If _ColorCheck(_GetPixelColor($aSelectClanChat2[0], $aSelectClanChat2[1], True), Hex($aSelectClanChat2[2], 6), $aSelectClanChat2[3]) Then
-		Click($aSelectClanChat2[0], $aSelectClanChat2[1], 1)
-		If _Sleep(1000) Then Return
-	EndIf
+	;If _ColorCheck(_GetPixelColor($aSelectClanChat2[0], $aSelectClanChat2[1], True), Hex($aSelectClanChat2[2], 6), $aSelectClanChat2[3]) Then
+	;	Click($aSelectClanChat2[0], $aSelectClanChat2[1], 1)
+	;	If _Sleep(1000) Then Return
+	;EndIf
 	Return True
 EndFunc   ;==>ChatbotSelectClanChat
 
@@ -488,23 +488,22 @@ Local $bCanGlobalChat = False
 				$SentClanChat = True
 			EndIf
 		EndIf
-
+        
 		If UBound($ChatbotQueuedChats) > 0 Then
 			SetLog("Chatbot: Sending pushbullet chats", $COLOR_GREEN)
-
+        
 			For $a = 0 To UBound($ChatbotQueuedChats) - 1
 			Local $ChatToSend = $ChatbotQueuedChats[$a]
 				If Not ChatbotChatClanInput() Then Return
 				If Not ChatbotChatInput(_Encoding_JavaUnicodeDecode($ChatToSend)) Then Return
 				If Not ChatbotChatSendClan() Then Return
 			Next
-
+        
 			Dim $Tmp[0] ; clear queue
 			$ChatbotQueuedChats = $Tmp
-
+        
 			ChatbotPushbulletSendChat()
-
-			If Not ChatbotChatClose() Then Return
+        
 			SetLog("Chatbot: Done", $COLOR_GREEN)
 			Return
 		EndIf
@@ -534,7 +533,6 @@ Local $bCanGlobalChat = False
 					If Not ChatbotChatSendClan() Then Return
 					$SentMessage = True
 				EndIf
-				_RunDos("taskkill /im phantomjs.exe") ; force kill
 			EndIf
 
 			If $g_bChkClanUseResponses And Not $SentMessage Then
@@ -569,7 +567,6 @@ Local $bCanGlobalChat = False
 			If Not ChatbotChatSendClan() Then Return
 		EndIf
 
-		If Not ChatbotChatClose() Then Return
 	EndIf
 	
 	If $bCanGlobalChat = True Then
@@ -629,7 +626,6 @@ Local $bCanGlobalChat = False
 		If Not ChatbotChatGlobalInput() Then Return
 		If Not ChatbotChatInput(_ArrayToString($g_sMessage, " ")) Then Return
 		If Not ChatbotChatSendGlobal() Then Return
-		If Not ChatbotChatClose() Then Return
 		;==================kychera modified===============================================
 		If $g_bChkSwitchLang = True Then
 			ChangeLanguageToEN()
@@ -647,6 +643,7 @@ Local $bCanGlobalChat = False
 	EndIf
 	ExitLoop
 	WEnd
+ChatbotChatClose()
 EndFunc   ;==>ChatbotMessage
 
 ; Returns the response from cleverbot or simsimi, if any
@@ -666,6 +663,7 @@ Func runHelper($msg) ; run a script to get a response from cleverbot.com or sims
 		If $Time_Difference > 100000 Then
 			SetLog("Chatbot helper is taking too long!", $COLOR_RED)
 			ProcessClose($DOS)
+				_RunDos("taskkill /im phantomjs.exe") ; force kill
 			Return False
 		EndIf
 	WEnd

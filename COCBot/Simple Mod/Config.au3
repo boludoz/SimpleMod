@@ -15,14 +15,16 @@
 
 Func ReadConfig_RKMod()
 
-; ================================================== Super XP - Added by Simple Mod ==================================== ;
+; ================================================== Goblin XP - Added by RK MOD ==================================== ;
 
-	IniReadS($ichkEnableSuperXP, $g_sProfileConfigPath, "RK GoblinXP", "EnableSuperXP", 0, "int")
-	IniReadS($irbSXTraining, $g_sProfileConfigPath, "RK GoblinXP", "SXTraining", 1, "int")
-	IniReadS($itxtMaxXPtoGain, $g_sProfileConfigPath, "RK GoblinXP", "MaxXptoGain", 500, "int")
-	IniReadS($ichkSXBK, $g_sProfileConfigPath, "RK GoblinXP", "SXBK", $eHeroNone)
-	IniReadS($ichkSXAQ, $g_sProfileConfigPath, "RK GoblinXP", "SXAQ", $eHeroNone)
-    IniReadS($ichkSXGW, $g_sProfileConfigPath, "RK GoblinXP", "SXGW", $eHeroNone)
+    IniReadS($ichkEnableSuperXP, $g_sProfileConfigPath, "GoblinXP", "EnableSuperXP", 0, "int")
+    IniReadS($ichkSkipZoomOutXP, $g_sProfileConfigPath, "GoblinXP", "SkipZoomOutXP", 0, "int")
+    IniReadS($ichkFastGoblinXP, $g_sProfileConfigPath, "GoblinXP", "FastGoblinXP", 0, "int")
+    IniReadS($irbSXTraining, $g_sProfileConfigPath, "GoblinXP", "SXTraining", 1, "int")
+    IniReadS($itxtMaxXPtoGain, $g_sProfileConfigPath, "GoblinXP", "MaxXptoGain", 500, "int")
+    IniReadS($ichkSXBK, $g_sProfileConfigPath, "GoblinXP", "SXBK", $eHeroNone)
+    IniReadS($ichkSXAQ, $g_sProfileConfigPath, "GoblinXP", "SXAQ", $eHeroNone)
+    IniReadS($ichkSXGW, $g_sProfileConfigPath, "GoblinXP", "SXGW", $eHeroNone)
 
 	;================================================== Forecast - by Simple Mod ================================= ;
 
@@ -131,13 +133,14 @@ Func SaveConfig_RKMod()  ; due to mini mode no guitCtrols Reads in this function
 
 	; ================================================== Super XP - Added by Simple Mod ================================ ;
 
-	_Ini_Add("RK GoblinXP", "EnableSuperXP", $ichkEnableSuperXP)
-	_Ini_Add("RK GoblinXP", "SXTraining",  $irbSXTraining)
-	_Ini_Add("RK GoblinXP", "SXBK", $ichkSXBK)
-	_Ini_Add("RK GoblinXP", "SXAQ", $ichkSXAQ)
-	_Ini_Add("RK GoblinXP", "SXGW", $ichkSXGW)
-	_Ini_Add("RK GoblinXP", "MaxXptoGain", GUICtrlRead($txtMaxXPtoGain))
-
+    _Ini_Add("GoblinXP", "EnableSuperXP", $ichkEnableSuperXP)
+    _Ini_Add("GoblinXP", "SkipZoomOutXP", $ichkSkipZoomOutXP)
+    _Ini_Add("GoblinXP", "FastGoblinXP", $ichkFastGoblinXP)
+    _Ini_Add("GoblinXP", "SXTraining",  $irbSXTraining)
+    _Ini_Add("GoblinXP", "SXBK", $ichkSXBK)
+    _Ini_Add("GoblinXP", "SXAQ", $ichkSXAQ)
+    _Ini_Add("GoblinXP", "SXGW", $ichkSXGW)
+    _Ini_Add("GoblinXP", "MaxXptoGain", GUICtrlRead($txtMaxXPtoGain))
 
 	 ; ================================================== Forecast - by Simple Mod  ============================== ;
 
@@ -250,6 +253,8 @@ Func ApplyConfig_RKMod($TypeReadSave)
 			; ================================================== Super XP - Added by Simple Mod ========================== ;
 
 			$ichkEnableSuperXP = GUICtrlRead($chkEnableSuperXP) = $GUI_CHECKED ? 1 : 0
+            $ichkSkipZoomOutXP = GUICtrlRead($chkSkipZoomOutXP) = $GUI_CHECKED ? 1 : 0
+            $ichkFastGoblinXP = GUICtrlRead($chkFastGoblinXP) = $GUI_CHECKED ? 1 : 0
 			$irbSXTraining = GUICtrlRead($rbSXTraining) = $GUI_CHECKED ? 1 : 2
 			$ichkSXBK = (GUICtrlRead($chkSXBK) = $GUI_CHECKED) ? $eHeroKing : $eHeroNone
 			$ichkSXAQ = (GUICtrlRead($chkSXAQ) = $GUI_CHECKED) ? $eHeroQueen : $eHeroNone
@@ -356,17 +361,17 @@ Func ApplyConfig_RKMod($TypeReadSave)
 
 		Case "Read"
 
-			; ================================================== Super XP - Added by Simple Mod ============================== ;
-
-			GUICtrlSetState($chkEnableSuperXP, $ichkEnableSuperXP = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+            ; ================================================== Goblin XP - Added by RK MOD ============================== ;
+            
+            GUICtrlSetState($chkEnableSuperXP, $ichkEnableSuperXP = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 
 			chkEnableSuperXP()
+            GUICtrlSetState($chkSkipZoomOutXP, $ichkSkipZoomOutXP = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
+            GUICtrlSetState($chkFastGoblinXP, $ichkFastGoblinXP = 1 ? $GUI_CHECKED : $GUI_UNCHECKED)
 
 			GUICtrlSetState($rbSXTraining, ($irbSXTraining = 1) ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($rbSXIAttacking, ($irbSXTraining = 2) ? $GUI_CHECKED : $GUI_UNCHECKED)
-
 			GUICtrlSetData($txtMaxXPtoGain, $itxtMaxXPtoGain)
-
 			GUICtrlSetState($chkSXBK, $ichkSXBK = $eHeroKing ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($chkSXAQ, $ichkSXAQ = $eHeroQueen ? $GUI_CHECKED : $GUI_UNCHECKED)
 			GUICtrlSetState($chkSXGW, $ichkSXGW = $eHeroWarden ? $GUI_CHECKED : $GUI_UNCHECKED)
