@@ -139,7 +139,7 @@ Func ShowCommandLineHelp()
 	_GUICtrlRichEdit_StreamFromFile($hRichEdit, $sHelpFile & ".rtf")
 	_GUICtrlRichEdit_SetReadOnly($hRichEdit)
 	_GUICtrlRichEdit_SetScrollPos($hRichEdit, 0, 0) ; scroll to top
-	Local $hClose = GUICtrlCreateButton("Close", 300, 670, 50)
+	Local $hClose = _GUICtrlCreateButton("Close", 300, 670, 50)
 
 	GUISetState(@SW_SHOW)
 

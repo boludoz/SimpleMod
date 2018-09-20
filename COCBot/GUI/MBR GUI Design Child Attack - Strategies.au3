@@ -34,25 +34,25 @@ Func CreateAttackStrategies()
 		$g_hCmbPresetList = GUICtrlCreateCombo("", $x, $y, 200, 300, $WS_VSCROLL)
 			GUICtrlSetOnEvent(-1, "PresetLoadConfigInfo")
 	$x += 205
-		$g_hTxtPresetMessage = GUICtrlCreateEdit("", $x, $y, 225, 250, BitOR($ES_WANTRETURN, $ES_AUTOVSCROLL))
+		$g_hTxtPresetMessage = GUICtrlCreateEdit("", $x, $y, 225, 250, BitOR($ES_WANTRETURN, $ES_AUTOVSCROLL),0)
 			GUICtrlSetState(-1, $GUI_HIDE)
 
 		Local $loadmessage = GetTranslatedFileIni("MBR GUI Design Child Attack - Strategies", "LblLoadPresetMessage", "LOAD PRECONFIGURED SETTINGS.\n\n- Load ALL Train Army Tab Settings\n- Load ALL Search && Attack Tab Settings\n\n- EXCEPT: Share Replay Settings\n- EXCEPT: Take Loot Snapshot Settings\n- EXCEPT: Gem Boost Settings")
 		$g_hLblLoadPresetMessage = GUICtrlCreateLabel(StringReplace($loadmessage, "\n", @crlf ), $x + 15, $y + 25, 400)
 	$x += 5
 	$y += 255
-		$g_hBtnGUIPresetLoadConf = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Strategies", "BtnGUIPresetLoadConf", "Load Configuration"), $x, $y, 130, 20)
+		$g_hBtnGUIPresetLoadConf = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Strategies", "BtnGUIPresetLoadConf", "Load Configuration"), $x, $y, 130, 20)
 			GUICtrlSetOnEvent(-1, "PresetLoadConf")
 			GUICtrlSetState(-1, $GUI_HIDE)
 	$x += 145
 		$g_hChkDeleteConf = GUICtrlCreateCheckbox("", $x, $y + 2, 15, 15)
 			GUICtrlSetOnEvent(-1, "chkCheckDeleteConf")
 			GUICtrlSetState(-1, $GUI_HIDE)
-		$g_hBtnGUIPresetDeleteConf = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Strategies", "BtnGUIPresetDeleteConf", "Delete"), $x + 15, $y, 60, 20)
+		$g_hBtnGUIPresetDeleteConf = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Strategies", "BtnGUIPresetDeleteConf", "Delete"), $x + 15, $y, 60, 20)
 			GUICtrlSetOnEvent(-1, "PresetDeleteConf")
 			GUICtrlSetState(-1, $GUI_HIDE + $GUI_DISABLE)
 
-		$g_hBtnStrategyFolder = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Strategies", "BtnStrategyFolder", "Open Strategy folder"), $xStart + 40, $y + 40, 120, 30)
+		$g_hBtnStrategyFolder = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Strategies", "BtnStrategyFolder", "Open Strategy folder"), $xStart + 40, $y + 40, 120, 30)
 			GUICtrlSetOnEvent(-1, "btnStrategyFolder")
 
 
@@ -71,9 +71,9 @@ Func CreateAttackStrategies()
 		GUICtrlCreateLabel(StringReplace($savemessage, "\n", @crlf), $x + 15, $y + 4 + 25, 280)
 
 	$x += 205
-		$g_hTxtSavePresetMessage = GUICtrlCreateEdit("", $x, $y, 223, 230, BitOR($ES_WANTRETURN, $ES_AUTOVSCROLL))
+		$g_hTxtSavePresetMessage = GUICtrlCreateEdit("", $x, $y, 223, 230, BitOR($ES_WANTRETURN, $ES_AUTOVSCROLL),0)
 	$y += 235
-		$g_hBtnGUIPresetSaveConf = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Strategies", "BtnGUIPresetSaveConf", "Save Configuration"), $x + 13, $y, 200, 20)
+		$g_hBtnGUIPresetSaveConf = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Strategies", "BtnGUIPresetSaveConf", "Save Configuration"), $x + 13, $y, 200, 20)
 			GUICtrlSetOnEvent(-1, "PresetSaveConf")
 
 	GUICtrlCreateTabItem("")

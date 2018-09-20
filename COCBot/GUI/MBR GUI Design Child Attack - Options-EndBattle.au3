@@ -65,7 +65,7 @@ Func CreateAttackSearchOptionsEndBattle()
 			GUICtrlSetState(-1, $GUI_DISABLE)
 
 	$y += 27
-		$g_hTxtShareMessage = GUICtrlCreateEdit("", $x, $y - 10, 205, 72, BitOR($ES_WANTRETURN, $ES_CENTER, $ES_AUTOVSCROLL))
+		$g_hTxtShareMessage = GUICtrlCreateEdit("", $x, $y - 10, 205, 72, BitOR($ES_WANTRETURN, $ES_CENTER, $ES_AUTOVSCROLL),0)
 			GUICtrlSetData(-1, StringFormat(GetTranslatedFileIni("MBR GUI Design Child Attack - Options-EndBattle", "ListShareMessage_Item_01", "Nice\r\nGood\r\nThanks \r\nWowwww")))
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Options-EndBattle", "ListShareMessage_Info_01", "Message to send with the Share Replay"))
 			GUICtrlSetState(-1, $GUI_DISABLE)
