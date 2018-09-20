@@ -264,7 +264,7 @@ Func CreateBotOptions()
 			GUICtrlSetOnEvent(-1, "chkSQLite")
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
 
-		$g_hBtnExportData = _GUICtrlCreateButton( GetTranslatedFileIni("MBR GUI Design Child Bot - Options", "BtnExportData", "ExportData"), $x + 137 , $y + 14)
+		$g_hBtnExportData = GUICtrlCreateButton( GetTranslatedFileIni("MBR GUI Design Child Bot - Options", "BtnExportData", "ExportData"), $x + 137 , $y + 14)
 			GUICtrlSetOnEvent(-1, "SQLiteExport")
 
 	GUICtrlCreateGroup("", -99, -99, 1, 1)

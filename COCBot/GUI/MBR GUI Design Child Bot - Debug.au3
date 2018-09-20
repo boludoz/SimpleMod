@@ -116,82 +116,82 @@ Func CreateBotDebug()
 	Local $x = 300
 	$y = 40
 	Local $yNext = 30
-		$g_hBtnTestTrain = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestTrain", "Smart Farm"), $x, $y, 140, 25)
+		$g_hBtnTestTrain = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestTrain", "Smart Farm"), $x, $y, 140, 25)
 	$y += $yNext
 
-		$g_hBtnTestDonateCC = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestDonateCC", "Test Donate"), $x, $y, 140, 25)
+		$g_hBtnTestDonateCC = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestDonateCC", "Test Donate"), $x, $y, 140, 25)
 	$y += $yNext
 
-		$g_hBtnTestRequestCC = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestRequestCC", "Test Request"), $x, $y, 140, 25)
+		$g_hBtnTestRequestCC = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestRequestCC", "Test Request"), $x, $y, 140, 25)
 	$y += $yNext
 
-		$g_hBtnTestAttackBar = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestAttackBar", "Test Attack Bar"), $x, $y, 140, 25)
+		$g_hBtnTestAttackBar = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestAttackBar", "Test Attack Bar"), $x, $y, 140, 25)
 	$y += $yNext
 
-		$g_hBtnTestClickDrag = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestClickDrag", "Test Click Drag"), $x, $y, 140, 25)
+		$g_hBtnTestClickDrag = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestClickDrag", "Test Click Drag"), $x, $y, 140, 25)
 	$y += $yNext
 
-		$g_hBtnTestImage = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestImage", "Test Image"), $x, $y, 140, 25)
+		$g_hBtnTestImage = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestImage", "Test Image"), $x, $y, 140, 25)
 	$y += $yNext
 
-		$g_hBtnTestVillageSize = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestVillageSize", "Test Village Size"), $x, $y, 140, 25)
+		$g_hBtnTestVillageSize = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestVillageSize", "Test Village Size"), $x, $y, 140, 25)
 	$y += $yNext
 
-		$g_hBtnTestDeadBase = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestDeadBase", "Test Dead Base"), $x, $y, 140, 25)
+		$g_hBtnTestDeadBase = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestDeadBase", "Test Dead Base"), $x, $y, 140, 25)
 	$y += $yNext
 
-		$g_hBtnTestTHimgloc = _GUICtrlCreateButton("imgloc TH", $x, $y, 140, 25)
+		$g_hBtnTestTHimgloc = GUICtrlCreateButton("imgloc TH", $x, $y, 140, 25)
 	$y += $yNext
 
-		$g_hBtnTestTrainsimgloc = _GUICtrlCreateButton("Queued Spells", $x, $y, 140, 25)
+		$g_hBtnTestTrainsimgloc = GUICtrlCreateButton("Queued Spells", $x, $y, 140, 25)
 	$y += $yNext
 
-		$g_hBtnTestQuickTrainsimgloc = _GUICtrlCreateButton("Queued Troops", $x, $y, 140, 25)
+		$g_hBtnTestQuickTrainsimgloc = GUICtrlCreateButton("Queued Troops", $x, $y, 140, 25)
 
 	$y += $yNext
-		$g_hBtnTestOcrMemory = _GUICtrlCreateButton("OCR Memory Test", $x, $y, 140, 25)
+		$g_hBtnTestOcrMemory = GUICtrlCreateButton("OCR Memory Test", $x, $y, 140, 25)
 
 	$y += $yNext
-		$g_hBtnTestSmartWait = _GUICtrlCreateButton("Smart Wait Test", $x, $y, 140, 25)
+		$g_hBtnTestSmartWait = GUICtrlCreateButton("Smart Wait Test", $x, $y, 140, 25)
 
 	; now go up again
 	$x -= 145
 
 		$g_hTxtTestFindButton = GUICtrlCreateInput("BoostOne", $x - 90, $y + 3, 85, 20)
-		$g_hBtnTestFindButton = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "TestFindButton", "Test Find Button"), $x, $y, 140, 25)
+		$g_hBtnTestFindButton = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "TestFindButton", "Test Find Button"), $x, $y, 140, 25)
 	$y -= $yNext
 
-		$g_hBtnTestDeadBaseFolder = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestDeadBaseFolder", "Test Dead Base Folder"), $x, $y, 140, 25)
-		$g_hBtnTestCleanYard = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestCleanYard", "Test Clean Yard"), $x - 145, $y, 140, 25)
+		$g_hBtnTestDeadBaseFolder = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestDeadBaseFolder", "Test Dead Base Folder"), $x, $y, 140, 25)
+		$g_hBtnTestCleanYard = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestCleanYard", "Test Clean Yard"), $x - 145, $y, 140, 25)
 	$y -= $yNext
 
-		$g_hBtnTestAttackCSV = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestAttackCSV", "Army Window"), $x, $y, 140, 25)
-		$g_hBtnTestBuildingLocation = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestBuildingLocation", "Find Building"), $x - 145, $y, 140, 25)
+		$g_hBtnTestAttackCSV = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestAttackCSV", "Army Window"), $x, $y, 140, 25)
+		$g_hBtnTestBuildingLocation = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "BtnTestBuildingLocation", "Find Building"), $x - 145, $y, 140, 25)
 	$y -= $yNext
 
-		$g_hBtnTestConfigSave = _GUICtrlCreateButton("Config Save", $x + 20, $y, 120, 25)
+		$g_hBtnTestConfigSave = GUICtrlCreateButton("Config Save", $x + 20, $y, 120, 25)
 	$y -= $yNext
-		$g_hBtnTestConfigApply = _GUICtrlCreateButton("Config Apply", $x + 20, $y, 120, 25)
+		$g_hBtnTestConfigApply = GUICtrlCreateButton("Config Apply", $x + 20, $y, 120, 25)
 	$y -= $yNext
-		$g_hBtnTestConfigRead = _GUICtrlCreateButton("Config Read", $x + 20, $y, 120, 25)
-	$y -= $yNext
-
-		$g_hBtnTestSendText = _GUICtrlCreateButton("Send Text", $x + 20, $y, 120, 25)
+		$g_hBtnTestConfigRead = GUICtrlCreateButton("Config Read", $x + 20, $y, 120, 25)
 	$y -= $yNext
 
-		$g_hBtnTestWeakBase = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "TestWeakBase", "Test Weak Base"), $x + 20, $y, 120, 25)
+		$g_hBtnTestSendText = GUICtrlCreateButton("Send Text", $x + 20, $y, 120, 25)
 	$y -= $yNext
 
-		$g_hBtnTestClickAway = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "TestClickAway", "Test Click Away"), $x + 20, $y, 120, 25)
+		$g_hBtnTestWeakBase = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "TestWeakBase", "Test Weak Base"), $x + 20, $y, 120, 25)
 	$y -= $yNext
 
-		$g_hBtnTestAutoUpgrade = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "TestAutoUpgrade", "Test Auto Upgrade"), $x + 20, $y, 120, 25)
+		$g_hBtnTestClickAway = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "TestClickAway", "Test Click Away"), $x + 20, $y, 120, 25)
 	$y -= $yNext
 
-		$g_hBtnTestUpgradeWindow = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "TestUpgradeWindow", "Test Upgrade Window"), $x + 20, $y, 120, 25)
+		$g_hBtnTestAutoUpgrade = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "TestAutoUpgrade", "Test Auto Upgrade"), $x + 20, $y, 120, 25)
 	$y -= $yNext
 
-		$g_hBtnConsoleWindow = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "ConsoleWindow", "Show/hide Console"), $x + 20, $y, 120, 25)
+		$g_hBtnTestUpgradeWindow = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "TestUpgradeWindow", "Test Upgrade Window"), $x + 20, $y, 120, 25)
+	$y -= $yNext
+
+		$g_hBtnConsoleWindow = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Bot - Debug", "ConsoleWindow", "Show/hide Console"), $x + 20, $y, 120, 25)
 	$y -= $yNext
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 

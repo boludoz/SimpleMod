@@ -74,9 +74,6 @@ MBR GUI Design.au3; CreateMainGUI()
 #include "Functions\GUI\_GUICtrlSetTip.au3"
 #include "functions\GUI\_GUICtrlCreatePic.au3"
 #include "functions\GUI\GUI_State.au3"
-#include "MetroGUI-UDF\MetroGUI_UDF.au3"
-#include "MetroGUI-UDF\_GUIDisable.au3" ; For dim effects when msgbox is displayed
-#include <GUIConstants.au3>
 
 Global Const $TCM_SETITEM = 0x1306
 Global $_GUI_MAIN_WIDTH = 472 ; changed from 470 to 472 for DPI scaling cutting off right by 2 pixel
@@ -375,12 +372,12 @@ Func CreateMainGUIControls($bGuiModeUpdate = False)
 
 	SplashStep(GetTranslatedFileIni("MBR GUI Design - Loading", "SplashStep_05", "Loading Attack tab..."))
 	CreateAttackTab()
-
+    
     	;------------------ADDED By Simple Mod - START------------------
 	SplashStep("Loading MOD tab...")
     	CreateMODTab()
 	;------------------ADDED By Simple Mod - END------------------
-
+	
 	SplashStep(GetTranslatedFileIni("MBR GUI Design - Loading", "SplashStep_06", "Loading Bot tab..."))
 	CreateBotTab() ; also creates  $g_hLastControlToHide
 	If Not $bGuiModeUpdate Then DistributorsUpdateGUI() ; Now loading Distributors (during GUI switch it must be called outside CreateMainGUIControls()!)
@@ -433,12 +430,12 @@ Func CreateMainGUIControls($bGuiModeUpdate = False)
 	Static $g_hGUI_STRATEGIES_TAB_ImageList = 0
 	Static $g_hGUI_BOT_TAB_ImageList = 0
 	Static $g_hGUI_STATS_TAB_ImageList = 0
-
+	
 	;------------------ADDED By Simple Mod - START------------------
 	Static $g_HGUI_MOD_TAB_ImageList = 0
 	Bind_ImageList($g_hGUI_MOD_TAB, $g_HGUI_MOD_TAB_ImageList)
 	;------------------ADDED By Simple Mod - END------------------
-
+	
 	Bind_ImageList($g_hTabMain, $g_hTabMain_ImageList)
 
 	Bind_ImageList($g_hGUI_VILLAGE_TAB, $g_hGUI_VILLAGE_TAB_ImageList)
@@ -590,10 +587,7 @@ Func GetProcessDpiAwareness($iPid)
 	Local $iDpiAwareness = $aResult[2]
 	Return $iDpiAwareness
 EndFunc   ;==>GetProcessDpiAwareness
-Func _GUICtrlCreateButton($text = "", $left = -1, $top = -1, $width = -1, $height = -1, $style = -1 , $exStyle = -1)
-	Local $h = GUICtrlCreateButton($text, $left, $top, $width, $height, $style, $exStyle)
-	Return $h
-EndFunc
+
 ; Create GUI but register it also in $g_oGuiNotInMini to get deleted when switching to Mini Mode
 Func _GUICreate($title, $width, $height, $left = -1, $top = -1, $style = -1, $exStyle = -1, $parent = 0)
 	Local $h = GUICreate($title, $width, $height, $left, $top, $style, $exStyle, $parent)

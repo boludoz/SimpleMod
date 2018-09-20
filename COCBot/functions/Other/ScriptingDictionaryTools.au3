@@ -134,7 +134,7 @@ Func _ObjList(ByRef $oDICT, $TITLE = 'Object Dictionary Elements')
 	Local $count = $oDICT.Count
 	Local $SaveMode = Opt("GUIOnEventMode", 0), $ListGUI, $oDictLV, $btnClose, $msg
 	$ListGUI = GUICreate($TITLE, 600, 400, (@DesktopWidth - 600) / 2, (@DesktopHeight - 400) / 2)
-	$btnClose = _GUICtrlCreateButton('Close', 40, 360, 70, 22)
+	$btnClose = GUICtrlCreateButton('Close', 40, 360, 70, 22)
 	GUICtrlSetResizing($btnClose, BitOR($GUI_DockRight, $GUI_DockBottom, $GUI_DockSize))
 	GUICtrlDelete($oDictLV)
 	$oDictLV = GUICtrlCreateListView('Key|Value', 10, 10, 580, 340, BitOR($LVS_SHOWSELALWAYS, _

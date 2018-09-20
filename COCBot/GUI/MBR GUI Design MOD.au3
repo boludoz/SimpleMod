@@ -778,22 +778,22 @@ Func TabItem9()
 	GUICtrlCreateGroup(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "Group_01", "RK Debug"), $x, $y, $g_iSizeWGrpTab2, $g_iSizeHGrpTab2)
 	$x = 300
 	$y = 40
-	$g_hBtnTestHeroBoostOCR = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestHeroBoostOCR", "Check Hero Boost OCR"), $x, $y, 140, 25)
+	$g_hBtnTestHeroBoostOCR = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestHeroBoostOCR", "Check Hero Boost OCR"), $x, $y, 140, 25)
 	GUICtrlSetOnEvent(-1, "btnTestHeroBoostOCR")
 	$y += $yNext
-	$g_hBtnTestBuilderTimeOCR = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestBuilderTimeOCR", "Check Builder Time OCR"), $x, $y, 140, 25)
+	$g_hBtnTestBuilderTimeOCR = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestBuilderTimeOCR", "Check Builder Time OCR"), $x, $y, 140, 25)
 	GUICtrlSetOnEvent(-1, "btnTestBuilderTimeOCR")
 	$y += $yNext
-	$g_hBtnTestGlobalChatBot = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestGlobalChatBot", "Test Global Chat Bot"), $x, $y, 140, 25)
+	$g_hBtnTestGlobalChatBot = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestGlobalChatBot", "Test Global Chat Bot"), $x, $y, 140, 25)
 	GUICtrlSetOnEvent(-1, "btnTestGlobalChatBot")
 	$y += $yNext
-	$g_hBtnTestClanChatBot = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestClanChatBot", "Test Clan Chat Bot"), $x, $y, 140, 25)
+	$g_hBtnTestClanChatBot = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "BtnTestClanChatBot", "Test Clan Chat Bot"), $x, $y, 140, 25)
 	GUICtrlSetOnEvent(-1, "btnTestClanChatBot")
 	$y += $yNext
-	$g_hBtnTestClanChatBot = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "btnTestTNRQT", "Test TNRQT"), $x, $y, 140, 25)
+	$g_hBtnTestClanChatBot = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "btnTestTNRQT", "Test TNRQT"), $x, $y, 140, 25)
 	GUICtrlSetOnEvent(-1, "btnTestTNRQT")
 	$y += $yNext
-	$g_hBtnTestClanChatBot = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "btnTestCheckOneGem", "Test Check Gem Boost"), $x, $y, 140, 25)
+	$g_hBtnTestClanChatBot = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design MOD - RK Debug", "btnTestCheckOneGem", "Test Check Gem Boost"), $x, $y, 140, 25)
 	GUICtrlSetOnEvent(-1, "btnTestCheckOneGem")
 
 EndFunc   ;==>TabItem9

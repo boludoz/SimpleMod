@@ -78,17 +78,17 @@ Func CreateBotAndroid()
 	$h = 120
 	GUICtrlCreateGroup(GetTranslatedFileIni("Android Control", "Group_03", "Android Control"), $x - 20, $y - 20, $w, $h)
 	$y -= 2
-		$g_hBtnAndroidAdbShell = _GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "BtnAndroidAdbShell", "Start ADB Shell in new Console Window"), $x - 8, $y, 220, 25)
+		$g_hBtnAndroidAdbShell = GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "BtnAndroidAdbShell", "Start ADB Shell in new Console Window"), $x - 8, $y, 220, 25)
 			GUICtrlSetOnEvent(-1, "OpenAdbShell")
 	$y += 30
-		$g_hBtnAndroidHome = _GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "BtnAndroidHome", "Send Home"), $x - 8, $y, 105, 25)
+		$g_hBtnAndroidHome = GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "BtnAndroidHome", "Send Home"), $x - 8, $y, 105, 25)
 			GUICtrlSetOnEvent(-1, "AndroidHomeButton")
-		$g_hBtnAndroidBack = _GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "BtnAndroidBack", "Send Back"), $x - 8 + 115, $y, 105, 25)
+		$g_hBtnAndroidBack = GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "BtnAndroidBack", "Send Back"), $x - 8 + 115, $y, 105, 25)
 			GUICtrlSetOnEvent(-1, "AndroidBackButton")
 	$y += 30
-		$g_hBtnAndroidEnableTouch = _GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "EnableShowTouchs", "Enable Touchs"), $x - 8, $y, 105, 25)
+		$g_hBtnAndroidEnableTouch = GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "EnableShowTouchs", "Enable Touchs"), $x - 8, $y, 105, 25)
 			GUICtrlSetOnEvent(-1, "EnableShowTouchs")
-		$g_hBtnAndroidDisableTouch = _GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "DisableShowTouchs", "Disable Touchs"), $x - 8 + 115, $y, 105, 25)
+		$g_hBtnAndroidDisableTouch = GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "DisableShowTouchs", "Disable Touchs"), $x - 8 + 115, $y, 105, 25)
 			GUICtrlSetOnEvent(-1, "DisableShowTouchs")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 
@@ -99,10 +99,10 @@ Func CreateBotAndroid()
 	$h = 80
 	GUICtrlCreateGroup(GetTranslatedFileIni("Android Control", "Group_04", "Install Play Store Apps"), $x - 20, $y - 20, $w, $h)
 	$y -= 2
-		_GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "BtnPlayStoreGame", "Clash of Clans"), $x - 8, $y, 100, 25)
+		GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "BtnPlayStoreGame", "Clash of Clans"), $x - 8, $y, 100, 25)
 			GUICtrlSetOnEvent(-1, "OpenPlayStoreGame")
 	$y += 30
-		_GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "BtnPlayStoreNovaLauncher", "Nova Launcher"), $x - 8, $y, 100, 25)
+		GUICtrlCreateButton(GetTranslatedFileIni("Android Control", "BtnPlayStoreNovaLauncher", "Nova Launcher"), $x - 8, $y, 100, 25)
 			GUICtrlSetOnEvent(-1, "OpenPlayStoreNovaLauncher")
 	GUICtrlCreateGroup("", -99, -99, 1, 1)
 

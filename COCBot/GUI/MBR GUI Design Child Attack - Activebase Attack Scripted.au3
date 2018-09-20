@@ -49,7 +49,7 @@ Func CreateAttackSearchActiveBaseScripted()
 			GUICtrlSetState(-1, $GUI_UNCHECKED)
 			GUICtrlSetOnEvent(-1, "cmbScriptDroplineAB")
 
-		$g_hbtnAttNow = _GUICtrlCreateButton("Attack Now", $x + 70, $y + 250, 91, 25)
+		$g_hbtnAttNow = GUICtrlCreateButton("Attack Now", $x + 70, $y + 250, 91, 25)
 			;GUISetState(@SW_SHOW)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Attack Scripted", "btnAttNow_Info_01", "Attack now Button Which it will make CSV Makers/testers life Easy. You should be in Attack Screen"))
 			GUICtrlSetOnEvent(-1, "AttackNow")

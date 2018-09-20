@@ -123,7 +123,7 @@ Func CreateAttackSearchDeadBaseStandard()
 
 		$y += 50 ; 40 to 50 EDITED By Simple Mod 
 		$x = 98
-			$g_hBtnCustomDropOrderDB = _GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "BtnCustomDropOrder", "Drop Order"), $x, $y, 85, 25)
+			$g_hBtnCustomDropOrderDB = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "BtnCustomDropOrder", "Drop Order"), $x, $y, 85, 25)
 				_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "BtnCustomDropOrder_Info_01", "Select Custom Troops Dropping Order"))
 				GUICtrlSetOnEvent(-1, "CustomDropOrder")
 		GUICtrlCreateGroup("", -99, -99, 1, 1)
