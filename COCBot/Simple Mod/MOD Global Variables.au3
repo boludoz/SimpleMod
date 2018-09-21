@@ -139,6 +139,21 @@ Global $g_iTxtDelayTime = 10
 Global $g_bGlobalChatGUI = False   
 Global $g_bClanChatGUI = False     
 Global $g_bChallengeChatGUI = False
+
+Global $g_bChkChngOn             = False
+Global $g_bChkDelayChng          = False
+Global $g_sEditChngMsg           = ""
+Global $g_iDelayInput            = 0
+Global $g_bChkVillage1           = False
+Global $g_bChkVillage4           = False
+Global $g_bChkVillage2           = False
+Global $g_bChkVillage5           = False
+Global $g_bChkVillage3           = False
+Global $g_bChkVillage6           = False
+Global $g_bOriginalChngMsg       = False
+Global $g_bRemplaceChallengeText = False
+Global $g_bTxtChng               = ""
+Global $g_bChkAttackChng         = False
 ;=============================================== Russian Request - by Simple Mod ======================================== ;
 
 Global $g_bChkRusLang2 = False

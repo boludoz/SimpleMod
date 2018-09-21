@@ -60,12 +60,6 @@ Global $g_hEditGlobalMessages[4] = ["", "", "", ""]
 Global $g_hEditResponses = "", $g_hEditGeneric = ""
 Global $g_hChkDelayTime = 0, $g_hTxtDelayTime = 0, $g_hChkCleverbot = 0
 
-; Switch Profiles
-Global $g_hChkGoldSwitchMax = 0, $g_hCmbGoldMaxProfile = 0, $g_hTxtMaxGoldAmount = 0, $g_hChkGoldSwitchMin = 0, $g_hCmbGoldMinProfile = 0, $g_hTxtMinGoldAmount = 0, _
-		$g_hChkElixirSwitchMax = 0, $g_hCmbElixirMaxProfile = 0, $g_hTxtMaxElixirAmount = 0, $g_hChkElixirSwitchMin = 0, $g_hCmbElixirMinProfile = 0, $g_hTxtMinElixirAmount = 0, _
-		$g_hChkDESwitchMax = 0, $g_hCmbDEMaxProfile = 0, $g_hTxtMaxDEAmount = 0, $g_hChkDESwitchMin = 0, $g_hCmbDEMinProfile = 0, $g_hTxtMinDEAmount = 0, _
-		$g_hChkTrophySwitchMax = 0, $g_hCmbTrophyMaxProfile = 0, $g_hTxtMaxTrophyAmount = 0, $g_hChkTrophySwitchMin = 0, $g_hCmbTrophyMinProfile = 0, $g_hTxtMinTrophyAmount = 0
-
 Global $g_hGlobalChatGUI = 0
 Global $g_hClanChatGUI = 0
 Global $g_hChallengeChatGUI = 0
@@ -73,6 +67,31 @@ Global $g_hChallengeChatGUI = 0
 Global $g_hGroupTelegram   = 0
 Global $g_hGroupChatRandom   = 0
 Global $g_hGroupChatSmart = 0
+
+Global $g_hChkChngOn             = 0
+Global $g_hChkDelayChng          = 0
+Global $g_hEditChngMsg           = 0
+Global $g_hDelayInput            = 0
+Global $g_hGroupVillageRandom    = 0
+Global $g_hChkVillage1           = 0
+Global $g_hChkVillage4           = 0
+Global $g_hChkVillage2           = 0
+Global $g_hChkVillage5           = 0
+Global $g_hChkVillage3           = 0
+Global $g_hChkVillage6           = 0
+Global $g_hGroupChallengeMessage = 0
+Global $g_hOriginalChngMsg       = 0
+Global $g_hRemplaceChallengeText = 0
+Global $g_hTxtChng               = 0
+Global $g_hChkAttackChng         = 0
+Global $g_sLabelTextToFind       = 0
+
+; ================================================== Switch Profiles ============================================ ;
+Global $g_hChkGoldSwitchMax = 0, $g_hCmbGoldMaxProfile = 0, $g_hTxtMaxGoldAmount = 0, $g_hChkGoldSwitchMin = 0, $g_hCmbGoldMinProfile = 0, $g_hTxtMinGoldAmount = 0, _
+		$g_hChkElixirSwitchMax = 0, $g_hCmbElixirMaxProfile = 0, $g_hTxtMaxElixirAmount = 0, $g_hChkElixirSwitchMin = 0, $g_hCmbElixirMinProfile = 0, $g_hTxtMinElixirAmount = 0, _
+		$g_hChkDESwitchMax = 0, $g_hCmbDEMaxProfile = 0, $g_hTxtMaxDEAmount = 0, $g_hChkDESwitchMin = 0, $g_hCmbDEMinProfile = 0, $g_hTxtMinDEAmount = 0, _
+		$g_hChkTrophySwitchMax = 0, $g_hCmbTrophyMaxProfile = 0, $g_hTxtMaxTrophyAmount = 0, $g_hChkTrophySwitchMin = 0, $g_hCmbTrophyMinProfile = 0, $g_hTxtMinTrophyAmount = 0
+
 ; ================================================== Attack PART ============================================ ;
 
 Global $g_hGroup1  = 0
@@ -387,7 +406,7 @@ Local $Label3
 Local $Group1
 Local $g_hGlobalChat
 Local $g_hClanChat
-Local $g_hChallengeChatGUI
+
 Local $Input1
 Local $Combo1
 
@@ -408,7 +427,6 @@ GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
 $g_hChallengeChatGUI = GUICtrlCreateRadio("Challenge", 280, 88, 65, 17)
 GUICtrlSetState(-1, $g_bChallengeChatGUI)
 GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
-
 ; Global Chat
 $g_hChkGlobalChat = GUICtrlCreateCheckbox("Advertise in global", 48, 128, 113, 17)
 GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
@@ -484,9 +502,78 @@ $g_hChkPbSendNewChats = GUICtrlCreateCheckbox(GetTranslatedFileIni("MOD GUI Desi
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MOD GUI Design - Chatbot", "PbSendNewChats_Info_01", "Will send an image of your clan chat via pushbullet & telegram when a new chat is detected. Not guaranteed to be 100% accurate."))
 			GUICtrlSetState(-1, $g_iPbSendNewChats)
 			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+#EndRegion ### END Koda GUI section ###
 
 ; END CLAN CHAT
+
+; Challenge Chat
+
+#Region ### START Koda GUI section ### Form=c:\users\fabri\onedrive\documentos\proyectos\mybot-mbr_v7.6_rk_mod\scr\gui\chat_challenge.kxf
+$g_hChkChngOn = GUICtrlCreateCheckbox("Enable friendly challenge", 48, 136, 137, 17)
+			GUICtrlSetState(-1, $g_bChkChngOn)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+$g_hChkDelayChng = GUICtrlCreateCheckbox("Time delay:", 48, 160, 73, 17)
+			GUICtrlSetState(-1, $g_bChkDelayChng)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+$g_hEditChngMsg = GUICtrlCreateEdit("", 216, 216, 137, 57, BitOR($GUI_SS_DEFAULT_EDIT,$ES_CENTER), 0)
+			GUICtrlSetData(-1, "challenge")
+			GUICtrlSetState(-1, $g_sEditChngMsg)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+$g_hDelayInput = GUICtrlCreateInput("10", 120, 160, 25, 21, BitOR($GUI_SS_DEFAULT_INPUT,$ES_CENTER,$ES_NUMBER), 0)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+$g_hGroupVillageRandom = GUICtrlCreateGroup("Village random", 216, 144, 137, 65)
+$g_hChkVillage1 = GUICtrlCreateCheckbox("1", 224, 160, 33, 17)
+			GUICtrlSetState(-1, $g_bChkVillage1)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+$g_hChkVillage4 = GUICtrlCreateCheckbox("4", 224, 184, 33, 17)
+			GUICtrlSetState(-1, $g_bChkVillage4)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+$g_hChkVillage2 = GUICtrlCreateCheckbox("2", 264, 160, 33, 17)
+			GUICtrlSetState(-1, $g_bChkVillage2)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+$g_hChkVillage5 = GUICtrlCreateCheckbox("5", 264, 184, 33, 17)
+			GUICtrlSetState(-1, $g_bChkVillage5)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+$g_hChkVillage3 = GUICtrlCreateCheckbox("3", 304, 160, 33, 17)
+			GUICtrlSetState(-1, $g_bChkVillage3)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+$g_hChkVillage6 = GUICtrlCreateCheckbox("6", 304, 184, 33, 17)
+			GUICtrlSetState(-1, $g_bChkVillage6)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+GUICtrlCreateGroup("", -99, -99, 1, 1)
+$g_hGroupChallengeMessage = GUICtrlCreateGroup("Challenge message", 40, 280, 361, 49)
+
+$g_hOriginalChngMsg = GUICtrlCreateRadio("Orginal", 64, 296, 57, 17)
+			GUICtrlSetState(-1, $g_bOriginalChngMsg)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+$g_hRemplaceChallengeText = GUICtrlCreateRadio("Remplace:", 136, 296, 73, 17)
+			GUICtrlSetState(-1, $g_bRemplaceChallengeText)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+$g_hTxtChng = GUICtrlCreateInput("Destroy my village", 216, 296, 169, 21)
+			GUICtrlSetState(-1, $g_bTxtChng)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+GUICtrlCreateGroup("", -99, -99, 1, 1)
+$g_hChkAttackChng = GUICtrlCreateCheckbox("Participate in the challenges.", 48, 184, 161, 17)
+			GUICtrlSetState(-1, $g_bChkAttackChng)
+			GUICtrlSetOnEvent(-1, "ChatbotGUICheckbox")
+
+$g_sLabelTextToFind = GUICtrlCreateLabel("Text to find:", 144, 216, 60, 17)
+
 #EndRegion ### END Koda GUI section ###
+; END CHALLENGE CHAT
 
 	ChatbotGUICheckboxControl()
 

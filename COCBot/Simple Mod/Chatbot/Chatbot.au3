@@ -238,6 +238,44 @@ Func ChatbotGUICheckboxControl()
 		GUICtrlSetState($g_hChkChatPushbullet, $GUI_HIDE)
 		GUICtrlSetState($g_hChkPbSendNewChats, $GUI_HIDE)
 	EndIf
+		; CHALLENGE
+	If GUICtrlRead($g_hChallengeChatGUI) = $GUI_CHECKED Then
+		GUICtrlSetState($g_hChkChngOn            , $GUI_SHOW)
+		GUICtrlSetState($g_hChkDelayChng         , $GUI_SHOW)
+		GUICtrlSetState($g_hEditChngMsg          , $GUI_SHOW)
+		GUICtrlSetState($g_hDelayInput           , $GUI_SHOW)
+		GUICtrlSetState($g_hGroupVillageRandom   , $GUI_SHOW)
+		GUICtrlSetState($g_hChkVillage1          , $GUI_SHOW)
+		GUICtrlSetState($g_hChkVillage4          , $GUI_SHOW)
+		GUICtrlSetState($g_hChkVillage2          , $GUI_SHOW)
+		GUICtrlSetState($g_hChkVillage5          , $GUI_SHOW)
+		GUICtrlSetState($g_hChkVillage3          , $GUI_SHOW)
+		GUICtrlSetState($g_hChkVillage6          , $GUI_SHOW)
+		GUICtrlSetState($g_hGroupChallengeMessage, $GUI_SHOW)
+		GUICtrlSetState($g_hOriginalChngMsg      , $GUI_SHOW)
+		GUICtrlSetState($g_hRemplaceChallengeText, $GUI_SHOW)
+		GUICtrlSetState($g_hTxtChng              , $GUI_SHOW)
+		GUICtrlSetState($g_hChkAttackChng        , $GUI_SHOW)
+		GUICtrlSetState($g_sLabelTextToFind      , $GUI_SHOW)
+	ElseIf GUICtrlRead($g_hChallengeChatGUI) = $GUI_UNCHECKED Then
+		GUICtrlSetState($g_hChkChngOn            , $GUI_HIDE)
+		GUICtrlSetState($g_hChkDelayChng         , $GUI_HIDE)
+		GUICtrlSetState($g_hEditChngMsg          , $GUI_HIDE)
+		GUICtrlSetState($g_hDelayInput           , $GUI_HIDE)
+		GUICtrlSetState($g_hGroupVillageRandom   , $GUI_HIDE)
+		GUICtrlSetState($g_hChkVillage1          , $GUI_HIDE)
+		GUICtrlSetState($g_hChkVillage4          , $GUI_HIDE)
+		GUICtrlSetState($g_hChkVillage2          , $GUI_HIDE)
+		GUICtrlSetState($g_hChkVillage5          , $GUI_HIDE)
+		GUICtrlSetState($g_hChkVillage3          , $GUI_HIDE)
+		GUICtrlSetState($g_hChkVillage6          , $GUI_HIDE)
+		GUICtrlSetState($g_hGroupChallengeMessage, $GUI_HIDE)
+		GUICtrlSetState($g_hOriginalChngMsg      , $GUI_HIDE)
+		GUICtrlSetState($g_hRemplaceChallengeText, $GUI_HIDE)
+		GUICtrlSetState($g_hTxtChng              , $GUI_HIDE)
+		GUICtrlSetState($g_hChkAttackChng        , $GUI_HIDE)
+		GUICtrlSetState($g_sLabelTextToFind      , $GUI_HIDE)
+	EndIf
 
 EndFunc   ;==>ChatbotGUICheckboxControl
 
@@ -469,7 +507,14 @@ Local $bCanGlobalChat = False
 			$bCanGlobalChat = False
 		EndIf
 	EndIf
-
+	
+	If $g_bChkChngOn = True Then
+		If Not ChatbotChatOpen() Then Return
+		SetLog("Chatbot: Challenge", $COLOR_GREEN)
+		If Not ChatbotChatClanInput() Then Return
+		If $g_bChkChatClan = False And $bCanGlobalChat = False Then ExitLoop
+	EndIf
+	
 	If $g_bChkChatClan Then
 		If Not ChatbotChatOpen() Then Return
 		SetLog("Chatbot: Sending chats to clan", $COLOR_GREEN)
