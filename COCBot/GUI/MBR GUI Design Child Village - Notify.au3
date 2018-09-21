@@ -57,7 +57,7 @@ Func CreatePushBulletTelegramSubTab()
 	$y += 40
 	$x -= 10
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Notify", "LblNotifyTGToken", "Token (Telegram)") & ":", $x, $y, -1, -1, $SS_RIGHT)
-		$g_hTxtNotifyTGToken = GUICtrlCreateInput("", $x + 120, $y - 3, 280, 19)
+		$g_hTxtNotifyTGToken = _GUICtrlCreateInput("", $x + 120, $y - 3, 280, 19)
 			_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Village - Notify", "LblNotifyTGToken_Info_01", "You need a Token to use Telegram notifications. Get a token from Telegram.com"))
 			GUICtrlSetState(-1, $GUI_DISABLE)
 
@@ -68,7 +68,7 @@ Func CreatePushBulletTelegramSubTab()
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Village - Notify", "LblNotifyOrigin", "Origin") & ":", $x + 120, $y + 3, -1, -1, $SS_RIGHT)
 			$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Village - Notify", "LblNotifyOrigin_Info_01", "Origin - Village name.")
 			_GUICtrlSetTip(-1, $sTxtTip)
-		$g_hTxtNotifyOrigin = GUICtrlCreateInput("", $x + 170, $y, 230, 19)
+		$g_hTxtNotifyOrigin = _GUICtrlCreateInput("", $x + 170, $y, 230, 19)
 			_GUICtrlSetTip(-1, $sTxtTip)
 			GUICtrlSetState(-1, $GUI_DISABLE)
 

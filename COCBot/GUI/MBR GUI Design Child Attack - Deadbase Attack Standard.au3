@@ -158,7 +158,7 @@ $g_hChkUnitFactor = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design C
 	GUICtrlSetOnEvent(-1, "chkUnitFactor")
 	GUICtrlSetState(-1, $GUI_UNCHECKED)
 
-$g_hTxtUnitFactor = GUICtrlCreateInput("10", $x + 140, $y - 3, 31, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+$g_hTxtUnitFactor = _GUICtrlCreateInput("10", $x + 140, $y - 3, 31, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 	$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "ChkUnitFactor_Info_15", "Unit deploy delay = Unit setting x Unit Factor (millisecond)")
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlSetState(-1, $GUI_DISABLE)
@@ -171,7 +171,7 @@ $g_hChkWaveFactor = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design C
 	GUICtrlSetOnEvent(-1, "chkWaveFactor")
 	GUICtrlSetState(-1, $GUI_UNCHECKED)
 
-$g_hTxtWaveFactor = GUICtrlCreateInput("100", $x + 140, $y - 5, 31, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+$g_hTxtWaveFactor = _GUICtrlCreateInput("100", $x + 140, $y - 5, 31, 20, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 	$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - MULTI FINGERS", "ChkUnitFactor_Info_18",  "Switch troop delay = Wave setting x Wave Factor (millisecond)")
 	_GUICtrlSetTip(-1, $sTxtTip)
 	GUICtrlSetState(-1, $GUI_DISABLE)

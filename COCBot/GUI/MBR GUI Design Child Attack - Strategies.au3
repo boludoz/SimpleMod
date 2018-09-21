@@ -34,7 +34,7 @@ Func CreateAttackStrategies()
 		$g_hCmbPresetList = GUICtrlCreateCombo("", $x, $y, 200, 300, $WS_VSCROLL)
 			GUICtrlSetOnEvent(-1, "PresetLoadConfigInfo")
 	$x += 205
-		$g_hTxtPresetMessage = GUICtrlCreateEdit("", $x, $y, 225, 250, BitOR($ES_WANTRETURN, $ES_AUTOVSCROLL))
+		$g_hTxtPresetMessage = _GUICtrlCreateEdit("", $x, $y, 225, 250, BitOR($ES_WANTRETURN, $ES_AUTOVSCROLL))
 			GUICtrlSetState(-1, $GUI_HIDE)
 
 		Local $loadmessage = GetTranslatedFileIni("MBR GUI Design Child Attack - Strategies", "LblLoadPresetMessage", "LOAD PRECONFIGURED SETTINGS.\n\n- Load ALL Train Army Tab Settings\n- Load ALL Search && Attack Tab Settings\n\n- EXCEPT: Share Replay Settings\n- EXCEPT: Take Loot Snapshot Settings\n- EXCEPT: Gem Boost Settings")
@@ -62,7 +62,7 @@ Func CreateAttackStrategies()
 		GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Strategies", "LblSaveFilename", "Strategy file name") & ":", $x, $y + 4, 200, 25, $SS_RIGHT)
 
 	$x += 205
-		$g_hTxtPresetSaveFilename = GUICtrlCreateInput("strategy " &  @YEAR & "-" & @MON & "-" & @MDAY & " " & @HOUR & "." & @MIN & "." & @SEC, $x, $y, 200, 25)
+		$g_hTxtPresetSaveFilename = _GUICtrlCreateInput("strategy " &  @YEAR & "-" & @MON & "-" & @MDAY & " " & @HOUR & "." & @MIN & "." & @SEC, $x, $y, 200, 25)
 
 	$x = $xStart
 	$y += 30
@@ -71,7 +71,7 @@ Func CreateAttackStrategies()
 		GUICtrlCreateLabel(StringReplace($savemessage, "\n", @crlf), $x + 15, $y + 4 + 25, 280)
 
 	$x += 205
-		$g_hTxtSavePresetMessage = GUICtrlCreateEdit("", $x, $y, 223, 230, BitOR($ES_WANTRETURN, $ES_AUTOVSCROLL))
+		$g_hTxtSavePresetMessage = _GUICtrlCreateEdit("", $x, $y, 223, 230, BitOR($ES_WANTRETURN, $ES_AUTOVSCROLL))
 	$y += 235
 		$g_hBtnGUIPresetSaveConf = GUICtrlCreateButton(GetTranslatedFileIni("MBR GUI Design Child Attack - Strategies", "BtnGUIPresetSaveConf", "Save Configuration"), $x + 13, $y, 200, 20)
 			GUICtrlSetOnEvent(-1, "PresetSaveConf")

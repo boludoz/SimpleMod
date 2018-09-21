@@ -171,7 +171,7 @@ Func CreateAttackSearchActiveBaseAttack()
 		$y += 16
 			$g_hLblTHSnipeBeforeLBTiles = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "LblTHSnipeBeforeTiles", -1) & ":", $x, $y + 3, 70, -1, $SS_RIGHT)
 				GUICtrlSetState(-1, $GUI_DISABLE)
-			$g_hTxtTHSnipeBeforeLBTiles = GUICtrlCreateInput("2", $x + 75, $y + 1, 30, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+			$g_hTxtTHSnipeBeforeLBTiles = _GUICtrlCreateInput("2", $x + 75, $y + 1, 30, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 				$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "LblTHSnipeBeforeTiles_Info_01", -1)
 				_GUICtrlSetTip(-1, $sTxtTip)
 				GUICtrlSetLimit(-1, 2)

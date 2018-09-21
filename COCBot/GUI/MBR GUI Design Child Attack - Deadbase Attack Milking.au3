@@ -180,7 +180,7 @@ Func CreateAttackSearchDeadBaseMilking()
 			$g_hChkAttackMinesIfGold = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase Attack Milking", "ChkAttackMinesIfGold", "Attack Gold Mines If Gold Under"), $x, $y)
 				GUICtrlSetOnEvent(-1, "chkAttackMinesifGold")
 				GUICtrlSetState(-1, $GUI_CHECKED)
-			$g_hTxtAttackMinesIfGold = GUICtrlCreateInput("9950000", $x + 200, $y, 50, 18, $SS_CENTER)
+			$g_hTxtAttackMinesIfGold = _GUICtrlCreateInput("9950000", $x + 200, $y, 50, 18, $SS_CENTER)
 				GUICtrlSetState(-1,$GUI_DISABLE)
 				GUICtrlSetLimit(-1, 7)
 
@@ -188,7 +188,7 @@ Func CreateAttackSearchDeadBaseMilking()
 			$g_hChkAttackMinesIfElixir = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase Attack Milking", "ChkAttackMinesIfElixir", "Attack Elixir Collectors If Elixir Under"), $x, $y)
 				GUICtrlSetOnEvent(-1, "chkAttackMinesifElixir")
 				GUICtrlSetState(-1, $GUI_CHECKED)
-			$g_hTxtAttackMinesIfElixir = GUICtrlCreateInput("9950000", $x + 200, $y, 50, 18, $SS_CENTER)
+			$g_hTxtAttackMinesIfElixir = _GUICtrlCreateInput("9950000", $x + 200, $y, 50, 18, $SS_CENTER)
 				GUICtrlSetState(-1,$GUI_DISABLE)
 				GUICtrlSetLimit(-1, 7)
 
@@ -196,7 +196,7 @@ Func CreateAttackSearchDeadBaseMilking()
 			$g_hChkAttackMinesIfDarkElixir = GUICtrlCreateCheckbox(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase Attack Milking", "ChkAttackMinesIfDarkElixir", "Attack Dark Elixir Drills If Dark Under"), $x, $y)
 				GUICtrlSetOnEvent(-1, "chkAttackMinesifDarkElixir")
 				GUICtrlSetState(-1, $GUI_CHECKED)
-			$g_hTxtAttackMinesIfDarkElixir = GUICtrlCreateInput("200000", $x + 200, $y, 50, 18, $SS_CENTER)
+			$g_hTxtAttackMinesIfDarkElixir = _GUICtrlCreateInput("200000", $x + 200, $y, 50, 18, $SS_CENTER)
 				GUICtrlSetState(-1,$GUI_DISABLE)
 				GUICtrlSetLimit(-1, 6)
 		GUICtrlCreateGroup("", -99, -99, 1, 1)
@@ -212,25 +212,25 @@ Func CreateAttackSearchDeadBaseMilking()
 		$x = 15
 		$y += 20
 			GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase Attack Milking", "TxtXWave", "- Troops Per Wave:"), $x, $y)
-			$g_hTxtLowerXWave = GUICtrlCreateInput("4", 180 - 10, $y - 3, 35, 18, $SS_CENTER)
+			$g_hTxtLowerXWave = _GUICtrlCreateInput("4", 180 - 10, $y - 3, 35, 18, $SS_CENTER)
 				GUICtrlSetLimit(-1, 2)
 				GUICtrlCreateLabel("-", 213, $y)
-			$g_hTxtUpperXWave = GUICtrlCreateInput("6", 245 - 20, $y - 3, 35, 18, $SS_CENTER)
+			$g_hTxtUpperXWave = _GUICtrlCreateInput("6", 245 - 20, $y - 3, 35, 18, $SS_CENTER)
 				GUICtrlSetLimit(-1, 2)
 
 		$y += 20
 			GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase Attack Milking", "TxtMaxWaves",  "- Max Waves:"), $x, $y)
-			$g_hTxtMaxWaves = GUICtrlCreateInput("3", 180 - 10, $y - 3, 35, 18, $SS_CENTER)
+			$g_hTxtMaxWaves = _GUICtrlCreateInput("3", 180 - 10, $y - 3, 35, 18, $SS_CENTER)
 				GUICtrlSetLimit(-1, 2)
 				_GUICtrlSetTip(-1, GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase Attack Milking", "TxtMaxWaves_Info_01", "Choose the maximum number of waves of troops to drop at each collector.") & @CRLF & _
 								   GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase Attack Milking", "TxtMaxWaves_Info_02", "If the collector gets destroyed, then no more waves will be dropped at it."))
 
 		$y += 20
 			GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase Attack Milking", "TxtDelayWaves", "- Delay Between Waves (ms):"), $x, $y)
-			$g_hTxtLowerDelayWaves = GUICtrlCreateInput("3000", 180 - 10, $y - 3, 35, 18, $SS_CENTER)
+			$g_hTxtLowerDelayWaves = _GUICtrlCreateInput("3000", 180 - 10, $y - 3, 35, 18, $SS_CENTER)
 				GUICtrlSetLimit(-1, 5)
 				GUICtrlCreateLabel("-", 213, $y)
-			$g_hTxtUpperDelayWaves = GUICtrlCreateInput("5000", 245 - 20, $y - 3, 35, 18, $SS_CENTER)
+			$g_hTxtUpperDelayWaves = _GUICtrlCreateInput("5000", 245 - 20, $y - 3, 35, 18, $SS_CENTER)
 				GUICtrlSetLimit(-1, 5)
 		GUICtrlCreateGroup("", -99, -99, 1, 1)
 
@@ -281,7 +281,7 @@ Func CreateAttackSearchDeadBaseMilking()
 		$y += 21
 			GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase Attack Milking", "LblMaxTilesMilk", "Max Tiles From Border") & ":", $x, $y)
 				GUICtrlSetState(-1, $GUI_DISABLE)
-			$g_hTxtMaxTilesMilk = GUICtrlCreateInput("1", $x + 115, $y - 3, 30, 18, $SS_CENTER)
+			$g_hTxtMaxTilesMilk = _GUICtrlCreateInput("1", $x + 115, $y - 3, 30, 18, $SS_CENTER)
 				GUICtrlSetLimit(-1, 2)
 				GUICtrlSetState(-1, $GUI_DISABLE)
 
@@ -333,19 +333,19 @@ Func CreateAttackSearchDeadBaseMilking()
 
 		$y += 21
 			GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase Attack Milking", "ChkMilkFarmForceTolerance_Info_01", "Tolerance Normal"), $x, $y)
-			$g_hTxtMilkFarmForceToleranceNormal = GUICtrlCreateInput("60", 235 - 31, $y - 3, 60 - 8, 20, $SS_CENTER)
+			$g_hTxtMilkFarmForceToleranceNormal = _GUICtrlCreateInput("60", 235 - 31, $y - 3, 60 - 8, 20, $SS_CENTER)
 				GUICtrlSetLimit(-1, 4)
 				GUICtrlSetState(-1, $GUI_DISABLE)
 
 		$y += 21
 			GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase Attack Milking", "ChkMilkFarmForceTolerance_Info_02", "Tolerance Boosted"), $x, $y)
-			$g_hTxtMilkFarmForceToleranceBoosted = GUICtrlCreateInput("60", 235 - 31, $y - 3, 60 - 8, 20, $SS_CENTER)
+			$g_hTxtMilkFarmForceToleranceBoosted = _GUICtrlCreateInput("60", 235 - 31, $y - 3, 60 - 8, 20, $SS_CENTER)
 				GUICtrlSetLimit(-1, 4)
 				GUICtrlSetState(-1, $GUI_DISABLE)
 
 		$y += 21
 			GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Deadbase Attack Milking", "ChkMilkFarmForceTolerance_Info_03", "Tolerance Destroyed"), $x, $y)
-			$g_hTxtMilkFarmForceToleranceDestroyed = GUICtrlCreateInput("60", 235 - 31, $y - 3, 60 - 8, 20, $SS_CENTER)
+			$g_hTxtMilkFarmForceToleranceDestroyed = _GUICtrlCreateInput("60", 235 - 31, $y - 3, 60 - 8, 20, $SS_CENTER)
 				GUICtrlSetLimit(-1, 4)
 				GUICtrlSetState(-1, $GUI_DISABLE)
 		GUICtrlCreateGroup("", -99, -99, 1, 1)

@@ -123,6 +123,21 @@ Global $g_oGuiNotInMini = ObjCreate("Scripting.Dictionary")
 #include "GUI\MBR GUI Design MOD.au3"
 #include "GUI\MBR GUI Design About.au3"
 
+;~ ------------------------------------------------------
+;~ Simple mod - GUI MOD
+;~ ------------------------------------------------------
+Func _GUICtrlCreateEdit($text = "", $left = -1, $top = -1, $width = -1, $height = -1, $style = -1, $exStyle = -1)
+	Local $ah = GUICtrlCreateEdit($text, $left, $top, $width, $height, $style, 0)
+	Return $ah
+EndFunc
+
+Func _GUICtrlCreateInput($text = "", $left = -1, $top = -1, $width = -1, $height = -1, $style = -1, $exStyle = -1)
+	Local $ah = GUICtrlCreateInput($text, $left, $top, $width, $height, $style, 0)
+	Return $ah
+EndFunc
+
+; -------------------------------------------------------
+
 Func CreateMainGUI()
 
 ;~ ------------------------------------------------------
@@ -315,7 +330,7 @@ Func CreateMainGUIControls($bGuiModeUpdate = False)
 		GUICtrlSetCursor(-1, 0)
 
 		GUISwitch($g_hFrmBot)
-		$g_hFrmBotEmbeddedShieldInput = GUICtrlCreateInput("", 0, 0, -1, -1, $WS_TABSTOP)
+		$g_hFrmBotEmbeddedShieldInput = _GUICtrlCreateInput("", 0, 0, -1, -1, $WS_TABSTOP)
 		;$g_hFrmBotEmbeddedShieldInput = GUICtrlCreateLabel("", 0, 0, 0, 0, $WS_TABSTOP)
 		;$g_hFrmBotEmbeddedShieldInput = GUICtrlCreateDummy()
 		GUICtrlSetState($g_hFrmBotEmbeddedShieldInput, $GUI_HIDE)

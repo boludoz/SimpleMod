@@ -173,7 +173,7 @@ Func CreateAttackSearchDeadBaseAttack()
 		$y += 16
 			$g_hLblTHSnipeBeforeDBTiles = GUICtrlCreateLabel(GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "LblTHSnipeBeforeTiles", "Add Tiles")& ":", $x, $y + 3, 70, -1, $SS_RIGHT)
 				GUICtrlSetState(-1, $GUI_DISABLE)
-			$g_hTxtTHSnipeBeforeDBTiles = GUICtrlCreateInput("2", $x + 75, $y + 1, 30, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
+			$g_hTxtTHSnipeBeforeDBTiles = _GUICtrlCreateInput("2", $x + 75, $y + 1, 30, 18, BitOR($GUI_SS_DEFAULT_INPUT, $ES_CENTER, $ES_NUMBER))
 				$sTxtTip = GetTranslatedFileIni("MBR GUI Design Child Attack - Attack", "LblTHSnipeBeforeTiles_Info_01", "Max numbers of tiles from border to consider TH as external")
 				_GUICtrlSetTip(-1, $sTxtTip)
 				GUICtrlSetLimit(-1, 2)
