@@ -36,6 +36,19 @@ Func ChatbotReadMessages()
 	If IniRead($sChatIni, "ChatGlobal", "ChkDelayTime", "False") = "True" Then $g_bChkDelayTime = True
     $g_iTxtDelayTime = IniRead($sChatIni, "ChatGlobal", "TxtDelayTime", "10") 
 	
+	; Challenge
+	
+	If IniRead($sChatIni, "ChatChallenge", "ChkChngOn", "False") = "True" Then $g_bChkChngOn = True       
+	If IniRead($sChatIni, "ChatChallenge", "ChkDelayChng", "False") = "True" Then $g_bChkDelayChng = True       
+	If IniRead($sChatIni, "ChatChallenge", "ChkVillage1", "False") = "True" Then $g_bChkVillage1 = True       
+	If IniRead($sChatIni, "ChatChallenge", "ChkVillage4", "False") = "True" Then $g_bChkVillage4 = True       
+	If IniRead($sChatIni, "ChatChallenge", "ChkVillage2", "False") = "True" Then $g_bChkVillage2 = True       
+	If IniRead($sChatIni, "ChatChallenge", "ChkVillage5", "False") = "True" Then $g_bChkVillage5 = True       
+	If IniRead($sChatIni, "ChatChallenge", "ChkVillage3", "False") = "True" Then $g_bChkVillage3 = True       
+	If IniRead($sChatIni, "ChatChallenge", "ChkVillage6", "False") = "True" Then $g_bChkVillage6 = True       
+	If IniRead($sChatIni, "ChatChallenge", "ChkAttackChng", "False") = "True" Then $g_bChkAttackChng = True       
+	
+	
 	$sClanMessages = StringSplit(IniRead($sChatIni, "ChatClan", "GenericMessages", "Testing on Chat|Hey all"), "|", 2)
 	Global $g_sClanResponses0 = StringSplit(IniRead($sChatIni, "ChatClan", "ResponseMessages", "keyword:Response|hello:Hi, Welcome to the clan|hey:Hey, how's it going?"), "|", 2)
 	Global $g_sClanResponses1[UBound($g_sClanResponses0)][2]
@@ -93,6 +106,17 @@ Func ChatbotGUICheckbox()
 	$g_bChkDelayTime = GUICtrlRead($g_hChkDelayTime) = $GUI_CHECKED
 	$g_bChkCleverbot = GUICtrlRead($g_hChkCleverbot) = $GUI_CHECKED
 	
+	; Challenge
+	$g_bChkChngOn     = GUICtrlRead($g_hChkChngOn) = $GUI_CHECKED
+	$g_bChkDelayChng  = GUICtrlRead($g_hChkDelayChng) = $GUI_CHECKED	
+	$g_bChkVillage1   = GUICtrlRead($g_hChkVillage1) = $GUI_CHECKED	
+	$g_bChkVillage4   = GUICtrlRead($g_hChkVillage4) = $GUI_CHECKED	
+	$g_bChkVillage2   = GUICtrlRead($g_hChkVillage2) = $GUI_CHECKED	
+	$g_bChkVillage5   = GUICtrlRead($g_hChkVillage5) = $GUI_CHECKED	
+	$g_bChkVillage3   = GUICtrlRead($g_hChkVillage3) = $GUI_CHECKED	
+	$g_bChkVillage6   = GUICtrlRead($g_hChkVillage6) = $GUI_CHECKED	
+	$g_bChkAttackChng = GUICtrlRead($g_hChkAttackChng) = $GUI_CHECKED	
+	
 	IniWrite($sChatIni, "ChatSelector", "GlobalChatGUI", $g_bGlobalChatGUI)
 	IniWrite($sChatIni, "ChatSelector", "ClanChatGUI", $g_bClanChatGUI)
 	IniWrite($sChatIni, "ChatSelector", "ChallengeChatGUI", $g_bChallengeChatGUI)
@@ -112,6 +136,17 @@ Func ChatbotGUICheckbox()
     IniWrite($sChatIni, "Lang", "RusLang", $g_iRusLang)
 	IniWrite($sChatIni, "ChatClan", "ChkCleverbot", $g_bChkCleverbot)
 	
+	; Challenge
+	IniWrite($sChatIni, "ChatChallenge", "ChkChngOn", $g_bChkChngOn)
+	IniWrite($sChatIni, "ChatChallenge", "ChkDelayChng", $g_bChkDelayChng)
+	IniWrite($sChatIni, "ChatChallenge", "ChkVillage1", $g_bChkVillage1)
+	IniWrite($sChatIni, "ChatChallenge", "ChkVillage4", $g_bChkVillage4)
+	IniWrite($sChatIni, "ChatChallenge", "ChkVillage2", $g_bChkVillage2)
+	IniWrite($sChatIni, "ChatChallenge", "ChkVillage5", $g_bChkVillage5)
+	IniWrite($sChatIni, "ChatChallenge", "ChkVillage3", $g_bChkVillage3)
+	IniWrite($sChatIni, "ChatChallenge", "ChkVillage6", $g_bChkVillage6)
+	IniWrite($sChatIni, "ChatChallenge", "ChkAttackChng", $g_bChkAttackChng)
+
     ChatbotGUICheckboxControl()
 
 EndFunc   ;==>ChatbotGUICheckbox
@@ -320,9 +355,9 @@ Func ChatbotChatOpen() ; open the chat area
 	Local $aButtonChatOpen[4] = [20, 351 + $g_iMidOffsetY, 0xFFFFFF, 20]
 	If _ColorCheck(_GetPixelColor($aButtonChatOpen[0], $aButtonChatOpen[1], True), Hex($aButtonChatOpen[2], 6), $aButtonChatOpen[3]) Then
 		Click($aButtonChatOpen[0], $aButtonChatOpen[1], 1)
-		If _Sleep(1000) Then Return
+		If _Sleep(1000) Then Return True
 	EndIf
-	Return True
+	Return False
 EndFunc   ;==>ChatbotChatOpen
 
 Func ChatbotSelectClanChat() ; select clan tab
@@ -366,9 +401,9 @@ Func ChatbotChatClanInput() ; select the textbox for clan chat
 	Local $aChatClanInput[4] = [276, 677 + $g_iMidOffsetY, 0xFFFFFF, 20]
 	If _ColorCheck(_GetPixelColor($aChatClanInput[0], $aChatClanInput[1], True), Hex($aChatClanInput[2], 6), $aChatClanInput[3]) Then
 		Click($aChatClanInput[0], $aChatClanInput[1], 1)
-		If _Sleep(1000) Then Return
+		If _Sleep(1000) Then Return True
 	EndIf
-	Return True
+	Return False
 EndFunc   ;==>ChatbotChatClanInput
 
 Func ChatbotChatGlobalInput() ; select the textbox for global chat
@@ -511,8 +546,21 @@ Local $bCanGlobalChat = False
 	If $g_bChkChngOn = True Then
 		If Not ChatbotChatOpen() Then Return
 		SetLog("Chatbot: Challenge", $COLOR_GREEN)
-		If Not ChatbotChatClanInput() Then Return
-		If $g_bChkChatClan = False And $bCanGlobalChat = False Then ExitLoop
+		If Not ChatbotSelectClanChat() Then Return
+			If _Sleep(500) Then Return
+			Local $aChangeColors[2][3] = [[0x94D53C, 0, 1], [0x9CD944, 0, 2]]
+			Local $aColorsButton = _MultiPixelSearch(125, 678, 313, 731, 1, 1, Hex(0xC5EC90, 6), $aChangeColors, 35)
+			If _Sleep(500) Then Return
+			ClickP($aColorsButton)
+				If _Sleep(500) Then Return
+				Local $aChangeStart[2][3] = [[0x98D840, 0, 1], [0x8CD134, 0, 2]]
+				Local $aStartButton = _MultiPixelSearch(438, 271, 607, 325, 1, 1, Hex(0xEEFEDB, 6), $aChangeStart, 35)
+				If _Sleep(500) Then Return
+				ClickP($aStartButton)
+
+		If $g_bChkChatClan = False And $bCanGlobalChat = False Then
+		ExitLoop
+		EndIf
 	EndIf
 	
 	If $g_bChkChatClan Then
@@ -688,7 +736,8 @@ Local $bCanGlobalChat = False
 	EndIf
 	ExitLoop
 	WEnd
-ChatbotChatClose()
+	setlog("dbg")
+If Not ChatbotChatClose() Then Return
 EndFunc   ;==>ChatbotMessage
 
 ; Returns the response from cleverbot or simsimi, if any

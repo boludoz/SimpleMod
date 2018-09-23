@@ -936,7 +936,7 @@ Func _Idle() ;Sequence that runs until Full Army
 		;------------------ADDED By Simple Mod - START------------------
 		MainGTFO()
 		MainKickout()
-		If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
+		If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Or $g_bChkChngOn = True Then
 			ChatbotMessage()
 		EndIf
 		;------------------ADDED By Simple Mod - END------------------
@@ -1104,7 +1104,7 @@ Func AttackMain() ;Main control for attack functions
 			EndIf
 			_ClanGames()
 			;------------------ADDED By Simple Mod - END------------------
-			If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
+			If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Or $g_bChkChngOn = True Then
 				ChatbotMessage()
 			EndIf
 			;------------------ADDED By Simple Mod - END------------------
@@ -1230,7 +1230,7 @@ Func _RunFunction($action)
 			EndIf
 			;------------------ADDED By Simple Mod - START------------------
 		Case "SendChat"
-			If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Then
+			If $g_bChkChatGlobal = True Or $g_bChkChatClan = True Or $g_bChkChngOn = True Then
 				ChatbotMessage()
 			EndIf
 			;------------------ADDED By Simple Mod - END------------------

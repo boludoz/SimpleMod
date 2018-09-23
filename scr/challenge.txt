@@ -1,0 +1,66 @@
+1. change butt
+0xC5EC90 
+0x94D53C
+0x9CD944
+125. 678
+313. 731
+
+Local $aChangeColors[2][3] = [[0x94D53C, 0, 1], [0x9CD944, 0, 2]]
+Local $aColorsButton = _MultiPixelSearch(125, 678, 313, 731, 1, 1, Hex(0xC5EC90, 6), $aChangeColors, 35)
+If _Sleep(500) Then Return
+ClickP($aColorsButton)
+2 / optional change Layout
+0xA6DE56
+0x92D43A
+0xBFE867
+144. 270
+332. 332
+Local $aChangeLayout[2][3] = [[0x92D43A, 0, 1], [0xBFE867, 0, 2]]
+Local $aLayoutButton = _MultiPixelSearch(144, 270, 332, 332, 1, 1, Hex(0xA6DE56, 6), $aChangeLayout, 35)
+If _Sleep(500) Then Return
+ClickP($aLayoutButton)
+
+3 Start 
+0xEEFEDB
+0x98D840
+0x8CD134
+438. 271
+607. 325
+
+Local $aChangeStart[2][3] = [[0x98D840, 0, 1], [0x8CD134, 0, 2]]
+Local $aStartButton = _MultiPixelSearch(438, 271, 607, 325, 1, 1, Hex(0xEEFEDB, 6), $aChangeStart, 35)
+If _Sleep(500) Then Return
+ClickP($aStartButton)
+
+2.
+
+/ Back 
+0xC3EB8D
+0x94D53C
+0x9FDA47
+136. 93
+219. 135
+
+Local $aChangeBack[2][3] = [[0x94D53C, 0, 1], [0x9FDA47, 0, 2]]
+Local $aBackButton = _MultiPixelSearch(136, 93, 219, 135, 1, 1, Hex(0xC3EB8D, 6), $aChangeBack, 35)
+If _Sleep(500) Then Return
+ClickP($aBackButton)
+
+/sector 1
+145 x 165 - 331 x 319
+238 x 235 
+/sector 2
+331 x 165 - 516 x 319 
+403 x 233
+/sector 3
+516 x 165 - 700 x 319
+398 x 236
+
+deslizador
+144 x 234 - 714 x 234
+
+/no disponible
+0xFDFDFD
+0xFF0C08
+0xFF0C08
+0xFF0C08
